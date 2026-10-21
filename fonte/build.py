@@ -81,4 +81,4 @@ head=f'''<!doctype html>
 </head>
 '''
 js=open('page.js').read()
-open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-globe.js?v=20261020\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
+open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-globe.js?v=20261020\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261021\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")

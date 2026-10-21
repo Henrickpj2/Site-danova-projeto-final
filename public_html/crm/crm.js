@@ -19,10 +19,11 @@
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function etapaNome(id) { var e = ETAPAS.find(function (x) { return x.id === id; }); return e ? e.nome : id; }
   function tag(id) { return '<span class="tag t-' + esc(id) + '"><i></i>' + esc(etapaNome(id)) + "</span>"; }
-  function dt(v, hora) { if (!v) return "—"; var d = new Date(v); return d.toLocaleDateString("pt-BR") + (hora ? " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : ""); }
+  function dt(v, hora) { if (!v) return "—"; var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v); var d = m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date(v); return d.toLocaleDateString("pt-BR") + (hora ? " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : ""); }
   function diasAtras(v) { var d = Math.floor((Date.now() - new Date(v)) / 864e5); return d <= 0 ? "hoje" : d === 1 ? "ontem" : d + " dias"; }
   function money(v) { return v == null || v === "" ? "—" : "US$ " + Number(v).toLocaleString("pt-BR", { maximumFractionDigits: 0 }); }
-  function hojeISO() { return new Date().toISOString().slice(0, 10); }
+  function isoLocal(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function hojeISO() { return isoLocal(new Date()); }
   function isAdmin() { return S.me && S.me.papel === "admin"; }
   function nomeMembro(id) { var m = S.membros.find(function (x) { return x.id === id; }); return m ? m.nome : ""; }
   var toastT;
@@ -163,10 +164,10 @@
     var semDono = L.filter(function (l) { return !l.corretor_id && ABERTAS.indexOf(l.etapa) >= 0; }).length;
 
     var porEtapa = ETAPAS.map(function (e) { return [e.id, L.filter(function (l) { return l.etapa === e.id; }).length, e.nome]; });
-    var dias = []; for (var i = 29; i >= 0; i--) { var d = new Date(agora - i * 864e5).toISOString().slice(0, 10); dias.push([d, 0]); }
-    L.forEach(function (l) { var k = new Date(l.criado_em).toISOString().slice(0, 10); var x = dias.find(function (p) { return p[0] === k; }); if (x) x[1]++; });
+    var dias = []; for (var i = 29; i >= 0; i--) { var d = isoLocal(new Date(agora - i * 864e5)); dias.push([d, 0]); }
+    L.forEach(function (l) { var k = isoLocal(new Date(l.criado_em)); var x = dias.find(function (p) { return p[0] === k; }); if (x) x[1]++; });
     var maxD = Math.max(1, Math.max.apply(null, dias.map(function (p) { return p[1]; })));
-    var limite = new Date(agora + 7 * 864e5).toISOString().slice(0, 10);
+    var limite = isoLocal(new Date(agora + 7 * 864e5));
     var agenda = abertos.filter(function (l) { return l.proximo_contato && l.proximo_contato <= limite; }).sort(function (a, b) { return a.proximo_contato < b.proximo_contato ? -1 : 1; }).slice(0, 8);
     var parados = abertos.filter(function (l) { return agora - new Date(l.atualizado_em) > 5 * 864e5; }).length;
 
@@ -246,7 +247,7 @@
     var L = filtrados();
     $("#view-leads").innerHTML = filtrosHTML(true) + '<div class="table-wrap"><table><thead><tr><th>Lead</th><th class="hide-sm">Empreendimento</th><th>Etapa</th><th class="hide-sm">Corretor</th><th class="hide-sm">Próximo contato</th><th class="hide-sm">Recebido</th></tr></thead><tbody>' +
       (L.length ? L.slice(0, 1000).map(function (l) {
-        return '<tr data-lead="' + l.id + '"><td><strong>' + esc(l.nome || "—") + '</strong><span class="sub">' + esc([l.email, l.telefone].filter(Boolean).join(" · ")) + '</span></td><td class="hide-sm">' + esc(l.empreendimento || "—") + "<span class=sub>" + esc(l.perfil || "") + "</span></td><td>" + tag(l.etapa) + (l.temperatura ? ' <span class="temp ' + l.temperatura + '">' + l.temperatura + "</span>" : "") + '</td><td class="hide-sm">' + esc(l.corretor_nome || "—") + '</td><td class="hide-sm">' + (l.proximo_contato ? dt(l.proximo_contato) : "—") + '</td><td class="hide-sm">' + dt(l.criado_em) + '<span class="sub">' + esc(l.canal || "") + "</span></td></tr>";
+        return '<tr data-lead="' + l.id + '"><td><strong>' + esc(l.nome || "—") + '</strong>' + (l.conversa_id ? ' <span class="ai-badge" title="Veio do chat do site">chat IA</span>' : "") + '<span class="sub">' + esc([l.email, l.telefone].filter(Boolean).join(" · ")) + '</span></td><td class="hide-sm">' + esc(l.empreendimento || "—") + "<span class=sub>" + esc(l.perfil || "") + "</span></td><td>" + tag(l.etapa) + (l.temperatura ? ' <span class="temp ' + l.temperatura + '">' + l.temperatura + "</span>" : "") + '</td><td class="hide-sm">' + esc(l.corretor_nome || "—") + '</td><td class="hide-sm">' + (l.proximo_contato ? dt(l.proximo_contato) : "—") + '</td><td class="hide-sm">' + dt(l.criado_em) + '<span class="sub">' + esc(l.canal || "") + "</span></td></tr>";
       }).join("") : '<tr><td colspan="6"><div class="empty">Nenhum lead encontrado.</div></td></tr>') + "</tbody></table></div>" +
       '<p class="note" style="margin-top:10px">' + L.length + " lead(s)" + (L.length > 1000 ? " · mostrando os 1.000 mais recentes" : "") + "</p>";
     ligarFiltros($("#view-leads")); ligarAberturas($("#view-leads"));
@@ -320,7 +321,16 @@
     if (!l) return;
     S.aberto = id || "novo";
     var ev = [];
-    if (!novo) { var r = await sb.from("lead_eventos").select("*").eq("lead_id", id).order("criado_em", { ascending: false }); if (r.error) falha(r.error); ev = r.data || []; }
+    var analises = [], conversa = [];
+    if (!novo) {
+      var res = await Promise.all([
+        sb.from("lead_eventos").select("*").eq("lead_id", id).order("criado_em", { ascending: false }),
+        sb.from("agente_analises").select("*").eq("lead_id", id).order("criado_em", { ascending: false }).limit(5),
+        l.conversa_id ? sb.from("mensagens").select("papel, texto, criado_em").eq("conversa_id", l.conversa_id).order("id", { ascending: true }).limit(80) : Promise.resolve({ data: [] })
+      ]);
+      if (res[0].error) falha(res[0].error);
+      ev = res[0].data || []; analises = res[1].data || []; conversa = res[2].data || [];
+    }
     var idx = ETAPAS.findIndex(function (e) { return e.id === l.etapa; });
     var fone = (l.telefone || "").replace(/\D/g, "");
     var D = $("#drawer");
@@ -331,6 +341,7 @@
         (l.email ? '<a class="btn small ghost" data-contato="E-mail" href="mailto:' + esc(l.email) + "?subject=" + encodeURIComponent("danova AI · " + (l.empreendimento || "sua solicitação")) + '">E-mail</a>' : "") +
         (fone ? '<a class="btn small ghost" data-contato="Ligação" href="tel:+' + fone + '">Ligar</a>' : "") + "</div>") +
       '<form class="d-body" id="leadForm">' +
+      (novo ? "" : agenteHTML(analises[0], conversa)) +
       (novo ? "" : '<div><div class="steps">' + ETAPAS.filter(function (e) { return e.id !== "perdido"; }).map(function (e, i) { return '<button type="button" title="' + e.nome + '" data-etapa="' + e.id + '" class="' + (l.etapa === e.id ? "cur" : (idx > i && l.etapa !== "perdido") ? "done" : "") + '"></button>'; }).join("") + '</div><div class="steps-label"><span>Novo</span><span>' + tag(l.etapa) + "</span><span>Fechado</span></div></div>") +
       '<div class="section-title">Andamento</div><div class="fgrid">' +
       '<label>Etapa<select name="etapa">' + ETAPAS.map(function (e) { return '<option value="' + e.id + '"' + (l.etapa === e.id ? " selected" : "") + ">" + e.nome + "</option>"; }).join("") + "</select></label>" +
@@ -382,6 +393,33 @@
       if (novo) { fecharGaveta(); } else abrirLead(id);
     });
     if (!novo) {
+      var bAnalisar = $("[data-analisar]", D);
+      if (bAnalisar) bAnalisar.addEventListener("click", async function () {
+        bAnalisar.disabled = true; bAnalisar.textContent = "Analisando…";
+        var r = await sb.functions.invoke("agente-crm", { body: { lead_id: id } });
+        var codigo = r.data && r.data.erro;
+        if (r.error && r.error.context && typeof r.error.context.json === "function") { try { codigo = (await r.error.context.json()).erro; } catch (e) {} }
+        if (r.error || codigo) {
+          bAnalisar.disabled = false; bAnalisar.textContent = "Analisar com IA";
+          return toast({ ia_nao_configurada: "A IA ainda não está ligada: falta a chave ANTHROPIC_API_KEY no Supabase.", limite_hora: "Limite de 20 análises por hora atingido.", acesso_pendente: "Seu acesso ainda não foi aprovado." }[codigo] || "Não foi possível analisar agora.", true);
+        }
+        toast("Análise pronta."); abrirLead(id);
+      });
+      var bAplicar = $("[data-aplicar]", D);
+      if (bAplicar) bAplicar.addEventListener("click", function () {
+        var a = analises[0];
+        if (a.proximo_passo) form.proximo_passo.value = a.proximo_passo;
+        if (a.proximo_contato) form.proximo_contato.value = a.proximo_contato;
+        if (a.temperatura) form.temperatura.value = a.temperatura;
+        sb.from("agente_analises").update({ aplicada: true }).eq("id", a.id).then(function () {});
+        sb.from("lead_eventos").insert({ lead_id: id, autor_id: S.me.id, tipo: "nota", texto: "Sugestão do agente aplicada: " + (a.proximo_passo || "") }).then(function () {});
+        form.requestSubmit();
+      });
+      var bCopiar = $("[data-copiar]", D);
+      if (bCopiar) bCopiar.addEventListener("click", function () {
+        var t = analises[0].mensagem_sugerida || "";
+        (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { toast("Mensagem copiada."); }, function () { toast("Não foi possível copiar.", true); });
+      });
       $("[data-nota]", D).addEventListener("click", async function () {
         var t = $("#novaNota").value.trim(); if (!t) return;
         var r = await sb.from("lead_eventos").insert({ lead_id: id, autor_id: S.me.id, tipo: "nota", texto: t });
@@ -399,8 +437,33 @@
       });
     }
   }
+  function agenteHTML(a, conversa) {
+    var fone = "";
+    var h = '<div class="ai-card"><div class="ai-head"><span class="ai-badge">IA</span><strong>Agente de IA</strong>' +
+      (a ? '<small>' + (a.origem === "atendente" ? "do chat do site" : "análise") + " · " + dt(a.criado_em, true) + "</small>" : "") +
+      '<button type="button" class="btn small ghost" data-analisar>' + (a ? "Analisar de novo" : "Analisar com IA") + "</button></div>";
+    if (!a) {
+      h += '<p class="muted ai-vazio">Peça ao agente um resumo do lead, o próximo passo, a data ideal de follow-up e uma mensagem pronta para enviar.</p>';
+    } else {
+      h += '<p class="ai-resumo">' + esc(a.resumo || "") + "</p>";
+      if (a.proximo_passo || a.proximo_contato || a.temperatura) {
+        h += '<dl class="kv ai-kv">' +
+          (a.proximo_passo ? "<dt>Próximo passo</dt><dd>" + esc(a.proximo_passo) + "</dd>" : "") +
+          (a.proximo_contato ? "<dt>Próximo contato</dt><dd>" + dt(a.proximo_contato) + "</dd>" : "") +
+          (a.temperatura ? '<dt>Temperatura</dt><dd><span class="temp ' + esc(a.temperatura) + '">' + esc(a.temperatura) + "</span></dd>" : "") + "</dl>";
+      }
+      if (a.pontos_atencao) h += '<p class="ai-atencao">⚠ ' + esc(a.pontos_atencao) + "</p>";
+      if (a.mensagem_sugerida) h += '<div class="ai-msg"><small>Mensagem sugerida</small><p>' + esc(a.mensagem_sugerida) + '</p><div class="ai-msg-actions"><button type="button" class="btn small ghost" data-copiar>Copiar</button></div></div>';
+      if (a.proximo_passo || a.proximo_contato || a.temperatura) h += '<button type="button" class="btn small primary" data-aplicar' + (a.aplicada ? ' title="Já aplicada antes"' : "") + ">" + (a.aplicada ? "Aplicar de novo" : "Aplicar sugestão ao lead") + "</button>";
+    }
+    if (conversa && conversa.length) {
+      h += '<details class="ai-chat"><summary>Conversa no chat do site (' + (function (n) { return n + (n === 1 ? " mensagem" : " mensagens"); })(conversa.filter(function (m) { return m.papel === "cliente"; }).length) + " do cliente)</summary><div class=\"ai-chat-log\">" +
+        conversa.map(function (m) { return '<div class="ai-chat-m ' + esc(m.papel) + '"><b>' + (m.papel === "cliente" ? "Cliente" : "Assistente") + "</b> " + esc(m.texto) + "</div>"; }).join("") + "</div></details>";
+    }
+    return h + "</div>";
+  }
   function evHTML(e) {
-    var autor = e.autor_id ? nomeMembro(e.autor_id) || "Membro" : "Sistema";
+    var autor = e.autor_id ? nomeMembro(e.autor_id) || "Membro" : (e.tipo === "nota" && /^Agente de IA/.test(e.texto || "") ? "Agente de IA" : "Sistema");
     var txt = e.tipo === "etapa" ? "Etapa: " + etapaNome(e.de_etapa) + " → <strong>" + esc(etapaNome(e.para_etapa)) + "</strong>"
       : e.tipo === "atribuicao" ? "Atribuído a <strong>" + esc(e.texto) + "</strong>"
       : e.tipo === "contato" ? "Contato por " + esc(e.texto)

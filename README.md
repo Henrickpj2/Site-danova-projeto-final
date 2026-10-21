@@ -9,8 +9,10 @@ public_html/        → tudo o que vai para a Hostinger (pasta public_html)
   api/lead.php      → recebe formulários, envia e-mail, grava CSV e encaminha ao CRM
   js/crm-config.js  → endereço do banco e chave pública
   js/danova-globe.js→ globo interativo do topo
+  js/danova-chat.js → chat do atendente de IA
 fonte/              → arquivos-fonte usados para gerar index.html e o globo
 supabase/schema.sql → estrutura completa do banco do CRM
+supabase/functions/ → atendente do site e agente do CRM (IA)
 ```
 
 ## Como o lead chega ao CRM
@@ -38,6 +40,20 @@ supabase/schema.sql → estrutura completa do banco do CRM
 | Exclui leads | sim | não |
 
 Essas regras ficam no próprio banco (Row Level Security): mesmo que alguém altere o código da página, o banco não entrega dados de outro corretor.
+
+## Agente de IA
+
+Dois papéis, ambos usando Claude (Anthropic) por funções no Supabase (`supabase/functions/`):
+
+- **Atendente do site** (`atendente`): chat no canto da página, em português, inglês e espanhol. Responde só com a base de conhecimento (`conhecimento.ts`: os 10 empreendimentos, serviços e contatos), qualifica o cliente, cria o lead no CRM com resumo e temperatura e, quando o cliente pede uma pessoa ou demonstra alta intenção, mostra o botão para continuar no WhatsApp da Danielle. Avisa que é um assistente virtual e não promete preço final, retorno ou visto.
+- **Agente do CRM** (`agente-crm`): botão **Analisar com IA** na ficha do lead. Lê os dados, o histórico e a conversa do chat e sugere resumo, próximo passo, data de follow-up, temperatura e uma mensagem pronta para WhatsApp. Nada muda no lead até o corretor clicar em **Aplicar sugestão**. Cada corretor só consegue analisar os próprios leads.
+
+**Ligar a IA:** no Supabase (projeto `danova-crm`) → **Edge Functions → Secrets**, crie `ANTHROPIC_API_KEY` com a sua chave da Anthropic (console.anthropic.com). Sem a chave, o chat continua aparecendo e encaminha o cliente para o WhatsApp.
+Opcional: `ATENDENTE_MODELO` e `AGENTE_MODELO` (padrão `claude-sonnet-5-5`).
+
+**Limites contra abuso e custo:** 30 mensagens por conversa, 6 conversas novas por IP por hora, 60 mensagens por minuto no site todo, 20 análises por membro por hora.
+
+**Atualizar preços e projetos:** edite `supabase/functions/atendente/conhecimento.ts` (e a cópia em `agente-crm/`) e publique as funções de novo.
 
 ## Primeiro acesso
 

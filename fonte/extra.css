@@ -83,3 +83,42 @@
       .drag-hint { display: none; }
       .origin-btn { padding: 6px 10px; font-size: 11px; }
     }
+    /* ---- Chat do atendente virtual ---- */
+    .whatsapp-float { bottom: 92px; width: 50px; height: 50px; }
+    .dn-chat { position: fixed; right: 22px; bottom: 22px; z-index: 60; font-family: "DM Sans", sans-serif; }
+    .dn-chat-launcher { display: flex; align-items: center; gap: 9px; border: 0; cursor: pointer; color: white; padding: 13px 18px 13px 14px; border-radius: 999px; font-weight: 700; font-size: 14px; background: linear-gradient(120deg, #3ec5f0, #6b3fd4 45%, #ec3d8f 80%, #f7a24a); box-shadow: 0 14px 34px rgba(107,63,212,.4); position: relative; }
+    .dn-chat-launcher svg { width: 22px; height: 22px; }
+    .dn-chat-dot { position: absolute; top: 6px; left: 30px; width: 9px; height: 9px; border-radius: 50%; background: #2fe39a; border: 2px solid #fff; }
+    .dn-chat.open .dn-chat-launcher { display: none; }
+    .dn-chat-panel { width: min(390px, calc(100vw - 32px)); height: min(600px, calc(100vh - 120px)); background: #fff; border-radius: 20px; box-shadow: 0 30px 80px rgba(8,15,29,.35); display: flex; flex-direction: column; overflow: hidden; color: #142033; }
+    .dn-chat-head { display: flex; gap: 11px; align-items: center; padding: 14px 16px; color: white; background: radial-gradient(400px 200px at 90% 0%, rgba(236,61,143,.4), transparent 60%), #0b1424; }
+    .dn-chat-head strong { display: block; font: 800 15px "Manrope", sans-serif; }
+    .dn-chat-head small { display: block; font-size: 11px; color: #a9b7c8; }
+    .dn-chat-avatar { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; font: 800 18px "Manrope", sans-serif; background: linear-gradient(135deg, #3ec5f0, #6b3fd4, #ec3d8f, #f7a24a); flex: 0 0 36px; }
+    .dn-chat-x { margin-left: auto; background: rgba(255,255,255,.1); border: 0; color: white; width: 32px; height: 32px; border-radius: 9px; cursor: pointer; }
+    .dn-chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #f4f6fa; }
+    .dn-msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; word-wrap: break-word; }
+    .dn-agente { background: #fff; border: 1px solid #e3e8ef; border-bottom-left-radius: 4px; align-self: flex-start; }
+    .dn-cliente { background: #0b1424; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+    .dn-digitando { color: #8fa0b5; letter-spacing: 3px; animation: dnPulse 1s infinite; }
+    @keyframes dnPulse { 50% { opacity: .4; } }
+    .dn-wpp { display: inline-block; margin-top: 8px; background: #19b77a; color: white !important; padding: 7px 12px; border-radius: 9px; font-weight: 700; font-size: 13px; text-decoration: none; }
+    .dn-chat-chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 12px 0; background: #f4f6fa; }
+    .dn-chat-chips:empty { display: none; }
+    .dn-chat-chips button { border: 1px solid #d6dde7; background: #fff; border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 600; cursor: pointer; color: #3a4a60; }
+    .dn-chat-chips button:hover { border-color: #6b3fd4; color: #6b3fd4; }
+    .dn-chat-form { display: flex; gap: 8px; padding: 10px 12px; background: #f4f6fa; align-items: flex-end; }
+    .dn-chat-form textarea { flex: 1; resize: none; min-height: 42px; height: 42px; line-height: 1.4; border: 1px solid #d6dde7; border-radius: 12px; padding: 10px 12px; font: inherit; font-size: 14px; max-height: 110px; outline: none; background: #fff; color: #142033; }
+    .dn-chat-form textarea:focus { border-color: #6b3fd4; box-shadow: 0 0 0 3px rgba(107,63,212,.14); }
+    .dn-chat-form button { width: 42px; height: 42px; border: 0; border-radius: 12px; cursor: pointer; color: white; font-size: 16px; background: linear-gradient(135deg, #6b3fd4, #ec3d8f); }
+    .dn-chat-foot { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 8px 14px 10px; font-size: 10.5px; color: #8291a4; background: #f4f6fa; border-top: 1px solid #e3e8ef; }
+    .dn-chat-new { background: none; border: 0; color: #6b3fd4; font-weight: 700; font-size: 11px; cursor: pointer; white-space: nowrap; }
+    @media (max-width: 720px) {
+      .dn-chat { right: 12px; bottom: 12px; }
+      .dn-chat-label { display: none; }
+      .dn-chat-launcher { padding: 14px; }
+      .dn-chat-dot { left: 34px; }
+      .dn-chat.open { left: 8px; right: 8px; bottom: 8px; }
+      .dn-chat-panel { width: 100%; height: calc(100vh - 16px); height: calc(100dvh - 16px); }
+      .whatsapp-float { bottom: 82px; right: 16px; }
+    }

@@ -217,3 +217,71 @@ create view public.leads_resumo with (security_invoker = true) as
 
 -- Avisos em tempo real de novos leads no CRM
 alter publication supabase_realtime add table public.leads;
+
+-- =====================================================================
+-- Agente de IA (21/10/2026): conversas do chat do site e análises do agente
+-- =====================================================================
+create table public.conversas (
+  id uuid primary key default gen_random_uuid(),
+  criado_em timestamptz not null default now(),
+  atualizado_em timestamptz not null default now(),
+  token_hash text not null,               -- sha256 do token do visitante (o token em si nunca é guardado)
+  ip_hash text,
+  idioma text,
+  pagina text,
+  status text not null default 'ia' check (status in ('ia','humano','encerrada')),
+  lead_id uuid references public.leads(id) on delete set null,
+  resumo text,
+  total_mensagens int not null default 0
+);
+create index conversas_lead_idx on public.conversas(lead_id);
+create index conversas_criado_idx on public.conversas(criado_em desc);
+create index conversas_ip_idx on public.conversas(ip_hash, criado_em desc);
+
+create table public.mensagens (
+  id bigint generated always as identity primary key,
+  conversa_id uuid not null references public.conversas(id) on delete cascade,
+  papel text not null check (papel in ('cliente','agente','sistema')),
+  texto text not null,
+  criado_em timestamptz not null default now()
+);
+create index mensagens_conversa_idx on public.mensagens(conversa_id, id);
+create index mensagens_criado_idx on public.mensagens(criado_em desc);
+
+create table public.agente_analises (
+  id bigint generated always as identity primary key,
+  lead_id uuid not null references public.leads(id) on delete cascade,
+  origem text not null check (origem in ('atendente','crm')),
+  pedido_por uuid references public.membros(id) on delete set null,
+  resumo text,
+  proximo_passo text,
+  proximo_contato date,
+  temperatura text check (temperatura in ('frio','morno','quente')),
+  mensagem_sugerida text,
+  pontos_atencao text,
+  dados jsonb not null default '{}'::jsonb,
+  aplicada boolean not null default false,
+  criado_em timestamptz not null default now()
+);
+create index agente_analises_lead_idx on public.agente_analises(lead_id, criado_em desc);
+
+alter table public.conversas enable row level security;
+alter table public.mensagens enable row level security;
+alter table public.agente_analises enable row level security;
+
+-- visitantes não leem nada direto: só as funções do servidor (service role) gravam
+create policy conversas_ver on public.conversas for select to authenticated
+  using ((select privado.eh_admin()) or (lead_id is not null and exists (select 1 from public.leads l where l.id = lead_id)));
+create policy mensagens_ver on public.mensagens for select to authenticated
+  using (exists (select 1 from public.conversas c where c.id = conversa_id));
+create policy analises_ver on public.agente_analises for select to authenticated
+  using (exists (select 1 from public.leads l where l.id = lead_id));
+create policy analises_marcar on public.agente_analises for update to authenticated
+  using (exists (select 1 from public.leads l where l.id = lead_id))
+  with check (exists (select 1 from public.leads l where l.id = lead_id));
+
+create or replace view public.leads_resumo with (security_invoker = true) as
+  select l.*, m.nome as corretor_nome,
+         (select c.id from public.conversas c where c.lead_id = l.id order by c.criado_em desc limit 1) as conversa_id,
+         (select a.resumo from public.agente_analises a where a.lead_id = l.id order by a.criado_em desc limit 1) as ia_resumo
+  from public.leads l left join public.membros m on m.id = l.corretor_id;

@@ -76,6 +76,7 @@ html = html.replace('<script src="js/danova-config.js?v=20261020"></script>', sc
 html = html.replace('<script src="js/crm-config.js?v=20261021"></script>', script(ler("js/crm-config.js")))
 html = html.replace('<script src="js/danova-tracking.js?v=20261020" defer></script>', "")
 html = html.replace('<script src="js/danova-globe.js?v=20261020" defer></script>', "")
+html = html.replace('<script src="js/danova-chat.js?v=20261021" defer></script>', "")
 assert 'src="js/' not in html, re.findall(r'src="js/[^"]+"', html)
 html = re.sub(r'\s*<link rel="preload" as="image" href="img/[^"]+">', "", html)
 
@@ -94,7 +95,7 @@ crm_css += """
 #crmRoot { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
 #crmRoot { display: none; }
 html.crm-mode #crmRoot { display: block; }
-html.crm-mode body > :not(#crmRoot):not(script) { display: none !important; }
+html.crm-mode body > :not(#crmRoot):not(script) { display: none !important; }\nhtml.crm-mode .dn-chat { display: none !important; }
 html.crm-mode body { background: #f4f6fa; }
 """
 crm_js = ler("crm/crm.js")
@@ -135,6 +136,7 @@ bloco_crm = (
     + script(ler("js/vendor/supabase-2.45.4.js").replace('throw new Error("Automatic publicPath is not supported in this browser")', 'e="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/"')) + "\n"
     + script(crm_js) + "\n"
     + script(ler("js/danova-globe.js")) + "\n"
+    + script(ler("js/danova-chat.js")) + "\n"
     + script(tracking) + "\n"
     + script(roteador) + "\n"
 )
