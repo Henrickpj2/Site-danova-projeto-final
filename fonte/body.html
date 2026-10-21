@@ -1,0 +1,306 @@
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>REAL ESTATE INTELLIGENCE · SUL DA FLÓRIDA · PT · EN · ES</span>
+      <span>Empreendimentos de Brickell a Palm Beach <a href="#empreendimentos">Explore os projetos ↗</a></span>
+    </div>
+  </div>
+
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="danova AI — início">
+        <img class="brand-logo" src="img/danova-logo.webp" alt="danova AI" width="144" height="48">
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
+        <a href="#inicio">Início</a>
+        <a href="#solucoes">Soluções</a>
+        <a href="#empreendimentos">Empreendimentos</a>
+        <a href="#parceiros">Seja parceiro</a>
+        <a href="#contato" class="btn btn-primary">Fale com a DANOVA <span>↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-grid-bg" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-content">
+          <div class="eyebrow">Real Estate Intelligence · América Latina → Flórida</div>
+          <h1>Grandes empreendimentos merecem uma <span>estratégia à altura.</span></h1>
+          <p class="hero-copy">A danova AI conecta investidores do Brasil e da América Latina aos melhores empreendimentos do Sul da Flórida — com inteligência de mercado e estruturação jurídica na mesma mesa.</p>
+          <div class="hero-actions">
+            <a href="#empreendimentos" class="btn btn-primary">Explorar empreendimentos <span>↗</span></a>
+            <a href="#parceiros" class="btn btn-outline">Quero ser parceiro</a>
+          </div>
+          <div class="hero-note">10 empreendimentos selecionados · Brickell a Palm Beach</div>
+        </div>
+
+        <div class="globe-wrap">
+          <div class="globe-stage" id="globeStage">
+            <div class="globe-glow" aria-hidden="true"></div>
+            <canvas id="globe" role="img" aria-label="Globo interativo com rotas de investidores até os empreendimentos no Sul da Flórida"></canvas>
+            <a class="spot-card" id="spotCard" href="#empreendimentos">
+              <img alt="" src="img/domus.webp">
+              <div class="spot-body"><small id="spotLoc">Brickell · Miami</small><strong id="spotName">Domus Brickell Park</strong><span id="spotPrice">a partir de US$ 650 mil</span></div>
+            </a>
+            <div class="route-feed" aria-live="polite"><b>Rotas de investimento</b><ul id="routeFeed"></ul></div>
+            <span class="drag-hint" id="dragHint">↔ arraste para girar</span>
+          </div>
+          <div class="origin-bar" role="group" aria-label="Escolha a cidade de origem do investidor" id="originBar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light" id="solucoes">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Uma nova forma de conectar o mercado</div>
+          <h2>Não basta divulgar imóveis. É preciso gerar oportunidades.</h2>
+          <p>Comprar ou vender imóvel de luxo no Sul da Flórida nunca é só sobre o imóvel. É sobre tudo que acontece em volta — imposto, banco, jurídico, design e logística. A DANOVA-AI integra esses elementos em uma jornada mais simples e orientada a negócios.</p>
+        </div>
+        <div class="value-grid">
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5M8 11l2 2 4-4"/></svg></div>
+            <h3>Marketing de performance</h3>
+            <p>Campanhas digitais segmentadas e marketing discreto para posicionar cada projeto diante de compradores internacionais pré-qualificados.</p>
+          </article>
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 14 8l5 2-5 2-2 5-2-5-5-2 5-2 2-5Z"/><path d="m19 15 1.2 2.8L23 19l-2.8 1.2L19 23l-1.2-2.8L15 19l2.8-1.2L19 15Z"/></svg></div>
+            <h3>Inteligência artificial</h3>
+            <p>Atendimento trilíngue com IA para qualificar leads de São Paulo a Buenos Aires — orçamento, perfil e forma de pagamento, inclusive cripto.</p>
+          </article>
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v7c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12v7c0 1.7 3.6 3 8 3s8-1.3 8-3v-7"/></svg></div>
+            <h3>Estruturação jurídica</h3>
+            <p>LLC, trust, FIRPTA, 1031 e EB-5 tratados na mesma mesa da negociação — advogada (NY Bar e OAB) e broker em um só processo.</p>
+          </article>
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <h3>Conexão imobiliária</h3>
+            <p>Relações construídas ao longo de uma década com incorporadores como Paramount, Meliá, Domus, Cipriani e 1428 Brickell. A lista por trás da lista.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split">
+        <div class="split-image">
+          <img src="img/continuum-pool.webp" alt="Piscina com vista para a Biscayne Bay — Continuum Club &amp; Residences, North Bay Village" loading="lazy">
+          <div class="image-tag"><strong>Do empreendimento à oportunidade</strong><span>Acesso pré-lançamento e prioridade de plantas antes da lista pública.</span></div>
+        </div>
+        <div>
+          <div class="section-head" style="margin-bottom:0">
+            <div class="eyebrow">Inteligência que movimenta negócios</div>
+            <h2>Mais clareza para apresentar. Mais estratégia para conectar.</h2>
+            <p>A DANOVA-AI organiza a divulgação de empreendimentos e facilita a conexão entre quem desenvolve projetos e quem busca oportunidades no Sul da Flórida — com atendimento em português, inglês e espanhol.</p>
+          </div>
+          <div class="check-list">
+            <div class="check-item"><span class="check">✓</span><div><strong>Apresentação profissional de projetos</strong><span>Plantas, tabelas de preço, cronogramas de pagamento e diferenciais de cada empreendimento.</span></div></div>
+            <div class="check-item"><span class="check">✓</span><div><strong>Captação estruturada de interessados</strong><span>Formulários direcionados com registro da origem de cada contato.</span></div></div>
+            <div class="check-item"><span class="check">✓</span><div><strong>Fechamento em três jurisdições</strong><span>Miami, Nova York ou Brasil — onde for melhor para o cliente, com pós-closing incluído.</span></div></div>
+          </div>
+          <a href="#contato" class="btn btn-primary">Conheça nossa proposta <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light" id="empreendimentos">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Vitrine imobiliária</div>
+          <h2>O próximo grande negócio começa com a oportunidade certa.</h2>
+          <p>Projetos e lançamentos selecionados no Sul da Flórida. Consulte as informações disponíveis e solicite plantas, tabela de preços e disponibilidade atualizada.</p>
+        </div>
+        <div class="filter-bar" role="group" aria-label="Filtrar empreendimentos">
+          <button class="filter-btn active" data-filter="todos">Todos</button>
+          <button class="filter-btn" data-filter="miami">Miami</button>
+          <button class="filter-btn" data-filter="florida">Outras regiões da Flórida</button>
+          <button class="filter-btn" data-filter="branded">Branded residences</button>
+          <button class="filter-btn" data-filter="pre">Pré-construção</button>
+        </div>
+        <div class="property-grid" id="propertyGrid">
+__CARDS__
+        </div>
+        <div class="empty-state" id="emptyState">Nenhum projeto corresponde a esse filtro. Selecione outra categoria.</div>
+        <p style="font-size:11px;color:var(--muted);margin-top:20px">Renderings ilustrativos fornecidos pelas incorporadoras. Preços, metragens, datas e disponibilidade são informados pelas incorporadoras e podem mudar sem aviso. Declarações verbais não podem ser consideradas declarações oficiais da incorporadora; consulte a brochura e os documentos exigidos pela Seção 718.503 dos Estatutos da Flórida. Esta página não é uma oferta de venda em jurisdições onde isso seja proibido.</p>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="parceiros">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Para quem quer crescer</div>
+          <h2>Um ecossistema. Diferentes oportunidades de crescimento.</h2>
+          <p>Uma abordagem para conectar quem desenvolve empreendimentos, quem comercializa imóveis e quem procura seu próximo investimento ou residência na Flórida.</p>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21V7l9-4 9 4v14M3 11h18M8 21v-6h8v6M8 7h.01M12 7h.01M16 7h.01"/></svg></div>
+            <h3>Construtoras e incorporadoras</h3>
+            <p>Amplie a presença dos seus empreendimentos junto a compradores do Brasil e da América Latina, com rede internacional e marketing discreto.</p>
+            <a href="#contato" data-interest="Construtora ou incorporadora">Apresentar um empreendimento ↗</a>
+          </article>
+          <article class="audience-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></div>
+            <h3>Corretores e imobiliárias</h3>
+            <p>Tem um cliente para Miami? Acesse projetos de pré-construção, materiais oficiais e suporte jurídico para fechar com segurança.</p>
+            <a href="#contato" data-interest="Corretor de imóveis">Quero ser parceiro ↗</a>
+          </article>
+          <article class="audience-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2M16 3.5a4 4 0 0 1 0 9"/></svg></div>
+            <h3>Investidores e compradores</h3>
+            <p>Moradia, renda, EB-5, family office ou compra com cripto (BTC, USDC, ETH): receba opções alinhadas ao seu objetivo e à estrutura certa.</p>
+            <a href="#contato" data-interest="Investidor ou comprador">Encontrar oportunidades ↗</a>
+          </article>
+        </div>
+        <div class="network-grid">
+          <div class="network-item"><small>01 · Legal</small><h4>Advogada in-house</h4><p>Direito imobiliário, estruturação cross-border, FIRPTA e sucessão.</p></div>
+          <div class="network-item"><small>02 · Brokerage</small><h4>Broker in-house</h4><p>Residencial, pré-construção, branded residences e comercial.</p></div>
+          <div class="network-item"><small>03 · Accounting</small><h4>Contadores e tributaristas</h4><p>ITIN, EIN, residência fiscal, 1031 exchanges e restituições FIRPTA.</p></div>
+          <div class="network-item"><small>04 · Banking</small><h4>Private banking</h4><p>Hipotecas para não-residentes, contas fiduciárias e estruturas multimoeda.</p></div>
+          <div class="network-item"><small>05 · Interior design</small><h4>Designers selecionados</h4><p>De pacotes rental-ready a projetos completos para residências privadas.</p></div>
+          <div class="network-item"><small>06 · Corporate</small><h4>Realocação de empresas</h4><p>Leasing comercial, moradia para equipe, E-2, L-1, EB-5 e formação de LLC.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Como funciona</div>
+          <h2>Da primeira chamada ao fechamento assinado.</h2>
+          <p>Quatro passos. Sem taxas surpresa. Sem prazos opacos.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><h3>Chamada privada</h3><p>30 minutos por WhatsApp ou Zoom. Você conta o que quer alcançar; dizemos se podemos ajudar — e, se não, quem pode.</p></div>
+          <div class="step"><h3>Estratégia escrita</h3><p>Em até uma semana: imóveis ou compradores-alvo, preço, timeline, estrutura jurídica, impacto fiscal e riscos.</p></div>
+          <div class="step"><h3>Estruturação e execução</h3><p>LLC ou trust, FIRPTA, contratos, título, financiamento (inclusive cripto) e inspeções. De 2 a 12 semanas.</p></div>
+          <div class="step"><h3>Assinado e além</h3><p>Fechamento em Miami, Nova York ou Brasil. Depois, property management, declarações fiscais e próximas transações.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light">
+      <div class="container">
+        <div class="cta-band">
+          <div class="cta-copy">
+            <div class="eyebrow">Vamos construir conexões</div>
+            <h2>Seu próximo empreendimento merece mais visibilidade.</h2>
+            <p>Apresente seu projeto, peça acesso pré-lançamento ou fale com a DANOVA-AI sobre oportunidades imobiliárias no Sul da Flórida.</p>
+          </div>
+          <a href="#contato" class="btn btn-primary">Iniciar uma conversa <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contato">
+      <div class="container contact-grid">
+        <div class="contact-intro">
+          <div class="eyebrow">Fale com a DANOVA-AI</div>
+          <h2>Vamos encontrar o próximo passo.</h2>
+          <p>Conte um pouco sobre o que você procura. A Danielle responde pessoalmente, em português, inglês ou espanhol.</p>
+          <div class="contact-detail">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg></div>
+            <div><strong>E-mail</strong><span><a href="mailto:danielle@danova-ai.com">danielle@danova-ai.com</a></span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></div>
+            <div><strong>WhatsApp · Telefone</strong><span><a href="https://wa.me/17863826782?text=Ol%C3%A1%20Danielle%2C%20gostaria%20de%20um%20contato" target="_blank" rel="noopener">+1 (786) 382-6782</a></span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></div>
+            <div><strong>Redes</strong><span><a href="https://www.instagram.com/danielle.lisboa.martins" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/in/danielle-lisboa-martins" target="_blank" rel="noopener">LinkedIn</a></span></div>
+          </div>
+        </div>
+
+        <form class="form-card" id="leadForm" novalidate>
+          <h3>Conte-nos sobre seu interesse</h3>
+          <p>Preencha os campos. Sua solicitação chega por e-mail à equipe e abre uma conversa no WhatsApp.</p>
+          <div class="hp" aria-hidden="true"><label for="website">Não preencha</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+          <input type="hidden" name="message" id="fullMessage">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Nome completo *</label>
+              <input id="name" name="name" autocomplete="name" placeholder="Seu nome" required>
+            </div>
+            <div class="field">
+              <label for="email">E-mail *</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+            </div>
+            <div class="field">
+              <label for="phone">WhatsApp com DDI *</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+55 11 99999-9999" required>
+            </div>
+            <div class="field">
+              <label for="profile">Qual é o seu perfil? *</label>
+              <select id="profile" name="profile" required>
+                <option value="">Selecione</option>
+                <option>Investidor ou comprador</option>
+                <option>Corretor de imóveis</option>
+                <option>Imobiliária</option>
+                <option>Construtora ou incorporadora</option>
+                <option>Family office</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="project">Empreendimento de interesse</label>
+              <select id="project" name="project">
+                <option value="">Ainda estou avaliando</option>
+__OPTIONS__
+                <option>Quero vender meu imóvel</option>
+                <option>Quero cadastrar um empreendimento</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="goal">Objetivo principal</label>
+              <select id="goal" name="goal">
+                <option value="">Selecione</option>
+                <option>Investimento / renda</option>
+                <option>Moradia</option>
+                <option>Investimento e moradia</option>
+                <option>Visto EB-5 / mudança para a Flórida</option>
+                <option>Compra com cripto</option>
+                <option>Parceria comercial</option>
+                <option>Divulgação de empreendimento</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="notes">Como podemos ajudar?</label>
+              <textarea id="notes" name="notes" placeholder="Orçamento, prazo, número de quartos, forma de pagamento…"></textarea>
+            </div>
+            <div class="field full">
+              <button type="submit" class="btn btn-primary" style="width:100%">Enviar solicitação ↗</button>
+              <div class="form-note">Ao enviar, você concorda em ser contatado por Danielle Lisboa Martins por telefone, e-mail e WhatsApp.</div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#inicio" aria-label="danova AI — início"><img class="brand-logo" src="img/danova-logo.webp" alt="danova AI" width="156" height="52" loading="lazy"></a>
+          <p>Inteligência imobiliária, marketing de performance e estruturação jurídica para conectar empreendimentos do Sul da Flórida a investidores internacionais.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col"><strong>Explorar</strong><a href="#inicio">Início</a><a href="#solucoes">Soluções</a><a href="#empreendimentos">Empreendimentos</a><a href="livro.html">Livro</a></div>
+          <div class="footer-col"><strong>Conectar</strong><a href="#parceiros">Seja parceiro</a><a href="#contato">Fale conosco</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="crm/">Área de membros</a></div>
+        </div>
+      </div>
+      <p class="legal-note">Danielle Lisboa Martins, Esq. · NY State Bar #10351218844 · FL Broker #3252283 · Executive Broker, Cervera Real Estate. We do business in accordance with the Federal Fair Housing Law.</p>
+      <div class="footer-bottom"><span>© <span id="year"></span> DANOVA AI™. Todos os direitos reservados.</span><span>Real Estate Intelligence · Miami · Palm Beach</span></div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/17863826782?text=Ol%C3%A1%20Danielle%2C%20gostaria%20de%20um%20contato" target="_blank" rel="noopener" aria-label="Falar com a DANOVA-AI pelo WhatsApp" title="WhatsApp DANOVA-AI">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M9 9c.5 2.4 2.6 4.5 5 5l1.2-1.2 2 .8c-.2 1.2-1 2-2.2 2.1-3.9-.4-7.1-3.6-7.5-7.5.1-1.2.9-2 2.1-2.2l.8 2L9 9Z"/></svg>
+  </a>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>

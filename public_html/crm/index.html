@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b1424">
+  <title>danova AI · Área de membros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="crm.css?v=20261021">
+</head>
+<body>
+  <!-- ===== Acesso ===== -->
+  <section class="auth" id="authScreen" hidden>
+    <div class="auth-card">
+      <img class="auth-logo" src="../img/danova-logo.webp" alt="danova AI">
+      <h1 id="authTitle">Área de membros</h1>
+      <p class="muted" id="authSub">Entre para acompanhar leads, corretores e o andamento de cada negociação.</p>
+
+      <form id="loginForm" class="stack">
+        <label>E-mail<input name="email" type="email" autocomplete="email" required></label>
+        <label>Senha<input name="senha" type="password" autocomplete="current-password" required minlength="6"></label>
+        <button class="btn primary" type="submit">Entrar</button>
+        <div class="auth-links"><a href="#" data-auth="cadastro">Sou corretor · solicitar acesso</a><a href="#" data-auth="recuperar">Esqueci a senha</a></div>
+      </form>
+
+      <form id="cadastroForm" class="stack" hidden>
+        <label>Nome completo<input name="nome" required autocomplete="name"></label>
+        <label>WhatsApp<input name="telefone" type="tel" autocomplete="tel" placeholder="+1 786 000-0000"></label>
+        <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+        <label>Senha (mínimo 8 caracteres)<input name="senha" type="password" required minlength="8" autocomplete="new-password"></label>
+        <button class="btn primary" type="submit">Solicitar acesso</button>
+        <p class="note">Seu acesso fica pendente até a aprovação de um administrador.</p>
+        <div class="auth-links"><a href="#" data-auth="login">← Voltar para o login</a></div>
+      </form>
+
+      <form id="recuperarForm" class="stack" hidden>
+        <label>E-mail da sua conta<input name="email" type="email" required autocomplete="email"></label>
+        <button class="btn primary" type="submit">Enviar link de nova senha</button>
+        <div class="auth-links"><a href="#" data-auth="login">← Voltar para o login</a></div>
+      </form>
+
+      <form id="novaSenhaForm" class="stack" hidden>
+        <label>Nova senha<input name="senha" type="password" required minlength="8" autocomplete="new-password"></label>
+        <button class="btn primary" type="submit">Salvar nova senha</button>
+      </form>
+
+      <div class="auth-msg" id="authMsg" role="status"></div>
+    </div>
+    <a class="back-site" href="../">← Voltar ao site</a>
+  </section>
+
+  <!-- ===== Aguardando aprovação ===== -->
+  <section class="auth" id="pendingScreen" hidden>
+    <div class="auth-card">
+      <img class="auth-logo" src="../img/danova-logo.webp" alt="danova AI">
+      <h1>Acesso em análise</h1>
+      <p class="muted">Recebemos seu cadastro, <strong id="pendingName"></strong>. Um administrador da danova AI vai liberar seu acesso em breve.</p>
+      <button class="btn ghost" data-action="sair">Sair</button>
+    </div>
+  </section>
+
+  <!-- ===== Aplicativo ===== -->
+  <div class="app" id="app" hidden>
+    <aside class="side" id="side">
+      <a class="side-logo" href="../"><img src="../img/danova-logo.webp" alt="danova AI"></a>
+      <nav class="side-nav">
+        <button data-view="painel" class="active"><span>◧</span>Painel</button>
+        <button data-view="funil"><span>▤</span>Funil</button>
+        <button data-view="leads"><span>☰</span>Leads</button>
+        <button data-view="corretores" data-admin><span>◉</span>Corretores</button>
+        <button data-view="conta"><span>⚙</span>Minha conta</button>
+      </nav>
+      <div class="side-user"><strong id="meNome"></strong><span id="mePapel"></span><button class="link" data-action="sair">Sair</button></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu" id="menuBtn" aria-label="Abrir menu">☰</button>
+        <h2 id="viewTitle">Painel</h2>
+        <div class="top-actions">
+          <input id="busca" type="search" placeholder="Buscar nome, e-mail, telefone…" aria-label="Buscar leads">
+          <button class="btn primary" data-action="novo-lead">+ Novo lead</button>
+        </div>
+      </header>
+
+      <div class="view" id="view-painel"></div>
+      <div class="view" id="view-funil" hidden></div>
+      <div class="view" id="view-leads" hidden></div>
+      <div class="view" id="view-corretores" hidden></div>
+      <div class="view" id="view-conta" hidden></div>
+    </main>
+  </div>
+
+  <!-- ===== Gaveta do lead ===== -->
+  <div class="drawer-bg" id="drawerBg" hidden></div>
+  <aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="Detalhes do lead"></aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="../js/vendor/supabase-2.45.4.js"></script>
+  <script src="../js/crm-config.js?v=20261021"></script>
+  <script src="crm.js?v=20261021"></script>
+</body>
+</html>

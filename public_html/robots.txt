@@ -1,0 +1,24 @@
+# robots.txt — danova-ai.com
+# Atualizado em 17/10/2026
+
+User-agent: *
+Allow: /
+Disallow: /cdn-cgi/
+Disallow: /api/
+# URLs com ?utm_ / ?gclid / ?fbclid NÃO são bloqueadas de propósito:
+# o canonical de cada página já consolida essas variações.
+
+# Buscadores de IA (mantidos liberados, como no site atual)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://danova-ai.com/sitemap.xml

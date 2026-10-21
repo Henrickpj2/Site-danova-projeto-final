@@ -1,0 +1,6 @@
+# /api/lead  ->  /api/lead.php  (mantém compatível com o código atual do site)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^lead/?$ lead.php [L,QSA]
+</IfModule>
+Header set X-Robots-Tag "noindex, nofollow"

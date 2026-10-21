@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1424">
+  <title>DANOVA-AI | Real Estate Intelligence · Miami</title>
+  <meta name="description" content="DANOVA-AI conecta empreendimentos de luxo no Sul da Flórida — Brickell, Miami River, Brickell Key, West Palm Beach — a investidores internacionais, com assessoria jurídica de Danielle Lisboa Martins, Esq.">
+  <link rel="canonical" href="https://danova-ai.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DANOVA-AI | Imóveis de luxo em Miami com assessoria jurídica">
+  <meta property="og:description" content="Branded residences, pré-construção, EB-5, family office e cripto. Atendimento em PT · EN · ES.">
+  <meta property="og:image" content="https://danova-ai.com/img/og-danova.jpg">
+  <meta property="og:url" content="https://danova-ai.com/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="img/danova-logo.webp">
+  <script src="js/danova-config.js?v=20261020"></script>
+  <script src="js/crm-config.js?v=20261021"></script>
+  <script src="js/danova-tracking.js?v=20261020" defer></script>
+  <style>
+    :root {
+      --navy: #0b1424;
+      --navy-2: #101f33;
+      --slate: #24364b;
+      --teal: #16b8a6;
+      --teal-dark: #0e8f83;
+      --ice: #f4f7fa;
+      --white: #fff;
+      --text: #172334;
+      --muted: #66758a;
+      --line: rgba(18, 35, 54, .12);
+      --shadow: 0 22px 70px rgba(8, 22, 39, .12);
+      --radius: 22px;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: "DM Sans", sans-serif; color: var(--text); background: var(--white); line-height: 1.6; }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .container { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
+    .topbar { background: #07101d; color: #d8e1ec; font-size: 12px; letter-spacing: .04em; }
+    .topbar-inner { min-height: 36px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .topbar a { color: var(--teal); }
+    header { position: sticky; top: 0; z-index: 50; background: rgba(11,20,36,.96); backdrop-filter: blur(14px); color: white; border-bottom: 1px solid rgba(255,255,255,.08); }
+    .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font: 800 24px/1 "Manrope", sans-serif; letter-spacing: -.06em; white-space: nowrap; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1.5px solid var(--teal); color: var(--teal); border-radius: 11px; font-size: 18px; letter-spacing: 0; }
+    .brand span:last-child em { color: var(--teal); font-style: normal; }
+    .nav-links { display: flex; align-items: center; gap: 28px; font-size: 13px; color: #d8e1ec; }
+    .nav-links a:hover { color: var(--teal); }
+    .btn { border: 0; border-radius: 999px; padding: 13px 20px; display: inline-flex; justify-content: center; align-items: center; gap: 9px; font-weight: 700; font-size: 13px; cursor: pointer; transition: transform .2s, background .2s, border-color .2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--teal); color: #06211f; }
+    .btn-primary:hover { background: #32d0bd; }
+    .btn-outline { border: 1px solid rgba(255,255,255,.3); color: white; background: transparent; }
+    .btn-outline-dark { border: 1px solid var(--line); color: var(--navy); background: white; }
+    .menu-toggle { display: none; background: transparent; color: white; border: 1px solid rgba(255,255,255,.25); border-radius: 10px; padding: 8px 11px; cursor: pointer; }
+    .eyebrow { color: var(--teal-dark); font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
+    .eyebrow::before { content: ""; width: 24px; height: 2px; background: currentColor; }
+    h1, h2, h3, h4 { font-family: "Manrope", sans-serif; letter-spacing: -.045em; line-height: 1.13; margin: 0; }
+    h1 { font-size: clamp(42px, 6vw, 76px); color: white; max-width: 760px; }
+    h2 { font-size: clamp(30px, 4vw, 48px); }
+    h3 { font-size: 21px; }
+    p { margin: 0; }
+    .hero { position: relative; min-height: 660px; color: white; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+    .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .hero-bg { background-image: linear-gradient(90deg, rgba(7,16,29,.94) 0%, rgba(7,16,29,.76) 48%, rgba(7,16,29,.2) 100%), linear-gradient(0deg, rgba(7,16,29,.55), transparent 45%), url("img/hero-miami.webp"); }
+    .hero-content { position: relative; z-index: 1; padding: 92px 0 104px; }
+    .hero .eyebrow { color: #62e0d1; margin-bottom: 24px; }
+    .hero h1 span { color: #63dfd0; }
+    .hero-copy { color: #d6e0eb; max-width: 600px; margin-top: 24px; font-size: 17px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+    .hero-note { display: flex; gap: 10px; align-items: center; color: #c4d0de; font-size: 12px; margin-top: 26px; }
+    .hero-note::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 5px rgba(22,184,166,.15); }
+    .hero-stat { position: absolute; right: max(20px, calc((100vw - var(--max))/2)); bottom: 42px; z-index: 2; background: rgba(11,20,36,.72); border: 1px solid rgba(255,255,255,.2); border-radius: 18px; padding: 20px 24px; width: 240px; backdrop-filter: blur(12px); }
+    .hero-stat strong { display: block; font: 700 15px "Manrope", sans-serif; }
+    .hero-stat small { color: #c4d0de; display: block; margin-top: 5px; font-size: 12px; }
+    .section { padding: 100px 0; }
+    .section-light { background: var(--ice); }
+    .section-dark { background: var(--navy); color: white; }
+    .section-head { max-width: 720px; margin-bottom: 42px; }
+    .section-head .eyebrow { margin-bottom: 18px; }
+    .section-head p { color: var(--muted); margin-top: 17px; max-width: 660px; }
+    .section-dark .section-head p { color: #c2ccda; }
+    .value-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .value-card { padding: 26px; background: white; border: 1px solid var(--line); border-radius: var(--radius); min-height: 220px; transition: transform .2s, box-shadow .2s; }
+    .value-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .icon-box { width: 48px; height: 48px; display: grid; place-items: center; background: rgba(22,184,166,.12); color: var(--teal-dark); border-radius: 15px; margin-bottom: 24px; }
+    .icon-box svg { width: 23px; height: 23px; }
+    .value-card p { color: var(--muted); font-size: 14px; margin-top: 11px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .split-image { min-height: 470px; border-radius: 28px; overflow: hidden; position: relative; background: #d8e1e8; }
+    .split-image img { width: 100%; height: 100%; min-height: 470px; object-fit: cover; }
+    .image-tag { position: absolute; bottom: 22px; left: 22px; right: 22px; background: rgba(11,20,36,.88); color: white; padding: 18px 20px; border-radius: 16px; backdrop-filter: blur(12px); }
+    .image-tag strong { display: block; font-family: "Manrope", sans-serif; }
+    .image-tag span { display: block; font-size: 12px; color: #cbd5e1; margin-top: 4px; }
+    .check-list { display: grid; gap: 17px; margin: 28px 0 32px; }
+    .check-item { display: flex; align-items: flex-start; gap: 12px; }
+    .check { flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(22,184,166,.15); color: var(--teal-dark); font-size: 13px; font-weight: 800; margin-top: 2px; }
+    .check-item strong { display: block; font-size: 14px; }
+    .check-item span { display: block; font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
+    .filter-btn { border: 1px solid var(--line); background: white; border-radius: 999px; padding: 10px 16px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--muted); }
+    .filter-btn.active, .filter-btn:hover { background: var(--navy); border-color: var(--navy); color: white; }
+    .property-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .property-card { background: white; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; box-shadow: 0 8px 28px rgba(8,22,39,.04); transition: transform .2s, box-shadow .2s; }
+    .property-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .property-image { height: 235px; position: relative; overflow: hidden; background: #dbe4ec; }
+    .property-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .property-card:hover .property-image img { transform: scale(1.04); }
+    .property-badge { position: absolute; top: 15px; left: 15px; background: rgba(11,20,36,.88); color: white; border-radius: 999px; padding: 7px 11px; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .property-body { padding: 23px; }
+    .location { color: var(--muted); font-size: 12px; display: flex; gap: 7px; align-items: center; margin-bottom: 10px; }
+    .location svg { width: 14px; height: 14px; color: var(--teal-dark); }
+    .property-body h3 { font-size: 20px; }
+    .property-body p { color: var(--muted); font-size: 13px; margin-top: 10px; min-height: 62px; }
+    .property-meta { display: flex; justify-content: space-between; gap: 12px; border-top: 1px solid var(--line); margin-top: 19px; padding-top: 16px; align-items: center; }
+    .property-meta span { font-size: 11px; color: var(--muted); }
+    .text-link { font-weight: 800; font-size: 12px; color: var(--teal-dark); display: inline-flex; gap: 7px; align-items: center; }
+    .text-link:hover { color: var(--navy); }
+    .empty-state { display: none; padding: 26px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); text-align: center; }
+    .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .audience-card { border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 28px; background: rgba(255,255,255,.035); }
+    .audience-card .icon-box { background: rgba(22,184,166,.15); color: #63dfd0; }
+    .audience-card p { color: #c2ccda; font-size: 14px; margin-top: 12px; }
+    .audience-card a { display: inline-block; color: #63dfd0; font-size: 12px; font-weight: 800; margin-top: 22px; }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: steps; }
+    .step { border-top: 1px solid var(--line); padding-top: 22px; counter-increment: steps; }
+    .step::before { content: "0" counter(steps); display: block; color: var(--teal-dark); font: 800 13px "Manrope", sans-serif; margin-bottom: 20px; }
+    .step p { color: var(--muted); font-size: 13px; margin-top: 10px; }
+    .cta-band { background: linear-gradient(115deg, #101f33, #0b1424 65%, #123b42); color: white; border-radius: 28px; padding: 54px; display: flex; align-items: center; justify-content: space-between; gap: 28px; position: relative; overflow: hidden; }
+    .cta-band::after { content: ""; position: absolute; width: 300px; height: 300px; border: 1px solid rgba(99,223,208,.22); border-radius: 50%; right: 12%; top: -190px; box-shadow: 0 0 0 35px rgba(99,223,208,.03), 0 0 0 70px rgba(99,223,208,.025); }
+    .cta-copy { position: relative; z-index: 1; max-width: 650px; }
+    .cta-copy .eyebrow { color: #63dfd0; margin-bottom: 16px; }
+    .cta-copy p { color: #c2ccda; margin-top: 14px; }
+    .cta-band .btn { position: relative; z-index: 1; flex-shrink: 0; }
+    .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items: start; }
+    .contact-intro p { color: var(--muted); margin-top: 17px; }
+    .contact-detail { display: flex; gap: 12px; margin-top: 26px; align-items: flex-start; }
+    .contact-detail .icon-box { flex: 0 0 44px; width: 44px; height: 44px; margin: 0; }
+    .contact-detail strong { display: block; font-size: 13px; }
+    .contact-detail span { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+    .form-card { padding: 30px; border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); background: white; }
+    .form-card h3 { margin-bottom: 7px; }
+    .form-card > p { color: var(--muted); font-size: 13px; margin-bottom: 23px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field { display: grid; gap: 7px; }
+    .field.full { grid-column: 1 / -1; }
+    label { font-size: 12px; font-weight: 700; }
+    input, select, textarea { width: 100%; padding: 13px 14px; border: 1px solid #d9e0e8; border-radius: 11px; background: #fbfcfd; color: var(--text); outline: none; font-size: 13px; }
+    input:focus, select:focus, textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(22,184,166,.12); }
+    textarea { min-height: 100px; resize: vertical; }
+    .form-note { color: var(--muted); font-size: 11px; margin-top: 12px; }
+    footer { background: #07101d; color: white; padding: 54px 0 24px; }
+    .footer-top { display: flex; justify-content: space-between; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.12); }
+    .footer-brand { max-width: 350px; }
+    .footer-brand p { color: #a9b7c8; font-size: 13px; margin-top: 17px; }
+    .footer-links { display: flex; gap: 54px; }
+    .footer-col strong { font-size: 12px; display: block; margin-bottom: 14px; }
+    .footer-col a { display: block; color: #a9b7c8; font-size: 12px; margin-top: 9px; }
+    .footer-col a:hover { color: var(--teal); }
+    .footer-bottom { padding-top: 20px; display: flex; justify-content: space-between; gap: 16px; color: #8291a4; font-size: 11px; }
+    .whatsapp-float { position: fixed; right: 22px; bottom: 22px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: #19b77a; color: white; box-shadow: 0 10px 28px rgba(0,0,0,.22); }
+    .whatsapp-float svg { width: 27px; height: 27px; }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); z-index: 100; background: var(--navy); color: white; padding: 14px 18px; border-radius: 12px; font-size: 13px; box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: .25s; max-width: calc(100% - 30px); }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    @media (max-width: 980px) {
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.btn) { font-size: 12px; }
+      .value-grid { grid-template-columns: repeat(2, 1fr); }
+      .property-grid { grid-template-columns: repeat(2, 1fr); }
+      .split { gap: 35px; }
+      .hero-stat { display: none; }
+      .steps { grid-template-columns: repeat(2, 1fr); row-gap: 30px; }
+      .contact-grid { gap: 35px; }
+    }
+    @media (max-width: 720px) {
+      .container { width: min(var(--max), calc(100% - 32px)); }
+      .topbar-inner { justify-content: center; text-align: center; }
+      .topbar-inner span:first-child { display: none; }
+      .nav { min-height: 70px; }
+      .brand { font-size: 22px; }
+      .menu-toggle { display: inline-flex; }
+      .nav-links { display: none; position: absolute; top: 70px; left: 0; right: 0; padding: 20px 24px 25px; background: var(--navy); flex-direction: column; align-items: stretch; gap: 17px; border-bottom: 1px solid rgba(255,255,255,.12); }
+      .nav-links.open { display: flex; }
+      .nav-links a:not(.btn) { font-size: 14px; }
+      .hero { min-height: 620px; }
+      .hero-bg { background-position: 58% center; }
+      .hero-content { padding: 76px 0 80px; }
+      .hero-copy { font-size: 15px; }
+      .section { padding: 72px 0; }
+      .value-grid, .property-grid, .audience-grid, .split, .contact-grid { grid-template-columns: 1fr; }
+      .value-card { min-height: auto; }
+      .split-image, .split-image img { min-height: 340px; }
+      .property-image { height: 230px; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .cta-band { padding: 34px 25px; flex-direction: column; align-items: flex-start; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+      .footer-top, .footer-bottom { flex-direction: column; }
+      .footer-links { gap: 35px; flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+  
+    /* ---- Adições: dados reais do site DANOVA ---- */
+    .brand-sub { display: block; font: 600 10px/1.2 "DM Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #8fa0b5; margin-top: 4px; }
+    .property-body h3 { font-size: 19px; }
+    .property-body p { min-height: 0; }
+    .facts { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 6px; }
+    .facts li { font-size: 12px; color: var(--text); display: flex; gap: 8px; }
+    .facts li::before { content: "✓"; color: var(--teal-dark); font-weight: 800; }
+    .property-meta .price { font: 800 17px "Manrope", sans-serif; color: var(--navy); letter-spacing: -.02em; }
+    .price small { display: block; font: 600 10px "DM Sans", sans-serif; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 46px; }
+    .stat { border-top: 2px solid var(--teal); padding-top: 16px; }
+    .stat strong { display: block; font: 800 34px/1 "Manrope", sans-serif; letter-spacing: -.04em; color: var(--navy); }
+    .stat span { display: block; font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .about-photo { min-height: 560px; }
+    .about-photo img { min-height: 560px; object-position: center 20%; }
+    .creds { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; }
+    .creds span { font-size: 11px; font-weight: 700; padding: 7px 12px; border-radius: 999px; background: rgba(22,184,166,.1); color: var(--teal-dark); }
+    .book { display: flex; gap: 18px; align-items: center; margin-top: 30px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; }
+    .book img { width: 64px; border-radius: 6px; box-shadow: 0 8px 18px rgba(8,22,39,.18); }
+    .book strong { display: block; font-size: 14px; }
+    .book span { display: block; font-size: 12px; color: var(--muted); margin-top: 3px; }
+    .book a { color: var(--teal-dark); font-weight: 800; font-size: 12px; display: inline-block; margin-top: 6px; }
+    .network-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 42px; }
+    .network-item { padding: 22px; border-radius: 18px; border: 1px solid rgba(255,255,255,.12); }
+    .network-item small { color: #63dfd0; font-weight: 800; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+    .network-item h4 { font-size: 17px; margin-top: 8px; }
+    .network-item p { color: #c2ccda; font-size: 13px; margin-top: 8px; }
+    .legal-note { color: #8291a4; font-size: 11px; margin-top: 18px; max-width: 900px; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    @media (max-width: 980px) { .stats { grid-template-columns: repeat(2, 1fr); row-gap: 26px; } .network-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 720px) { .network-grid { grid-template-columns: 1fr; } .about-photo, .about-photo img { min-height: 420px; } .stat strong { font-size: 28px; } }
+    /* ---- Logo ---- */
+    .brand-logo { height: 44px; width: auto; display: block; }
+    footer .brand-logo { height: 48px; }
+    /* ---- Hero com globo ---- */
+    :root { --hot: #ec3d8f; --hot-soft: rgba(236,61,143,.18); --violet: #6b3fd4; --sky: #3ec5f0; }
+    .hero { min-height: 720px; background: radial-gradient(900px 600px at 78% 45%, rgba(107,63,212,.28), transparent 65%), radial-gradient(600px 420px at 85% 70%, rgba(236,61,143,.16), transparent 70%), #080f1d; }
+    .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse at 65% 50%, #000 30%, transparent 78%); -webkit-mask-image: radial-gradient(ellipse at 65% 50%, #000 30%, transparent 78%); }
+    .hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.05fr; gap: 30px; align-items: center; }
+    .hero-content { padding: 80px 0; }
+    .hero h1 { font-size: clamp(40px, 5vw, 66px); }
+    .hero h1 span { background: linear-gradient(90deg, #63dfd0, var(--sky) 40%, #b48cff 75%, var(--hot)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .globe-wrap { justify-self: end; width: 100%; max-width: 600px; }
+    .globe-stage { position: relative; width: 100%; aspect-ratio: 1 / 1; touch-action: pan-y; cursor: grab; user-select: none; }
+    .globe-stage.dragging { cursor: grabbing; }
+    .globe-glow { position: absolute; inset: 10%; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(107,63,212,.22), transparent 70%); box-shadow: 0 0 140px 10px rgba(62,197,240,.10), 0 0 90px rgba(236,61,143,.14); animation: breathe 7s ease-in-out infinite; }
+    @keyframes breathe { 50% { transform: scale(1.04); opacity: .75; } }
+    #globe { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .spot-card { position: absolute; left: 0; top: 0; width: 248px; display: flex; gap: 10px; align-items: center; padding: 8px; border-radius: 16px; color: white; background: linear-gradient(rgba(10,14,28,.92), rgba(10,14,28,.92)) padding-box, linear-gradient(120deg, #3ec5f0, #6b3fd4 45%, #ec3d8f 75%, #f7a24a) border-box; border: 1.5px solid transparent; box-shadow: 0 20px 44px rgba(0,0,0,.45); opacity: 0; transform: scale(.92); transition: opacity .4s, transform .4s; pointer-events: none; will-change: left, top; }
+    .spot-card.show { opacity: 1; transform: scale(1); pointer-events: auto; }
+    .spot-card img { width: 66px; height: 66px; object-fit: cover; border-radius: 11px; flex: 0 0 66px; }
+    .spot-body small { display: block; font: 700 10px/1.2 "DM Sans", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #8fd9ff; }
+    .spot-body strong { display: block; font: 800 14px/1.2 "Manrope", sans-serif; margin-top: 3px; }
+    .spot-body span { display: block; font-size: 12px; color: #ffb36b; margin-top: 4px; font-weight: 700; }
+    .route-feed { position: absolute; left: 0; bottom: 2%; width: 236px; padding: 12px 14px; border-radius: 14px; background: rgba(10,14,28,.78); border: 1px solid rgba(255,255,255,.1); backdrop-filter: blur(8px); color: white; pointer-events: none; }
+    .route-feed b { display: block; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #a9b7c8; margin-bottom: 6px; }
+    .route-feed ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 5px; }
+    .route-feed li { font-size: 12px; display: flex; gap: 7px; align-items: baseline; animation: feedIn .5s ease both; }
+    .route-feed li:not(:first-child) { opacity: .5; }
+    .route-feed li i { font-style: normal; color: #ec3d8f; }
+    @keyframes feedIn { from { opacity: 0; transform: translateY(-6px); } }
+    .drag-hint { position: absolute; right: 4%; bottom: 3%; font-size: 11px; color: #8fa0b5; letter-spacing: .04em; transition: opacity .6s; }
+    .origin-bar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 6px; }
+    .origin-btn { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.04); color: #d6e0eb; border-radius: 999px; padding: 7px 12px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; gap: 7px; align-items: center; transition: background .2s, border-color .2s, color .2s; }
+    .origin-btn i { width: 7px; height: 7px; border-radius: 50%; background: #6b7a90; }
+    .origin-btn:hover { border-color: rgba(255,255,255,.4); color: white; }
+    .origin-btn.active { color: white; border-color: transparent; background: linear-gradient(120deg, rgba(62,197,240,.3), rgba(107,63,212,.4), rgba(236,61,143,.4)); }
+    .origin-btn.active i { background: #ec3d8f; box-shadow: 0 0 0 4px rgba(236,61,143,.2); }
+    @media (max-width: 980px) {
+      .hero-layout { grid-template-columns: 1fr; gap: 0; }
+      .hero-content { padding: 64px 0 10px; }
+      .globe-wrap { justify-self: center; max-width: 540px; margin-bottom: 48px; }
+    }
+    @media (max-width: 720px) {
+      .brand-logo { height: 36px; }
+      .hero { min-height: 0; }
+      .spot-card { width: 178px; padding: 6px; gap: 8px; }
+      .spot-card img { width: 50px; height: 50px; flex-basis: 50px; }
+      .spot-body strong { font-size: 12px; }
+      .route-feed { display: none; }
+      .route-feed li { font-size: 11px; }
+      .drag-hint { display: none; }
+      .origin-btn { padding: 6px 10px; font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>REAL ESTATE INTELLIGENCE · SUL DA FLÓRIDA · PT · EN · ES</span>
+      <span>Empreendimentos de Brickell a Palm Beach <a href="#empreendimentos">Explore os projetos ↗</a></span>
+    </div>
+  </div>
+
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="danova AI — início">
+        <img class="brand-logo" src="img/danova-logo.webp" alt="danova AI" width="144" height="48">
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
+        <a href="#inicio">Início</a>
+        <a href="#solucoes">Soluções</a>
+        <a href="#empreendimentos">Empreendimentos</a>
+        <a href="#parceiros">Seja parceiro</a>
+        <a href="#contato" class="btn btn-primary">Fale com a DANOVA <span>↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-grid-bg" aria-hidden="true"></div>
+      <div class="container hero-layout">
+        <div class="hero-content">
+          <div class="eyebrow">Real Estate Intelligence · América Latina → Flórida</div>
+          <h1>Grandes empreendimentos merecem uma <span>estratégia à altura.</span></h1>
+          <p class="hero-copy">A danova AI conecta investidores do Brasil e da América Latina aos melhores empreendimentos do Sul da Flórida — com inteligência de mercado e estruturação jurídica na mesma mesa.</p>
+          <div class="hero-actions">
+            <a href="#empreendimentos" class="btn btn-primary">Explorar empreendimentos <span>↗</span></a>
+            <a href="#parceiros" class="btn btn-outline">Quero ser parceiro</a>
+          </div>
+          <div class="hero-note">10 empreendimentos selecionados · Brickell a Palm Beach</div>
+        </div>
+
+        <div class="globe-wrap">
+          <div class="globe-stage" id="globeStage">
+            <div class="globe-glow" aria-hidden="true"></div>
+            <canvas id="globe" role="img" aria-label="Globo interativo com rotas de investidores até os empreendimentos no Sul da Flórida"></canvas>
+            <a class="spot-card" id="spotCard" href="#empreendimentos">
+              <img alt="" src="img/domus.webp">
+              <div class="spot-body"><small id="spotLoc">Brickell · Miami</small><strong id="spotName">Domus Brickell Park</strong><span id="spotPrice">a partir de US$ 650 mil</span></div>
+            </a>
+            <div class="route-feed" aria-live="polite"><b>Rotas de investimento</b><ul id="routeFeed"></ul></div>
+            <span class="drag-hint" id="dragHint">↔ arraste para girar</span>
+          </div>
+          <div class="origin-bar" role="group" aria-label="Escolha a cidade de origem do investidor" id="originBar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light" id="solucoes">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Uma nova forma de conectar o mercado</div>
+          <h2>Não basta divulgar imóveis. É preciso gerar oportunidades.</h2>
+          <p>Comprar ou vender imóvel de luxo no Sul da Flórida nunca é só sobre o imóvel. É sobre tudo que acontece em volta — imposto, banco, jurídico, design e logística. A DANOVA-AI integra esses elementos em uma jornada mais simples e orientada a negócios.</p>
+        </div>
+        <div class="value-grid">
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5M8 11l2 2 4-4"/></svg></div>
+            <h3>Marketing de performance</h3>
+            <p>Campanhas digitais segmentadas e marketing discreto para posicionar cada projeto diante de compradores internacionais pré-qualificados.</p>
+          </article>
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 14 8l5 2-5 2-2 5-2-5-5-2 5-2 2-5Z"/><path d="m19 15 1.2 2.8L23 19l-2.8 1.2L19 23l-1.2-2.8L15 19l2.8-1.2L19 15Z"/></svg></div>
+            <h3>Inteligência artificial</h3>
+            <p>Atendimento trilíngue com IA para qualificar leads de São Paulo a Buenos Aires — orçamento, perfil e forma de pagamento, inclusive cripto.</p>
+          </article>
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v7c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12v7c0 1.7 3.6 3 8 3s8-1.3 8-3v-7"/></svg></div>
+            <h3>Estruturação jurídica</h3>
+            <p>LLC, trust, FIRPTA, 1031 e EB-5 tratados na mesma mesa da negociação — advogada (NY Bar e OAB) e broker em um só processo.</p>
+          </article>
+          <article class="value-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <h3>Conexão imobiliária</h3>
+            <p>Relações construídas ao longo de uma década com incorporadores como Paramount, Meliá, Domus, Cipriani e 1428 Brickell. A lista por trás da lista.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container split">
+        <div class="split-image">
+          <img src="img/continuum-pool.webp" alt="Piscina com vista para a Biscayne Bay — Continuum Club &amp; Residences, North Bay Village" loading="lazy">
+          <div class="image-tag"><strong>Do empreendimento à oportunidade</strong><span>Acesso pré-lançamento e prioridade de plantas antes da lista pública.</span></div>
+        </div>
+        <div>
+          <div class="section-head" style="margin-bottom:0">
+            <div class="eyebrow">Inteligência que movimenta negócios</div>
+            <h2>Mais clareza para apresentar. Mais estratégia para conectar.</h2>
+            <p>A DANOVA-AI organiza a divulgação de empreendimentos e facilita a conexão entre quem desenvolve projetos e quem busca oportunidades no Sul da Flórida — com atendimento em português, inglês e espanhol.</p>
+          </div>
+          <div class="check-list">
+            <div class="check-item"><span class="check">✓</span><div><strong>Apresentação profissional de projetos</strong><span>Plantas, tabelas de preço, cronogramas de pagamento e diferenciais de cada empreendimento.</span></div></div>
+            <div class="check-item"><span class="check">✓</span><div><strong>Captação estruturada de interessados</strong><span>Formulários direcionados com registro da origem de cada contato.</span></div></div>
+            <div class="check-item"><span class="check">✓</span><div><strong>Fechamento em três jurisdições</strong><span>Miami, Nova York ou Brasil — onde for melhor para o cliente, com pós-closing incluído.</span></div></div>
+          </div>
+          <a href="#contato" class="btn btn-primary">Conheça nossa proposta <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light" id="empreendimentos">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Vitrine imobiliária</div>
+          <h2>O próximo grande negócio começa com a oportunidade certa.</h2>
+          <p>Projetos e lançamentos selecionados no Sul da Flórida. Consulte as informações disponíveis e solicite plantas, tabela de preços e disponibilidade atualizada.</p>
+        </div>
+        <div class="filter-bar" role="group" aria-label="Filtrar empreendimentos">
+          <button class="filter-btn active" data-filter="todos">Todos</button>
+          <button class="filter-btn" data-filter="miami">Miami</button>
+          <button class="filter-btn" data-filter="florida">Outras regiões da Flórida</button>
+          <button class="filter-btn" data-filter="branded">Branded residences</button>
+          <button class="filter-btn" data-filter="pre">Pré-construção</button>
+        </div>
+        <div class="property-grid" id="propertyGrid">
+          <article class="property-card" data-tags="miami pre">
+            <div class="property-image">
+              <img src="img/domus.webp" alt="Domus Brickell Park — 1611 SW 2nd Ave · Brickell, Miami" loading="lazy">
+              <span class="property-badge">Pré-construção · mobiliado</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> 1611 SW 2nd Ave · Brickell, Miami</div>
+              <h3>Domus Brickell Park</h3>
+              <p>171 apartamentos totalmente mobiliados no coração do distrito financeiro de Brickell, com varanda privativa em todas as unidades.</p>
+              <ul class="facts"><li>Studios a 2 quartos · 330 a 975 pés²</li><li>North Development · Zyscovich Architects</li><li>Rooftop com vista para a Biscayne Bay</li></ul>
+              <div class="property-meta"><span class="price"><small>a partir de</small>US$ 650 mil</span><a class="text-link" href="#contato" data-project="Domus Brickell Park">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">Entrega final de 2026</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="miami branded pre">
+            <div class="property-image">
+              <img src="img/melia.webp" alt="Meliá Brickell — 1120 SW 3rd Ave · Brickell, Miami" loading="lazy">
+              <span class="property-badge">1º Meliá residencial nos EUA</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> 1120 SW 3rd Ave · Brickell, Miami</div>
+              <h3>Meliá Brickell</h3>
+              <p>Condo-hotel com gestão Meliá: sem inquilinos para buscar, sem manutenção, com distribuição global da rede hoteleira.</p>
+              <ul class="facts"><li>110 unidades · 8 andares</li><li>Mobiliado por Adriana Hoyos · LEED Silver</li><li>20% na assinatura · 60% no fechamento</li></ul>
+              <div class="property-meta"><span class="price"><small>a partir de</small>US$ 500 mil</span><a class="text-link" href="#contato" data-project="Meliá Brickell">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">Entrega 2027</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="miami pre">
+            <div class="property-image">
+              <img src="img/1428-brickell.webp" alt="The Residences at 1428 Brickell — 1428 Brickell Ave · Miami" loading="lazy">
+              <span class="property-badge">Ultra-luxo</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> 1428 Brickell Ave · Miami</div>
+              <h3>The Residences at 1428 Brickell</h3>
+              <p>195 residências em 70 andares com interiores de Antonio Citterio — apresentada como a primeira torre residencial solar do mundo.</p>
+              <ul class="facts"><li>Arquitectonica · ACPV · YTech</li><li>80 mil pés² de amenidades</li><li>Coberturas até US$ 14,4 milhões</li></ul>
+              <div class="property-meta"><span class="price"><small>2 quartos a partir de</small>US$ 2,9 mi</span><a class="text-link" href="#contato" data-project="The Residences at 1428 Brickell">Solicitar plantas ↗</a></div>
+              
+            </div>
+          </article>
+          <article class="property-card" data-tags="miami branded pre">
+            <div class="property-image">
+              <img src="img/casabella.webp" alt="Casa Bella Residences by B&amp;B Italia — 1400 Biscayne Blvd · Downtown Miami" loading="lazy">
+              <span class="property-badge">Branded residence</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> 1400 Biscayne Blvd · Downtown Miami</div>
+              <h3>Casa Bella Residences by B&amp;B Italia</h3>
+              <p>57 andares do Related Group com arquitetura e interiores de Piero Lissoni e peças curadas da coleção B&amp;B Italia em cada residência.</p>
+              <ul class="facts"><li>302 residências</li><li>Observatório no 60º andar</li><li>Aceita reservas em Bitcoin e USDT</li></ul>
+              <div class="property-meta"><span class="price"><small>a partir de</small>US$ 1,5 mi</span><a class="text-link" href="#contato" data-project="Casa Bella Residences by B&amp;B Italia">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">Entrega 2027</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="miami branded">
+            <div class="property-image">
+              <img src="img/nobu-brickell.webp" alt="Nobu Residences Brickell — 619 Brickell · Bayfront, Miami" loading="lazy">
+              <span class="property-badge">Branded · em vendas</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> 619 Brickell · Bayfront, Miami</div>
+              <h3>Nobu Residences Brickell</h3>
+              <p>A primeira torre residencial Nobu em Miami: 75 andares assinados por Foster + Partners, de frente para a Biscayne Bay.</p>
+              <ul class="facts"><li>Restaurante Nobu privado</li><li>Nobu Beach Club no rooftop</li><li>Chef in-residence e butler 24/7</li></ul>
+              <div class="property-meta"><span class="price"><small>a partir de</small>US$ 2,1 mi</span><a class="text-link" href="#contato" data-project="Nobu Residences Brickell">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">Em vendas</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="miami branded pre">
+            <div class="property-image">
+              <img src="img/faena.webp" alt="Faena Residences Miami — Miami River · Miami" loading="lazy">
+              <span class="property-badge">Branded · pré-construção</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> Miami River · Miami</div>
+              <h3>Faena Residences Miami</h3>
+              <p>Duas torres unidas por uma Sky Bridge a 700 pés de altura, num distrito cultural de 14 acres — uma das obras finais de Rafael Viñoly.</p>
+              <ul class="facts"><li>406 residências · 716 a 6.301 pés²</li><li>Clube privado Faena Bloom, sem taxa anual</li><li>Dock privativo e iate Faena</li></ul>
+              <div class="property-meta"><span class="price"><small>a partir de</small>US$ 1,3 mi</span><a class="text-link" href="#contato" data-project="Faena Residences Miami">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">Pré-construção</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="miami pre">
+            <div class="property-image">
+              <img src="img/continuum.webp" alt="Continuum Club &amp; Residences — 1755 79th St Causeway · North Bay Village" loading="lazy">
+              <span class="property-badge">Waterfront · em construção</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> 1755 79th St Causeway · North Bay Village</div>
+              <h3>Continuum Club &amp; Residences</h3>
+              <p>236 residências com vista para a água em todas as unidades, entre Miami Beach e o continente. Yacht Club e Beach Club privados.</p>
+              <ul class="facts"><li>1 a 4 quartos · 850 a 4.000 pés²</li><li>60 mil+ pés² de amenidades</li><li>40% durante a obra · 60% na entrega</li></ul>
+              <div class="property-meta"><span class="price"><small>a partir de</small>US$ 1,4 mi</span><a class="text-link" href="#contato" data-project="Continuum Club &amp; Residences">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">Entrega prevista 2º tri 2028</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="miami branded">
+            <div class="property-image">
+              <img src="img/mandarin-miami.webp" alt="The Residences at Mandarin Oriental, Miami — One Island Drive · Brickell Key, Miami" loading="lazy">
+              <span class="property-badge">Branded · em construção</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> One Island Drive · Brickell Key, Miami</div>
+              <h3>The Residences at Mandarin Oriental, Miami</h3>
+              <p>Duas torres da Swire Properties com o novo hotel Mandarin Oriental, numa ilha privada a 5 minutos de Brickell. Arquitetura KPF.</p>
+              <ul class="facts"><li>326 residências em 2 torres</li><li>100 mil pés² de amenidades</li><li>Mais de US$ 1,3 bilhão em vendas</li></ul>
+              <div class="property-meta"><span class="price"><small>a partir de</small>US$ 3,9 mi</span><a class="text-link" href="#contato" data-project="The Residences at Mandarin Oriental, Miami">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">North Tower · conclusão 2030</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="florida branded">
+            <div class="property-image">
+              <img src="img/mandarin-wpb.webp" alt="Mandarin Oriental Residences West Palm Beach — West Palm Beach · Flórida" loading="lazy">
+              <span class="property-badge">Branded · em vendas</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> West Palm Beach · Flórida</div>
+              <h3>Mandarin Oriental Residences West Palm Beach</h3>
+              <p>Residências Mandarin Oriental por Safdie Architects na “Wall Street do Sul”, onde já estão Goldman Sachs, Citadel e Vista Equity.</p>
+              <ul class="facts"><li>Spa Mandarin e restaurante de assinatura</li><li>Butler 24/7 e concierge global</li><li>Quem compra primeiro escolhe andares e vistas</li></ul>
+              <div class="property-meta"><span class="price"><small>preço</small>Sob consulta</span><a class="text-link" href="#contato" data-project="Mandarin Oriental Residences West Palm Beach">Solicitar plantas ↗</a></div>
+              <span style="display:block;font-size:11px;color:var(--muted);margin-top:8px">Vendas abertas</span>
+            </div>
+          </article>
+          <article class="property-card" data-tags="florida">
+            <div class="property-image">
+              <img src="img/turnberry.webp" alt="Estates by Turnberry — Davie, FL · leste de Weston" loading="lazy">
+              <span class="property-badge">Casas · comunidade fechada</span>
+            </div>
+            <div class="property-body">
+              <div class="location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg> Davie, FL · leste de Weston</div>
+              <h3>Estates by Turnberry</h3>
+              <p>Comunidade fechada de casas de luxo com segurança 24h e escolas de ponta próximas — ideal para famílias internacionais.</p>
+              <ul class="facts"><li>151 casas single-family · até 5.950 pés²</li><li>Lotes de 20 a 26 mil pés²</li><li>Clubhouse, trilhas equestres e 60+ acres verdes</li></ul>
+              <div class="property-meta"><span class="price"><small>Casas a partir de</small>US$ 1,7 mi</span><a class="text-link" href="#contato" data-project="Estates by Turnberry">Solicitar plantas ↗</a></div>
+              
+            </div>
+          </article>
+        </div>
+        <div class="empty-state" id="emptyState">Nenhum projeto corresponde a esse filtro. Selecione outra categoria.</div>
+        <p style="font-size:11px;color:var(--muted);margin-top:20px">Renderings ilustrativos fornecidos pelas incorporadoras. Preços, metragens, datas e disponibilidade são informados pelas incorporadoras e podem mudar sem aviso. Declarações verbais não podem ser consideradas declarações oficiais da incorporadora; consulte a brochura e os documentos exigidos pela Seção 718.503 dos Estatutos da Flórida. Esta página não é uma oferta de venda em jurisdições onde isso seja proibido.</p>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="parceiros">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Para quem quer crescer</div>
+          <h2>Um ecossistema. Diferentes oportunidades de crescimento.</h2>
+          <p>Uma abordagem para conectar quem desenvolve empreendimentos, quem comercializa imóveis e quem procura seu próximo investimento ou residência na Flórida.</p>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21V7l9-4 9 4v14M3 11h18M8 21v-6h8v6M8 7h.01M12 7h.01M16 7h.01"/></svg></div>
+            <h3>Construtoras e incorporadoras</h3>
+            <p>Amplie a presença dos seus empreendimentos junto a compradores do Brasil e da América Latina, com rede internacional e marketing discreto.</p>
+            <a href="#contato" data-interest="Construtora ou incorporadora">Apresentar um empreendimento ↗</a>
+          </article>
+          <article class="audience-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></div>
+            <h3>Corretores e imobiliárias</h3>
+            <p>Tem um cliente para Miami? Acesse projetos de pré-construção, materiais oficiais e suporte jurídico para fechar com segurança.</p>
+            <a href="#contato" data-interest="Corretor de imóveis">Quero ser parceiro ↗</a>
+          </article>
+          <article class="audience-card">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2M16 3.5a4 4 0 0 1 0 9"/></svg></div>
+            <h3>Investidores e compradores</h3>
+            <p>Moradia, renda, EB-5, family office ou compra com cripto (BTC, USDC, ETH): receba opções alinhadas ao seu objetivo e à estrutura certa.</p>
+            <a href="#contato" data-interest="Investidor ou comprador">Encontrar oportunidades ↗</a>
+          </article>
+        </div>
+        <div class="network-grid">
+          <div class="network-item"><small>01 · Legal</small><h4>Advogada in-house</h4><p>Direito imobiliário, estruturação cross-border, FIRPTA e sucessão.</p></div>
+          <div class="network-item"><small>02 · Brokerage</small><h4>Broker in-house</h4><p>Residencial, pré-construção, branded residences e comercial.</p></div>
+          <div class="network-item"><small>03 · Accounting</small><h4>Contadores e tributaristas</h4><p>ITIN, EIN, residência fiscal, 1031 exchanges e restituições FIRPTA.</p></div>
+          <div class="network-item"><small>04 · Banking</small><h4>Private banking</h4><p>Hipotecas para não-residentes, contas fiduciárias e estruturas multimoeda.</p></div>
+          <div class="network-item"><small>05 · Interior design</small><h4>Designers selecionados</h4><p>De pacotes rental-ready a projetos completos para residências privadas.</p></div>
+          <div class="network-item"><small>06 · Corporate</small><h4>Realocação de empresas</h4><p>Leasing comercial, moradia para equipe, E-2, L-1, EB-5 e formação de LLC.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Como funciona</div>
+          <h2>Da primeira chamada ao fechamento assinado.</h2>
+          <p>Quatro passos. Sem taxas surpresa. Sem prazos opacos.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><h3>Chamada privada</h3><p>30 minutos por WhatsApp ou Zoom. Você conta o que quer alcançar; dizemos se podemos ajudar — e, se não, quem pode.</p></div>
+          <div class="step"><h3>Estratégia escrita</h3><p>Em até uma semana: imóveis ou compradores-alvo, preço, timeline, estrutura jurídica, impacto fiscal e riscos.</p></div>
+          <div class="step"><h3>Estruturação e execução</h3><p>LLC ou trust, FIRPTA, contratos, título, financiamento (inclusive cripto) e inspeções. De 2 a 12 semanas.</p></div>
+          <div class="step"><h3>Assinado e além</h3><p>Fechamento em Miami, Nova York ou Brasil. Depois, property management, declarações fiscais e próximas transações.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light">
+      <div class="container">
+        <div class="cta-band">
+          <div class="cta-copy">
+            <div class="eyebrow">Vamos construir conexões</div>
+            <h2>Seu próximo empreendimento merece mais visibilidade.</h2>
+            <p>Apresente seu projeto, peça acesso pré-lançamento ou fale com a DANOVA-AI sobre oportunidades imobiliárias no Sul da Flórida.</p>
+          </div>
+          <a href="#contato" class="btn btn-primary">Iniciar uma conversa <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contato">
+      <div class="container contact-grid">
+        <div class="contact-intro">
+          <div class="eyebrow">Fale com a DANOVA-AI</div>
+          <h2>Vamos encontrar o próximo passo.</h2>
+          <p>Conte um pouco sobre o que você procura. A Danielle responde pessoalmente, em português, inglês ou espanhol.</p>
+          <div class="contact-detail">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg></div>
+            <div><strong>E-mail</strong><span><a href="mailto:danielle@danova-ai.com">danielle@danova-ai.com</a></span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></div>
+            <div><strong>WhatsApp · Telefone</strong><span><a href="https://wa.me/17863826782?text=Ol%C3%A1%20Danielle%2C%20gostaria%20de%20um%20contato" target="_blank" rel="noopener">+1 (786) 382-6782</a></span></div>
+          </div>
+          <div class="contact-detail">
+            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></div>
+            <div><strong>Redes</strong><span><a href="https://www.instagram.com/danielle.lisboa.martins" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/in/danielle-lisboa-martins" target="_blank" rel="noopener">LinkedIn</a></span></div>
+          </div>
+        </div>
+
+        <form class="form-card" id="leadForm" novalidate>
+          <h3>Conte-nos sobre seu interesse</h3>
+          <p>Preencha os campos. Sua solicitação chega por e-mail à equipe e abre uma conversa no WhatsApp.</p>
+          <div class="hp" aria-hidden="true"><label for="website">Não preencha</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+          <input type="hidden" name="message" id="fullMessage">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Nome completo *</label>
+              <input id="name" name="name" autocomplete="name" placeholder="Seu nome" required>
+            </div>
+            <div class="field">
+              <label for="email">E-mail *</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
+            </div>
+            <div class="field">
+              <label for="phone">WhatsApp com DDI *</label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+55 11 99999-9999" required>
+            </div>
+            <div class="field">
+              <label for="profile">Qual é o seu perfil? *</label>
+              <select id="profile" name="profile" required>
+                <option value="">Selecione</option>
+                <option>Investidor ou comprador</option>
+                <option>Corretor de imóveis</option>
+                <option>Imobiliária</option>
+                <option>Construtora ou incorporadora</option>
+                <option>Family office</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="project">Empreendimento de interesse</label>
+              <select id="project" name="project">
+                <option value="">Ainda estou avaliando</option>
+                <option>Domus Brickell Park</option>
+                <option>Meliá Brickell</option>
+                <option>The Residences at 1428 Brickell</option>
+                <option>Casa Bella Residences by B&amp;B Italia</option>
+                <option>Nobu Residences Brickell</option>
+                <option>Faena Residences Miami</option>
+                <option>Continuum Club &amp; Residences</option>
+                <option>The Residences at Mandarin Oriental, Miami</option>
+                <option>Mandarin Oriental Residences West Palm Beach</option>
+                <option>Estates by Turnberry</option>
+                <option>Quero vender meu imóvel</option>
+                <option>Quero cadastrar um empreendimento</option>
+                <option>Outro</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="goal">Objetivo principal</label>
+              <select id="goal" name="goal">
+                <option value="">Selecione</option>
+                <option>Investimento / renda</option>
+                <option>Moradia</option>
+                <option>Investimento e moradia</option>
+                <option>Visto EB-5 / mudança para a Flórida</option>
+                <option>Compra com cripto</option>
+                <option>Parceria comercial</option>
+                <option>Divulgação de empreendimento</option>
+              </select>
+            </div>
+            <div class="field full">
+              <label for="notes">Como podemos ajudar?</label>
+              <textarea id="notes" name="notes" placeholder="Orçamento, prazo, número de quartos, forma de pagamento…"></textarea>
+            </div>
+            <div class="field full">
+              <button type="submit" class="btn btn-primary" style="width:100%">Enviar solicitação ↗</button>
+              <div class="form-note">Ao enviar, você concorda em ser contatado por Danielle Lisboa Martins por telefone, e-mail e WhatsApp.</div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="brand" href="#inicio" aria-label="danova AI — início"><img class="brand-logo" src="img/danova-logo.webp" alt="danova AI" width="156" height="52" loading="lazy"></a>
+          <p>Inteligência imobiliária, marketing de performance e estruturação jurídica para conectar empreendimentos do Sul da Flórida a investidores internacionais.</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col"><strong>Explorar</strong><a href="#inicio">Início</a><a href="#solucoes">Soluções</a><a href="#empreendimentos">Empreendimentos</a><a href="livro.html">Livro</a></div>
+          <div class="footer-col"><strong>Conectar</strong><a href="#parceiros">Seja parceiro</a><a href="#contato">Fale conosco</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="crm/">Área de membros</a></div>
+        </div>
+      </div>
+      <p class="legal-note">Danielle Lisboa Martins, Esq. · NY State Bar #10351218844 · FL Broker #3252283 · Executive Broker, Cervera Real Estate. We do business in accordance with the Federal Fair Housing Law.</p>
+      <div class="footer-bottom"><span>© <span id="year"></span> DANOVA AI™. Todos os direitos reservados.</span><span>Real Estate Intelligence · Miami · Palm Beach</span></div>
+    </div>
+  </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/17863826782?text=Ol%C3%A1%20Danielle%2C%20gostaria%20de%20um%20contato" target="_blank" rel="noopener" aria-label="Falar com a DANOVA-AI pelo WhatsApp" title="WhatsApp DANOVA-AI">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M9 9c.5 2.4 2.6 4.5 5 5l1.2-1.2 2 .8c-.2 1.2-1 2-2.2 2.1-3.9-.4-7.1-3.6-7.5-7.5.1-1.2.9-2 2.1-2.2l.8 2L9 9Z"/></svg>
+  </a>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/danova-globe.js?v=20261020" defer></script>
+  <script>
+    const DANOVA_WHATSAPP_NUMBER = "17863826782";
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    menuToggle.addEventListener("click", () => {
+      const open = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.textContent = open ? "✕" : "☰";
+    });
+    navLinks.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+      navLinks.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.textContent = "☰";
+    }));
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".property-card");
+    const emptyState = document.getElementById("emptyState");
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        const filter = button.dataset.filter;
+        let visible = 0;
+        cards.forEach(card => {
+          const tags = (card.dataset.tags || "").split(" ");
+          const matches = filter === "todos" || tags.includes(filter);
+          card.style.display = matches ? "" : "none";
+          if (matches) visible++;
+        });
+        emptyState.style.display = visible ? "none" : "block";
+      });
+    });
+
+    const projectSelect = document.getElementById("project");
+    const profileSelect = document.getElementById("profile");
+    function selectByText(select, text) {
+      const option = Array.from(select.options).find(o => o.text === text);
+      if (option) select.value = option.value;
+    }
+    document.querySelectorAll("[data-project]").forEach(link =>
+      link.addEventListener("click", () => selectByText(projectSelect, link.dataset.project)));
+    document.querySelectorAll("[data-interest]").forEach(link =>
+      link.addEventListener("click", () => selectByText(profileSelect, link.dataset.interest)));
+
+    const toast = document.getElementById("toast");
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 5000);
+    }
+
+    const form = document.getElementById("leadForm");
+    function buildMessage() {
+      const d = new FormData(form);
+      return [
+        "Olá, Danielle! Gostaria de entrar em contato pelo site DANOVA-AI.",
+        "",
+        "Nome: " + d.get("name"),
+        "E-mail: " + d.get("email"),
+        "WhatsApp: " + d.get("phone"),
+        "Perfil: " + d.get("profile"),
+        "Empreendimento: " + (d.get("project") || "Ainda estou avaliando"),
+        "Objetivo: " + (d.get("goal") || "Não informado"),
+        "Mensagem: " + (d.get("notes") || "Não informada")
+      ].join("\n");
+    }
+    // Roda antes do script de medição (que envia o lead para /api/lead.php):
+    // valida o formulário e monta a mensagem completa no campo "message".
+    window.addEventListener("submit", event => {
+      if (event.target !== form) return;
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        form.reportValidity();
+        return;
+      }
+      document.getElementById("fullMessage").value = buildMessage();
+    }, true);
+
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      if (!form.checkValidity()) return;
+      // Envia o lead estruturado direto para o CRM (Supabase). O e-mail de aviso segue pelo /api/lead.php.
+      try {
+        const crm = window.DANOVA_CRM;
+        if (crm && crm.url) {
+          const dados = Object.fromEntries(new FormData(form).entries());
+          dados.lead_page = "home"; dados.source = "leadForm";
+          dados.language = (document.documentElement.lang || "pt").slice(0, 2);
+          fetch(crm.url + "/rest/v1/rpc/enviar_lead", {
+            method: "POST", keepalive: true,
+            headers: { "Content-Type": "application/json", apikey: crm.anonKey, Authorization: "Bearer " + crm.anonKey },
+            body: JSON.stringify({ dados: dados })
+          }).catch(() => {});
+        }
+      } catch (e) {}
+      if (!window.__danovaTracking) {
+        // Fallback se o script de medição não carregar: envia direto ao receptor de leads.
+        const payload = Object.fromEntries(new FormData(form).entries());
+        payload.source = "leadForm"; payload.page = "home";
+        fetch("/api/lead.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), keepalive: true }).catch(() => {});
+      }
+      const url = "https://wa.me/" + DANOVA_WHATSAPP_NUMBER + "?text=" + encodeURIComponent(buildMessage());
+      window.open(url, "_blank", "noopener,noreferrer");
+      showToast("Obrigado! Recebemos sua solicitação — a conversa no WhatsApp foi aberta em uma nova aba.");
+      form.reset();
+    });
+
+  </script>
+</body>
+</html>
