@@ -1,5 +1,7 @@
 # danova AI — site + CRM
 
+Posicionamento (21/10/2026): tráfego pago imobiliário há 10 anos — Meta Ads e Google Ads para empreendimentos de alto padrão. O topo do site tem o **Localizador de empreendimentos** (orçamento, objetivo e região → mapa e resultados por compatibilidade), que também dispara os eventos `localizador_busca` e `localizador_enviar` no dataLayer para otimizar campanhas.
+
 Site institucional da danova AI (atualizado em 20/10/2026) com área de membros para acompanhar leads, corretores e o andamento de cada negociação.
 
 ```
@@ -8,9 +10,9 @@ public_html/        → tudo o que vai para a Hostinger (pasta public_html)
   crm/              → área de membros (https://danova-ai.com/crm/)
   api/lead.php      → recebe formulários, envia e-mail, grava CSV e encaminha ao CRM
   js/crm-config.js  → endereço do banco e chave pública
-  js/danova-globe.js→ globo interativo do topo
+  js/danova-localizador.js → localizador de empreendimentos do topo (filtros + mapa)
   js/danova-chat.js → chat do atendente de IA
-fonte/              → arquivos-fonte usados para gerar index.html e o globo
+fonte/              → arquivos-fonte (build.py gera o index.html; montar-localizador.sh gera o localizador)
 supabase/schema.sql → estrutura completa do banco do CRM
 supabase/functions/ → atendente do site e agente do CRM (IA)
 ```
@@ -82,5 +84,5 @@ Os textos e estilos ficam em `fonte/`. Depois de editar:
 
 ```sh
 python3 fonte/build.py        # gera public_html/index.html
-sh fonte/montar-globo.sh      # gera public_html/js/danova-globe.js
+sh fonte/montar-localizador.sh # gera public_html/js/danova-localizador.js
 ```

@@ -1,8 +1,8 @@
 <body>
   <div class="topbar">
     <div class="container topbar-inner">
-      <span>REAL ESTATE INTELLIGENCE · SUL DA FLÓRIDA · PT · EN · ES</span>
-      <span>Empreendimentos de Brickell a Palm Beach <a href="#empreendimentos">Explore os projetos ↗</a></span>
+      <span>TRÁFEGO PAGO IMOBILIÁRIO · META ADS · GOOGLE ADS · HÁ 10 ANOS</span>
+      <span>Campanhas para empreendimentos de alto padrão <a href="#estrategia">Veja a estratégia ↗</a></span>
     </div>
   </div>
 
@@ -14,10 +14,11 @@
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
       <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
         <a href="#inicio">Início</a>
-        <a href="#solucoes">Soluções</a>
+        <a href="#estrategia">Estratégia</a>
+        <a href="#metodo">Método</a>
         <a href="#empreendimentos">Empreendimentos</a>
         <a href="#parceiros">Seja parceiro</a>
-        <a href="#contato" class="btn btn-primary">Fale com a DANOVA <span>↗</span></a>
+        <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Quero campanhas <span>↗</span></a>
       </nav>
     </div>
   </header>
@@ -27,83 +28,93 @@
       <div class="hero-grid-bg" aria-hidden="true"></div>
       <div class="container hero-layout">
         <div class="hero-content">
-          <div class="eyebrow">Real Estate Intelligence · América Latina → Flórida</div>
-          <h1>Grandes empreendimentos merecem uma <span>estratégia à altura.</span></h1>
-          <p class="hero-copy">A danova AI conecta investidores do Brasil e da América Latina aos melhores empreendimentos do Sul da Flórida — com inteligência de mercado e estruturação jurídica na mesma mesa.</p>
+          <div class="eyebrow">Tráfego pago imobiliário · há 10 anos</div>
+          <h1>Anúncios que viram <span>visitas e vendas</span> de empreendimentos.</h1>
+          <p class="hero-copy">Há 10 anos a danova AI planeja, roda e otimiza campanhas de <strong>Meta Ads</strong> e <strong>Google Ads</strong> para empreendimentos de alto padrão — e entrega ao corretor leads qualificados, com CRM e atendimento por IA.</p>
           <div class="hero-actions">
-            <a href="#empreendimentos" class="btn btn-primary">Explorar empreendimentos <span>↗</span></a>
-            <a href="#parceiros" class="btn btn-outline">Quero ser parceiro</a>
-            <a href="#contato" class="btn btn-outline" data-abrir-chat>Tirar dúvidas agora</a>
+            <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Quero campanhas para meu empreendimento <span>↗</span></a>
+            <a href="#localizador" class="btn btn-outline" data-focar-localizador>Encontrar um empreendimento</a>
           </div>
-          <div class="hero-note">10 empreendimentos selecionados · Brickell a Palm Beach</div>
+          <div class="hero-proof">
+            <div><strong>Meta Ads</strong><span>Facebook · Instagram · WhatsApp</span></div>
+            <div><strong>Google Ads</strong><span>Pesquisa · YouTube · Performance Max</span></div>
+            <div><strong>CRM + IA</strong><span>do clique ao corretor</span></div>
+          </div>
         </div>
 
-        <div class="globe-wrap">
-          <div class="globe-stage" id="globeStage">
-            <div class="globe-glow" aria-hidden="true"></div>
-            <canvas id="globe" role="img" aria-label="Globo interativo com rotas de investidores até os empreendimentos no Sul da Flórida"></canvas>
-            <a class="spot-card" id="spotCard" href="#empreendimentos">
-              <img alt="" src="img/domus.webp">
-              <div class="spot-body"><small id="spotLoc">Brickell · Miami</small><strong id="spotName">Domus Brickell Park</strong><span id="spotPrice">a partir de US$ 650 mil</span></div>
-            </a>
-            <div class="route-feed" aria-live="polite"><b>Rotas de investimento</b><ul id="routeFeed"></ul></div>
-            <span class="drag-hint" id="dragHint">↔ arraste para girar</span>
-          </div>
-          <div class="origin-bar" role="group" aria-label="Escolha a cidade de origem do investidor" id="originBar"></div>
+        <div class="loc-wrap" id="localizador">
+          <p class="loc-kicker"><span></span>É para cá que nossos anúncios levam o comprador</p>
+          <div class="loc-card" id="locCard"></div>
         </div>
       </div>
     </section>
 
-    <section class="section section-light" id="solucoes">
+    <section class="section section-light" id="estrategia">
       <div class="container">
         <div class="section-head">
-          <div class="eyebrow">Uma nova forma de conectar o mercado</div>
-          <h2>Não basta divulgar imóveis. É preciso gerar oportunidades.</h2>
-          <p>Comprar ou vender imóvel de luxo no Sul da Flórida nunca é só sobre o imóvel. É sobre tudo que acontece em volta — imposto, banco, jurídico, design e logística. A DANOVA-AI integra esses elementos em uma jornada mais simples e orientada a negócios.</p>
+          <div class="eyebrow">A estratégia</div>
+          <h2>Dois canais, um objetivo: compradores reais na frente do corretor.</h2>
+          <p>Cada canal tem um papel no funil. O Meta Ads cria demanda e alcança o comprador antes de ele procurar; o Google Ads captura quem já está procurando. Os dois trabalham juntos e são otimizados pelo que importa: lead qualificado, visita e venda — não clique.</p>
         </div>
-        <div class="value-grid">
-          <article class="value-card">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5M8 11l2 2 4-4"/></svg></div>
-            <h3>Marketing de performance</h3>
-            <p>Campanhas digitais segmentadas e marketing discreto para posicionar cada projeto diante de compradores internacionais pré-qualificados.</p>
+        <div class="channel-grid">
+          <article class="channel-card meta">
+            <div class="channel-head"><span class="channel-logo">∞</span><div><h3>Meta Ads</h3><small>Facebook · Instagram · WhatsApp</small></div><span class="channel-role">Gera demanda</span></div>
+            <ul>
+              <li><strong>Públicos de compradores e investidores</strong> por país, idioma, renda e interesses — Brasil, América Latina e EUA.</li>
+              <li><strong>Criativos que vendem o produto</strong>: vídeos, Reels e carrosséis com a planta, a vista e a localização.</li>
+              <li><strong>Formulários instantâneos e WhatsApp</strong> com perguntas de qualificação (orçamento, prazo, objetivo).</li>
+              <li><strong>Remarketing</strong> para quem viu o empreendimento, abriu o localizador ou começou o cadastro.</li>
+            </ul>
           </article>
-          <article class="value-card">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 14 8l5 2-5 2-2 5-2-5-5-2 5-2 2-5Z"/><path d="m19 15 1.2 2.8L23 19l-2.8 1.2L19 23l-1.2-2.8L15 19l2.8-1.2L19 15Z"/></svg></div>
-            <h3>Inteligência artificial</h3>
-            <p>Atendimento trilíngue com IA para qualificar leads de São Paulo a Buenos Aires — orçamento, perfil e forma de pagamento, inclusive cripto.</p>
+          <article class="channel-card google">
+            <div class="channel-head"><span class="channel-logo">G</span><div><h3>Google Ads</h3><small>Pesquisa · YouTube · Performance Max</small></div><span class="channel-role">Captura intenção</span></div>
+            <ul>
+              <li><strong>Pesquisa por intenção</strong>: “apartamento em Brickell”, “condo em Miami”, “imóvel para EB-5”, em português, inglês e espanhol.</li>
+              <li><strong>YouTube e Performance Max</strong> para escalar o lançamento com vídeo e catálogo de unidades.</li>
+              <li><strong>Remarketing e listas de clientes</strong> para trazer de volta quem já demonstrou interesse.</li>
+              <li><strong>Lances por conversão qualificada</strong>, alimentados com o que acontece depois do clique.</li>
+            </ul>
           </article>
-          <article class="value-card">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v7c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12v7c0 1.7 3.6 3 8 3s8-1.3 8-3v-7"/></svg></div>
-            <h3>Estruturação jurídica</h3>
-            <p>LLC, trust, FIRPTA, 1031 e EB-5 tratados na mesma mesa da negociação — advogada (NY Bar e OAB) e broker em um só processo.</p>
-          </article>
-          <article class="value-card">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-            <h3>Conexão imobiliária</h3>
-            <p>Relações construídas ao longo de uma década com incorporadores como Paramount, Meliá, Domus, Cipriani e 1428 Brickell. A lista por trás da lista.</p>
-          </article>
+        </div>
+        <div class="metrics-strip">
+          <span>O que medimos toda semana</span>
+          <b>Custo por lead</b><b>Custo por lead qualificado</b><b>Taxa de agendamento</b><b>Custo por visita</b><b>Vendas por canal e campanha</b>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="container split">
-        <div class="split-image">
-          <img src="img/continuum-pool.webp" alt="Piscina com vista para a Biscayne Bay — Continuum Club &amp; Residences, North Bay Village" loading="lazy">
-          <div class="image-tag"><strong>Do empreendimento à oportunidade</strong><span>Acesso pré-lançamento e prioridade de plantas antes da lista pública.</span></div>
+    <section class="section section-dark" id="funil">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Do anúncio à venda</div>
+          <h2>Um funil inteiro, não só anúncios.</h2>
+          <p>Tráfego sem atendimento é verba perdida. Por isso o anúncio é só o começo: o comprador chega a uma página que ajuda a escolher, é atendido na hora e cai no CRM com tudo o que o corretor precisa saber.</p>
         </div>
-        <div>
-          <div class="section-head" style="margin-bottom:0">
-            <div class="eyebrow">Inteligência que movimenta negócios</div>
-            <h2>Mais clareza para apresentar. Mais estratégia para conectar.</h2>
-            <p>A DANOVA-AI organiza a divulgação de empreendimentos e facilita a conexão entre quem desenvolve projetos e quem busca oportunidades no Sul da Flórida — com atendimento em português, inglês e espanhol.</p>
-          </div>
-          <div class="check-list">
-            <div class="check-item"><span class="check">✓</span><div><strong>Apresentação profissional de projetos</strong><span>Plantas, tabelas de preço, cronogramas de pagamento e diferenciais de cada empreendimento.</span></div></div>
-            <div class="check-item"><span class="check">✓</span><div><strong>Captação estruturada de interessados</strong><span>Formulários direcionados com registro da origem de cada contato.</span></div></div>
-            <div class="check-item"><span class="check">✓</span><div><strong>Fechamento em três jurisdições</strong><span>Miami, Nova York ou Brasil — onde for melhor para o cliente, com pós-closing incluído.</span></div></div>
-          </div>
-          <a href="#contato" class="btn btn-primary">Conheça nossa proposta <span>↗</span></a>
+        <ol class="flow">
+          <li><i>01</i><strong>Anúncio</strong><span>Meta Ads e Google Ads segmentados por público e intenção</span></li>
+          <li><i>02</i><strong>Localizador</strong><span>o comprador filtra por orçamento, objetivo e região</span></li>
+          <li><i>03</i><strong>Atendimento com IA</strong><span>responde 24h em PT, EN e ES e qualifica</span></li>
+          <li><i>04</i><strong>CRM</strong><span>lead com origem, campanha, resumo e temperatura</span></li>
+          <li><i>05</i><strong>Corretor</strong><span>follow-up no tempo certo, visita e proposta</span></li>
+          <li><i>06</i><strong>Venda</strong><span>e o resultado volta para otimizar as campanhas</span></li>
+        </ol>
+        <p class="flow-loop">↺ Lead qualificado, visita e venda registrados no CRM são devolvidos ao Meta e ao Google como conversões — os algoritmos aprendem a buscar compradores, não curiosos.</p>
+      </div>
+    </section>
+
+    <section class="section" id="metodo">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Método danova · 10 anos de tráfego imobiliário</div>
+          <h2>Como colocamos um empreendimento no ar.</h2>
+          <p>Um processo testado em lançamentos, pré-construção e estoque pronto — ajustado ao ticket, ao público e ao momento de cada projeto.</p>
+        </div>
+        <div class="steps steps-5">
+          <div class="step"><h3>Diagnóstico</h3><p>Produto, ticket, diferenciais, praça, concorrência e perfil de quem compra.</p></div>
+          <div class="step"><h3>Plano de mídia</h3><p>Verba por canal e por fase: pré-lançamento, lançamento e sustentação.</p></div>
+          <div class="step"><h3>Criativos e página</h3><p>Vídeos, peças, landing com localizador, formulário e chat de IA.</p></div>
+          <div class="step"><h3>Rastreamento</h3><p>Tag Manager, Pixel e API de Conversões, Google Tag e conversões do CRM.</p></div>
+          <div class="step"><h3>Otimização semanal</h3><p>Ajustes por custo por lead qualificado e por visita, com relatório claro.</p></div>
         </div>
       </div>
     </section>
@@ -141,13 +152,13 @@ __CARDS__
           <article class="audience-card">
             <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21V7l9-4 9 4v14M3 11h18M8 21v-6h8v6M8 7h.01M12 7h.01M16 7h.01"/></svg></div>
             <h3>Construtoras e incorporadoras</h3>
-            <p>Amplie a presença dos seus empreendimentos junto a compradores do Brasil e da América Latina, com rede internacional e marketing discreto.</p>
-            <a href="#contato" data-interest="Construtora ou incorporadora">Apresentar um empreendimento ↗</a>
+            <p>Campanhas de Meta Ads e Google Ads para lançamentos e estoque, com página, CRM e atendimento por IA — e relatório semanal de custo por lead e por visita.</p>
+            <a href="#contato" data-interest="Construtora ou incorporadora">Quero campanhas ↗</a>
           </article>
           <article class="audience-card">
             <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></div>
             <h3>Corretores e imobiliárias</h3>
-            <p>Tem um cliente para Miami? Acesse projetos de pré-construção, materiais oficiais e suporte jurídico para fechar com segurança.</p>
+            <p>Receba leads de campanhas para os empreendimentos da vitrine, com CRM próprio para acompanhar cada negociação, e suporte jurídico para fechar com segurança.</p>
             <a href="#contato" data-interest="Corretor de imóveis">Quero ser parceiro ↗</a>
           </article>
           <article class="audience-card">
@@ -168,31 +179,15 @@ __CARDS__
       </div>
     </section>
 
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <div class="eyebrow">Como funciona</div>
-          <h2>Da primeira chamada ao fechamento assinado.</h2>
-          <p>Quatro passos. Sem taxas surpresa. Sem prazos opacos.</p>
-        </div>
-        <div class="steps">
-          <div class="step"><h3>Chamada privada</h3><p>30 minutos por WhatsApp ou Zoom. Você conta o que quer alcançar; dizemos se podemos ajudar — e, se não, quem pode.</p></div>
-          <div class="step"><h3>Estratégia escrita</h3><p>Em até uma semana: imóveis ou compradores-alvo, preço, timeline, estrutura jurídica, impacto fiscal e riscos.</p></div>
-          <div class="step"><h3>Estruturação e execução</h3><p>LLC ou trust, FIRPTA, contratos, título, financiamento (inclusive cripto) e inspeções. De 2 a 12 semanas.</p></div>
-          <div class="step"><h3>Assinado e além</h3><p>Fechamento em Miami, Nova York ou Brasil. Depois, property management, declarações fiscais e próximas transações.</p></div>
-        </div>
-      </div>
-    </section>
-
     <section class="section section-light">
       <div class="container">
         <div class="cta-band">
           <div class="cta-copy">
-            <div class="eyebrow">Vamos construir conexões</div>
-            <h2>Seu próximo empreendimento merece mais visibilidade.</h2>
-            <p>Apresente seu projeto, peça acesso pré-lançamento ou fale com a DANOVA-AI sobre oportunidades imobiliárias no Sul da Flórida.</p>
+            <div class="eyebrow">Diagnóstico gratuito</div>
+            <h2>Vamos analisar o tráfego do seu empreendimento.</h2>
+            <p>Conte o projeto, o ticket e a verba atual. Mostramos onde o investimento em Meta Ads e Google Ads está se perdendo e como transformá-lo em visitas.</p>
           </div>
-          <a href="#contato" class="btn btn-primary">Iniciar uma conversa <span>↗</span></a>
+          <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Pedir diagnóstico <span>↗</span></a>
         </div>
       </div>
     </section>
@@ -202,7 +197,7 @@ __CARDS__
         <div class="contact-intro">
           <div class="eyebrow">Fale com a DANOVA-AI</div>
           <h2>Vamos encontrar o próximo passo.</h2>
-          <p>Conte um pouco sobre o que você procura. A Danielle responde pessoalmente, em português, inglês ou espanhol.</p>
+          <p>Quer campanhas para um empreendimento ou procura um imóvel? Conte um pouco — respondemos pessoalmente, em português, inglês ou espanhol.</p>
           <div class="contact-detail">
             <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg></div>
             <div><strong>E-mail</strong><span><a href="mailto:danielle@danova-ai.com">danielle@danova-ai.com</a></span></div>
@@ -271,6 +266,7 @@ __OPTIONS__
                 <option>Visto EB-5 / mudança para a Flórida</option>
                 <option>Compra com cripto</option>
                 <option>Parceria comercial</option>
+                <option>Campanhas de tráfego pago (Meta e Google Ads)</option>
                 <option>Divulgação de empreendimento</option>
               </select>
             </div>
@@ -293,10 +289,10 @@ __OPTIONS__
       <div class="footer-top">
         <div class="footer-brand">
           <a class="brand" href="#inicio" aria-label="danova AI — início"><img class="brand-logo" src="img/danova-logo.webp" alt="danova AI" width="156" height="52" loading="lazy"></a>
-          <p>Inteligência imobiliária, marketing de performance e estruturação jurídica para conectar empreendimentos do Sul da Flórida a investidores internacionais.</p>
+          <p>Tráfego pago imobiliário há 10 anos: Meta Ads, Google Ads, CRM e atendimento por IA para vender empreendimentos de alto padrão.</p>
         </div>
         <div class="footer-links">
-          <div class="footer-col"><strong>Explorar</strong><a href="#inicio">Início</a><a href="#solucoes">Soluções</a><a href="#empreendimentos">Empreendimentos</a><a href="livro.html">Livro</a></div>
+          <div class="footer-col"><strong>Explorar</strong><a href="#inicio">Início</a><a href="#estrategia">Estratégia</a><a href="#metodo">Método</a><a href="#empreendimentos">Empreendimentos</a><a href="livro.html">Livro</a></div>
           <div class="footer-col"><strong>Conectar</strong><a href="#parceiros">Seja parceiro</a><a href="#contato">Fale conosco</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="crm/">Área de membros</a></div>
         </div>
       </div>

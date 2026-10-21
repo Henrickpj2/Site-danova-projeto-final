@@ -35,11 +35,15 @@ P=[
 ]
 pin='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>'
 e=html.escape
+import unicodedata, re as _re
+def slug(t):
+  t=unicodedata.normalize('NFKD',t).encode('ascii','ignore').decode().lower()
+  return _re.sub(r'[^a-z0-9]+','-',t).strip('-')
 cards=[]
 for p in P:
   pre = "a partir de" if p["price"]!="Sob consulta" else "preço"
   facts="".join(f"<li>{e(x)}</li>" for x in p["f"])
-  cards.append(f'''          <article class="property-card" data-tags="{p["tags"]}">
+  cards.append(f'''          <article class="property-card" id="{slug(p["n"])}" data-tags="{p["tags"]}">
             <div class="property-image">
               <img src="img/{p["img"]}" alt="{e(p["n"])} — {e(p["loc"])}" loading="lazy">
               <span class="property-badge">{e(p["badge"])}</span>
@@ -62,12 +66,12 @@ head=f'''<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1424">
-  <title>DANOVA-AI | Real Estate Intelligence · Miami</title>
-  <meta name="description" content="DANOVA-AI conecta empreendimentos de luxo no Sul da Flórida — Brickell, Miami River, Brickell Key, West Palm Beach — a investidores internacionais, com assessoria jurídica de Danielle Lisboa Martins, Esq.">
+  <title>danova AI | Tráfego pago imobiliário · Meta Ads e Google Ads</title>
+  <meta name="description" content="Há 10 anos a danova AI planeja e otimiza campanhas de Meta Ads e Google Ads para empreendimentos de alto padrão, com localizador de imóveis, CRM e atendimento por IA.">
   <link rel="canonical" href="https://danova-ai.com/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="DANOVA-AI | Imóveis de luxo em Miami com assessoria jurídica">
-  <meta property="og:description" content="Branded residences, pré-construção, EB-5, family office e cripto. Atendimento em PT · EN · ES.">
+  <meta property="og:title" content="danova AI | Tráfego pago que vende empreendimentos">
+  <meta property="og:description" content="Meta Ads e Google Ads para lançamentos imobiliários, há 10 anos. Do anúncio à venda, com CRM e IA.">
   <meta property="og:image" content="https://danova-ai.com/img/og-danova.jpg">
   <meta property="og:url" content="https://danova-ai.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,4 +85,4 @@ head=f'''<!doctype html>
 </head>
 '''
 js=open('page.js').read()
-open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-globe.js?v=20261020\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261021\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
+open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-localizador.js?v=20261021\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261021\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
