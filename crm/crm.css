@@ -186,3 +186,25 @@ td .sub { display: block; font-size: 12px; color: var(--muted); }
   .kv { grid-template-columns: 110px 1fr; }
   .hide-sm { display: none; }
 }
+
+/* ---------- agente de IA ---------- */
+.ai-badge { display: inline-flex; align-items: center; font: 800 10px/1 "DM Sans", sans-serif; letter-spacing: .06em; text-transform: uppercase; color: white; padding: 4px 7px; border-radius: 6px; background: linear-gradient(120deg, #3ec5f0, #6b3fd4 50%, #ec3d8f); vertical-align: middle; }
+.ai-card { border-radius: 14px; padding: 14px 16px; display: grid; gap: 10px; background: linear-gradient(#fff, #fff) padding-box, linear-gradient(120deg, #3ec5f0, #6b3fd4 45%, #ec3d8f 75%, #f7a24a) border-box; border: 1.5px solid transparent; }
+.ai-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ai-head strong { font: 800 14px "Manrope", sans-serif; }
+.ai-head small { color: var(--muted); font-size: 11px; }
+.ai-head .btn { margin-left: auto; }
+.ai-vazio { margin: 0; font-size: 13px; }
+.ai-resumo { margin: 0; font-size: 13.5px; }
+.ai-kv { background: #f7f8fb; border-radius: 10px; padding: 10px 12px; }
+.ai-atencao { margin: 0; font-size: 12.5px; color: #9a5b00; background: #fff6e6; border-radius: 10px; padding: 8px 11px; }
+.ai-msg { background: #f2fbf7; border: 1px solid #cdeedd; border-radius: 10px; padding: 10px 12px; }
+.ai-msg small { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #1f8a52; }
+.ai-msg p { margin: 6px 0 8px; font-size: 13px; white-space: pre-wrap; }
+.ai-msg-actions { display: flex; gap: 8px; }
+.ai-card > .btn.primary { justify-self: start; }
+.ai-chat summary { cursor: pointer; font-size: 12.5px; font-weight: 700; color: var(--violet); }
+.ai-chat-log { margin-top: 8px; display: grid; gap: 6px; max-height: 260px; overflow-y: auto; padding-right: 4px; }
+.ai-chat-m { font-size: 12.5px; padding: 7px 10px; border-radius: 9px; background: #f4f6fa; white-space: pre-wrap; }
+.ai-chat-m.cliente { background: #eef0ff; }
+.ai-chat-m b { font-size: 11px; color: var(--muted); margin-right: 4px; }
