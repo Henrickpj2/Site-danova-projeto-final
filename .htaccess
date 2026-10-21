@@ -1,0 +1,73 @@
+# ===================================================================
+# .htaccess — danova-ai.com (Hostinger / LiteSpeed)
+# IMPORTANTE: se já existir um .htaccess em public_html, NÃO apague o
+# antigo — cole este bloco NO TOPO dele e mantenha o restante.
+# ===================================================================
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# 1) Forçar HTTPS
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://danova-ai.com%{REQUEST_URI} [L,R=301]
+
+# 2) www -> domínio sem www (uma única versão para o Google)
+RewriteCond %{HTTP_HOST} ^www\.danova-ai\.com$ [NC]
+RewriteRule ^ https://danova-ai.com%{REQUEST_URI} [L,R=301]
+
+# 3) /index.html -> /
+RewriteCond %{THE_REQUEST} \s/index\.html[\s?] [NC]
+RewriteRule ^index\.html$ / [L,R=301]
+
+# 4) Cópias duplicadas -> versão oficial (evita conteúdo duplicado no Google)
+RewriteRule ^site\.html$ / [L,R=301]
+RewriteRule ^DANOVA_Catalisador_v12\.html$ /livro.html [L,R=301]
+
+# 5) Ferramenta interna com chaves de API no código: bloqueada ao público (403).
+#    Para reativar, mova-a para uma pasta protegida por senha (hPanel > Segurança >
+#    Diretórios protegidos por senha) DEPOIS de trocar as chaves e a senha.
+RewriteRule ^buscador\.html$ - [F,L]
+</IfModule>
+
+# Compressão (LiteSpeed já faz Brotli; isto cobre fallback)
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# Cache do navegador
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresDefault "access plus 1 week"
+ExpiresByType text/html "access plus 0 seconds"
+ExpiresByType application/xml "access plus 1 day"
+ExpiresByType text/plain "access plus 1 day"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType image/webp "access plus 1 year"
+ExpiresByType image/avif "access plus 1 year"
+ExpiresByType image/jpeg "access plus 1 year"
+ExpiresByType image/png "access plus 1 year"
+ExpiresByType image/svg+xml "access plus 1 year"
+ExpiresByType font/woff2 "access plus 1 year"
+</IfModule>
+
+<IfModule mod_headers.c>
+# HTML sempre revalidado (alterações aparecem na hora)
+<FilesMatch "\.(html)$">
+Header set Cache-Control "no-cache"
+</FilesMatch>
+# Arquivos estáticos com cache longo
+<FilesMatch "\.(css|js|webp|avif|jpg|jpeg|png|svg|woff2)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+# Cabeçalhos de segurança básicos
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set X-Frame-Options "SAMEORIGIN"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+# Tipos corretos
+AddType image/webp .webp
+AddType image/avif .avif
+AddType application/manifest+json .webmanifest
