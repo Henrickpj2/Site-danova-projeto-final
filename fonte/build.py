@@ -84,8 +84,8 @@ head=f'''<!doctype html>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1424">
-  <title>danova AI | Tráfego pago e plataforma de vendas para empreendimentos</title>
-  <meta name="description" content="Há 10 anos a danova AI faz Meta Ads, Google Ads e SEO para empreendimentos de alto padrão. Plataforma com CRM, inventário, IA e vídeo pronto para anúncios: R$ 199,99/mês + 1% na venda.">
+  <title>DANOVA-AI | Real Estate Intelligence · tráfego pago, CRM e vendas imobiliárias</title>
+  <meta name="description" content="DANOVA-AI conecta campanhas de Meta Ads e Google Ads, leads, corretores e vendas para transformar marketing imobiliário em performance mensurável. CRM, IA e vídeo para anúncios.">
   <link rel="canonical" href="https://danova-ai.com/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="danova AI | Tráfego pago que vende empreendimentos">

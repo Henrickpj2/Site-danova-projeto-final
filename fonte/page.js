@@ -65,10 +65,13 @@
         "E-mail: " + d.get("email"),
         "WhatsApp: " + d.get("phone"),
         "Perfil: " + d.get("profile"),
+        d.get("company") ? "Empresa: " + d.get("company") : "",
+        d.get("country") ? "Região: " + d.get("country") : "",
+        d.get("budget") ? "Investimento mensal em mídia: " + d.get("budget") : "",
         "Empreendimento: " + (d.get("project") || "Ainda estou avaliando"),
-        "Objetivo: " + (d.get("goal") || "Não informado"),
+        "Necessidade: " + (d.get("goal") || "Não informada"),
         "Mensagem: " + (d.get("notes") || "Não informada")
-      ].join("\n");
+      ].filter(Boolean).join("\n");
     }
     // Roda antes do script de medição (que envia o lead para /api/lead.php):
     // valida o formulário e monta a mensagem completa no campo "message".
@@ -92,6 +95,8 @@
         if (crm && crm.url) {
           const dados = Object.fromEntries(new FormData(form).entries());
           dados.lead_page = "home"; dados.source = "leadForm";
+          dados.notes = [dados.company ? "Empresa: " + dados.company : "", dados.notes || "",
+            "Consentimento de contato e Política de Privacidade: aceito em " + new Date().toLocaleString("pt-BR")].filter(Boolean).join("\n");
           dados.language = (document.documentElement.lang || "pt").slice(0, 2);
           fetch(crm.url + "/rest/v1/rpc/enviar_lead", {
             method: "POST", keepalive: true,

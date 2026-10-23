@@ -81,7 +81,7 @@ assert 'src="js/' not in html, re.findall(r'src="js/[^"]+"', html)
 html = re.sub(r'\s*<link rel="preload" as="image" href="img/[^"]+">', "", html)
 
 # links que dependiam de outros arquivos
-html = html.replace('href="crm/"', 'href="#crm"').replace('href="livro.html"', 'href="https://danova-ai.com/livro.html" target="_blank" rel="noopener"')
+html = html.replace('href="crm/"', 'href="#crm"').replace('href="livro.html"', 'href="https://danova-ai.com/livro.html" target="_blank" rel="noopener"').replace('href="politica-de-privacidade.html"', 'href="https://danova-ai.com/politica-de-privacidade.html"').replace('href="termos-de-uso.html"', 'href="https://danova-ai.com/termos-de-uso.html"')
 html = html.replace(
     '<span>Empreendimentos de Brickell a Palm Beach <a href="#empreendimentos">Explore os projetos ↗</a></span>',
     '<span>Empreendimentos de Brickell a Palm Beach <a href="#empreendimentos">Explore os projetos ↗</a> · <a href="#crm">Área de membros</a></span>')
@@ -123,7 +123,7 @@ roteador = """
     document.documentElement.classList.toggle("crm-mode", crm);
     window.__crmAtivo = crm;
     if (crm) { window.scrollTo(0, 0); document.title = "danova AI · Área de membros"; if (window.danovaAbrirCRM) window.danovaAbrirCRM(); }
-    else { document.title = "danova AI | Tráfego pago e plataforma de vendas para empreendimentos"; }
+    else { document.title = "DANOVA-AI | Real Estate Intelligence · tráfego pago, CRM e vendas imobiliárias"; }
   }
   window.addEventListener("hashchange", rota);
   rota();

@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1424">
-  <title>danova AI | Tráfego pago e plataforma de vendas para empreendimentos</title>
-  <meta name="description" content="Há 10 anos a danova AI faz Meta Ads, Google Ads e SEO para empreendimentos de alto padrão. Plataforma com CRM, inventário, IA e vídeo pronto para anúncios: R$ 199,99/mês + 1% na venda.">
+  <title>DANOVA-AI | Real Estate Intelligence · tráfego pago, CRM e vendas imobiliárias</title>
+  <meta name="description" content="DANOVA-AI conecta campanhas de Meta Ads e Google Ads, leads, corretores e vendas para transformar marketing imobiliário em performance mensurável. CRM, IA e vídeo para anúncios.">
   <link rel="canonical" href="https://danova-ai.com/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="danova AI | Tráfego pago que vende empreendimentos">
@@ -515,6 +515,103 @@ window.DANOVA_CRM = {
       .vf b { width: 30px; height: 30px; font-size: 11px; }
       .vf figcaption { font-size: 9.5px; padding: 14px 6px 6px; }
     }
+
+    /* ===== Revisão 23/10: hero com painel, faixa de destaques, fluxo, inteligência, contato ===== */
+    .hero-layout { grid-template-columns: 1.05fr .95fr; gap: 56px; padding: 84px 0 88px; }
+    .hero-note { flex-wrap: wrap; }
+    .hd { border: 1px solid rgba(255,255,255,.16); border-radius: 24px; padding: 22px; background: rgba(255,255,255,.06); box-shadow: 0 30px 80px rgba(0,0,0,.3); backdrop-filter: blur(12px); transform: perspective(1000px) rotateY(-4deg); }
+    .hd-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
+    .hd-top strong { color: #f5f8fb; font-family: "Manrope", sans-serif; }
+    .hd-top span { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; color: #77eadb; background: rgba(22,184,166,.13); border: 1px solid rgba(22,184,166,.3); border-radius: 99px; padding: 5px 9px; }
+    .hd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .hd-metric { padding: 16px; border-radius: 15px; background: rgba(5,13,25,.42); border: 1px solid rgba(255,255,255,.07); }
+    .hd-metric label { display: block; color: #9fb0c2; font-size: 12px; font-weight: 600; }
+    .hd-metric b { display: block; font: 800 27px "Manrope", sans-serif; color: white; margin: 6px 0 2px; }
+    .hd-metric small { color: #75e2d2; font-size: 11.5px; }
+    .hd-chart { height: 120px; margin-top: 14px; padding: 15px; border-radius: 15px; background: rgba(5,13,25,.3); display: flex; align-items: flex-end; gap: 9px; }
+    .hd-chart i { display: block; flex: 1; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, #63dfd0, #6b3fd4); opacity: .85; }
+    .hd-caption { display: flex; justify-content: space-between; gap: 12px; color: #9fb0c2; font-size: 11.5px; margin-top: 10px; }
+    .hd-caption a { color: #63dfd0; font-weight: 700; white-space: nowrap; }
+
+    .trust-strip { background: white; border-bottom: 1px solid var(--line); }
+    .trust-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 22px 0; }
+    .trust-item { display: flex; align-items: center; gap: 12px; color: #415168; font-size: 14.5px; font-weight: 700; }
+    .trust-icon { width: 38px; height: 38px; border-radius: 12px; background: #e7f8f5; color: var(--teal-dark); display: grid; place-items: center; font-size: 18px; flex-shrink: 0; }
+
+    .feat-grid article { transition: transform .25s, box-shadow .25s, border-color .25s; }
+    .feat-grid article:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: #c4e8e3; }
+
+    .flow5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .flow5 article { position: relative; padding: 22px 18px; border-radius: 18px; background: white; border: 1px solid var(--line); }
+    .flow5 article:not(:last-child)::after { content: "→"; position: absolute; right: -12px; top: 30px; color: var(--teal); font-weight: 800; z-index: 1; }
+    .flow5 i { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: white; font: 800 15px "Manrope", sans-serif; font-style: normal; margin-bottom: 16px; }
+    .flow5 article:last-child i { background: linear-gradient(135deg, #3ec5f0, #ec3d8f); }
+    .flow5 h3 { font-size: 17px; margin-bottom: 6px; }
+    .flow5 p { font-size: 13.5px; color: var(--muted); margin: 0; }
+
+    .intel-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 60px; align-items: center; }
+    .intel h2 { margin: 10px 0 14px; }
+    .intel-lead { color: #b3c1d0; margin: 0; }
+    .intel-list { display: grid; gap: 16px; margin: 28px 0 30px; }
+    .intel-list div { display: flex; gap: 13px; align-items: flex-start; }
+    .intel-list span { width: 26px; height: 26px; border-radius: 50%; background: rgba(22,184,166,.16); color: #65e4d5; display: grid; place-items: center; flex-shrink: 0; font-weight: 900; }
+    .intel-list p { margin: 0; color: #aebed0; font-size: 14.5px; }
+    .intel-list strong { display: block; color: white; margin-bottom: 2px; }
+    .intel-panel { padding: 22px; border-radius: 22px; background: #122238; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 30px 80px rgba(0,0,0,.25); overflow-x: auto; }
+    .intel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .intel-head strong { font-family: "Manrope", sans-serif; }
+    .intel-head span { font-size: 12px; color: #a8b9ca; }
+    .intel-panel table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .intel-panel th { text-align: left; color: #93a9bd; font-weight: 600; padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .intel-panel td { padding: 13px 8px; color: #e6edf4; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .pill-t { display: inline-block; border-radius: 99px; padding: 4px 9px; background: rgba(22,184,166,.14); color: #76e4d7; font-size: 11.5px; white-space: nowrap; }
+    .intel-note { font-size: 12px; color: #8299ae; margin: 14px 0 0; }
+
+    .loc-band { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: center; padding: 36px; border-radius: 28px; margin-bottom: 34px; color: white; background: radial-gradient(700px 400px at 90% 20%, rgba(107,63,212,.32), transparent 65%), radial-gradient(500px 360px at 100% 100%, rgba(236,61,143,.16), transparent 70%), #080f1d; }
+    .loc-band .eyebrow { color: #62e0d1; }
+    .loc-band h3 { font-size: clamp(24px, 2.4vw, 32px); margin: 10px 0 12px; color: white; }
+    .loc-band p { color: #c2ccda; margin: 0; }
+    .loc-band .loc-wrap { max-width: none; justify-self: stretch; }
+
+    .audience-4 { grid-template-columns: repeat(4, 1fr); }
+    .audience-card h3 { font-size: 18px; margin-top: 16px; }
+    .audience-card .icon-box { font-size: 20px; }
+    .audience-extra { margin: 22px 0 6px; color: #c2ccda; font-size: 14.5px; }
+    .audience-extra a { color: #63dfd0; font-weight: 700; }
+
+    .contact-info { background: var(--navy); color: white; padding: 34px; border-radius: 24px; }
+    .contact-info h3 { font-size: 24px; color: white; }
+    .contact-info > p { color: #b7c5d4; margin: 12px 0 6px; }
+    .cpoint { display: flex; gap: 12px; margin-top: 16px; color: #e5edf5; font-size: 14.5px; }
+    .cpoint span { color: var(--teal); font-size: 18px; width: 20px; }
+    .contact-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }
+    .contact-links a { display: block; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,.12); color: #c2ccda; font-size: 12.5px; }
+    .contact-links a:hover { border-color: rgba(99,223,208,.6); }
+    .contact-links b { display: block; color: white; font-size: 13.5px; margin-bottom: 2px; }
+    .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 12.5px; color: var(--muted); margin: 18px 0; font-weight: 500; }
+    .consent input { width: auto; margin-top: 3px; accent-color: var(--teal); }
+    .consent a, .form-note a { text-decoration: underline; }
+
+    @media (max-width: 1100px) {
+      .flow5 { grid-template-columns: repeat(3, 1fr); } .flow5 article::after { display: none; }
+      .audience-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 980px) {
+      .hero-layout, .intel-grid, .loc-band { grid-template-columns: 1fr; gap: 36px; }
+      .hd { transform: none; max-width: 620px; }
+      .trust-inner { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .hero-layout { padding: 60px 0 64px; }
+      .hd { padding: 15px; } .hd-metric { padding: 12px; } .hd-metric b { font-size: 21px; }
+      .hd-caption { flex-direction: column; }
+      .trust-inner { gap: 12px; } .trust-item { font-size: 13px; }
+      .flow5, .audience-4 { grid-template-columns: 1fr; }
+      .loc-band { padding: 20px; border-radius: 22px; }
+      .contact-info { padding: 24px; } .contact-links { grid-template-columns: 1fr; }
+    }
+    .hero-note { display: block; line-height: 1.7; }
+    .hero-note::before { display: inline-block; margin-right: 10px; vertical-align: middle; }
   </style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://danova-ai.com/#org", "name": "danova AI", "url": "https://danova-ai.com/", "logo": "https://danova-ai.com/img/danova-logo.webp", "email": "danielle@danova-ai.com", "telephone": "+1-786-382-6782", "areaServed": ["Miami", "Palm Beach", "Flórida", "Brasil"], "knowsAbout": ["Meta Ads", "Google Ads", "SEO", "tráfego pago imobiliário", "CRM imobiliário", "empreendimentos de alto padrão"], "knowsLanguage": ["pt", "en", "es"], "sameAs": ["https://wa.me/17863826782"]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://danova-ai.com/#site", "url": "https://danova-ai.com/", "name": "danova AI", "inLanguage": "pt-BR", "publisher": {"@id": "https://danova-ai.com/#org"}}</script>
@@ -527,7 +624,7 @@ window.DANOVA_CRM = {
 <body>
   <div class="topbar">
     <div class="container topbar-inner">
-      <span>TRÁFEGO PAGO IMOBILIÁRIO · META ADS · GOOGLE ADS · HÁ 10 ANOS</span>
+      <span>REAL ESTATE INTELLIGENCE · META ADS · GOOGLE ADS · CRM · HÁ 10 ANOS</span>
       <span>Novo: vídeo pronto do seu empreendimento para Meta e Google Ads <a href="#video">Saiba mais ↗</a></span>
     </div>
   </div>
@@ -539,13 +636,13 @@ window.DANOVA_CRM = {
       </a>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
       <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
-        <a href="#inicio">Início</a>
-        <a href="#estrategia">Estratégia</a>
         <a href="#plataforma">Plataforma</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#empreendimentos">Empreendimentos</a>
         <a href="#video">Vídeo para anúncios</a>
         <a href="#planos">Planos</a>
-        <a href="#empreendimentos">Empreendimentos</a>
-        <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Quero campanhas <span>↗</span></a>
+        <a href="#para-quem">Para quem</a>
+        <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Solicitar diagnóstico <span>↗</span></a>
       </nav>
     </div>
   </header>
@@ -555,23 +652,95 @@ window.DANOVA_CRM = {
       <div class="hero-grid-bg" aria-hidden="true"></div>
       <div class="container hero-layout">
         <div class="hero-content">
-          <div class="eyebrow">Tráfego pago imobiliário · há 10 anos</div>
-          <h1>Anúncios que viram <span>visitas e vendas</span> de empreendimentos.</h1>
-          <p class="hero-copy">Há 10 anos a danova AI planeja, roda e otimiza campanhas de <strong>Meta Ads</strong> e <strong>Google Ads</strong> para empreendimentos de alto padrão — e entrega ao corretor leads qualificados, com CRM e atendimento por IA.</p>
+          <div class="eyebrow">Inteligência de performance imobiliária</div>
+          <h1>Do investimento em anúncios à <span>venda comprovada.</span></h1>
+          <p class="hero-copy">Conectamos campanhas de <strong>Meta Ads</strong> e <strong>Google Ads</strong>, leads, corretores e empreendimentos numa operação orientada por dados. Há 10 anos ajudamos o mercado imobiliário a entender o que gera oportunidades — e o que realmente avança até a venda.</p>
           <div class="hero-actions">
-            <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Quero campanhas para meu empreendimento <span>↗</span></a>
-            <a href="#localizador" class="btn btn-outline" data-focar-localizador>Encontrar um empreendimento</a>
+            <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Solicitar diagnóstico <span>↗</span></a>
+            <a href="#plataforma" class="btn btn-outline">Conhecer a plataforma ↓</a>
           </div>
-          <div class="hero-proof">
-            <div><strong>Meta Ads</strong><span>Facebook · Instagram · WhatsApp</span></div>
-            <div><strong>Google Ads</strong><span>Pesquisa · YouTube · Performance Max</span></div>
-            <div><strong>CRM + IA</strong><span>do clique ao corretor</span></div>
+          <div class="hero-note">Google Ads · Meta Ads · SEO + IA · Captação de leads · CRM · Inteligência comercial</div>
+        </div>
+        <div class="hd" aria-label="Exemplo ilustrativo do painel de performance">
+          <div class="hd-top"><strong>Visão geral de performance</strong><span>EXEMPLO ILUSTRATIVO</span></div>
+          <div class="hd-grid">
+            <div class="hd-metric"><label>Investimento em mídia</label><b>R$ —</b><small>Meta Ads + Google Ads</small></div>
+            <div class="hd-metric"><label>Leads captados</label><b>—</b><small>Site, Meta e chat de IA</small></div>
+            <div class="hd-metric"><label>Visitas realizadas</label><b>—</b><small>Agenda do CRM</small></div>
+            <div class="hd-metric"><label>Vendas atribuídas</label><b>—</b><small>Por canal e campanha</small></div>
+          </div>
+          <div class="hd-chart" aria-hidden="true"><i style="height:24%"></i><i style="height:42%"></i><i style="height:34%"></i><i style="height:60%"></i><i style="height:48%"></i><i style="height:75%"></i><i style="height:64%"></i><i style="height:90%"></i><i style="height:78%"></i><i style="height:100%"></i></div>
+          <div class="hd-caption"><span>Visual ilustrativo — os números reais aparecem no painel Desempenho do CRM</span><a href="#localizador" data-focar-localizador>Procura um imóvel? ↓</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trust-strip" aria-label="Áreas da plataforma">
+      <div class="container trust-inner">
+        <div class="trust-item"><span class="trust-icon">⌁</span>Aquisição multicanal</div>
+        <div class="trust-item"><span class="trust-icon">◎</span>Qualificação de leads</div>
+        <div class="trust-item"><span class="trust-icon">↗</span>Gestão comercial</div>
+        <div class="trust-item"><span class="trust-icon">▥</span>Métricas de resultado</div>
+      </div>
+    </section>
+
+    <section class="section" id="plataforma">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Uma visão integrada</div>
+          <h2>Mais do que gerar contatos. Entenda o caminho até a venda.</h2>
+          <p>A operação de marketing imobiliário numa visão conectada: origem do lead, empreendimento de interesse, corretor responsável e evolução comercial — do anúncio ao resultado, num só lugar.</p>
+        </div>
+        <div class="eco" role="img" aria-label="Diagrama: construtoras, imobiliárias, corretores e investidores chegam por Google Ads, Meta Ads e SEO + IA ao núcleo danova AI (CRM, inventário, IA, leads, automações e analytics), que cuida de qualificação, visitas, propostas e vendas, gerando receita, ROI, comissões, retenção e novas oportunidades.">
+          <div class="eco-col">
+            <small>Quem usa</small>
+            <span>Construtoras</span><span>Imobiliárias</span><span>Corretores</span><span>Investidores</span>
+          </div>
+          <div class="eco-col">
+            <small>Canais</small>
+            <span class="c-google">Google Ads</span><span class="c-meta">Meta Ads</span><span class="c-seo">SEO + IA</span>
+          </div>
+          <div class="eco-core">
+            <img src="data:image/webp;base64,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" alt="" width="132" height="44" loading="lazy">
+            <div class="eco-mods"><b>CRM</b><b>Inventário</b><b>IA</b><b>Leads</b><b>Automações</b><b>Analytics</b></div>
+          </div>
+          <div class="eco-col">
+            <small>Operação</small>
+            <span>Qualificação e distribuição</span><span>Agendamento de visitas</span><span>Propostas e negociação</span><span>Vendas e comissões</span>
+          </div>
+          <div class="eco-col eco-res">
+            <small>Resultados</small>
+            <span>Receita</span><span>ROI</span><span>Comissões</span><span>Retenção</span><span>Novas oportunidades</span>
           </div>
         </div>
+        <div class="feat-grid">
+          <article><i>∞</i><h3>Integração com o Meta</h3><p>Leads dos formulários instantâneos do Facebook e do Instagram entram sozinhos no CRM. Visitas e vendas voltam ao Meta pela API de Conversões.</p></article>
+          <article><i>G</i><h3>Conversões offline no Google</h3><p>Guardamos o identificador do clique e exportamos lead qualificado, visita e venda para o Google Ads otimizar os lances.</p></article>
+          <article><i>▦</i><h3>Inventário e disponibilidade</h3><p>Unidade por unidade: disponível, reservada ou vendida. O status muda sozinho quando o contrato é assinado.</p></article>
+          <article><i>⇄</i><h3>Distribuição inteligente</h3><p>Cada lead vai para o corretor especialista no empreendimento, que fala o idioma do cliente e tem agenda livre.</p></article>
+          <article><i>◷</i><h3>Agenda de visitas</h3><p>Visitas presenciais e por vídeo, com confirmação e registro de quem compareceu.</p></article>
+          <article><i>▤</i><h3>Propostas e documentos</h3><p>Proposta, contrato e documentos do comprador guardados no lead, com acesso só para quem atende.</p></article>
+          <article><i>$</i><h3>Vendas e comissões</h3><p>Cada venda ligada ao canal e à campanha que a trouxe, com a comissão do corretor calculada.</p></article>
+          <article><i>↗</i><h3>Previsão e ROI</h3><p>Previsão de vendas por etapa, custo por lead, custo por lead qualificado e retorno por canal.</p></article>
+          <article><i>◆</i><h3>Portal da construtora</h3><p>A construtora acompanha unidades, funil, visitas e investimento — em números, sem dados pessoais dos clientes.</p></article>
+          <article><i>✦</i><h3>Atendimento com IA</h3><p>Responde 24h em português, inglês e espanhol, qualifica e passa para a equipe quando o cliente pede.</p></article>
+        </div>
+      </div>
+    </section>
 
-        <div class="loc-wrap" id="localizador">
-          <p class="loc-kicker"><span></span>É para cá que nossos anúncios levam o comprador</p>
-          <div class="loc-card" id="locCard"></div>
+    <section class="section section-light" id="como-funciona">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">O fluxo de operação</div>
+          <h2>Uma jornada conectada, do primeiro clique ao fechamento.</h2>
+          <p>Menos informação perdida entre marketing e vendas, e visibilidade das etapas que precisam de atenção.</p>
+        </div>
+        <div class="flow5">
+          <article><i>1</i><h3>Atrair</h3><p>Meta Ads, Google Ads e SEO + IA levando o comprador ao empreendimento certo.</p></article>
+          <article><i>2</i><h3>Captar</h3><p>Contato, consentimento, origem, campanha e interesse registrados no CRM — pelo site, formulário do Meta ou chat de IA.</p></article>
+          <article><i>3</i><h3>Qualificar</h3><p>Perfil, orçamento, objetivo e prazo; a IA atende 24h e o lead vai para o corretor especialista.</p></article>
+          <article><i>4</i><h3>Converter</h3><p>Atendimento, visita, proposta e contrato acompanhados etapa por etapa.</p></article>
+          <article><i>5</i><h3>Otimizar</h3><p>Visitas e vendas voltam ao Meta e ao Google como conversões; o investimento segue o que vende.</p></article>
         </div>
       </div>
     </section>
@@ -619,66 +788,49 @@ window.DANOVA_CRM = {
       </div>
     </section>
 
-    <section class="section section-dark" id="funil">
-      <div class="container">
-        <div class="section-head">
-          <div class="eyebrow">Do anúncio à venda</div>
-          <h2>Um funil inteiro, não só anúncios.</h2>
-          <p>Tráfego sem atendimento é verba perdida. Por isso o anúncio é só o começo: o comprador chega a uma página que ajuda a escolher, é atendido na hora e cai no CRM com tudo o que o corretor precisa saber.</p>
+    <section class="section section-dark intel" id="inteligencia">
+      <div class="container intel-grid">
+        <div>
+          <div class="eyebrow">Inteligência comercial</div>
+          <h2>Uma visão clara para decidir onde investir e como vender.</h2>
+          <p class="intel-lead">Um ambiente compartilhado entre marketing, corretores e construtoras, com indicadores alinhados e o histórico de cada oportunidade.</p>
+          <div class="intel-list">
+            <div><span>✓</span><p><strong>Origem rastreável</strong>Canal, campanha e pontos de contato preservados em cada lead.</p></div>
+            <div><span>✓</span><p><strong>Funil comercial conectado</strong>Do contato à visita, proposta e venda registrada.</p></div>
+            <div><span>✓</span><p><strong>Visão por equipe e empreendimento</strong>Campanhas, corretores e projetos comparados com o mesmo critério.</p></div>
+          </div>
+          <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Planejar minha operação <span>↗</span></a>
         </div>
-        <ol class="flow">
-          <li><i>01</i><strong>Anúncio e busca</strong><span>Meta Ads, Google Ads e SEO + IA, por público e intenção</span></li>
-          <li><i>02</i><strong>Localizador</strong><span>o comprador filtra por orçamento, objetivo e região</span></li>
-          <li><i>03</i><strong>Atendimento com IA</strong><span>responde 24h em PT, EN e ES e qualifica</span></li>
-          <li><i>04</i><strong>CRM</strong><span>lead com origem, campanha, resumo e temperatura</span></li>
-          <li><i>05</i><strong>Corretor</strong><span>o lead vai para o especialista certo: visita e proposta</span></li>
-          <li><i>06</i><strong>Venda</strong><span>e o resultado volta para otimizar as campanhas</span></li>
-        </ol>
-        <p class="flow-loop">↺ Lead qualificado, visita e venda registrados no CRM são devolvidos ao Meta e ao Google como conversões — os algoritmos aprendem a buscar compradores, não curiosos.</p>
+        <div class="intel-panel">
+          <div class="intel-head"><strong>Estrutura da visão comercial</strong><span>Exemplo do painel</span></div>
+          <table>
+            <thead><tr><th>Etapa</th><th>Indicador</th><th>Fonte</th></tr></thead>
+            <tbody>
+              <tr><td>Investimento</td><td>Por canal e campanha</td><td><span class="pill-t">Mídia no CRM</span></td></tr>
+              <tr><td>Leads válidos</td><td>Origem + interesse</td><td><span class="pill-t">Site · Meta · IA</span></td></tr>
+              <tr><td>Visitas</td><td>Agendadas e realizadas</td><td><span class="pill-t">Agenda</span></td></tr>
+              <tr><td>Propostas</td><td>Valor e etapa</td><td><span class="pill-t">Negociação</span></td></tr>
+              <tr><td>Vendas</td><td>Receita atribuída</td><td><span class="pill-t">CRM → Meta e Google</span></td></tr>
+            </tbody>
+          </table>
+          <p class="intel-note">Estrutura do painel Desempenho: custo por lead, custo por lead qualificado, ROAS por canal e previsão de vendas por etapa.</p>
+        </div>
       </div>
     </section>
 
-
-    <section class="section" id="plataforma">
+    <section class="section section-light" id="metodo">
       <div class="container">
         <div class="section-head">
-          <div class="eyebrow">Plataforma danova AI</div>
-          <h2>Do anúncio ao resultado, tudo num só lugar.</h2>
-          <p>Campanhas, atendimento, estoque e vendas conectados. Cada etapa alimenta a próxima — e o que acontece no fim volta para otimizar o começo.</p>
+          <div class="eyebrow">Método danova · 10 anos de tráfego imobiliário</div>
+          <h2>Como colocamos um empreendimento no ar.</h2>
+          <p>Um processo testado em lançamentos, pré-construção e estoque pronto — ajustado ao ticket, ao público e ao momento de cada projeto.</p>
         </div>
-        <div class="eco" role="img" aria-label="Diagrama: construtoras, imobiliárias, corretores e investidores chegam por Google Ads, Meta Ads e SEO + IA ao núcleo danova AI (CRM, inventário, IA, leads, automações e analytics), que cuida de qualificação, visitas, propostas e vendas, gerando receita, ROI, comissões, retenção e novas oportunidades.">
-          <div class="eco-col">
-            <small>Quem usa</small>
-            <span>Construtoras</span><span>Imobiliárias</span><span>Corretores</span><span>Investidores</span>
-          </div>
-          <div class="eco-col">
-            <small>Canais</small>
-            <span class="c-google">Google Ads</span><span class="c-meta">Meta Ads</span><span class="c-seo">SEO + IA</span>
-          </div>
-          <div class="eco-core">
-            <img src="data:image/webp;base64,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" alt="" width="132" height="44" loading="lazy">
-            <div class="eco-mods"><b>CRM</b><b>Inventário</b><b>IA</b><b>Leads</b><b>Automações</b><b>Analytics</b></div>
-          </div>
-          <div class="eco-col">
-            <small>Operação</small>
-            <span>Qualificação e distribuição</span><span>Agendamento de visitas</span><span>Propostas e negociação</span><span>Vendas e comissões</span>
-          </div>
-          <div class="eco-col eco-res">
-            <small>Resultados</small>
-            <span>Receita</span><span>ROI</span><span>Comissões</span><span>Retenção</span><span>Novas oportunidades</span>
-          </div>
-        </div>
-        <div class="feat-grid">
-          <article><i>∞</i><h3>Integração com o Meta</h3><p>Leads dos formulários instantâneos do Facebook e do Instagram entram sozinhos no CRM. Visitas e vendas voltam ao Meta pela API de Conversões.</p></article>
-          <article><i>G</i><h3>Conversões offline no Google</h3><p>Guardamos o identificador do clique e exportamos lead qualificado, visita e venda para o Google Ads otimizar os lances.</p></article>
-          <article><i>▦</i><h3>Inventário e disponibilidade</h3><p>Unidade por unidade: disponível, reservada ou vendida. O status muda sozinho quando o contrato é assinado.</p></article>
-          <article><i>⇄</i><h3>Distribuição inteligente</h3><p>Cada lead vai para o corretor especialista no empreendimento, que fala o idioma do cliente e tem agenda livre.</p></article>
-          <article><i>◷</i><h3>Agenda de visitas</h3><p>Visitas presenciais e por vídeo, com confirmação e registro de quem compareceu.</p></article>
-          <article><i>▤</i><h3>Propostas e documentos</h3><p>Proposta, contrato e documentos do comprador guardados no lead, com acesso só para quem atende.</p></article>
-          <article><i>$</i><h3>Vendas e comissões</h3><p>Cada venda ligada ao canal e à campanha que a trouxe, com a comissão do corretor calculada.</p></article>
-          <article><i>↗</i><h3>Previsão e ROI</h3><p>Previsão de vendas por etapa, custo por lead, custo por lead qualificado e retorno por canal.</p></article>
-          <article><i>◆</i><h3>Portal da construtora</h3><p>A construtora acompanha unidades, funil, visitas e investimento — em números, sem dados pessoais dos clientes.</p></article>
-          <article><i>✦</i><h3>Atendimento com IA</h3><p>Responde 24h em português, inglês e espanhol, qualifica e passa para a equipe quando o cliente pede.</p></article>
+        <div class="steps steps-5">
+          <div class="step"><h3>Diagnóstico</h3><p>Produto, ticket, diferenciais, praça, concorrência e perfil de quem compra.</p></div>
+          <div class="step"><h3>Plano de mídia</h3><p>Verba por canal e por fase: pré-lançamento, lançamento e sustentação.</p></div>
+          <div class="step"><h3>Criativos e página</h3><p>Vídeos prontos para anúncio, peças, landing com localizador, formulário e chat de IA.</p></div>
+          <div class="step"><h3>Rastreamento</h3><p>Tag Manager, Pixel e API de Conversões, Google Tag e conversões do CRM.</p></div>
+          <div class="step"><h3>Otimização semanal</h3><p>Ajustes por custo por lead qualificado e por visita, com relatório claro.</p></div>
         </div>
       </div>
     </section>
@@ -743,29 +895,22 @@ window.DANOVA_CRM = {
       </div>
     </section>
 
-    <section class="section section-light" id="metodo">
-      <div class="container">
-        <div class="section-head">
-          <div class="eyebrow">Método danova · 10 anos de tráfego imobiliário</div>
-          <h2>Como colocamos um empreendimento no ar.</h2>
-          <p>Um processo testado em lançamentos, pré-construção e estoque pronto — ajustado ao ticket, ao público e ao momento de cada projeto.</p>
-        </div>
-        <div class="steps steps-5">
-          <div class="step"><h3>Diagnóstico</h3><p>Produto, ticket, diferenciais, praça, concorrência e perfil de quem compra.</p></div>
-          <div class="step"><h3>Plano de mídia</h3><p>Verba por canal e por fase: pré-lançamento, lançamento e sustentação.</p></div>
-          <div class="step"><h3>Criativos e página</h3><p>Vídeos prontos para anúncio, peças, landing com localizador, formulário e chat de IA.</p></div>
-          <div class="step"><h3>Rastreamento</h3><p>Tag Manager, Pixel e API de Conversões, Google Tag e conversões do CRM.</p></div>
-          <div class="step"><h3>Otimização semanal</h3><p>Ajustes por custo por lead qualificado e por visita, com relatório claro.</p></div>
-        </div>
-      </div>
-    </section>
-
     <section class="section" id="empreendimentos">
       <div class="container">
         <div class="section-head">
-          <div class="eyebrow">Vitrine imobiliária</div>
-          <h2>O próximo grande negócio começa com a oportunidade certa.</h2>
+          <div class="eyebrow">Oportunidades imobiliárias</div>
+          <h2>Empreendimentos em destaque.</h2>
           <p>Projetos e lançamentos selecionados no Sul da Flórida. Consulte as informações disponíveis e solicite plantas, tabela de preços e disponibilidade atualizada.</p>
+        </div>
+        <div class="loc-band">
+          <div class="loc-band-copy">
+            <div class="eyebrow">Localizador</div>
+            <h3>Encontre o empreendimento certo para você.</h3>
+            <p>Escolha orçamento, objetivo e região: o mapa mostra o que combina e você recebe a seleção com plantas e disponibilidade.</p>
+          </div>
+          <div class="loc-wrap" id="localizador">
+            <div class="loc-card" id="locCard"></div>
+          </div>
         </div>
         <div class="filter-bar" role="group" aria-label="Filtrar empreendimentos">
           <button class="filter-btn active" data-filter="todos">Todos</button>
@@ -921,33 +1066,20 @@ window.DANOVA_CRM = {
       </div>
     </section>
 
-    <section class="section section-dark" id="parceiros">
+    <section class="section section-dark" id="para-quem">
       <div class="container">
         <div class="section-head">
-          <div class="eyebrow">Para quem quer crescer</div>
-          <h2>Um ecossistema. Diferentes oportunidades de crescimento.</h2>
-          <p>Uma abordagem para conectar quem desenvolve empreendimentos, quem comercializa imóveis e quem procura seu próximo investimento ou residência na Flórida.</p>
+          <div class="eyebrow">Feita para a operação imobiliária</div>
+          <h2>Uma estrutura para quem precisa conectar marketing e vendas.</h2>
+          <p>A jornada organizada de acordo com o papel de cada participante do processo comercial — e uma rede completa para quem compra na Flórida.</p>
         </div>
-        <div class="audience-grid">
-          <article class="audience-card">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21V7l9-4 9 4v14M3 11h18M8 21v-6h8v6M8 7h.01M12 7h.01M16 7h.01"/></svg></div>
-            <h3>Construtoras e incorporadoras</h3>
-            <p>Campanhas de Meta Ads e Google Ads para lançamentos e estoque, com página, CRM e atendimento por IA — e relatório semanal de custo por lead e por visita.</p>
-            <a href="#contato" data-interest="Construtora ou incorporadora">Quero campanhas ↗</a>
-          </article>
-          <article class="audience-card">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 9h.01M15 9h.01"/></svg></div>
-            <h3>Corretores e imobiliárias</h3>
-            <p>Receba leads de campanhas para os empreendimentos da vitrine, com CRM próprio para acompanhar cada negociação, e suporte jurídico para fechar com segurança.</p>
-            <a href="#contato" data-interest="Corretor de imóveis">Quero ser parceiro ↗</a>
-          </article>
-          <article class="audience-card">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2M16 3.5a4 4 0 0 1 0 9"/></svg></div>
-            <h3>Investidores e compradores</h3>
-            <p>Moradia, renda, EB-5, family office ou compra com cripto (BTC, USDC, ETH): receba opções alinhadas ao seu objetivo e à estrutura certa.</p>
-            <a href="#contato" data-interest="Investidor ou comprador">Encontrar oportunidades ↗</a>
-          </article>
+        <div class="audience-grid audience-4">
+          <article class="audience-card"><div class="icon-box">🏢</div><h3>Construtoras e incorporadoras</h3><p>Campanhas, empreendimentos, unidades, equipes e desempenho comercial numa visão só — com portal próprio.</p><a href="#contato" data-interest="Construtora ou incorporadora">Solicitar diagnóstico ↗</a></article>
+          <article class="audience-card"><div class="icon-box">⌂</div><h3>Imobiliárias</h3><p>Oportunidades centralizadas, distribuição automática para os corretores e acompanhamento do funil.</p><a href="#contato" data-interest="Imobiliária">Quero organizar a operação ↗</a></article>
+          <article class="audience-card"><div class="icon-box">♙</div><h3>Corretores</h3><p>Leads organizados, histórico de atendimento, agenda de visitas e próximos passos claros.</p><a href="#contato" data-interest="Corretor de imóveis">Quero ser parceiro ↗</a></article>
+          <article class="audience-card"><div class="icon-box">▥</div><h3>Gestores de marketing</h3><p>Investimento, qualidade dos contatos e resultado por canal — com conversões voltando ao Meta e ao Google.</p><a href="#contato" data-interest="Gestor(a) de marketing">Ver os indicadores ↗</a></article>
         </div>
+        <p class="audience-extra">Procura um imóvel para morar ou investir? <a href="#localizador" data-focar-localizador>Use o localizador</a> ou <a href="#contato" data-interest="Investidor ou comprador">fale com a equipe</a>: moradia, renda, EB-5, family office ou compra com cripto.</p>
         <div class="network-grid">
           <div class="network-item"><small>01 · Legal</small><h4>Advogada in-house</h4><p>Direito imobiliário, estruturação cross-border, FIRPTA e sucessão.</p></div>
           <div class="network-item"><small>02 · Brokerage</small><h4>Broker in-house</h4><p>Residencial, pré-construção, branded residences e comercial.</p></div>
@@ -958,7 +1090,6 @@ window.DANOVA_CRM = {
         </div>
       </div>
     </section>
-
 
     <section class="section" id="planos">
       <div class="container">
@@ -1031,9 +1162,9 @@ window.DANOVA_CRM = {
       <div class="container">
         <div class="cta-band">
           <div class="cta-copy">
-            <div class="eyebrow">Diagnóstico gratuito</div>
-            <h2>Vamos analisar o tráfego do seu empreendimento.</h2>
-            <p>Conte o projeto, o ticket e a verba atual. Mostramos onde o investimento em Meta Ads e Google Ads está se perdendo e como transformá-lo em visitas.</p>
+            <div class="eyebrow">Próximo passo · diagnóstico gratuito</div>
+            <h2>Transforme dados dispersos em decisões comerciais melhores.</h2>
+            <p>Conte o projeto, o ticket e a verba atual. Mapeamos seus canais, o processo de atendimento e os indicadores prioritários — e mostramos onde o investimento está se perdendo.</p>
           </div>
           <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Pedir diagnóstico <span>↗</span></a>
         </div>
@@ -1041,63 +1172,87 @@ window.DANOVA_CRM = {
     </section>
 
     <section class="section section-light" id="contato">
-      <div class="container contact-grid">
-        <div class="contact-intro">
+      <div class="container">
+        <div class="section-head">
           <div class="eyebrow">Fale com a DANOVA-AI</div>
-          <h2>Vamos encontrar o próximo passo.</h2>
-          <p>Quer campanhas para um empreendimento ou procura um imóvel? Conte um pouco — respondemos pessoalmente, em português, inglês ou espanhol.</p>
-          <div class="contact-detail">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="m4 6 8 7 8-7"/></svg></div>
-            <div><strong>E-mail</strong><span><a href="mailto:danielle@danova-ai.com">danielle@danova-ai.com</a></span></div>
-          </div>
-          <div class="contact-detail">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></div>
-            <div><strong>WhatsApp · Telefone</strong><span><a href="https://wa.me/17863826782?text=Ol%C3%A1%20Danielle%2C%20gostaria%20de%20um%20contato" target="_blank" rel="noopener">+1 (786) 382-6782</a></span></div>
-          </div>
-          <div class="contact-detail">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 14 8l5 2-5 2-2 5-2-5-5-2 5-2 2-5Z"/></svg></div>
-            <div><strong>Atendimento imediato, 24h</strong><span><a href="#contato" data-abrir-chat>Conversar com o assistente virtual</a> · tira dúvidas e encaminha para a equipe</span></div>
-          </div>
-          <div class="contact-detail">
-            <div class="icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></div>
-            <div><strong>Redes</strong><span><a href="https://www.instagram.com/danielle.lisboa.martins" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.linkedin.com/in/danielle-lisboa-martins" target="_blank" rel="noopener">LinkedIn</a></span></div>
-          </div>
+          <h2>Vamos entender sua operação.</h2>
+          <p>Conte um pouco sobre sua empresa ou sobre o imóvel que procura. Respondemos pessoalmente, em português, inglês ou espanhol.</p>
         </div>
+        <div class="contact-grid">
+          <aside class="contact-info">
+            <h3>Marketing imobiliário com visão de ponta a ponta.</h3>
+            <p>Campanhas, captação, atendimento e resultados comerciais organizados numa mesma estratégia.</p>
+            <div class="cpoint"><span>↗</span>Diagnóstico de campanhas e funil comercial</div>
+            <div class="cpoint"><span>◎</span>Mapeamento de integrações e dados</div>
+            <div class="cpoint"><span>▥</span>Definição de indicadores de desempenho</div>
+            <div class="contact-links">
+              <a href="https://wa.me/17863826782?text=Ol%C3%A1%20Danielle%2C%20gostaria%20de%20um%20contato" target="_blank" rel="noopener"><b>WhatsApp</b>+1 (786) 382-6782</a>
+              <a href="mailto:danielle@danova-ai.com"><b>E-mail</b>danielle@danova-ai.com</a>
+              <a href="#contato" data-abrir-chat><b>Atendimento 24h</b>Assistente virtual em PT, EN e ES</a>
+              <a href="https://www.instagram.com/danielle.lisboa.martins" target="_blank" rel="noopener"><b>Redes</b>Instagram · LinkedIn</a>
+            </div>
+          </aside>
 
-        <form class="form-card" id="leadForm" novalidate>
-          <h3>Conte-nos sobre seu interesse</h3>
-          <p>Preencha os campos. Sua solicitação chega por e-mail à equipe e abre uma conversa no WhatsApp.</p>
-          <div class="hp" aria-hidden="true"><label for="website">Não preencha</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
-          <input type="hidden" name="message" id="fullMessage">
-          <div class="form-grid">
-            <div class="field">
-              <label for="name">Nome completo *</label>
-              <input id="name" name="name" autocomplete="name" placeholder="Seu nome" required>
-            </div>
-            <div class="field">
-              <label for="email">E-mail *</label>
-              <input id="email" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required>
-            </div>
-            <div class="field">
-              <label for="phone">WhatsApp com DDI *</label>
-              <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+55 11 99999-9999" required>
-            </div>
-            <div class="field">
-              <label for="profile">Qual é o seu perfil? *</label>
-              <select id="profile" name="profile" required>
-                <option value="">Selecione</option>
-                <option>Investidor ou comprador</option>
-                <option>Corretor de imóveis</option>
-                <option>Imobiliária</option>
-                <option>Construtora ou incorporadora</option>
-                <option>Family office</option>
-                <option>Outro</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="project">Empreendimento de interesse</label>
-              <select id="project" name="project">
-                <option value="">Ainda estou avaliando</option>
+          <form class="form-card" id="leadForm" novalidate>
+            <h3>Solicite um diagnóstico</h3>
+            <p>Preencha os dados abaixo. A solicitação entra no nosso CRM e abre uma conversa no WhatsApp.</p>
+            <div class="hp" aria-hidden="true"><label for="website">Não preencha</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+            <input type="hidden" name="message" id="fullMessage">
+            <div class="form-grid">
+              <div class="field"><label for="name">Nome completo *</label><input id="name" name="name" autocomplete="name" placeholder="Seu nome" required></div>
+              <div class="field"><label for="company">Empresa</label><input id="company" name="company" autocomplete="organization" placeholder="Nome da empresa (se houver)"></div>
+              <div class="field"><label for="email">E-mail *</label><input id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" required></div>
+              <div class="field"><label for="phone">WhatsApp com DDI *</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+55 11 99999-9999" required></div>
+              <div class="field">
+                <label for="profile">Seu perfil *</label>
+                <select id="profile" name="profile" required>
+                  <option value="">Selecione</option>
+                  <option>Construtora ou incorporadora</option>
+                  <option>Imobiliária</option>
+                  <option>Corretor de imóveis</option>
+                  <option>Gestor(a) de marketing</option>
+                  <option>Investidor ou comprador</option>
+                  <option>Family office</option>
+                  <option>Outro</option>
+                </select>
+              </div>
+              <div class="field"><label for="region">Região de atuação</label><input id="region" name="country" placeholder="Ex.: Miami, Orlando, Brasil"></div>
+              <div class="field">
+                <label for="budget">Investimento mensal em mídia</label>
+                <select id="budget" name="budget">
+                  <option value="">Selecione</option>
+                  <option>Até R$ 5 mil</option>
+                  <option>R$ 5 mil a R$ 20 mil</option>
+                  <option>R$ 20 mil a R$ 50 mil</option>
+                  <option>Acima de R$ 50 mil</option>
+                  <option>Ainda não definido</option>
+                  <option>Não se aplica (sou comprador)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="goal">Principal necessidade</label>
+                <select id="goal" name="goal">
+                  <option value="">Selecione</option>
+                  <option>Campanhas de tráfego pago (Meta e Google Ads)</option>
+                  <option>Geração de leads</option>
+                  <option>CRM e distribuição de leads</option>
+                  <option>Integração Meta e Google</option>
+                  <option>Indicadores e vendas</option>
+                  <option>Automação e IA</option>
+                  <option>Plataforma danova AI (CRM)</option>
+                  <option>Vídeo pronto para anúncios</option>
+                  <option>Divulgação de empreendimento</option>
+                  <option>Parceria comercial</option>
+                  <option>Investimento / renda</option>
+                  <option>Moradia</option>
+                  <option>Visto EB-5 / mudança para a Flórida</option>
+                  <option>Compra com cripto</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="project">Empreendimento de interesse</label>
+                <select id="project" name="project">
+                  <option value="">Ainda estou avaliando / não se aplica</option>
                 <option>Domus Brickell Park</option>
                 <option>Meliá Brickell</option>
                 <option>The Residences at 1428 Brickell</option>
@@ -1108,37 +1263,18 @@ window.DANOVA_CRM = {
                 <option>The Residences at Mandarin Oriental, Miami</option>
                 <option>Mandarin Oriental Residences West Palm Beach</option>
                 <option>Estates by Turnberry</option>
-                <option>Quero vender meu imóvel</option>
-                <option>Quero cadastrar um empreendimento</option>
-                <option>Outro</option>
-              </select>
+                  <option>Quero cadastrar um empreendimento</option>
+                  <option>Quero vender meu imóvel</option>
+                  <option>Outro</option>
+                </select>
+              </div>
+              <div class="field full"><label for="notes">Conte um pouco sobre seu objetivo</label><textarea id="notes" name="notes" placeholder="O que você deseja melhorar na operação — ou o imóvel que procura (orçamento, prazo, quartos)"></textarea></div>
             </div>
-            <div class="field">
-              <label for="goal">Objetivo principal</label>
-              <select id="goal" name="goal">
-                <option value="">Selecione</option>
-                <option>Investimento / renda</option>
-                <option>Moradia</option>
-                <option>Investimento e moradia</option>
-                <option>Visto EB-5 / mudança para a Flórida</option>
-                <option>Compra com cripto</option>
-                <option>Parceria comercial</option>
-                <option>Campanhas de tráfego pago (Meta e Google Ads)</option>
-                <option>Divulgação de empreendimento</option>
-                <option>Plataforma danova AI (CRM)</option>
-                <option>Vídeo pronto para anúncios</option>
-              </select>
-            </div>
-            <div class="field full">
-              <label for="notes">Como podemos ajudar?</label>
-              <textarea id="notes" name="notes" placeholder="Orçamento, prazo, número de quartos, forma de pagamento…"></textarea>
-            </div>
-            <div class="field full">
-              <button type="submit" class="btn btn-primary" style="width:100%">Enviar solicitação ↗</button>
-              <div class="form-note">Ao enviar, você concorda em ser contatado por Danielle Lisboa Martins por telefone, e-mail e WhatsApp.</div>
-            </div>
-          </div>
-        </form>
+            <label class="consent"><input type="checkbox" id="consent" name="consent" value="sim" required><span>Autorizo a DANOVA-AI a entrar em contato por telefone, e-mail e WhatsApp sobre esta solicitação e declaro que li a <a href="https://danova-ai.com/politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
+            <button type="submit" class="btn btn-primary" style="width:100%">Solicitar diagnóstico <span>↗</span></button>
+            <p class="form-note">Seus dados são usados só para responder a esta solicitação. Veja os <a href="https://danova-ai.com/termos-de-uso.html" target="_blank" rel="noopener">Termos de Uso</a>.</p>
+          </form>
+        </div>
       </div>
     </section>
   </main>
@@ -1148,11 +1284,12 @@ window.DANOVA_CRM = {
       <div class="footer-top">
         <div class="footer-brand">
           <a class="brand" href="#inicio" aria-label="danova AI — início"><img class="brand-logo" src="data:image/webp;base64,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" alt="danova AI" width="156" height="52" loading="lazy"></a>
-          <p>Tráfego pago imobiliário há 10 anos: Meta Ads, Google Ads, CRM e atendimento por IA para vender empreendimentos de alto padrão.</p>
+          <p>Inteligência de performance para conectar marketing, oportunidades e resultados no mercado imobiliário — Meta Ads, Google Ads, CRM e IA há 10 anos.</p>
         </div>
         <div class="footer-links">
-          <div class="footer-col"><strong>Explorar</strong><a href="#inicio">Início</a><a href="#estrategia">Estratégia</a><a href="#plataforma">Plataforma</a><a href="#video">Vídeo para anúncios</a><a href="#planos">Planos</a><a href="#empreendimentos">Empreendimentos</a><a href="#faq">Perguntas frequentes</a><a href="https://danova-ai.com/livro.html" target="_blank" rel="noopener">Livro</a></div>
-          <div class="footer-col"><strong>Conectar</strong><a href="#parceiros">Seja parceiro</a><a href="#contato">Fale conosco</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="#crm">Área de membros</a></div>
+          <div class="footer-col"><strong>Explorar</strong><a href="#plataforma">Plataforma</a><a href="#como-funciona">Como funciona</a><a href="#estrategia">Estratégia</a><a href="#video">Vídeo para anúncios</a><a href="#planos">Planos</a><a href="#empreendimentos">Empreendimentos</a><a href="#faq">Perguntas frequentes</a><a href="https://danova-ai.com/livro.html" target="_blank" rel="noopener">Livro</a></div>
+          <div class="footer-col"><strong>Para empresas</strong><a href="#contato" data-interest="Construtora ou incorporadora">Construtoras</a><a href="#contato" data-interest="Imobiliária">Imobiliárias</a><a href="#contato" data-interest="Corretor de imóveis">Corretores</a><a href="#contato" data-interest="Gestor(a) de marketing">Marketing</a><a href="#crm">Área de membros</a></div>
+          <div class="footer-col"><strong>Contato e transparência</strong><a href="#contato">Solicitar diagnóstico</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://danova-ai.com/politica-de-privacidade.html">Política de Privacidade</a><a href="https://danova-ai.com/termos-de-uso.html">Termos de Uso</a></div>
         </div>
       </div>
       <p class="legal-note">Danielle Lisboa Martins, Esq. · NY State Bar #10351218844 · FL Broker #3252283 · Executive Broker, Cervera Real Estate. We do business in accordance with the Federal Fair Housing Law.</p>
@@ -1235,10 +1372,13 @@ window.DANOVA_CRM = {
         "E-mail: " + d.get("email"),
         "WhatsApp: " + d.get("phone"),
         "Perfil: " + d.get("profile"),
+        d.get("company") ? "Empresa: " + d.get("company") : "",
+        d.get("country") ? "Região: " + d.get("country") : "",
+        d.get("budget") ? "Investimento mensal em mídia: " + d.get("budget") : "",
         "Empreendimento: " + (d.get("project") || "Ainda estou avaliando"),
-        "Objetivo: " + (d.get("goal") || "Não informado"),
+        "Necessidade: " + (d.get("goal") || "Não informada"),
         "Mensagem: " + (d.get("notes") || "Não informada")
-      ].join("\n");
+      ].filter(Boolean).join("\n");
     }
     // Roda antes do script de medição (que envia o lead para /api/lead.php):
     // valida o formulário e monta a mensagem completa no campo "message".
@@ -1262,6 +1402,8 @@ window.DANOVA_CRM = {
         if (crm && crm.url) {
           const dados = Object.fromEntries(new FormData(form).entries());
           dados.lead_page = "home"; dados.source = "leadForm";
+          dados.notes = [dados.company ? "Empresa: " + dados.company : "", dados.notes || "",
+            "Consentimento de contato e Política de Privacidade: aceito em " + new Date().toLocaleString("pt-BR")].filter(Boolean).join("\n");
           dados.language = (document.documentElement.lang || "pt").slice(0, 2);
           fetch(crm.url + "/rest/v1/rpc/enviar_lead", {
             method: "POST", keepalive: true,
@@ -3278,7 +3420,7 @@ html.crm-mode body { background: #f4f6fa; }
     document.documentElement.classList.toggle("crm-mode", crm);
     window.__crmAtivo = crm;
     if (crm) { window.scrollTo(0, 0); document.title = "danova AI · Área de membros"; if (window.danovaAbrirCRM) window.danovaAbrirCRM(); }
-    else { document.title = "danova AI | Tráfego pago e plataforma de vendas para empreendimentos"; }
+    else { document.title = "DANOVA-AI | Real Estate Intelligence · tráfego pago, CRM e vendas imobiliárias"; }
   }
   window.addEventListener("hashchange", rota);
   rota();
