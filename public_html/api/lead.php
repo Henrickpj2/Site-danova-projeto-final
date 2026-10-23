@@ -102,9 +102,9 @@ if ($fh = @fopen($csv, 'a')) {
     fclose($fh);
 }
 
-// CRM: o formulário principal (leadForm) já envia direto ao CRM pelo navegador;
+// CRM: o formulário principal (leadForm) e o pedido de vídeo (videoForm) já enviam direto ao CRM pelo navegador;
 // os demais formulários do site (livro etc.) entram no CRM por aqui.
-if ($lead['source'] !== 'leadForm' && function_exists('curl_init')) {
+if (!in_array($lead['source'], ['leadForm', 'videoForm'], true) && function_exists('curl_init')) {
     $ch = curl_init(CRM_URL . '/rest/v1/rpc/enviar_lead');
     curl_setopt_array($ch, [
         CURLOPT_POST => true,

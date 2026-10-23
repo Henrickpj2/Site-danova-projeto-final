@@ -73,7 +73,7 @@ tracking = ler("js/danova-tracking.js").replace(
     "if (f && f.tagName === 'FORM' && !(f.closest && f.closest('#crmRoot'))) sendLead(f);")
 assert "#crmRoot" in tracking
 html = html.replace('<script src="js/danova-config.js?v=20261020"></script>', script(ler("js/danova-config.js")))
-html = html.replace('<script src="js/crm-config.js?v=20261021"></script>', script(ler("js/crm-config.js")))
+html = html.replace('<script src="js/crm-config.js?v=20261023"></script>', script(ler("js/crm-config.js")))
 html = html.replace('<script src="js/danova-tracking.js?v=20261020" defer></script>', "")
 html = html.replace('<script src="js/danova-localizador.js?v=20261021" defer></script>', "")
 html = html.replace('<script src="js/danova-chat.js?v=20261021" defer></script>', "")
@@ -123,7 +123,7 @@ roteador = """
     document.documentElement.classList.toggle("crm-mode", crm);
     window.__crmAtivo = crm;
     if (crm) { window.scrollTo(0, 0); document.title = "danova AI · Área de membros"; if (window.danovaAbrirCRM) window.danovaAbrirCRM(); }
-    else { document.title = "danova AI | Tráfego pago imobiliário · Meta Ads e Google Ads"; }
+    else { document.title = "danova AI | Tráfego pago e plataforma de vendas para empreendimentos"; }
   }
   window.addEventListener("hashchange", rota);
   rota();
@@ -134,6 +134,7 @@ bloco_crm = (
     "<style>\n" + crm_css + "\n</style>\n"
     '<div id="crmRoot">' + corpo + "</div>\n"
     + script(ler("js/vendor/supabase-2.45.4.js").replace('throw new Error("Automatic publicPath is not supported in this browser")', 'e="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/"')) + "\n"
+    + script(ler("crm/crm-modulos.js")) + "\n"
     + script(crm_js) + "\n"
     + script(ler("js/danova-localizador.js")) + "\n"
     + script(ler("js/danova-chat.js")) + "\n"

@@ -44,6 +44,9 @@
       link.addEventListener("click", () => selectByText(projectSelect, link.dataset.project)));
     document.querySelectorAll("[data-interest]").forEach(link =>
       link.addEventListener("click", () => selectByText(profileSelect, link.dataset.interest)));
+    const goalSelect = document.getElementById("goal");
+    document.querySelectorAll("[data-goal]").forEach(link =>
+      link.addEventListener("click", () => selectByText(goalSelect, link.dataset.goal)));
 
     const toast = document.getElementById("toast");
     function showToast(message) {
@@ -108,3 +111,38 @@
       showToast("Obrigado! Recebemos sua solicitação — a conversa no WhatsApp foi aberta em uma nova aba.");
       form.reset();
     });
+
+    // Pedido de vídeo pronto para anúncios → CRM (lead + pedido). O e-mail de aviso segue pelo script de medição.
+    const videoForm = document.getElementById("videoForm");
+    if (videoForm) videoForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (!videoForm.checkValidity()) { videoForm.reportValidity(); return; }
+      const f = new FormData(videoForm), btn = videoForm.querySelector("button[type=submit]");
+      const lista = n => f.getAll(n);
+      const attr = {};
+      videoForm.querySelectorAll('input[type=hidden]').forEach(i => { if (i.name) attr[i.name] = i.value; });
+      const dados = Object.assign(attr, {
+        empreendimento: f.get("empreendimento"), name: f.get("name"), email: f.get("email"), phone: f.get("phone"),
+        formatos: lista("formatos"), duracoes: lista("duracoes"), idiomas: lista("idiomas"), plataformas: ["meta", "google"],
+        material: f.get("material"), briefing: f.get("briefing"), website: f.get("website"), profile: "Construtora ou incorporadora"
+      });
+      const crm = window.DANOVA_CRM;
+      btn.disabled = true;
+      try {
+        if (!crm || !crm.url) throw new Error("sem crm");
+        const r = await fetch(crm.url + "/rest/v1/rpc/solicitar_video", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", apikey: crm.anonKey, Authorization: "Bearer " + crm.anonKey },
+          body: JSON.stringify({ dados: dados })
+        });
+        if (!r.ok) throw new Error("http " + r.status);
+        try { (window.dataLayer = window.dataLayer || []).push({ event: "video_pedido", formatos: dados.formatos.join(","), empreendimento: dados.empreendimento }); } catch (e) {}
+        showToast("Pedido recebido! Nossa equipe responde com orçamento e prazo.");
+        videoForm.reset();
+      } catch (e) {
+        const msg = "Olá! Quero um vídeo pronto para anúncios do empreendimento " + (dados.empreendimento || "") + ". Formatos: " + dados.formatos.join(", ") + ".";
+        window.open("https://wa.me/" + DANOVA_WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg), "_blank", "noopener,noreferrer");
+        showToast("Não conseguimos registrar agora — abrimos o WhatsApp para você enviar o pedido.");
+      } finally { btn.disabled = false; }
+    });
+

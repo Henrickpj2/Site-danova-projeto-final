@@ -2,6 +2,8 @@
 -- danova AI · CRM — estrutura do banco (Supabase / Postgres)
 -- Estado final aplicado no projeto "danova-crm" (oeylfwasqvbnybzrwtgf) em 21/10/2026.
 -- Para recriar em outro projeto: cole este arquivo no SQL Editor do Supabase e execute.
+-- Depois, execute migracoes/2026-10-23-plataforma.sql (construtoras, inventário, visitas, vendas e comissões,
+-- cobrança, mídia, documentos, distribuição, conversões do Meta, vídeos para anúncios e portal da construtora).
 -- =====================================================================
 
 create type public.papel_membro as enum ('admin', 'corretor');

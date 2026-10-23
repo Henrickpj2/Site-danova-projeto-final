@@ -33,6 +33,15 @@ P=[
   d="Comunidade fechada de casas de luxo com segurança 24h e escolas de ponta próximas — ideal para famílias internacionais.",
   f=["151 casas single-family · até 5.950 pés²","Lotes de 20 a 26 mil pés²","Clubhouse, trilhas equestres e 60+ acres verdes"],price="US$ 1,7 mi",when="Casas a partir de"),
 ]
+FAQ=[
+ ("A danova AI faz só os anúncios ou também cuida dos leads?","Cuidamos do funil inteiro: Meta Ads, Google Ads e SEO + IA trazem o comprador; o atendente de IA responde 24h e qualifica; o CRM distribui o lead para o corretor certo, agenda a visita e registra proposta e venda. O resultado volta para as campanhas otimizarem por compradores reais."),
+ ("Quanto custa a plataforma danova AI?","R$ 199,99 por mês mais 1% sobre cada venda fechada registrada na plataforma. A gestão de tráfego pago é contratada à parte, sob proposta, e o vídeo para anúncios tem orçamento por projeto."),
+ ("Como os leads do Facebook e do Instagram chegam ao CRM?","Os formulários instantâneos do Meta são conectados à plataforma: cada lead entra sozinho no CRM com campanha, conjunto e anúncio de origem, e já é distribuído para um corretor."),
+ ("Como o Google Ads sabe quais leads viraram venda?","Guardamos o identificador do clique (GCLID) de cada lead. Quando o lead é qualificado, visita, recebe proposta ou compra, essa conversão é enviada ao Google Ads, que passa a dar lances buscando pessoas parecidas com quem compra."),
+ ("A construtora vê os dados pessoais dos meus clientes?","Não. O portal da construtora mostra números: unidades disponíveis, leads por etapa, origem, visitas, negociações e investimento em mídia. Nome, telefone e e-mail dos clientes ficam só com a equipe de vendas responsável."),
+ ("Preciso ter um vídeo pronto para anunciar?","Ajuda muito: vídeo é o formato que mais entrega no Reels, Stories e YouTube. Se você não tiver, produzimos o vídeo do empreendimento nos formatos 9:16, 1:1, 4:5 e 16:9, com versões de 6, 15 e 30 segundos, a partir dos renders e plantas que você já tem."),
+ ("Em quais idiomas o atendimento por IA funciona?","Português, inglês e espanhol. O assistente avisa que é virtual, responde com base nas informações dos empreendimentos e passa a conversa para a equipe quando o cliente pede uma pessoa."),
+]
 pin='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>'
 e=html.escape
 import unicodedata, re as _re
@@ -59,15 +68,24 @@ for p in P:
           </article>''')
 opts="\n".join(f"                <option>{e(p['n'])}</option>" for p in P)
 css=open('base.css').read()+open('extra.css').read()
-body=open('body.html').read().replace('__CARDS__',"\n".join(cards)).replace('__OPTIONS__',opts)
+import json as _json
+faq_html="\n".join(f'          <details><summary>{e(q)}</summary><p>{e(r)}</p></details>' for q,r in FAQ)
+body=open('body.html').read().replace('__CARDS__',"\n".join(cards)).replace('__OPTIONS__',opts).replace('__FAQ__',faq_html)
+LD=[{"@context":"https://schema.org","@type":"Organization","@id":"https://danova-ai.com/#org","name":"danova AI","url":"https://danova-ai.com/","logo":"https://danova-ai.com/img/danova-logo.webp","email":"danielle@danova-ai.com","telephone":"+1-786-382-6782","areaServed":["Miami","Palm Beach","Flórida","Brasil"],"knowsAbout":["Meta Ads","Google Ads","SEO","tráfego pago imobiliário","CRM imobiliário","empreendimentos de alto padrão"],"knowsLanguage":["pt","en","es"],"sameAs":["https://wa.me/17863826782"]},
+ {"@context":"https://schema.org","@type":"WebSite","@id":"https://danova-ai.com/#site","url":"https://danova-ai.com/","name":"danova AI","inLanguage":"pt-BR","publisher":{"@id":"https://danova-ai.com/#org"}},
+ {"@context":"https://schema.org","@type":"Service","name":"Plataforma danova AI","serviceType":"CRM e plataforma de vendas imobiliárias com IA","provider":{"@id":"https://danova-ai.com/#org"},"offers":{"@type":"Offer","price":"199.99","priceCurrency":"BRL","description":"Mensalidade de R$ 199,99 mais 1% sobre cada venda fechada registrada na plataforma"}},
+ {"@context":"https://schema.org","@type":"Service","name":"Gestão de tráfego pago imobiliário","serviceType":"Meta Ads, Google Ads e SEO para empreendimentos","provider":{"@id":"https://danova-ai.com/#org"}},
+ {"@context":"https://schema.org","@type":"Service","name":"Vídeo pronto para anúncios","serviceType":"Produção de vídeo de empreendimento para Meta Ads e Google Ads (9:16, 1:1, 4:5, 16:9)","provider":{"@id":"https://danova-ai.com/#org"}},
+ {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":q,"acceptedAnswer":{"@type":"Answer","text":r}} for q,r in FAQ]}]
+ld="".join('  <script type="application/ld+json">'+_json.dumps(x,ensure_ascii=False).replace("</","<\\/")+'</script>\n' for x in LD)
 head=f'''<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1424">
-  <title>danova AI | Tráfego pago imobiliário · Meta Ads e Google Ads</title>
-  <meta name="description" content="Há 10 anos a danova AI planeja e otimiza campanhas de Meta Ads e Google Ads para empreendimentos de alto padrão, com localizador de imóveis, CRM e atendimento por IA.">
+  <title>danova AI | Tráfego pago e plataforma de vendas para empreendimentos</title>
+  <meta name="description" content="Há 10 anos a danova AI faz Meta Ads, Google Ads e SEO para empreendimentos de alto padrão. Plataforma com CRM, inventário, IA e vídeo pronto para anúncios: R$ 199,99/mês + 1% na venda.">
   <link rel="canonical" href="https://danova-ai.com/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="danova AI | Tráfego pago que vende empreendimentos">
@@ -79,9 +97,10 @@ head=f'''<!doctype html>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="img/danova-logo.webp">
   <script src="js/danova-config.js?v=20261020"></script>
-  <script src="js/crm-config.js?v=20261021"></script>
+  <script src="js/crm-config.js?v=20261023"></script>
   <script src="js/danova-tracking.js?v=20261020" defer></script>
   <style>{css}  </style>
+{ld}
 </head>
 '''
 js=open('page.js').read()
