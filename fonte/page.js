@@ -151,3 +151,17 @@
       } finally { btn.disabled = false; }
     });
 
+    // Painel do topo: anima os números fictícios quando aparecem na tela
+    (function () {
+      const nums = document.querySelectorAll("[data-hd]");
+      if (!nums.length || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const animar = el => {
+        const alvo = Number(el.dataset.hd), pre = el.dataset.pre || "", ini = performance.now();
+        const passo = t => { const k = Math.min(1, (t - ini) / 1100), v = Math.round(alvo * (1 - Math.pow(1 - k, 3)));
+          el.textContent = pre + v.toLocaleString("pt-BR"); if (k < 1) requestAnimationFrame(passo); };
+        requestAnimationFrame(passo);
+      };
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { animar(e.target); io.unobserve(e.target); } }), { threshold: .4 });
+      nums.forEach(n => io.observe(n));
+    })();
+

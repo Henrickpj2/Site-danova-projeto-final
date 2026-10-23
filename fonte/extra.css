@@ -393,3 +393,4 @@
     .nav-login { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; font-weight: 700; }
     .nav-login svg { width: 16px; height: 16px; }
     .nav-login:hover { border-color: #63dfd0; color: #63dfd0; }
+    .hd-metric small em { font-style: normal; font-weight: 800; color: #9ff0e4; margin-left: 4px; }

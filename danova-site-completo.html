@@ -615,6 +615,7 @@ window.DANOVA_CRM = {
     .nav-login { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; font-weight: 700; }
     .nav-login svg { width: 16px; height: 16px; }
     .nav-login:hover { border-color: #63dfd0; color: #63dfd0; }
+    .hd-metric small em { font-style: normal; font-weight: 800; color: #9ff0e4; margin-left: 4px; }
   </style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://danova-ai.com/#org", "name": "danova AI", "url": "https://danova-ai.com/", "logo": "https://danova-ai.com/img/danova-logo.webp", "email": "danielle@danova-ai.com", "telephone": "+1-786-382-6782", "areaServed": ["Miami", "Palm Beach", "Flórida", "Brasil"], "knowsAbout": ["Meta Ads", "Google Ads", "SEO", "tráfego pago imobiliário", "CRM imobiliário", "empreendimentos de alto padrão"], "knowsLanguage": ["pt", "en", "es"], "sameAs": ["https://wa.me/17863826782"]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://danova-ai.com/#site", "url": "https://danova-ai.com/", "name": "danova AI", "inLanguage": "pt-BR", "publisher": {"@id": "https://danova-ai.com/#org"}}</script>
@@ -666,15 +667,15 @@ window.DANOVA_CRM = {
           <div class="hero-note">Google Ads · Meta Ads · SEO + IA · Captação de leads · CRM · Inteligência comercial</div>
         </div>
         <div class="hd" aria-label="Exemplo ilustrativo do painel de performance">
-          <div class="hd-top"><strong>Visão geral de performance</strong><span>EXEMPLO ILUSTRATIVO</span></div>
+          <div class="hd-top"><strong>Visão geral de performance · 30 dias</strong><span>DADOS FICTÍCIOS</span></div>
           <div class="hd-grid">
-            <div class="hd-metric"><label>Investimento em mídia</label><b>R$ —</b><small>Meta Ads + Google Ads</small></div>
-            <div class="hd-metric"><label>Leads captados</label><b>—</b><small>Site, Meta e chat de IA</small></div>
-            <div class="hd-metric"><label>Visitas realizadas</label><b>—</b><small>Agenda do CRM</small></div>
-            <div class="hd-metric"><label>Vendas atribuídas</label><b>—</b><small>Por canal e campanha</small></div>
+            <div class="hd-metric"><label>Investimento em mídia</label><b data-hd="48500" data-pre="R$ ">R$ 48.500</b><small>Meta Ads + Google Ads <em>▲ 12%</em></small></div>
+            <div class="hd-metric"><label>Leads captados</label><b data-hd="1284">1.284</b><small>CPL R$ 37,77 <em>▲ 18%</em></small></div>
+            <div class="hd-metric"><label>Visitas realizadas</label><b data-hd="96">96</b><small>7,5% dos leads <em>▲ 9%</em></small></div>
+            <div class="hd-metric"><label>Vendas atribuídas</label><b data-hd="9">9</b><small>US$ 13,8 mi em VGV <em>▲ 3</em></small></div>
           </div>
           <div class="hd-chart" aria-hidden="true"><i style="height:24%"></i><i style="height:42%"></i><i style="height:34%"></i><i style="height:60%"></i><i style="height:48%"></i><i style="height:75%"></i><i style="height:64%"></i><i style="height:90%"></i><i style="height:78%"></i><i style="height:100%"></i></div>
-          <div class="hd-caption"><span>Visual ilustrativo — os números reais aparecem no painel Desempenho do CRM</span><a href="#localizador" data-focar-localizador>Procura um imóvel? ↓</a></div>
+          <div class="hd-caption"><span>Exemplo com dados fictícios — os números reais aparecem no dashboard do CRM</span><a href="#localizador" data-focar-localizador>Procura um imóvel? ↓</a></div>
         </div>
       </div>
     </section>
@@ -1461,6 +1462,20 @@ window.DANOVA_CRM = {
         showToast("Não conseguimos registrar agora — abrimos o WhatsApp para você enviar o pedido.");
       } finally { btn.disabled = false; }
     });
+
+    // Painel do topo: anima os números fictícios quando aparecem na tela
+    (function () {
+      const nums = document.querySelectorAll("[data-hd]");
+      if (!nums.length || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const animar = el => {
+        const alvo = Number(el.dataset.hd), pre = el.dataset.pre || "", ini = performance.now();
+        const passo = t => { const k = Math.min(1, (t - ini) / 1100), v = Math.round(alvo * (1 - Math.pow(1 - k, 3)));
+          el.textContent = pre + v.toLocaleString("pt-BR"); if (k < 1) requestAnimationFrame(passo); };
+        requestAnimationFrame(passo);
+      };
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { animar(e.target); io.unobserve(e.target); } }), { threshold: .4 });
+      nums.forEach(n => io.observe(n));
+    })();
 
 
   </script>
