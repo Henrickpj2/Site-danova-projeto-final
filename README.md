@@ -37,6 +37,15 @@ supabase/functions/ → atendente do site, agente do CRM, leads do Meta e conver
 - **Ficha do lead:** etapa, temperatura, corretor responsável, valor estimado, próximo passo e data, botões de WhatsApp/e-mail/ligar e histórico automático (cada mudança de etapa, atribuição, contato e anotação fica registrada com autor e data).
 - **Corretores** (só administradores): aprovar acessos, definir papel, ver leads, fechados e conversão de cada um.
 
+### Dashboard do administrador
+
+Tela inicial de quem é admin (só admins veem). Atualiza sozinho: a cada lead novo ou alterado (tempo real) e, para vendas, visitas e eventos, a cada minuto.
+- Período (hoje, 7, 30, 90 dias, 12 meses) com comparação automática com o período anterior (▲▼ %).
+- Indicadores animados com minigráficos: leads novos, qualificados, taxa de qualificação, visitas, vendido e pipeline aberto (com previsão ponderada).
+- Entrada de leads por dia, empilhada por canal (Meta, Google, chat de IA, SEO, direto), com detalhes ao passar o mouse.
+- Origem dos leads com custo por lead (quando o investimento está lançado em Mídia), funil com a conversão entre etapas, ranking de corretores, empreendimentos mais procurados com unidades disponíveis.
+- Alertas clicáveis (leads novos há 24h sem contato, sem corretor, follow-ups atrasados, quentes parados, visitas do dia, faturas vencidas), feed ao vivo das movimentações e mapa de calor de dia × hora de chegada dos leads.
+
 ### Telas da plataforma
 
 | Tela | Quem vê | O que faz |

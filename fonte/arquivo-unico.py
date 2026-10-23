@@ -47,7 +47,8 @@ def escopo_css(css, pref="#crmRoot"):
             res.append(", ".join(dict.fromkeys(sels)) + " {" + m.group(2) + "}")
         return "\n".join(res)
     while i < n:
-        at = css.find("@media", i)
+        cand = [p for p in (css.find("@media", i), css.find("@keyframes", i)) if p >= 0]
+        at = min(cand) if cand else -1
         if at < 0:
             out.append(bloco_regras(css[i:])); break
         out.append(bloco_regras(css[i:at]))
@@ -57,7 +58,10 @@ def escopo_css(css, pref="#crmRoot"):
             if css[j] == "{": prof += 1
             elif css[j] == "}": prof -= 1
             j += 1
-        out.append(css[at:abre] + "{\n" + bloco_regras(css[abre + 1:j - 1]) + "\n}")
+        if css.startswith("@keyframes", at):
+            out.append(css[at:j])
+        else:
+            out.append(css[at:abre] + "{\n" + bloco_regras(css[abre + 1:j - 1]) + "\n}")
         i = j
     return "\n".join(out)
 
@@ -135,6 +139,7 @@ bloco_crm = (
     '<div id="crmRoot">' + corpo + "</div>\n"
     + script(ler("js/vendor/supabase-2.45.4.js").replace('throw new Error("Automatic publicPath is not supported in this browser")', 'e="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/"')) + "\n"
     + script(ler("crm/crm-modulos.js")) + "\n"
+    + script(ler("crm/crm-dash.js")) + "\n"
     + script(crm_js) + "\n"
     + script(ler("js/danova-localizador.js")) + "\n"
     + script(ler("js/danova-chat.js")) + "\n"

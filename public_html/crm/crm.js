@@ -95,7 +95,8 @@
     var v = (location.hash || "").replace("#", "");
     var permitidas = (ehConstrutora ? ["conta"] : ["painel", "funil", "leads", "conta"].concat(isAdmin() ? ["corretores"] : []))
       .concat(modulosDoPapel().map(function (m) { return m.id; }));
-    irPara(permitidas.indexOf(v) >= 0 ? v : (ehConstrutora ? "portal" : "painel"));
+    var inicial = ehConstrutora ? "portal" : (isAdmin() && permitidas.indexOf("dash") >= 0 ? "dash" : "painel");
+    irPara(permitidas.indexOf(v) >= 0 ? v : inicial);
   }
 
   async function carregar() {
@@ -131,7 +132,7 @@
       if ($('.side-nav [data-view="' + m.id + '"]')) return;
       var b = document.createElement("button"); b.dataset.view = m.id; b.innerHTML = "<span>" + m.icone + "</span>" + esc(m.titulo);
       b.addEventListener("click", function () { irPara(m.id); });
-      nav.insertBefore(b, conta);
+      nav.insertBefore(b, (m.antes && $('.side-nav [data-view="' + m.antes + '"]')) || conta);
       var div = document.createElement("div"); div.className = "view"; div.id = "view-" + m.id; div.hidden = true; main.appendChild(div);
       TITULOS[m.id] = m.tituloLongo || m.titulo;
     });
