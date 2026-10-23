@@ -113,6 +113,16 @@ Sem isso, os links de confirmação de e-mail e de nova senha apontam para `loca
 
 O envio de e-mails padrão do Supabase tem limite baixo por hora. Para volume real, configure um SMTP próprio (Authentication → Emails → SMTP), por exemplo o e-mail da Hostinger.
 
+## Publicar na Vercel
+
+O repositório já vem pronto para a Vercel (`vercel.json`, `.vercelignore` e `api/lead.js`):
+
+1. Em vercel.com → **Add New… → Project**, importe o repositório `Henrickpj2/Site-danova-projeto-final`.
+2. Deixe *Framework Preset* em **Other** e clique em **Deploy** (não há build; o site publicado é a pasta `public_html`).
+3. O receptor de leads roda como função (`api/lead.js`): encaminha ao CRM os formulários que não gravam direto (livro etc.). Para receber o aviso por e-mail, crie em *Settings → Environment Variables* a `RESEND_API_KEY` (resend.com, com o domínio danova-ai.com verificado). Opcionais: `LEAD_TO`, `LEAD_FROM`.
+4. Para usar o domínio: *Settings → Domains* → `danova-ai.com` e siga os registros DNS indicados.
+5. No Supabase → Authentication → URL Configuration, acrescente em **Redirect URLs** o endereço da Vercel (ex.: `https://SEU-PROJETO.vercel.app/crm/*`); se o domínio principal for a Vercel, troque também a **Site URL**.
+
 ## Publicar na Hostinger
 
 Envie o conteúdo de `public_html/` para a pasta `public_html` do domínio (Gerenciador de Arquivos ou FTP). Se já existir um `.htaccess`, mantenha o antigo e cole o bloco novo no topo.

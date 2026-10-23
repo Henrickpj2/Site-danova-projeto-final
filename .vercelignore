@@ -1,0 +1,5 @@
+# Na Vercel o receptor de leads é api/lead.js (o PHP é só para a Hostinger)
+public_html/api/
+fonte/
+supabase/
+danova-site-completo.html
