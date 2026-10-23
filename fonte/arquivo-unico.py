@@ -85,7 +85,7 @@ assert 'src="js/' not in html, re.findall(r'src="js/[^"]+"', html)
 html = re.sub(r'\s*<link rel="preload" as="image" href="img/[^"]+">', "", html)
 
 # links que dependiam de outros arquivos
-html = html.replace('href="crm/"', 'href="#crm"').replace('href="livro.html"', 'href="https://danova-ai.com/livro.html" target="_blank" rel="noopener"').replace('href="politica-de-privacidade.html"', 'href="https://danova-ai.com/politica-de-privacidade.html"').replace('href="termos-de-uso.html"', 'href="https://danova-ai.com/termos-de-uso.html"')
+html = html.replace('href="crm/index.html"', 'href="#crm"').replace('href="livro.html"', 'href="https://danova-ai.com/livro.html" target="_blank" rel="noopener"').replace('href="politica-de-privacidade.html"', 'href="https://danova-ai.com/politica-de-privacidade.html"').replace('href="termos-de-uso.html"', 'href="https://danova-ai.com/termos-de-uso.html"')
 html = html.replace(
     '<span>Empreendimentos de Brickell a Palm Beach <a href="#empreendimentos">Explore os projetos ↗</a></span>',
     '<span>Empreendimentos de Brickell a Palm Beach <a href="#empreendimentos">Explore os projetos ↗</a> · <a href="#crm">Área de membros</a></span>')
@@ -93,7 +93,7 @@ html = html.replace(
 # ---------- CRM ----------
 crm_html = ler("crm/index.html")
 corpo = re.search(r"<body>(.*?)<script", crm_html, re.S).group(1)
-corpo = corpo.replace('id="toast"', 'id="crmToast"').replace('href="../"', 'href="#inicio"')
+corpo = corpo.replace('id="toast"', 'id="crmToast"').replace('href="../index.html"', 'href="#inicio"')
 crm_css = escopo_css(ler("crm/crm.css"))
 crm_css += """
 #crmRoot { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
