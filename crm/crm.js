@@ -84,16 +84,22 @@
     if (!S.me.ativo) { $("#authScreen").hidden = true; $("#pendingScreen").hidden = false; $("#pendingName").textContent = S.me.nome; return; }
     $("#authScreen").hidden = true; $("#pendingScreen").hidden = true; $("#app").hidden = false;
     $("#meNome").textContent = S.me.nome || S.me.email;
-    $("#mePapel").textContent = isAdmin() ? "Administrador" : "Corretor";
+    $("#mePapel").textContent = { admin: "Administrador", corretor: "Corretor", construtora: "Construtora" }[S.me.papel] || S.me.papel;
     $$("[data-admin]").forEach(function (el) { el.hidden = !isAdmin(); });
+    montarModulos();
+    var ehConstrutora = S.me.papel === "construtora";
+    ["painel", "funil", "leads", "corretores"].forEach(function (v) { var b = $('.side-nav [data-view="' + v + '"]'); if (b && ehConstrutora) b.hidden = true; });
+    $(".top-actions").hidden = ehConstrutora;
     await carregar();
-    tempoReal();
+    if (!ehConstrutora) tempoReal();
     var v = (location.hash || "").replace("#", "");
-    irPara(["painel", "funil", "leads", "corretores", "conta"].indexOf(v) >= 0 && (v !== "corretores" || isAdmin()) ? v : "painel");
+    var permitidas = (ehConstrutora ? ["conta"] : ["painel", "funil", "leads", "conta"].concat(isAdmin() ? ["corretores"] : []))
+      .concat(modulosDoPapel().map(function (m) { return m.id; }));
+    irPara(permitidas.indexOf(v) >= 0 ? v : (ehConstrutora ? "portal" : "painel"));
   }
 
   async function carregar() {
-    var a = await sb.from("leads_resumo").select("*").order("criado_em", { ascending: false }).limit(5000);
+    var a = await sb.from("leads_painel").select("*").order("criado_em", { ascending: false }).limit(5000);
     if (a.error) return falha(a.error);
     S.leads = a.data || [];
     var b = await sb.from("membros").select("*").order("nome");
@@ -106,14 +112,30 @@
     S.canal = sb.channel("leads-crm")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "leads" }, async function (p) {
         toast("Novo lead: " + (p.new.nome || p.new.email || p.new.telefone));
-        await carregar(); render();
+        await carregar(); if (TITULOS_NUCLEO.indexOf(S.view) >= 0) render();
       })
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "leads" }, async function () { await carregar(); if (!S.aberto) render(); })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "leads" }, async function () { await carregar(); if (!S.aberto && TITULOS_NUCLEO.indexOf(S.view) >= 0) render(); })
       .subscribe();
   }
 
   // =============== NAVEGAÇÃO ===============
+  var TITULOS_NUCLEO = ["painel", "funil", "leads", "corretores", "conta"];
   var TITULOS = { painel: "Painel", funil: "Funil de vendas", leads: "Leads", corretores: "Corretores", conta: "Minha conta" };
+  // ---------- módulos extras (crm-modulos.js) ----------
+  function modulosDoPapel() {
+    return ((window.DanovaCRM && window.DanovaCRM.modulos) || []).filter(function (m) { return S.me && m.papeis.indexOf(S.me.papel) >= 0; });
+  }
+  function montarModulos() {
+    var nav = $(".side-nav"), conta = $('.side-nav [data-view="conta"]'), main = $(".main");
+    modulosDoPapel().forEach(function (m) {
+      if ($('.side-nav [data-view="' + m.id + '"]')) return;
+      var b = document.createElement("button"); b.dataset.view = m.id; b.innerHTML = "<span>" + m.icone + "</span>" + esc(m.titulo);
+      b.addEventListener("click", function () { irPara(m.id); });
+      nav.insertBefore(b, conta);
+      var div = document.createElement("div"); div.className = "view"; div.id = "view-" + m.id; div.hidden = true; main.appendChild(div);
+      TITULOS[m.id] = m.tituloLongo || m.titulo;
+    });
+  }
   function irPara(v) {
     S.view = v; history.replaceState(null, "", "#" + v);
     $$(".side-nav button").forEach(function (b) { b.classList.toggle("active", b.dataset.view === v); });
@@ -141,7 +163,10 @@
   }
   function render() {
     if (!S.me) return;
-    ({ painel: rPainel, funil: rFunil, leads: rLeads, corretores: rCorretores, conta: rConta })[S.view]();
+    var nucleo = { painel: rPainel, funil: rFunil, leads: rLeads, corretores: rCorretores, conta: rConta }[S.view];
+    if (nucleo) return nucleo();
+    var mod = modulosDoPapel().filter(function (m) { return m.id === S.view; })[0];
+    if (mod) mod.render($("#view-" + mod.id), API);
   }
 
   // =============== PAINEL ===============
@@ -271,7 +296,7 @@
       var pe = meus.filter(function (l) { return l.etapa === "perdido"; }).length;
       var eu = m.id === S.me.id;
       return '<tr class="' + (m.ativo ? "" : "pending-row") + '"><td><strong>' + esc(m.nome) + (eu ? " (você)" : "") + '</strong><span class="sub">' + esc(m.email) + (m.telefone ? " · " + esc(m.telefone) : "") + "</span>" + (m.ativo ? "" : '<span class="sub" style="color:#c06a12;font-weight:700">Aguardando aprovação</span>') + "</td>" +
-        '<td><select data-papel="' + m.id + '"' + (eu ? " disabled" : "") + '><option value="corretor"' + (m.papel === "corretor" ? " selected" : "") + '>Corretor</option><option value="admin"' + (m.papel === "admin" ? " selected" : "") + ">Administrador</option></select></td>" +
+        '<td><select data-papel="' + m.id + '"' + (eu ? " disabled" : "") + '><option value="corretor"' + (m.papel === "corretor" ? " selected" : "") + '>Corretor</option><option value="admin"' + (m.papel === "admin" ? " selected" : "") + ">Administrador</option>" + '<option value="construtora"' + (m.papel === "construtora" ? " selected" : "") + ">Construtora</option></select></td>" +
         '<td><label class="switch" title="Acesso liberado"><input type="checkbox" data-ativo="' + m.id + '"' + (m.ativo ? " checked" : "") + (eu ? " disabled" : "") + "><span></span></label></td>" +
         "<td>" + meus.length + '</td><td class="hide-sm">' + ab + '</td><td class="hide-sm">' + fe + '</td><td class="hide-sm">' + (fe + pe ? Math.round(fe / (fe + pe) * 100) + "%" : "—") + "</td>" +
         '<td><button class="btn ghost small" data-ver="' + m.id + '">Ver leads</button></td></tr>';
@@ -362,6 +387,7 @@
       '<label>Orçamento<input name="orcamento" value="' + esc(l.orcamento || "") + '"></label>' +
       '<label class="full">Mensagem / observações<textarea name="mensagem">' + esc(l.mensagem || "") + "</textarea></label></div>" +
       '<div style="display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap"><button class="btn primary" type="submit">' + (novo ? "Cadastrar lead" : "Salvar alterações") + "</button>" + (!novo && isAdmin() ? '<button class="btn danger" type="button" data-apagar>Excluir lead</button>' : "") + "</div>" +
+      (novo ? "" : '<div class="mod-extras"></div>') +
       (novo ? "" : '<div class="section-title">Histórico</div><div class="note-box"><textarea id="novaNota" placeholder="Registrar ligação, reunião, envio de material…"></textarea><button class="btn primary" type="button" data-nota>Anotar</button></div><ul class="timeline">' + ev.map(evHTML).join("") + "</ul>" +
         (l.utm && Object.keys(l.utm).length ? '<div class="section-title">Origem do contato</div><dl class="kv">' + Object.keys(l.utm).map(function (k) { return "<dt>" + esc(k.replace(/_/g, " ")) + "</dt><dd>" + esc(l.utm[k]) + "</dd>"; }).join("") + "</dl>" : "")) +
       "</form>";
@@ -393,6 +419,8 @@
       if (novo) { fecharGaveta(); } else abrirLead(id);
     });
     if (!novo) {
+      var extras = $(".mod-extras", D);
+      ((window.DanovaCRM && window.DanovaCRM.ganchosLead) || []).forEach(function (fn) { try { fn(extras, l, API); } catch (e) { console.error(e); } });
       var bAnalisar = $("[data-analisar]", D);
       if (bAnalisar) bAnalisar.addEventListener("click", async function () {
         bAnalisar.disabled = true; bAnalisar.textContent = "Analisando…";
@@ -470,6 +498,13 @@
       : e.tipo === "criado" ? esc(e.texto || "Lead criado") : esc(e.texto);
     return '<li class="' + esc(e.tipo) + '">' + txt + "<small>" + esc(autor) + " · " + dt(e.criado_em, true) + "</small></li>";
   }
+
+  var API = {
+    sb: sb, S: S, $: $, $$: $$, esc: esc, dt: dt, money: money, toast: toast, falha: falha, tag: tag, etapaNome: etapaNome, ETAPAS: ETAPAS, ABERTAS: ABERTAS,
+    abrirLead: abrirLead, carregar: carregar, render: render, irPara: irPara, isAdmin: isAdmin, hojeISO: hojeISO, isoLocal: isoLocal, barras: barras, kpi: kpi, contar: contar
+  };
+  window.DanovaCRM = window.DanovaCRM || {};
+  window.DanovaCRM.api = API;
 
   iniciar();
 })();
