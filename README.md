@@ -98,6 +98,12 @@ Dois papéis, ambos usando Claude (Anthropic) por funções no Supabase (`supaba
 - **Atendente do site** (`atendente`): chat no canto da página, em português, inglês e espanhol. Responde só com a base de conhecimento (`conhecimento.ts`: os 10 empreendimentos, serviços e contatos), qualifica o cliente, cria o lead no CRM com resumo e temperatura e, quando o cliente pede uma pessoa ou demonstra alta intenção, mostra o botão para continuar no WhatsApp da Danielle. Avisa que é um assistente virtual e não promete preço final, retorno ou visto.
 - **Agente do CRM** (`agente-crm`): botão **Analisar com IA** na ficha do lead. Lê os dados, o histórico e a conversa do chat e sugere resumo, próximo passo, data de follow-up, temperatura e uma mensagem pronta para WhatsApp. Nada muda no lead até o corretor clicar em **Aplicar sugestão**. Cada corretor só consegue analisar os próprios leads.
 
+**Atendimento por voz (fala → texto → IA → fala):** no chat do site, o botão de ondas no topo abre o modo voz: o cliente toca no círculo, fala, a IA (Claude) responde e a resposta é falada; com *Conversa contínua* ligado, volta a ouvir sozinho, e tocar enquanto a IA fala interrompe. O microfone ao lado do campo de texto dita a mensagem, e cada resposta tem 🔊 para ouvir. Função `voz` (supabase/functions/voz):
+- **Fala → texto:** Whisper, se houver `OPENAI_API_KEY` nos Secrets; sem ela, o reconhecimento do próprio navegador (Chrome, Edge, Safari).
+- **Texto → fala:** ElevenLabs, se houver `ELEVENLABS_API_KEY` (opcional `ELEVENLABS_VOZ_ID` para escolher a voz e `ELEVENLABS_MODELO`, padrão `eleven_flash_v2_5`); sem ela, a voz do sistema do navegador.
+- Limites: 40 usos de voz por IP por hora e 600 no site todo; texto falado até 700 caracteres; áudio até ~25 s.
+- O microfone só funciona em site com HTTPS (Vercel/Hostinger com SSL) ou no arquivo aberto no computador; dentro do artifact o navegador pode bloquear.
+
 **Ligar a IA:** no Supabase (projeto `danova-crm`) → **Edge Functions → Secrets**, crie `ANTHROPIC_API_KEY` com a sua chave da Anthropic (console.anthropic.com). Sem a chave, o chat continua aparecendo e encaminha o cliente para o WhatsApp.
 Opcional: `ATENDENTE_MODELO` e `AGENTE_MODELO` (padrão `claude-sonnet-5-5`).
 

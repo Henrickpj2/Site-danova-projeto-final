@@ -40,7 +40,7 @@ FAQ=[
  ("Como o Google Ads sabe quais leads viraram venda?","Guardamos o identificador do clique (GCLID) de cada lead. Quando o lead é qualificado, visita, recebe proposta ou compra, essa conversão é enviada ao Google Ads, que passa a dar lances buscando pessoas parecidas com quem compra."),
  ("A construtora vê os dados pessoais dos meus clientes?","Não. O portal da construtora mostra números: unidades disponíveis, leads por etapa, origem, visitas, negociações e investimento em mídia. Nome, telefone e e-mail dos clientes ficam só com a equipe de vendas responsável."),
  ("Preciso ter um vídeo pronto para anunciar?","Ajuda muito: vídeo é o formato que mais entrega no Reels, Stories e YouTube. Se você não tiver, produzimos o vídeo do empreendimento nos formatos 9:16, 1:1, 4:5 e 16:9, com versões de 6, 15 e 30 segundos, a partir dos renders e plantas que você já tem."),
- ("Em quais idiomas o atendimento por IA funciona?","Português, inglês e espanhol. O assistente avisa que é virtual, responde com base nas informações dos empreendimentos e passa a conversa para a equipe quando o cliente pede uma pessoa."),
+ ("Em quais idiomas o atendimento por IA funciona?","Português, inglês e espanhol, por texto ou por voz: o cliente toca no microfone, fala, e o assistente responde falando. Ele avisa que é virtual, responde com base nas informações dos empreendimentos e passa a conversa para a equipe quando o cliente pede uma pessoa."),
 ]
 pin='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>'
 e=html.escape
@@ -104,4 +104,4 @@ head=f'''<!doctype html>
 </head>
 '''
 js=open('page.js').read()
-open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-localizador.js?v=20261021\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261021\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
+open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-localizador.js?v=20261021\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261025\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")

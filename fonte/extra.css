@@ -394,3 +394,40 @@
     .nav-login svg { width: 16px; height: 16px; }
     .nav-login:hover { border-color: #63dfd0; color: #63dfd0; }
     .hd-metric small em { font-style: normal; font-weight: 800; color: #9ff0e4; margin-left: 4px; }
+
+    /* ---- Chat: atendimento por voz ---- */
+    .dn-chat-vozbtn { margin-left: auto; width: 34px; height: 34px; border-radius: 10px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; cursor: pointer; display: grid; place-items: center; }
+    .dn-chat-vozbtn svg { width: 18px; height: 18px; }
+    .dn-chat-vozbtn + .dn-chat-x { margin-left: 6px; }
+    .dn-chat.modo-voz .dn-chat-vozbtn { background: linear-gradient(135deg, #3ec5f0, #ec3d8f); border-color: transparent; }
+    .dn-chat-form .dn-chat-mic { flex: 0 0 38px; width: 38px; height: 38px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f6f8fb; color: #475569; cursor: pointer; display: grid; place-items: center; align-self: flex-end; }
+    .dn-chat-form .dn-chat-mic svg { width: 18px; height: 18px; }
+    .dn-chat-form .dn-chat-mic.on { background: #ec3d8f; color: #fff; border-color: #ec3d8f; animation: dnMicPulso 1.2s infinite; }
+    @keyframes dnMicPulso { 0% { box-shadow: 0 0 0 0 rgba(236,61,143,.5); } 70% { box-shadow: 0 0 0 10px rgba(236,61,143,0); } 100% { box-shadow: 0 0 0 0 rgba(236,61,143,0); } }
+    .dn-ouvir { border: 0; background: none; cursor: pointer; font-size: 13px; opacity: .45; padding: 0 0 0 6px; vertical-align: middle; }
+    .dn-ouvir:hover { opacity: 1; }
+    .dn-chat.modo-voz .dn-chat-msgs, .dn-chat.modo-voz .dn-chat-chips, .dn-chat.modo-voz .dn-chat-form { display: none; }
+    .dn-voz { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 18px 14px; background: radial-gradient(420px 260px at 50% 40%, rgba(107,63,212,.35), transparent 70%), #0b1424; color: #e6eef7; overflow-y: auto; }
+    .dn-voz[hidden] { display: none !important; }
+    .dn-voz-pipe { width: 100%; display: grid; gap: 4px; justify-items: stretch; }
+    .dn-voz-pipe > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); transition: all .25s; }
+    .dn-voz-pipe > div b { font-size: 13px; } .dn-voz-pipe > div small { font-size: 11px; color: #8ea0b6; }
+    .dn-voz-pipe > div.on { border-color: rgba(99,223,208,.7); background: rgba(22,184,166,.16); box-shadow: 0 0 0 3px rgba(22,184,166,.12); }
+    .dn-voz-pipe > div.on small { color: #9ff0e4; }
+    .dn-voz-pipe i { font-style: normal; text-align: center; color: #5b6b80; font-size: 12px; line-height: 1; }
+    .dn-voz-orb { --nivel: 0; position: relative; width: 116px; height: 116px; border-radius: 50%; border: 0; cursor: pointer; color: #fff; background: linear-gradient(135deg, #3ec5f0, #6b3fd4 50%, #ec3d8f); box-shadow: 0 18px 44px rgba(107,63,212,.45); display: grid; place-items: center; margin-top: 6px; transform: scale(calc(1 + var(--nivel) * .12)); transition: transform .08s; }
+    .dn-voz-orb svg { width: 38px; height: 38px; position: relative; z-index: 1; }
+    .dn-voz-orb span { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); opacity: 0; }
+    .dn-voz[data-estado="ouvindo"] .dn-voz-orb span { animation: dnOnda 1.8s infinite; }
+    .dn-voz[data-estado="ouvindo"] .dn-voz-orb span:nth-child(2) { animation-delay: .6s; } .dn-voz[data-estado="ouvindo"] .dn-voz-orb span:nth-child(3) { animation-delay: 1.2s; }
+    @keyframes dnOnda { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.8); opacity: 0; } }
+    .dn-voz[data-estado="pensando"] .dn-voz-orb, .dn-voz[data-estado="transcrevendo"] .dn-voz-orb { animation: dnGira 1.4s linear infinite; background: conic-gradient(from 0deg, #3ec5f0, #6b3fd4, #ec3d8f, #f7a24a, #3ec5f0); }
+    .dn-voz[data-estado="pensando"] .dn-voz-orb svg, .dn-voz[data-estado="transcrevendo"] .dn-voz-orb svg { animation: dnGira 1.4s linear infinite reverse; }
+    @keyframes dnGira { to { transform: rotate(360deg); } }
+    .dn-voz[data-estado="falando"] .dn-voz-orb { background: linear-gradient(135deg, #16b8a6, #3ec5f0); animation: dnFala .9s ease-in-out infinite alternate; }
+    @keyframes dnFala { from { box-shadow: 0 0 0 0 rgba(62,197,240,.5), 0 18px 44px rgba(22,184,166,.4); } to { box-shadow: 0 0 0 16px rgba(62,197,240,0), 0 18px 44px rgba(22,184,166,.4); } }
+    .dn-voz-status { margin: 0; font-weight: 700; font-size: 14px; text-align: center; }
+    .dn-voz-txt { margin: 0; min-height: 40px; font-size: 13px; color: #a9b7c8; text-align: center; max-width: 320px; }
+    .dn-voz-acts { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: auto; font-size: 12px; color: #a9b7c8; }
+    .dn-voz-acts label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; } .dn-voz-acts input { width: auto; accent-color: #16b8a6; }
+    .dn-voz-sair { background: none; border: 1px solid rgba(255,255,255,.2); color: #e6eef7; border-radius: 9px; padding: 6px 10px; font: inherit; font-size: 12px; cursor: pointer; }

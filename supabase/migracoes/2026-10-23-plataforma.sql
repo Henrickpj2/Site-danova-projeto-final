@@ -696,3 +696,16 @@ alter table public.campanhas_metricas
   add column if not exists video_p100 bigint not null default 0;
 create unique index if not exists campanhas_metricas_chave on public.campanhas_metricas (data, plataforma, conta_anuncio, campanha, conjunto);
 alter table public.campanhas_metricas drop constraint if exists campanhas_metricas_unica;
+
+-- =====================================================================
+-- PARTE 8 (25/10/2026) — Atendimento por voz (função voz): controle de uso contra abuso e custo
+-- =====================================================================
+create table if not exists public.voz_uso (
+  id bigserial primary key,
+  ip_hash text not null,
+  tipo text not null check (tipo in ('stt','tts')),
+  caracteres int not null default 0,
+  criado_em timestamptz not null default now()
+);
+create index if not exists voz_uso_ip on public.voz_uso(ip_hash, criado_em);
+alter table public.voz_uso enable row level security;
