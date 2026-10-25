@@ -2,17 +2,18 @@
 (function () {
   "use strict";
   var crm = window.DANOVA_CRM || {};
+  var BASE_JS = (document.currentScript && document.currentScript.src) ? document.currentScript.src.replace(/[^/]*$/, "") : "https://danova-ai.com/js/";
   if (!crm.url) return;
   var ENDPOINT = crm.url + "/functions/v1/atendente";
   var CHAVE = "dn_chat_v1";
   var idioma = ((navigator.language || "pt").slice(0, 2).toLowerCase());
   if (["pt", "en", "es"].indexOf(idioma) < 0) idioma = "pt";
   var T = {
-    pt: { titulo: "Atendimento danova AI", sub: "Assistente virtual · responde em PT, EN e ES", ola: "Olá! Sou o assistente virtual da equipe da Danielle Lisboa Martins. Posso falar sobre os empreendimentos em Miami e Palm Beach, formas de pagamento, EB-5 e compra com cripto. Como posso ajudar?", ph: "Escreva sua mensagem…", enviar: "Enviar", pessoa: "Falar com uma pessoa", wpp: "Continuar no WhatsApp", aviso: "Assistente com IA. Pode cometer erros — a equipe confirma valores e condições.", erro: "Não consegui responder agora. Você pode falar direto com a equipe pelo WhatsApp.", chips: ["Quais empreendimentos vocês têm?", "Opções até US$ 1 milhão", "Como funciona o EB-5?", "Posso comprar com cripto?"], abrir: "Abrir atendimento", fechar: "Fechar", novo: "Nova conversa", registrado: "Seus dados foram enviados à equipe.",
+    pt: { conectando: "Conectando à assistente…", toqueAg: "Toque para conversar", encerrar: "Toque para encerrar a conversa", titulo: "Atendimento danova AI", sub: "Assistente virtual · responde em PT, EN e ES", ola: "Olá! Sou o assistente virtual da equipe da Danielle Lisboa Martins. Posso falar sobre os empreendimentos em Miami e Palm Beach, formas de pagamento, EB-5 e compra com cripto. Como posso ajudar?", ph: "Escreva sua mensagem…", enviar: "Enviar", pessoa: "Falar com uma pessoa", wpp: "Continuar no WhatsApp", aviso: "Assistente com IA. Pode cometer erros — a equipe confirma valores e condições.", erro: "Não consegui responder agora. Você pode falar direto com a equipe pelo WhatsApp.", chips: ["Quais empreendimentos vocês têm?", "Opções até US$ 1 milhão", "Como funciona o EB-5?", "Posso comprar com cripto?"], abrir: "Abrir atendimento", fechar: "Fechar", novo: "Nova conversa", registrado: "Seus dados foram enviados à equipe.",
       voz: "Falar por voz", vozTit: "Atendimento por voz", toque: "Toque para falar", ouvindo: "Ouvindo… fale à vontade", transcrevendo: "Entendendo o que você disse…", pensando: "Pensando na resposta…", falando: "Falando… toque para interromper", continua: "Conversa contínua", voltar: "Voltar ao texto", ouvir: "Ouvir", ditar: "Ditar mensagem", semSuporte: "Seu navegador não permite falar por aqui. Use o Chrome, o Edge ou o Safari atualizado.", semMic: "Não consegui acessar o microfone. Libere a permissão do microfone no navegador.", naoEntendi: "Não captei sua fala. Toque e tente de novo.", e1: "Fala → texto", e2: "IA responde", e3: "Texto → fala", nav: "navegador" },
-    en: { titulo: "danova AI concierge", sub: "Virtual assistant · replies in EN, PT and ES", ola: "Hi! I'm the virtual assistant for Danielle Lisboa Martins' team. I can help with our Miami and Palm Beach developments, payment plans, EB-5 and buying with crypto. How can I help?", ph: "Type your message…", enviar: "Send", pessoa: "Talk to a person", wpp: "Continue on WhatsApp", aviso: "AI assistant. It can make mistakes — our team confirms prices and terms.", erro: "I couldn't reply right now. You can reach the team directly on WhatsApp.", chips: ["Which developments do you have?", "Options under US$ 1M", "How does EB-5 work?", "Can I buy with crypto?"], abrir: "Open chat", fechar: "Close", novo: "New conversation", registrado: "Your details were sent to our team.",
+    en: { conectando: "Connecting to the assistant…", toqueAg: "Tap to start talking", encerrar: "Tap to end the conversation", titulo: "danova AI concierge", sub: "Virtual assistant · replies in EN, PT and ES", ola: "Hi! I'm the virtual assistant for Danielle Lisboa Martins' team. I can help with our Miami and Palm Beach developments, payment plans, EB-5 and buying with crypto. How can I help?", ph: "Type your message…", enviar: "Send", pessoa: "Talk to a person", wpp: "Continue on WhatsApp", aviso: "AI assistant. It can make mistakes — our team confirms prices and terms.", erro: "I couldn't reply right now. You can reach the team directly on WhatsApp.", chips: ["Which developments do you have?", "Options under US$ 1M", "How does EB-5 work?", "Can I buy with crypto?"], abrir: "Open chat", fechar: "Close", novo: "New conversation", registrado: "Your details were sent to our team.",
       voz: "Talk by voice", vozTit: "Voice assistant", toque: "Tap to speak", ouvindo: "Listening… go ahead", transcrevendo: "Understanding what you said…", pensando: "Thinking…", falando: "Speaking… tap to interrupt", continua: "Continuous conversation", voltar: "Back to text", ouvir: "Listen", ditar: "Dictate message", semSuporte: "Your browser doesn't support voice here. Use an up-to-date Chrome, Edge or Safari.", semMic: "I couldn't access the microphone. Please allow microphone access in your browser.", naoEntendi: "I didn't catch that. Tap and try again.", e1: "Speech → text", e2: "AI replies", e3: "Text → speech", nav: "browser" },
-    es: { titulo: "Atención danova AI", sub: "Asistente virtual · responde en ES, PT y EN", ola: "¡Hola! Soy el asistente virtual del equipo de Danielle Lisboa Martins. Puedo ayudarte con los proyectos en Miami y Palm Beach, planes de pago, EB-5 y compra con cripto. ¿En qué te ayudo?", ph: "Escribe tu mensaje…", enviar: "Enviar", pessoa: "Hablar con una persona", wpp: "Continuar por WhatsApp", aviso: "Asistente con IA. Puede equivocarse — el equipo confirma precios y condiciones.", erro: "No pude responder ahora. Puedes hablar con el equipo por WhatsApp.", chips: ["¿Qué proyectos tienen?", "Opciones hasta US$ 1 millón", "¿Cómo funciona el EB-5?", "¿Puedo comprar con cripto?"], abrir: "Abrir chat", fechar: "Cerrar", novo: "Nueva conversación", registrado: "Tus datos fueron enviados al equipo.",
+    es: { conectando: "Conectando con la asistente…", toqueAg: "Toca para conversar", encerrar: "Toca para terminar la conversación", titulo: "Atención danova AI", sub: "Asistente virtual · responde en ES, PT y EN", ola: "¡Hola! Soy el asistente virtual del equipo de Danielle Lisboa Martins. Puedo ayudarte con los proyectos en Miami y Palm Beach, planes de pago, EB-5 y compra con cripto. ¿En qué te ayudo?", ph: "Escribe tu mensaje…", enviar: "Enviar", pessoa: "Hablar con una persona", wpp: "Continuar por WhatsApp", aviso: "Asistente con IA. Puede equivocarse — el equipo confirma precios y condiciones.", erro: "No pude responder ahora. Puedes hablar con el equipo por WhatsApp.", chips: ["¿Qué proyectos tienen?", "Opciones hasta US$ 1 millón", "¿Cómo funciona el EB-5?", "¿Puedo comprar con cripto?"], abrir: "Abrir chat", fechar: "Cerrar", novo: "Nueva conversación", registrado: "Tus datos fueron enviados al equipo.",
       voz: "Hablar por voz", vozTit: "Atención por voz", toque: "Toca para hablar", ouvindo: "Escuchando… habla con calma", transcrevendo: "Entendiendo lo que dijiste…", pensando: "Pensando la respuesta…", falando: "Hablando… toca para interrumpir", continua: "Conversación continua", voltar: "Volver al texto", ouvir: "Escuchar", ditar: "Dictar mensaje", semSuporte: "Tu navegador no permite voz aquí. Usa Chrome, Edge o Safari actualizado.", semMic: "No pude acceder al micrófono. Permite el micrófono en el navegador.", naoEntendi: "No capté tu voz. Toca e intenta de nuevo.", e1: "Voz → texto", e2: "IA responde", e3: "Texto → voz", nav: "navegador" }
   }[idioma];
 
@@ -250,13 +251,19 @@
       d.classList.toggle("on", (d.dataset.e === "1" && (e === "ouvindo" || e === "transcrevendo")) || (d.dataset.e === "2" && e === "pensando") || (d.dataset.e === "3" && e === "falando"));
     });
   }
+  function rotularPipe() {
+    var lbl = $(".dn-voz-acts label");
+    if (AGENTE.ativo()) { $("[data-p1]").textContent = "ElevenLabs"; $("[data-p3]").textContent = "ElevenLabs"; lbl.style.display = "none"; return; }
+    lbl.style.display = "";
+    VOZ.status().then(function (st) { $("[data-p1]").textContent = st.stt ? "Whisper" : T.nav; $("[data-p3]").textContent = st.tts ? "ElevenLabs" : T.nav; });
+  }
   function abrirVoz(sim) {
     vozBox.hidden = !sim; raiz.classList.toggle("modo-voz", sim);
     if (sim) {
-      VOZ.status().then(function (st) { $("[data-p1]").textContent = st.stt ? "Whisper" : T.nav; $("[data-p3]").textContent = st.tts ? "ElevenLabs" : T.nav; });
-      vTxt.textContent = ""; definirEstado("parado");
-      if (!VOZ.suporta()) definirEstado("parado", T.semSuporte);
-    } else { sessao++; VOZ.pararEscuta(); VOZ.pararFala(); definirEstado("parado"); }
+      rotularPipe(); vTxt.textContent = "";
+      if (AGENTE.ativo()) definirEstado("parado", T.toqueAg);
+      else { definirEstado("parado"); if (!VOZ.suporta()) definirEstado("parado", T.semSuporte); }
+    } else { sessao++; AGENTE.parar(); VOZ.pararEscuta(); VOZ.pararFala(); definirEstado("parado"); }
   }
   function ciclo() {
     var minha = ++sessao;
@@ -278,8 +285,65 @@
         });
       }).catch(function (e) { if (minha === sessao) definirEstado("parado", e && e.message === "sem_mic" ? T.semMic : T.semSuporte); });
   }
+
+  // ================= AGENTE ElevenLabs (voz em tempo real: ouvir → Claude → falar) =================
+  var AGENTE = (function () {
+    var id = crm.elevenAgentId, conv = null, carregando = null, raf = 0, ativo = !!id;
+    function carregar() {
+      if (window.ElevenLabsClient) return Promise.resolve(window.ElevenLabsClient);
+      if (carregando) return carregando;
+      carregando = new Promise(function (ok, erro) {
+        var sc = document.createElement("script"); sc.src = BASE_JS + "vendor/elevenlabs-client-1.27.0.min.js"; sc.async = true;
+        sc.onload = function () { window.ElevenLabsClient ? ok(window.ElevenLabsClient) : erro(new Error("sdk")); };
+        sc.onerror = function () { carregando = null; erro(new Error("sdk")); };
+        document.head.appendChild(sc);
+      });
+      return carregando;
+    }
+    function animar() {
+      cancelAnimationFrame(raf);
+      (function passo() {
+        if (!conv) return orb.style.setProperty("--nivel", 0);
+        var n = 0; try { n = Math.max(conv.getInputVolume ? conv.getInputVolume() : 0, conv.getOutputVolume ? conv.getOutputVolume() : 0); } catch (e) { }
+        orb.style.setProperty("--nivel", Math.min(1, n * 1.6).toFixed(2));
+        raf = requestAnimationFrame(passo);
+      })();
+    }
+    function registrar(papel, texto) {
+      if (!texto) return;
+      S.msgs.push({ p: papel, t: texto }); salvar(); balao(papel, texto);
+      vTxt.textContent = papel === "cliente" ? "“" + texto + "”" : (texto.length > 220 ? texto.slice(0, 220) + "…" : texto);
+    }
+    function iniciar() {
+      if (conv) return Promise.resolve();
+      definirEstado("pensando", T.conectando);
+      return navigator.mediaDevices.getUserMedia({ audio: true }).then(function (st) {
+        st.getTracks().forEach(function (t) { t.stop(); });
+        return carregar();
+      }, function () { throw new Error("sem_mic"); }).then(function (SDK) {
+        return SDK.Conversation.startSession({
+          agentId: id, connectionType: "websocket",
+          overrides: { agent: { language: idioma } },
+          onConnect: function () { if (window.dataLayer) window.dataLayer.push({ event: "chat_voz", lead_page: "chat-ia", motor: "elevenlabs" }); },
+          onModeChange: function (m) { definirEstado(m.mode === "speaking" ? "falando" : "ouvindo", m.mode === "speaking" ? T.encerrar : T.ouvindo); },
+          onMessage: function (m) { registrar((m.role || m.source) === "user" ? "cliente" : "agente", m.message); },
+          onError: function () { },
+          onDisconnect: function () { conv = null; cancelAnimationFrame(raf); orb.style.setProperty("--nivel", 0); if (!vozBox.hidden) definirEstado("parado", T.toqueAg); }
+        });
+      }).then(function (c) { conv = c; animar(); definirEstado("ouvindo"); });
+    }
+    function parar() { var c = conv; conv = null; cancelAnimationFrame(raf); if (c) { try { c.endSession(); } catch (e) { } } }
+    return { ativo: function () { return ativo; }, desligar: function () { ativo = false; parar(); }, ligado: function () { return !!conv; }, iniciar: iniciar, parar: parar };
+  })();
   orb.addEventListener("click", function () {
     VOZ.destravar();
+    if (AGENTE.ativo()) {
+      if (AGENTE.ligado()) { AGENTE.parar(); return definirEstado("parado", T.toqueAg); }
+      return AGENTE.iniciar().catch(function (e) {
+        if (e && e.message === "sem_mic") return definirEstado("parado", T.semMic);
+        AGENTE.desligar(); rotularPipe(); definirEstado("parado"); ciclo(); // sem conexão com o agente: usa o modo antigo
+      });
+    }
     if (estadoVoz === "parado") return ciclo();
     if (estadoVoz === "ouvindo") return VOZ.pararEscuta();
     if (estadoVoz === "falando") { VOZ.pararFala(); return ciclo(); } // interromper e falar

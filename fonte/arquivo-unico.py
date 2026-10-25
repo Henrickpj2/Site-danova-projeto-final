@@ -77,10 +77,10 @@ tracking = ler("js/danova-tracking.js").replace(
     "if (f && f.tagName === 'FORM' && !(f.closest && f.closest('#crmRoot'))) sendLead(f);")
 assert "#crmRoot" in tracking
 html = html.replace('<script src="js/danova-config.js?v=20261020"></script>', script(ler("js/danova-config.js")))
-html = html.replace('<script src="js/crm-config.js?v=20261023"></script>', script(ler("js/crm-config.js")))
+html = html.replace('<script src="js/crm-config.js?v=20261026"></script>', script(ler("js/crm-config.js")))
 html = html.replace('<script src="js/danova-tracking.js?v=20261020" defer></script>', "")
 html = html.replace('<script src="js/danova-localizador.js?v=20261021" defer></script>', "")
-html = html.replace('<script src="js/danova-chat.js?v=20261025" defer></script>', "")
+html = html.replace('<script src="js/danova-chat.js?v=20261026" defer></script>', "")
 assert 'src="js/' not in html, re.findall(r'src="js/[^"]+"', html)
 html = re.sub(r'\s*<link rel="preload" as="image" href="img/[^"]+">', "", html)
 

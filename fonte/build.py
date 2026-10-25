@@ -97,11 +97,11 @@ head=f'''<!doctype html>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="img/danova-logo.webp">
   <script src="js/danova-config.js?v=20261020"></script>
-  <script src="js/crm-config.js?v=20261023"></script>
+  <script src="js/crm-config.js?v=20261026"></script>
   <script src="js/danova-tracking.js?v=20261020" defer></script>
   <style>{css}  </style>
 {ld}
 </head>
 '''
 js=open('page.js').read()
-open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-localizador.js?v=20261021\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261025\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
+open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-localizador.js?v=20261021\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261026\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
