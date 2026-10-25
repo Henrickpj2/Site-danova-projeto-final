@@ -74,7 +74,7 @@
     if (u[0] === 0xff && u[1] === 0xfe) return new TextDecoder("utf-16le").decode(buf);
     if (u[0] === 0xfe && u[1] === 0xff) return new TextDecoder("utf-16be").decode(buf);
     var t = new TextDecoder("utf-8").decode(buf);
-    if (t.indexOf("�") >= 0) t = new TextDecoder("windows-1252").decode(buf);
+    if (t.indexOf("\uFFFD") >= 0) t = new TextDecoder("windows-1252").decode(buf);
     return t.replace(/^﻿/, "");
   }
   function parseCSV(txt) {
