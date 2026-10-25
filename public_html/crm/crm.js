@@ -220,39 +220,157 @@
   function kpi(t, v, s) { return '<div class="kpi"><small>' + esc(t) + "</small><strong>" + esc(v) + "</strong><span>" + esc(s) + "</span></div>"; }
   function ligarAberturas(root) { $$("[data-lead]", root).forEach(function (el) { el.addEventListener("click", function () { abrirLead(el.dataset.lead); }); }); }
 
-  // =============== FUNIL ===============
+  // =============== FUNIL (arrasta e solta) ===============
+  var COR_ETAPA = { novo: "#3ec5f0", contato: "#6366f1", qualificado: "#8b5cf6", visita: "#f7a24a", proposta: "#ec4899", contrato: "#14b8a6", fechado: "#22c55e", perdido: "#94a3b8" };
+  var KB = { recolhidas: (function () { try { return JSON.parse(localStorage.getItem("dn_kb_recolhidas") || '["perdido"]'); } catch (e) { return ["perdido"]; } })(), compacto: false, desfazer: null };
+  function iniciais(n) { return String(n || "?").trim().split(/\s+/).slice(0, 2).map(function (p) { return p[0]; }).join("").toUpperCase(); }
+  function canalChip(l) {
+    var c = String((l.utm && (l.utm.last_touch_source || l.utm.first_touch_source)) || l.canal || "").toLowerCase();
+    if (l.meta_lead_id || /face|insta|meta|fb|ig/.test(c)) return '<span class="kk-ch meta">Meta</span>';
+    if ((l.utm && l.utm.gclid) || /google|youtube/.test(c)) return '<span class="kk-ch google">Google</span>';
+    if (/chat-ia|atendente/.test(c + " " + (l.origem || ""))) return '<span class="kk-ch ia">IA</span>';
+    return "";
+  }
+  function cartao(l) {
+    var hoje = hojeISO(), aberto = ABERTAS.indexOf(l.etapa) >= 0;
+    var prox = l.proximo_contato && aberto ? (l.proximo_contato < hoje ? '<span class="kk-due atras">⏰ atrasado</span>' : l.proximo_contato === hoje ? '<span class="kk-due hoje">⏰ hoje</span>' : '<span class="kk-due">⏰ ' + dt(l.proximo_contato).slice(0, 5) + "</span>") : "";
+    var dias = Math.floor((Date.now() - new Date(l.atualizado_em || l.criado_em)) / 864e5);
+    var tel = String(l.telefone || "").replace(/\D/g, "");
+    return '<article class="kk' + (dias >= 7 && aberto ? " parado" : "") + '" data-id="' + l.id + '" tabindex="0">' +
+      '<div class="kk-top"><i class="kk-temp ' + esc(l.temperatura || "") + '" title="' + esc(l.temperatura || "sem temperatura") + '"></i><strong>' + esc(l.nome || l.email || l.telefone || "Lead") + "</strong>" + (l.valor_estimado ? '<span class="kk-val">' + money(l.valor_estimado).replace("US$ ", "$") + "</span>" : "") + "</div>" +
+      (KB.compacto ? "" : '<div class="kk-meta">' + esc(l.empreendimento || "Empreendimento não informado") + "</div>" +
+      '<div class="kk-tags">' + canalChip(l) + prox + (l.proximo_passo ? '<span class="kk-step" title="' + esc(l.proximo_passo) + '">' + esc(l.proximo_passo.slice(0, 26)) + "</span>" : "") + "</div>") +
+      '<div class="kk-foot"><span class="kk-av" title="' + esc(l.corretor_nome || "Sem corretor") + '">' + (l.corretor_nome ? iniciais(l.corretor_nome) : "—") + "</span><small>" + esc(l.corretor_nome ? l.corretor_nome.split(" ")[0] : "Sem corretor") + '</small><span class="kk-age" title="tempo desde a última atualização">' + (dias <= 0 ? "hoje" : dias + "d") + "</span>" +
+      (tel ? '<a class="kk-wa" href="https://wa.me/' + tel + '" target="_blank" rel="noopener" title="WhatsApp" data-nao-arrasta>✆</a>' : "") + "</div></article>";
+  }
   function rFunil() {
-    var L = filtrados();
-    $("#view-funil").innerHTML = filtrosHTML(false) + '<div class="kanban">' + ETAPAS.map(function (e) {
-      var itens = L.filter(function (l) { return l.etapa === e.id; });
-      var soma = itens.reduce(function (s, l) { return s + (Number(l.valor_estimado) || 0); }, 0);
-      return '<div class="col" data-etapa="' + e.id + '"><div class="col-head">' + tag(e.id) + "<small>" + itens.length + (soma ? " · " + money(soma) : "") + "</small></div>" +
-        itens.slice(0, 200).map(function (l) {
-          var atras = l.proximo_contato && l.proximo_contato < hojeISO() && ABERTAS.indexOf(l.etapa) >= 0;
-          return '<div class="kcard" draggable="true" data-id="' + l.id + '"><strong>' + esc(l.nome || l.email || l.telefone) + '</strong><div class="meta">' + esc(l.empreendimento || "Empreendimento não informado") + '</div><div class="foot"><span>' + esc(l.corretor_nome || "Sem corretor") + "</span>" +
-            (atras ? '<span class="due">contato atrasado</span>' : l.temperatura ? '<span class="temp ' + l.temperatura + '">' + l.temperatura + "</span>" : "<span>" + diasAtras(l.criado_em) + "</span>") + "</div></div>";
-        }).join("") + "</div>";
-    }).join("") + "</div>";
-    ligarFiltros($("#view-funil"));
-    $$(".kcard").forEach(function (c) {
-      c.addEventListener("click", function () { abrirLead(c.dataset.id); });
-      c.addEventListener("dragstart", function (e) { c.classList.add("dragging"); e.dataTransfer.setData("text/plain", c.dataset.id); });
-      c.addEventListener("dragend", function () { c.classList.remove("dragging"); });
+    var L = filtrados(), raiz = $("#view-funil"), antes = raiz.querySelector(".kb");
+    var rolagem = antes ? antes.scrollLeft : 0;
+    var totalAbertos = L.filter(function (l) { return ABERTAS.indexOf(l.etapa) >= 0; });
+    raiz.innerHTML = filtrosHTML(false) +
+      '<div class="kb-bar"><span><b>' + totalAbertos.length + "</b> em andamento · <b>" + money(totalAbertos.reduce(function (s, l) { return s + (Number(l.valor_estimado) || 0); }, 0)) + '</b> em negociação</span><span class="spacer"></span>' +
+      '<label class="kb-tg"><input type="checkbox" data-compacto' + (KB.compacto ? " checked" : "") + '> Cartões compactos</label><span class="kb-dica">Arraste os cartões entre as colunas · no celular, segure e arraste</span></div>' +
+      '<div class="kb">' + ETAPAS.map(function (e, i) {
+        var itens = L.filter(function (l) { return l.etapa === e.id; });
+        var soma = itens.reduce(function (s, l) { return s + (Number(l.valor_estimado) || 0); }, 0);
+        var rec = KB.recolhidas.indexOf(e.id) >= 0;
+        return '<section class="kc' + (rec ? " rec" : "") + '" data-etapa="' + e.id + '" style="--cor:' + COR_ETAPA[e.id] + '">' +
+          '<header><i></i><b>' + e.nome + '</b><em data-n>' + itens.length + '</em><button class="kc-tg" data-recolher="' + e.id + '" title="' + (rec ? "Expandir" : "Recolher") + '">' + (rec ? "›" : "‹") + "</button>" +
+          '<small>' + (soma ? money(soma) : "&nbsp;") + "</small></header>" +
+          '<div class="kc-body">' + itens.slice(0, 150).map(cartao).join("") + (itens.length > 150 ? '<p class="kc-mais">+ ' + (itens.length - 150) + " na lista de Leads</p>" : "") + (itens.length ? "" : '<p class="kc-vazia">Solte um lead aqui</p>') + "</div>" +
+          (e.id === "novo" ? '<button class="kc-add" data-novo>+ Novo lead</button>' : "") + "</section>";
+      }).join("") + "</div>";
+    var kb = raiz.querySelector(".kb"); kb.scrollLeft = rolagem;
+    ligarFiltros(raiz);
+    raiz.querySelector("[data-compacto]").addEventListener("change", function (e) { KB.compacto = e.target.checked; rFunil(); });
+    $$("[data-recolher]", raiz).forEach(function (b) { b.addEventListener("click", function (ev) {
+      ev.stopPropagation(); var id = b.dataset.recolher, k = KB.recolhidas.indexOf(id);
+      if (k >= 0) KB.recolhidas.splice(k, 1); else KB.recolhidas.push(id);
+      try { localStorage.setItem("dn_kb_recolhidas", JSON.stringify(KB.recolhidas)); } catch (e) { /* sem armazenamento */ }
+      rFunil();
+    }); });
+    var nb = raiz.querySelector("[data-novo]"); if (nb) nb.addEventListener("click", function () { abrirLead(null); });
+    $$(".kk", raiz).forEach(function (c) {
+      c.addEventListener("keydown", function (e) { if (e.key === "Enter") abrirLead(c.dataset.id); });
+      c.addEventListener("pointerdown", function (e) { iniciarArraste(e, c, kb); });
     });
-    $$(".col").forEach(function (col) {
-      col.addEventListener("dragover", function (e) { e.preventDefault(); col.classList.add("over"); });
-      col.addEventListener("dragleave", function () { col.classList.remove("over"); });
-      col.addEventListener("drop", async function (e) {
-        e.preventDefault(); col.classList.remove("over");
-        var id = e.dataTransfer.getData("text/plain"), etapa = col.dataset.etapa, l = S.leads.find(function (x) { return x.id === id; });
-        if (!l || l.etapa === etapa) return;
-        var antes = l.etapa; l.etapa = etapa; rFunil();
-        var r = await sb.from("leads").update({ etapa: etapa }).eq("id", id);
-        if (r.error) { l.etapa = antes; rFunil(); return falha(r.error); }
-        toast(esc(l.nome || "Lead") + " → " + etapaNome(etapa));
-        if (etapa === "perdido") abrirLead(id, "motivo_perda");
-      });
-    });
+  }
+  function iniciarArraste(e, card, kb) {
+    if (e.button !== 0 || e.target.closest("[data-nao-arrasta]")) return;
+    var x0 = e.clientX, y0 = e.clientY, ativo = false, fantasma = null, lugar = null, alvo = null, toque = e.pointerType === "touch", timer = null, rol = null;
+    var origem = card.closest(".kc");
+    function comecar() {
+      ativo = true;
+      var r = card.getBoundingClientRect();
+      fantasma = card.cloneNode(true); fantasma.classList.add("kk-fantasma");
+      fantasma.style.width = r.width + "px"; fantasma.style.left = r.left + "px"; fantasma.style.top = r.top + "px";
+      fantasma.dataset.dx = x0 - r.left; fantasma.dataset.dy = y0 - r.top;
+      (card.closest("#crmRoot") || document.body).appendChild(fantasma);
+      lugar = document.createElement("div"); lugar.className = "kk-lugar"; lugar.style.height = r.height + "px";
+      card.parentNode.insertBefore(lugar, card); card.classList.add("kk-origem");
+      $("#view-funil").classList.add("kb-arrastando");
+      if (navigator.vibrate && toque) navigator.vibrate(12);
+    }
+    function mover(ev) {
+      if (!ativo) {
+        var d = Math.hypot(ev.clientX - x0, ev.clientY - y0);
+        if (toque) { if (d > 10) { clearTimeout(timer); limpar(); } return; } // no toque, rolar a tela cancela o arraste
+        if (d < 6) return; comecar();
+      }
+      ev.preventDefault();
+      fantasma.style.left = (ev.clientX - fantasma.dataset.dx) + "px"; fantasma.style.top = (ev.clientY - fantasma.dataset.dy) + "px";
+      fantasma.style.transform = "rotate(" + Math.max(-6, Math.min(6, (ev.clientX - x0) / 40)) + "deg) scale(1.03)";
+      fantasma.style.pointerEvents = "none";
+      var sob = document.elementFromPoint(ev.clientX, ev.clientY), col = sob && sob.closest(".kc");
+      $$(".kc.alvo").forEach(function (c) { if (c !== col) c.classList.remove("alvo"); });
+      if (col) {
+        col.classList.add("alvo"); alvo = col;
+        var corpo = col.querySelector(".kc-body"), irmaos = Array.prototype.filter.call(corpo.querySelectorAll(".kk"), function (k) { return k !== card; });
+        var depois = irmaos.find(function (k) { var b = k.getBoundingClientRect(); return ev.clientY < b.top + b.height / 2; });
+        if (depois) corpo.insertBefore(lugar, depois); else corpo.appendChild(lugar);
+        var vz = corpo.querySelector(".kc-vazia"); if (vz) vz.hidden = true;
+      }
+      // rolagem automática perto das bordas
+      clearInterval(rol);
+      var kr = kb.getBoundingClientRect(), passo = ev.clientX > kr.right - 70 ? 18 : ev.clientX < kr.left + 70 ? -18 : 0;
+      var vpasso = ev.clientY > innerHeight - 60 ? 14 : ev.clientY < 60 ? -14 : 0;
+      if (passo || vpasso) rol = setInterval(function () { kb.scrollLeft += passo; if (vpasso) window.scrollBy(0, vpasso); }, 16);
+    }
+    function limpar() {
+      clearInterval(rol); clearTimeout(timer);
+      document.removeEventListener("pointermove", mover); document.removeEventListener("pointerup", soltar); document.removeEventListener("pointercancel", cancelar);
+      card.removeEventListener("contextmenu", semMenu);
+      $("#view-funil").classList.remove("kb-arrastando");
+    }
+    function cancelar() { limpar(); if (ativo) { fantasma.remove(); lugar.remove(); card.classList.remove("kk-origem"); $$(".kc.alvo").forEach(function (c) { c.classList.remove("alvo"); }); } }
+    function semMenu(ev) { ev.preventDefault(); }
+    async function soltar(ev) {
+      limpar();
+      if (!ativo) { if (Math.hypot(ev.clientX - x0, ev.clientY - y0) < 6) abrirLead(card.dataset.id); return; }
+      var destino = alvo || origem, etapa = destino.dataset.etapa, id = card.dataset.id;
+      var b = lugar.getBoundingClientRect();
+      fantasma.style.transition = "left .18s ease, top .18s ease, transform .18s ease";
+      fantasma.style.left = b.left + "px"; fantasma.style.top = b.top + "px"; fantasma.style.transform = "none";
+      setTimeout(function () { fantasma.remove(); }, 190);
+      lugar.parentNode.insertBefore(card, lugar); lugar.remove(); card.classList.remove("kk-origem");
+      $$(".kc.alvo").forEach(function (c) { c.classList.remove("alvo"); });
+      var l = S.leads.find(function (x) { return x.id === id; });
+      if (!l || l.etapa === etapa) return;
+      await moverLead(l, etapa, true);
+    }
+    if (toque) { timer = setTimeout(function () { comecar(); }, 260); card.addEventListener("contextmenu", semMenu); }
+    document.addEventListener("pointermove", mover, { passive: false });
+    document.addEventListener("pointerup", soltar); document.addEventListener("pointercancel", cancelar);
+  }
+  async function moverLead(l, etapa, comDesfazer) {
+    var antes = l.etapa; l.etapa = etapa; l.atualizado_em = new Date().toISOString(); rFunil();
+    var r = await sb.from("leads").update({ etapa: etapa }).eq("id", l.id);
+    if (r.error) { l.etapa = antes; rFunil(); return falha(r.error); }
+    if (etapa === "fechado") confete();
+    if (etapa === "perdido") return abrirLead(l.id, "motivo_perda");
+    if (comDesfazer) avisoDesfazer((l.nome || "Lead") + " → " + etapaNome(etapa), function () { moverLead(l, antes, false); });
+  }
+  function avisoDesfazer(msg, fn) {
+    var box = $("#view-funil"), av = box.querySelector(".kb-undo");
+    if (!av) { av = document.createElement("div"); av.className = "kb-undo"; box.appendChild(av); }
+    av.innerHTML = "<span>" + esc(msg) + '</span><button>Desfazer</button>'; av.classList.add("show");
+    clearTimeout(KB.desfazer);
+    av.querySelector("button").onclick = function () { av.classList.remove("show"); clearTimeout(KB.desfazer); fn(); };
+    KB.desfazer = setTimeout(function () { av.classList.remove("show"); }, 6000);
+  }
+  function confete() {
+    var box = document.createElement("div"); box.className = "kb-confete";
+    var cores = ["#22c55e", "#3ec5f0", "#f7a24a", "#ec4899", "#8b5cf6", "#facc15"];
+    for (var i = 0; i < 70; i++) {
+      var p = document.createElement("i");
+      p.style.left = (Math.random() * 100) + "%"; p.style.background = cores[i % cores.length];
+      p.style.animationDelay = (Math.random() * .4) + "s"; p.style.animationDuration = (1.4 + Math.random() * 1.2) + "s";
+      p.style.setProperty("--dx", (Math.random() * 200 - 100) + "px"); p.style.setProperty("--r", (Math.random() * 720) + "deg");
+      box.appendChild(p);
+    }
+    ($("#view-funil") || document.body).appendChild(box);
+    setTimeout(function () { box.remove(); }, 3200);
+    toast("🎉 Venda fechada!");
   }
 
   // =============== LISTA ===============

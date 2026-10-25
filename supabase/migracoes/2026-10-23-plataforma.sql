@@ -666,3 +666,33 @@ create index if not exists campanhas_metricas_data on public.campanhas_metricas(
 alter table public.campanhas_metricas enable row level security;
 create policy campanhas_admin on public.campanhas_metricas for all to authenticated
   using ((select privado.eh_admin())) with check ((select privado.eh_admin()));
+
+-- =====================================================================
+-- PARTE 7 (24/10/2026) — Contas de anúncio dos clientes (Google Ads / Meta Ads) e métricas de vídeo
+-- Sincronização pela função ads-sync (supabase/functions/ads-sync)
+-- =====================================================================
+create table if not exists public.contas_anuncio (
+  id uuid primary key default gen_random_uuid(),
+  plataforma text not null check (plataforma in ('google','meta')),
+  conta_externa text not null,
+  nome text,
+  conta_id uuid references public.contas(id) on delete set null,
+  ativo boolean not null default true,
+  moeda text,
+  ultima_sync timestamptz,
+  ultimo_erro text,
+  criado_em timestamptz not null default now(),
+  constraint contas_anuncio_unica unique (plataforma, conta_externa)
+);
+alter table public.contas_anuncio enable row level security;
+create policy contas_anuncio_admin on public.contas_anuncio for all to authenticated
+  using ((select privado.eh_admin())) with check ((select privado.eh_admin()));
+alter table public.campanhas_metricas
+  add column if not exists conta_anuncio text not null default '',
+  add column if not exists visualizacoes bigint not null default 0,
+  add column if not exists video_p25 bigint not null default 0,
+  add column if not exists video_p50 bigint not null default 0,
+  add column if not exists video_p75 bigint not null default 0,
+  add column if not exists video_p100 bigint not null default 0;
+create unique index if not exists campanhas_metricas_chave on public.campanhas_metricas (data, plataforma, conta_anuncio, campanha, conjunto);
+alter table public.campanhas_metricas drop constraint if exists campanhas_metricas_unica;

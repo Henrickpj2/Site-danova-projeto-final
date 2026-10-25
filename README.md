@@ -32,7 +32,7 @@ supabase/functions/ → atendente do site, agente do CRM, leads do Meta e conver
 ## Área de membros (`/crm/`)
 
 - **Painel:** total de leads, em negociação, fechados e conversão, valor do pipeline, leads por dia, funil por etapa, empreendimentos mais procurados, próximos contatos (com atrasados em vermelho), origem e perfil.
-- **Funil:** quadro com as etapas *Novo → Em contato → Qualificado → Visita → Proposta → Contrato → Fechado / Perdido*. Arraste o cartão para mudar a etapa.
+- **Funil (arrasta e solta):** arraste com o mouse ou, no celular, segure e arraste; a coluna de destino acende e mostra onde o cartão vai cair, a tela rola sozinha nas bordas, aparece *Desfazer* por 6 segundos, confete ao fechar venda e o motivo é pedido ao marcar Perdido. Cartões com temperatura, valor, canal (Meta/Google/IA), próximo contato (hoje/atrasado), próximo passo, corretor e dias desde a última atualização (barra laranja quando parado há 7+ dias), botão de WhatsApp e modo compacto; colunas recolhíveis. Etapas: *Novo → Em contato → Qualificado → Visita → Proposta → Contrato → Fechado / Perdido*. Arraste o cartão para mudar a etapa.
 - **Leads:** lista com busca, filtros (etapa, corretor, empreendimento, período) e exportação CSV.
 - **Ficha do lead:** etapa, temperatura, corretor responsável, valor estimado, próximo passo e data, botões de WhatsApp/e-mail/ligar e histórico automático (cada mudança de etapa, atribuição, contato e anotação fica registrada com autor e data).
 - **Corretores** (só administradores): aprovar acessos, definir papel, ver leads, fechados e conversão de cada um.
@@ -54,6 +54,10 @@ Dashboard escuro com os números das duas plataformas lado a lado e cruzados com
 - **Do anúncio à venda:** impressões → cliques → leads no CRM → qualificados → visitas → vendas, com custo por lead e por lead qualificado *reais* (do CRM, não da plataforma).
 - Evolução diária (barras + linhas), painéis Meta Ads e Google Ads com resultados por dia da semana, CPC e CPM médios, e tabela de campanhas ordenável com variação de cada métrica.
 - **Como entram os números:** botão *Importar* → envie o CSV exportado do Google Ads (segmentado por Dia) ou do Meta Ads (detalhado por Dia). Reimportar o mesmo período atualiza, não duplica. Sem dados importados, a tela mostra números de exemplo com aviso.
+- **Contas dos clientes (conexão direta):** botão *Contas conectadas* → cadastre o ID de cada conta do Google Ads (ex.: 123-456-7890) e do Meta (act_…), ligue ao cliente da Cobrança e clique em *Sincronizar*. A função `ads-sync` puxa os últimos 30 dias por campanha, inclusive vídeo (visualizações e retenção 25/50/75/100%). Credenciais no Supabase → Secrets:
+  - Google Ads: `GOOGLE_ADS_DEVELOPER_TOKEN` (da MCC, acesso básico aprovado), `GOOGLE_ADS_CLIENT_ID`, `GOOGLE_ADS_CLIENT_SECRET`, `GOOGLE_ADS_REFRESH_TOKEN` (gerado com o usuário da MCC), `GOOGLE_ADS_LOGIN_CUSTOMER_ID` (ID da MCC). Opcional: `GOOGLE_ADS_API_VERSION` (padrão v21).
+  - Meta Ads: `META_ADS_TOKEN` (usuário do sistema do Gerenciador de Negócios com `ads_read` nas contas dos clientes).
+  - O filtro *Todos os clientes* junta as contas Google e Meta do mesmo cliente.
 - **Ligação com o CRM:** pelo nome da campanha. No Google Ads use `utm_campaign={campaignname}` (ou o mesmo nome) no sufixo de URL; no Meta, `utm_campaign={{campaign.name}}`. Os leads dos formulários do Meta já chegam com o nome da campanha.
 
 ### Telas da plataforma

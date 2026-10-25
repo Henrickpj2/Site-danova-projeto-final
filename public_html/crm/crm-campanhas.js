@@ -10,7 +10,7 @@
   var COR = { google: "#3ec5f0", meta: "#8b5cf6" };
   var NOME = { google: "Google Ads", meta: "Meta Ads" };
   var QUALIF = ["qualificado", "visita", "proposta", "contrato", "fechado"];
-  var st = { plat: "todas", camp: "", dias: 30, de: null, ate: null, demo: false, linhas: [], moeda: "BRL", ordem: "custo", desc: true, graf: "custo", el: null, A: null, carregado: false };
+  var st = { plat: "todas", camp: "", dias: 30, de: null, ate: null, demo: false, linhas: [], moeda: "BRL", ordem: "custo", desc: true, graf: "custo", el: null, A: null, carregado: false, conta: "", contas: [], clientes: [] };
 
   // ---------- utilidades ----------
   function iso(d) { var x = new Date(d); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0, 10); }
@@ -28,8 +28,10 @@
     return '<em class="cd ' + (Math.abs(p) < .5 ? "" : bom ? "sobe" : "desce") + '">' + (p > 0 ? "▲" : p < 0 ? "▼" : "") + " " + Math.abs(p).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%</em>";
   }
   function agg(rows) {
-    var a = { imp: 0, cli: 0, custo: 0, conv: 0, valor: 0 };
-    rows.forEach(function (r) { a.imp += +r.impressoes; a.cli += +r.cliques; a.custo += +r.custo; a.conv += +r.conversoes; a.valor += +r.valor_conversoes; });
+    var a = { imp: 0, cli: 0, custo: 0, conv: 0, valor: 0, views: 0, p25: 0, p50: 0, p75: 0, p100: 0 };
+    rows.forEach(function (r) { a.imp += +r.impressoes; a.cli += +r.cliques; a.custo += +r.custo; a.conv += +r.conversoes; a.valor += +r.valor_conversoes;
+      a.views += +(r.visualizacoes || 0); a.p25 += +(r.video_p25 || 0); a.p50 += +(r.video_p50 || 0); a.p75 += +(r.video_p75 || 0); a.p100 += +(r.video_p100 || 0); });
+    a.vtr = a.imp ? a.views / a.imp * 100 : 0; a.cpv = a.views ? a.custo / a.views : 0;
     a.ctr = a.imp ? a.cli / a.imp * 100 : 0; a.cpc = a.cli ? a.custo / a.cli : 0; a.cpm = a.imp ? a.custo / a.imp * 1000 : 0;
     a.cpa = a.conv ? a.custo / a.conv : 0; a.tx = a.cli ? a.conv / a.cli * 100 : 0; a.roas = a.custo ? a.valor / a.custo : 0;
     return a;
@@ -45,19 +47,38 @@
     return "";
   }
 
-  // ---------- dados de exemplo (não são gravados) ----------
+  // ---------- dados de exemplo (não são gravados): 5 campanhas de prospecção em vídeo no Meta e 5 no Google ----------
+  var DEMO_CONTAS = [
+    { id: "d1", plataforma: "google", conta_externa: "123-456-7890", nome: "Incorporadora Atlântica (exemplo)" },
+    { id: "d2", plataforma: "meta", conta_externa: "act_100200300", nome: "Incorporadora Atlântica (exemplo)" },
+    { id: "d3", plataforma: "google", conta_externa: "987-654-3210", nome: "Residencial Costa Azul (exemplo)" },
+    { id: "d4", plataforma: "meta", conta_externa: "act_400500600", nome: "Residencial Costa Azul (exemplo)" }
+  ];
   function demo() {
-    var camps = [["google", "Search · Brickell condos PT"], ["google", "PMax · Lançamentos Miami"], ["google", "YouTube · Faena vídeo 30s"], ["meta", "Leads · Investidor BR"], ["meta", "Reels · Continuum waterfront"], ["meta", "Remarketing · visitantes do site"]];
-    var base = [[3200, 6.1, 2.4, 4.2], [9800, 2.2, 1.1, 2.6], [21000, .9, .45, .8], [26000, 1.6, .9, 3.1], [34000, 1.2, .7, 1.9], [7800, 3.4, .8, 5.4]];
-    var seed = 7, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+    // [plataforma, conta, campanha, impressões/dia, CTR %, CPC R$, conv. % dos cliques, views % das impressões, retenção 25/50/75/100 %]
+    var camps = [
+      ["google", "1234567890", "Prospecção · YouTube In-Stream · Faena 30s", 24000, .65, 1.9, 3.2, 31, [62, 41, 30, 22]],
+      ["google", "1234567890", "Prospecção · Demand Gen · Vídeo Brickell", 18000, 1.1, 1.4, 3.8, 24, [58, 37, 26, 18]],
+      ["google", "9876543210", "Prospecção · YouTube Shorts · Tour Continuum 15s", 30000, .5, 1.1, 2.6, 38, [70, 52, 41, 33]],
+      ["google", "9876543210", "Prospecção · PMax com vídeo · Investidor EUA", 15000, 1.6, 1.6, 4.4, 14, [55, 34, 24, 16]],
+      ["google", "1234567890", "Prospecção · Bumper 6s · Mandarin Oriental", 42000, .3, 1.2, 1.4, 52, [88, 76, 64, 58]],
+      ["meta", "100200300", "Prospecção · Reels · Investidor BR 25-55", 32000, 1.4, .95, 4.6, 36, [48, 29, 20, 14]],
+      ["meta", "100200300", "Prospecção · Stories · Vídeo tour Faena", 26000, 1.1, 1.05, 3.9, 33, [44, 26, 17, 11]],
+      ["meta", "400500600", "Prospecção · Feed vídeo · Lookalike compradores 1%", 21000, 1.7, 1.2, 5.2, 28, [52, 33, 23, 16]],
+      ["meta", "400500600", "Prospecção · Advantage+ · Vídeo lançamento Brickell", 38000, 1.2, .8, 3.4, 40, [46, 28, 19, 13]],
+      ["meta", "100200300", "Prospecção · Reels · Alto padrão LATAM (ES)", 29000, 1.3, .7, 3.1, 37, [50, 31, 21, 15]]
+    ];
+    var seed = 11, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
     var rows = [], hoje = new Date(); hoje.setHours(12, 0, 0, 0);
     for (var d = 120; d >= 1; d--) {
-      var dia = new Date(hoje.getTime() - d * DIA), fds = dia.getDay() === 0 || dia.getDay() === 6, ondas = 1 + .25 * Math.sin(d / 9) + (120 - d) / 400;
-      camps.forEach(function (c, i) {
-        var b = base[i], imp = Math.round(b[0] * ondas * (fds ? .82 : 1) * (.8 + rnd() * .4));
-        var cli = Math.round(imp * b[1] / 100 * (.85 + rnd() * .3)), custo = +(cli * b[2] * (.85 + rnd() * .3) + (c[0] === "meta" ? imp * .004 : 0)).toFixed(2);
-        var conv = Math.round(cli * b[3] / 100 * (.6 + rnd() * .8));
-        rows.push({ data: iso(dia), plataforma: c[0], campanha: c[1], conjunto: "", impressoes: imp, cliques: cli, custo: custo, moeda: "BRL", conversoes: conv, valor_conversoes: conv * (c[0] === "google" ? 180 : 120), alcance: Math.round(imp * .62) });
+      var dia = new Date(hoje.getTime() - d * DIA), fds = dia.getDay() === 0 || dia.getDay() === 6, ondas = 1 + .22 * Math.sin(d / 9) + (120 - d) / 420;
+      camps.forEach(function (c) {
+        var imp = Math.round(c[3] * ondas * (fds ? (c[0] === "meta" ? 1.12 : .84) : 1) * (.8 + rnd() * .4));
+        var cli = Math.round(imp * c[4] / 100 * (.85 + rnd() * .3)), custo = +(cli * c[5] * (.85 + rnd() * .3) + (c[0] === "meta" ? imp * .006 : imp * .002)).toFixed(2);
+        var conv = Math.round(cli * c[6] / 100 * (.6 + rnd() * .8)), views = Math.round(imp * c[7] / 100 * (.9 + rnd() * .2)), r = c[8];
+        rows.push({ data: iso(dia), plataforma: c[0], conta_anuncio: c[1], campanha: c[2], conjunto: "", impressoes: imp, cliques: cli, custo: custo, moeda: "BRL",
+          conversoes: conv, valor_conversoes: 0, alcance: Math.round(imp * .58), visualizacoes: views,
+          video_p25: Math.round(views * r[0] / 100), video_p50: Math.round(views * r[1] / 100), video_p75: Math.round(views * r[2] / 100), video_p100: Math.round(views * r[3] / 100) });
       });
     }
     return rows;
@@ -124,6 +145,11 @@
     conversoes: ["conversoes", "conversions", "resultados", "results", "leads", "cadastros", "todas as conv", "all conv"],
     valor: ["valor conv", "conv value", "valor de conversao", "conversion value", "valor de conversao das compras", "purchases conversion value", "valor total de conv"],
     alcance: ["alcance", "reach"],
+    visualizacoes: ["visualizacoes", "views", "visualizacoes do video", "video views", "reproducoes do video", "video plays", "thruplays", "thruplay"],
+    p25: ["video reproduzido ate 25", "video played to 25", "reproducoes do video ate 25", "video plays at 25"],
+    p50: ["video reproduzido ate 50", "video played to 50", "reproducoes do video ate 50", "video plays at 50"],
+    p75: ["video reproduzido ate 75", "video played to 75", "reproducoes do video ate 75", "video plays at 75"],
+    p100: ["video reproduzido ate 100", "video played to 100", "reproducoes do video ate 100", "video plays at 100"],
     moeda: ["codigo da moeda", "currency code", "moeda", "currency"]
   };
   function achar(cab, nomes) {
@@ -132,7 +158,7 @@
     for (i = 0; i < nomes.length; i++) for (var j = 0; j < c.length; j++) if (c[j].indexOf(nomes[i]) === 0) return j;
     return -1;
   }
-  function interpretar(txt, platEscolhida) {
+  function interpretar(txt, platEscolhida, contaAnuncio) {
     var t = parseCSV(txt), hi = -1;
     for (var i = 0; i < Math.min(t.length, 15); i++) if (achar(t[i], COLS.campanha) >= 0 && (achar(t[i], COLS.custo) >= 0 || achar(t[i], COLS.impressoes) >= 0)) { hi = i; break; }
     if (hi < 0) throw new Error("Não encontrei as colunas de campanha, custo e impressões. Exporte o relatório com as colunas Dia, Campanha, Impressões, Cliques, Custo e Conversões.");
@@ -148,11 +174,17 @@
       var m = ix.moeda >= 0 && /usd/i.test(r[ix.moeda]) ? "USD" : moedaCab;
       rows.push({ data: d, plataforma: plat, campanha: camp.slice(0, 300), conjunto: ix.conjunto >= 0 ? (r[ix.conjunto] || "").slice(0, 300) : "",
         impressoes: Math.round(numero(r[ix.impressoes])), cliques: Math.round(numero(r[ix.cliques])), custo: numero(r[ix.custo]), moeda: m,
-        conversoes: numero(r[ix.conversoes]), valor_conversoes: ix.valor >= 0 ? numero(r[ix.valor]) : 0, alcance: ix.alcance >= 0 ? Math.round(numero(r[ix.alcance])) : null, origem: "csv" });
+        conversoes: numero(r[ix.conversoes]), valor_conversoes: ix.valor >= 0 ? numero(r[ix.valor]) : 0, alcance: ix.alcance >= 0 ? Math.round(numero(r[ix.alcance])) : null, origem: "csv",
+        conta_anuncio: contaAnuncio || "", visualizacoes: ix.visualizacoes >= 0 ? Math.round(numero(r[ix.visualizacoes])) : 0 });
+      var ult = rows[rows.length - 1], imp = ult.impressoes, base = ult.visualizacoes || imp;
+      ["p25", "p50", "p75", "p100"].forEach(function (k) { // Google exporta % ; Meta exporta quantidade
+        var v = ix[k] >= 0 ? r[ix[k]] : ""; var n = numero(v);
+        ult["video_" + k] = /%/.test(v || "") ? Math.round(n / 100 * imp) : Math.round(n);
+      });
     });
     // junta linhas repetidas da mesma chave (ex.: relatório por anúncio)
     var mapa = {};
-    rows.forEach(function (r) { var k = [r.data, r.plataforma, r.campanha, r.conjunto].join("|"); if (!mapa[k]) mapa[k] = r; else ["impressoes", "cliques", "custo", "conversoes", "valor_conversoes"].forEach(function (c) { mapa[k][c] += r[c]; }); });
+    rows.forEach(function (r) { var k = [r.data, r.plataforma, r.conta_anuncio, r.campanha, r.conjunto].join("|"); if (!mapa[k]) mapa[k] = r; else ["impressoes", "cliques", "custo", "conversoes", "valor_conversoes", "visualizacoes", "video_p25", "video_p50", "video_p75", "video_p100"].forEach(function (c) { mapa[k][c] += r[c]; }); });
     return { plat: plat, linhas: Object.keys(mapa).map(function (k) { return mapa[k]; }), ignoradas: ignoradas };
   }
 
@@ -189,16 +221,26 @@
   // ---------- carga ----------
   async function carregar(A) {
     var desde = iso(Date.now() - 400 * DIA);
-    var r = await A.sb.from("campanhas_metricas").select("data, plataforma, campanha, conjunto, impressoes, cliques, custo, moeda, conversoes, valor_conversoes, alcance").gte("data", desde).order("data").limit(50000);
+    var r = await A.sb.from("campanhas_metricas").select("data, plataforma, conta_anuncio, campanha, conjunto, impressoes, cliques, custo, moeda, conversoes, valor_conversoes, alcance, visualizacoes, video_p25, video_p50, video_p75, video_p100").gte("data", desde).order("data").limit(50000);
     if (r.error) { A.falha(r.error); st.linhas = []; } else st.linhas = r.data || [];
     var v = await A.sb.from("vendas").select("lead_id, status, valor, moeda, campanha, canal, data_fechamento, criado_em");
     var vi = await A.sb.from("visitas").select("lead_id, status, inicio");
     st.vendas = v.data || []; st.visitas = vi.data || [];
+    var ca = await A.sb.from("contas_anuncio").select("*").eq("ativo", true).order("criado_em"), cl = await A.sb.from("contas").select("id, nome").order("nome");
+    st.contas = ca.data || []; st.clientes = cl.data || [];
     st.carregado = true;
     if (!st.linhas.length) st.demo = true;
     var moedas = {}; st.linhas.forEach(function (x) { moedas[x.moeda] = (moedas[x.moeda] || 0) + 1; });
     st.moeda = (moedas.USD || 0) > (moedas.BRL || 0) ? "USD" : "BRL";
   }
+  function grupoDe(c) { return c.conta_id ? "cliente:" + c.conta_id : "nome:" + (c.nome || c.conta_externa); }
+  function rotuloGrupo(g) {
+    var c = contasVisiveis().find(function (x) { return grupoDe(x) === g; }); if (!c) return g;
+    if (c.conta_id) { var cl = st.clientes.find(function (x) { return x.id === c.conta_id; }); if (cl) return cl.nome; }
+    return c.nome || c.conta_externa;
+  }
+  function contasVisiveis() { return st.demo ? DEMO_CONTAS : st.contas; }
+  function idConta(c) { return String(c.conta_externa || "").replace(/^act_/, "").replace(/\D/g, ""); }
   function fonte() { return st.demo ? (st._demo || (st._demo = demo())) : st.linhas.filter(function (r) { return r.moeda === st.moeda; }); }
 
   // ---------- render ----------
@@ -208,7 +250,11 @@
     var len = Math.round((ate - de) / DIA) + 1, antAte = new Date(de.getTime() - DIA), antDe = new Date(antAte.getTime() - (len - 1) * DIA);
     var sDe = iso(de), sAte = iso(ate), sADe = iso(antDe), sAAte = iso(antAte);
     var todas = fonte(), m = st.demo ? "BRL" : st.moeda;
-    var filtro = function (r) { return (st.plat === "todas" || r.plataforma === st.plat) && (!st.camp || r.campanha === st.camp); };
+    var filtro = function (r) { return (st.plat === "todas" || r.plataforma === st.plat) && (!st.camp || r.campanha === st.camp) && (!st.conta || contaGrupo(r)); };
+    function contaGrupo(r) { // filtro por cliente: junta as contas Google e Meta do mesmo nome/cliente
+      var alvo = contasVisiveis().filter(function (c) { return grupoDe(c) === st.conta; }).map(idConta);
+      return alvo.indexOf(String(r.conta_anuncio || "")) >= 0;
+    }
     var P = todas.filter(function (r) { return r.data >= sDe && r.data <= sAte && filtro(r); }), Q = todas.filter(function (r) { return r.data >= sADe && r.data <= sAAte && filtro(r); });
     var a = agg(P), b = agg(Q);
     var campanhas = {}; todas.forEach(function (r) { campanhas[r.campanha] = r.plataforma; });
@@ -244,16 +290,18 @@
     var tile = function (cls, ic, t, v, d, sub) { return '<div class="ct ' + cls + '"><div class="ct-h"><small>' + t + "</small><span>" + ic + '</span></div><strong>' + v + '</strong><div class="ct-f">' + (d || "") + (sub ? "<span>" + sub + "</span>" : "") + "</div></div>"; };
     var platOpts = [["todas", "Todas"], ["google", "Google Ads"], ["meta", "Meta Ads"]];
     var camps = Object.keys(campanhas).filter(function (c) { return st.plat === "todas" || campanhas[c] === st.plat; }).sort();
+    var grupos = []; contasVisiveis().forEach(function (c) { var g = grupoDe(c); if (grupos.indexOf(g) < 0) grupos.push(g); });
 
     el.innerHTML = '<div class="cads">' +
       (st.demo ? '<div class="c-demo"><b>DADOS DE EXEMPLO</b> — ' + (st.linhas.length ? "você está vendo números fictícios." : "ainda não há métricas importadas. Importe os relatórios do Google Ads e do Meta Ads para ver seus números reais.") + (st.linhas.length ? ' <button data-real>Ver meus dados</button>' : ' <button data-imp-abrir>Importar relatórios</button>') + "</div>" : "") +
       '<div class="c-bar"><div class="c-logos"><span class="lg-g">Google Ads</span><span class="lg-m">Meta Ads</span><span class="lg-c">CRM</span></div>' +
       '<div class="c-fil"><div class="c-seg">' + [7, 14, 30, 90].map(function (d) { return '<button data-dias="' + d + '"' + (!st.de && st.dias === d ? ' class="on"' : "") + ">" + d + "d</button>"; }).join("") + "</div>" +
       '<label class="c-dt"><input type="date" data-de value="' + sDe + '"> – <input type="date" data-ate value="' + sAte + '"></label>' +
+      (grupos.length ? '<select data-conta><option value="">Todos os clientes</option>' + grupos.map(function (g) { return '<option value="' + A.esc(g) + '"' + (st.conta === g ? " selected" : "") + ">" + A.esc(rotuloGrupo(g)) + "</option>"; }).join("") + "</select>" : "") +
       '<select data-plat>' + platOpts.map(function (o) { return '<option value="' + o[0] + '"' + (st.plat === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>" +
       '<select data-camp><option value="">Todas as campanhas</option>' + camps.map(function (c) { return '<option' + (st.camp === c ? " selected" : "") + ">" + A.esc(c) + "</option>"; }).join("") + "</select>" +
       (!st.demo && st.linhas.some(function (r) { return r.moeda !== st.moeda; }) ? '<select data-moeda><option' + (st.moeda === "BRL" ? " selected" : "") + '>BRL</option><option' + (st.moeda === "USD" ? " selected" : "") + ">USD</option></select>" : "") +
-      '<button class="c-btn" data-imp-abrir>⇪ Importar</button>' + (st.linhas.length && !st.demo ? '<button class="c-btn ghost" data-ver-demo>Exemplo</button>' : "") + "</div></div>" +
+      '<button class="c-btn" data-contas-abrir>⚭ Contas conectadas</button><button class="c-btn ghost" data-imp-abrir>⇪ Importar CSV</button>' + (st.linhas.length && !st.demo ? '<button class="c-btn ghost" data-ver-demo>Exemplo</button>' : "") + "</div></div>" +
       '<p class="c-per">' + dt(sDe).toLocaleDateString("pt-BR") + " a " + dt(sAte).toLocaleDateString("pt-BR") + " · comparado com " + dt(sADe).toLocaleDateString("pt-BR") + " a " + dt(sAAte).toLocaleDateString("pt-BR") + (st.camp ? ' · campanha <b>' + A.esc(st.camp) + '</b> <button class="c-x" data-limpar>×</button>' : "") + "</p>" +
 
       '<div class="c-grid2"><section class="c-box"><h3>Desempenho no período</h3><div class="c-tiles">' +
@@ -287,10 +335,18 @@
             '<p class="c-sub">' + (p === "meta" ? "Resultados" : "Conversões") + " por dia da semana</p>" + semana(rows, "conversoes", COR[p]) : '<div class="c-vazio">Sem dados do ' + NOME[p] + ' no período.<button data-imp-abrir data-p="' + p + '">Importar relatório</button></div>') + "</section>";
       }).join("") + "</div>" +
 
+      (a.views ? '<section class="c-box c-video"><div class="c-h"><h3>▶ Vídeo <small>campanhas de prospecção</small></h3><small>visualizações e retenção</small></div><div class="c-vgrid">' +
+        '<div class="c-vk"><small>Visualizações</small><b>' + kfmt(a.views) + "</b>" + dlt(a.views, b.views) + "</div>" +
+        '<div class="c-vk"><small>Taxa de visualização</small><b>' + pct(a.vtr) + "</b>" + dlt(a.vtr, b.vtr) + "</div>" +
+        '<div class="c-vk"><small>Custo por visualização</small><b>' + cur(a.cpv, m) + "</b>" + dlt(a.cpv, b.cpv, true) + "</div>" +
+        '<div class="c-vk"><small>Assistiram até o fim</small><b>' + kfmt(a.p100) + "</b><span>" + (a.views ? pct(a.p100 / a.views * 100) + " das visualizações" : "") + "</span></div>" +
+        '<div class="c-ret">' + [["Início", a.views], ["25%", a.p25], ["50%", a.p50], ["75%", a.p75], ["100%", a.p100]].map(function (q, i) {
+          var pc = a.views ? q[1] / a.views * 100 : 0; return '<div><span>' + q[0] + '</span><div class="c-ret-t"><i style="width:' + pc.toFixed(1) + "%;animation-delay:" + i * 80 + 'ms"></i></div><b>' + pct(pc) + "</b></div>";
+        }).join("") + "</div></div></section>" : "") +
       '<div class="c-grid2"><section class="c-box c-av blue"><div><small>CPC médio</small><b>' + cur(a.cpc, m) + "</b>" + dlt(a.cpc, b.cpc, true) + "</div>" + area(sCPC, "#3ec5f0") + '</section><section class="c-box c-av orange"><div><small>CPM médio</small><b>' + cur(a.cpm, m) + "</b>" + dlt(a.cpm, b.cpm, true) + "</div>" + area(sCPM, "#f97362") + "</section></div>" +
 
       '<section class="c-box"><div class="c-h"><h3>Campanhas</h3><small>clique numa linha para filtrar o dashboard · clique no título da coluna para ordenar</small></div><div class="c-tab" data-tab></div></section>' +
-      '<dialog class="c-dlg" data-dlg></dialog></div>';
+      '</div>';
 
     // gráfico combinado
     var cfg = { custo: { vals: sCusto, nome: "Investimento", fmt: function (v) { return cur(v, m); } }, conv: { vals: sConv, nome: "Conversões", fmt: n0 }, cliques: { vals: sCli, nome: "Cliques", fmt: n0 } }[st.graf];
@@ -316,18 +372,18 @@
       var x = agg(porCamp[c]), y = agg(porCampA[c] || []), k = crmP.porC[c] || { leads: 0, qual: 0, vendas: 0 };
       return { c: c, p: campanhas[c], x: x, y: y, leads: k.leads, qual: k.qual, vendas: k.vendas, cpl: k.leads ? x.custo / k.leads : 0 };
     });
-    var chave = { campanha: function (o) { return o.c; }, imp: function (o) { return o.x.imp; }, cli: function (o) { return o.x.cli; }, ctr: function (o) { return o.x.ctr; }, custo: function (o) { return o.x.custo; }, conv: function (o) { return o.x.conv; }, cpa: function (o) { return o.x.cpa; }, leads: function (o) { return o.leads; }, qual: function (o) { return o.qual; }, cpl: function (o) { return o.cpl; }, vendas: function (o) { return o.vendas; } }[st.ordem];
+    var chave = { campanha: function (o) { return o.c; }, imp: function (o) { return o.x.imp; }, cli: function (o) { return o.x.cli; }, ctr: function (o) { return o.x.ctr; }, custo: function (o) { return o.x.custo; }, conv: function (o) { return o.x.conv; }, cpa: function (o) { return o.x.cpa; }, leads: function (o) { return o.leads; }, qual: function (o) { return o.qual; }, cpl: function (o) { return o.cpl; }, vendas: function (o) { return o.vendas; }, views: function (o) { return o.x.views; }, vtr: function (o) { return o.x.vtr; } }[st.ordem];
     tab.sort(function (p, q) { var a1 = chave(p), b1 = chave(q); return (a1 > b1 ? 1 : a1 < b1 ? -1 : 0) * (st.desc ? -1 : 1); });
     var mx = { imp: 1, cli: 1, custo: 1, conv: 1 }; tab.forEach(function (o) { mx.imp = Math.max(mx.imp, o.x.imp); mx.cli = Math.max(mx.cli, o.x.cli); mx.custo = Math.max(mx.custo, o.x.custo); mx.conv = Math.max(mx.conv, o.x.conv); });
     var cel = function (v, max, cor, txt, d) { return '<td class="hb"><i style="width:' + (v / max * 100).toFixed(1) + "%;background:" + cor + '"></i><span>' + txt + "</span>" + (d || "") + "</td>"; };
     var th = function (k, t) { return '<th data-ord="' + k + '"' + (st.ordem === k ? ' class="on"' : "") + ">" + t + (st.ordem === k ? (st.desc ? " ▾" : " ▴") : "") + "</th>"; };
-    el.querySelector("[data-tab]").innerHTML = tab.length ? '<div class="c-scroll"><table><thead><tr>' + th("campanha", "Campanha") + th("imp", "Impressões") + th("cli", "Cliques") + th("ctr", "CTR") + th("custo", "Investimento") + th("conv", "Conversões") + th("cpa", "Custo/conv.") + th("leads", "Leads CRM") + th("qual", "Qualif.") + th("cpl", "CPL real") + th("vendas", "Vendas") + "</tr></thead><tbody>" +
+    el.querySelector("[data-tab]").innerHTML = tab.length ? '<div class="c-scroll"><table><thead><tr>' + th("campanha", "Campanha") + th("imp", "Impressões") + th("cli", "Cliques") + th("ctr", "CTR") + th("custo", "Investimento") + th("conv", "Conversões") + th("cpa", "Custo/conv.") + th("leads", "Leads CRM") + th("qual", "Qualif.") + th("cpl", "CPL real") + th("vendas", "Vendas") + th("views", "Views") + th("vtr", "VTR") + "</tr></thead><tbody>" +
       tab.map(function (o) {
         return '<tr data-c="' + A.esc(o.c) + '"' + (st.camp === o.c ? ' class="on"' : "") + '><td><span class="pb ' + o.p + '">' + (o.p === "meta" ? "Meta" : "Google") + "</span>" + A.esc(o.c) + "</td>" +
           cel(o.x.imp, mx.imp, "rgba(62,197,240,.25)", kfmt(o.x.imp), dlt(o.x.imp, o.y.imp)) + cel(o.x.cli, mx.cli, "rgba(239,68,68,.25)", kfmt(o.x.cli), dlt(o.x.cli, o.y.cli)) +
           "<td>" + pct(o.x.ctr) + "</td>" + cel(o.x.custo, mx.custo, "rgba(47,220,154,.22)", curK(o.x.custo, m), dlt(o.x.custo, o.y.custo)) + cel(o.x.conv, mx.conv, "rgba(255,138,61,.25)", n0(o.x.conv), dlt(o.x.conv, o.y.conv)) +
-          "<td>" + (o.x.conv ? cur(o.x.cpa, m) : "—") + "</td><td>" + o.leads + "</td><td>" + o.qual + "</td><td>" + (o.leads ? cur(o.cpl, m) : "—") + "</td><td>" + (o.vendas || "—") + "</td></tr>";
-      }).join("") + '</tbody><tfoot><tr><td>Total</td><td>' + kfmt(a.imp) + "</td><td>" + kfmt(a.cli) + "</td><td>" + pct(a.ctr) + "</td><td>" + curK(a.custo, m) + "</td><td>" + n0(a.conv) + "</td><td>" + (a.conv ? cur(a.cpa, m) : "—") + "</td><td>" + leadsP + "</td><td>" + qualP + "</td><td>" + (leadsP ? cur(a.custo / leadsP, m) : "—") + "</td><td>" + vendasP + "</td></tr></tfoot></table></div>" : '<div class="c-vazio">Nenhuma campanha com dados neste período.</div>';
+          "<td>" + (o.x.conv ? cur(o.x.cpa, m) : "—") + "</td><td>" + o.leads + "</td><td>" + o.qual + "</td><td>" + (o.leads ? cur(o.cpl, m) : "—") + "</td><td>" + (o.vendas || "—") + "</td><td>" + (o.x.views ? kfmt(o.x.views) : "—") + "</td><td>" + (o.x.views ? pct(o.x.vtr) : "—") + "</td></tr>";
+      }).join("") + '</tbody><tfoot><tr><td>Total</td><td>' + kfmt(a.imp) + "</td><td>" + kfmt(a.cli) + "</td><td>" + pct(a.ctr) + "</td><td>" + curK(a.custo, m) + "</td><td>" + n0(a.conv) + "</td><td>" + (a.conv ? cur(a.cpa, m) : "—") + "</td><td>" + leadsP + "</td><td>" + qualP + "</td><td>" + (leadsP ? cur(a.custo / leadsP, m) : "—") + "</td><td>" + vendasP + "</td><td>" + (a.views ? kfmt(a.views) : "—") + "</td><td>" + (a.views ? pct(a.vtr) : "—") + "</td></tr></tfoot></table></div>" : '<div class="c-vazio">Nenhuma campanha com dados neste período.</div>';
 
     // eventos
     var re = function () { render(el, A); };
@@ -335,6 +391,8 @@
     el.querySelector("[data-de]").addEventListener("change", function (e) { st.de = e.target.value; st.ate = el.querySelector("[data-ate]").value; re(); });
     el.querySelector("[data-ate]").addEventListener("change", function (e) { st.ate = e.target.value; st.de = el.querySelector("[data-de]").value; re(); });
     el.querySelector("[data-plat]").addEventListener("change", function (e) { st.plat = e.target.value; st.camp = ""; re(); });
+    var sc = el.querySelector("[data-conta]"); if (sc) sc.addEventListener("change", function (e) { st.conta = e.target.value; st.camp = ""; re(); });
+    el.querySelector("[data-contas-abrir]").addEventListener("click", function () { abrirContas(el, A); });
     el.querySelector("[data-camp]").addEventListener("change", function (e) { st.camp = e.target.value; re(); });
     var sm = el.querySelector("[data-moeda]"); if (sm) sm.addEventListener("change", function (e) { st.moeda = e.target.value; re(); });
     el.querySelectorAll("[data-graf]").forEach(function (x) { x.addEventListener("click", function () { st.graf = x.dataset.graf; re(); }); });
@@ -346,14 +404,20 @@
     el.querySelectorAll("[data-imp-abrir]").forEach(function (x) { x.addEventListener("click", function () { abrirImport(el, A, x.dataset.p || "auto"); }); });
   }
 
+  function janela(el) { // fica fora da área redesenhada, para não fechar quando o dashboard atualiza
+    var d = document.getElementById("cadsDlg");
+    if (!d) { d = document.createElement("dialog"); d.id = "cadsDlg"; d.className = "c-dlg cads"; el.parentNode.appendChild(d); }
+    return d;
+  }
   // ---------- janela de importação ----------
   function abrirImport(el, A, plat) {
-    var dlg = el.querySelector("[data-dlg]");
+    var dlg = janela(el);
     dlg.innerHTML = '<form method="dialog" class="c-imp"><h3>Importar relatório de campanhas</h3>' +
       '<p>Exporte do gerenciador o relatório <b>por dia e por campanha</b> e envie o arquivo CSV aqui. Pode importar o mesmo período de novo: os números são atualizados, sem duplicar.</p>' +
       '<div class="c-how"><div><b>Google Ads</b><ol><li>Campanhas → selecione o período</li><li>Segmentar → Tempo → <b>Dia</b></li><li>Colunas: Impressões, Cliques, Custo, Conversões, Valor conv.</li><li>Fazer download → <b>CSV</b></li></ol></div>' +
       '<div><b>Meta Ads</b><ol><li>Gerenciador de Anúncios → Campanhas → período</li><li>Detalhamento → Por tempo → <b>Dia</b></li><li>Colunas: Impressões, Cliques no link, Valor usado, Resultados, Alcance</li><li>Exportar → <b>.csv</b></li></ol></div></div>' +
       '<label>Plataforma <select data-ip><option value="auto">Detectar automaticamente</option><option value="google"' + (plat === "google" ? " selected" : "") + '>Google Ads</option><option value="meta"' + (plat === "meta" ? " selected" : "") + ">Meta Ads</option></select></label>" +
+      '<label>Conta de anúncio (cliente) <select data-iconta><option value="">Sem conta específica</option>' + st.contas.map(function (c) { return '<option value="' + idConta(c) + '" data-plat="' + c.plataforma + '">' + NOME[c.plataforma] + " · " + A.esc(c.nome || c.conta_externa) + "</option>"; }).join("") + "</select></label>" +
       '<label class="c-drop"><input type="file" accept=".csv,.tsv,.txt" data-if><span>Arraste o arquivo aqui ou clique para escolher</span></label><div data-prev class="c-prev"></div>' +
       '<div class="c-acts"><button value="cancel" class="c-btn ghost">Fechar</button><button type="button" class="c-btn" data-ok disabled>Importar</button></div></form>';
     dlg.showModal();
@@ -361,7 +425,7 @@
     async function processar() {
       var f = inp.files[0]; if (!f) return;
       try {
-        var res = interpretar(lerTexto(await f.arrayBuffer()), dlg.querySelector("[data-ip]").value);
+        var res = interpretar(lerTexto(await f.arrayBuffer()), dlg.querySelector("[data-ip]").value, dlg.querySelector("[data-iconta]").value);
         if (!res.linhas.length) throw new Error("O arquivo não tem linhas de dados por dia.");
         dados = res; var g = agg(res.linhas), ds = res.linhas.map(function (r) { return r.data; }).sort(), nc = {}; res.linhas.forEach(function (r) { nc[r.campanha] = 1; });
         prev.innerHTML = '<div class="ok">✓ ' + NOME[res.plat] + " · " + res.linhas.length + " linhas · " + Object.keys(nc).length + " campanha(s) · " + dt(ds[0]).toLocaleDateString("pt-BR") + " a " + dt(ds[ds.length - 1]).toLocaleDateString("pt-BR") + "<br>Impressões " + n0(g.imp) + " · Cliques " + n0(g.cli) + " · Investimento " + cur(g.custo, res.linhas[0].moeda) + " · Conversões " + n0(g.conv) + "</div>";
@@ -370,17 +434,64 @@
     }
     inp.addEventListener("change", processar);
     dlg.querySelector("[data-ip]").addEventListener("change", processar);
+    dlg.querySelector("[data-iconta]").addEventListener("change", function (e) { var o = e.target.selectedOptions[0]; if (o && o.dataset.plat) dlg.querySelector("[data-ip]").value = o.dataset.plat; processar(); });
     ok.addEventListener("click", async function () {
       if (!dados) return; ok.disabled = true; ok.textContent = "Importando…";
       var lotes = [], linhas = dados.linhas.map(function (r) { r.importado_por = A.S.me.id; return r; });
       for (var i = 0; i < linhas.length; i += 500) lotes.push(linhas.slice(i, i + 500));
       for (var j = 0; j < lotes.length; j++) {
-        var r = await A.sb.from("campanhas_metricas").upsert(lotes[j], { onConflict: "data,plataforma,campanha,conjunto" });
+        var r = await A.sb.from("campanhas_metricas").upsert(lotes[j], { onConflict: "data,plataforma,conta_anuncio,campanha,conjunto" });
         if (r.error) { ok.textContent = "Importar"; ok.disabled = false; return A.falha(r.error); }
       }
       dlg.close(); A.toast(linhas.length + " linhas importadas do " + NOME[dados.plat] + ".");
       await carregar(A); st.demo = false; render(el, A);
     });
+  }
+
+  // ---------- contas de anúncio dos clientes ----------
+  function abrirContas(el, A) {
+    var dlg = janela(el);
+    function desenhar() {
+      dlg.innerHTML = '<div class="c-imp"><h3>Contas de anúncio dos clientes</h3>' +
+        '<p>Cadastre o ID de cada conta. A sincronização puxa as métricas diárias por campanha direto das APIs do Google Ads e do Meta (últimos 30 dias por vez).</p>' +
+        '<div class="c-contas">' + (st.contas.length ? st.contas.map(function (c) {
+          var cl = st.clientes.find(function (x) { return x.id === c.conta_id; });
+          return '<div class="cc ' + c.plataforma + '"><span class="pb ' + c.plataforma + '">' + (c.plataforma === "meta" ? "Meta" : "Google") + "</span><div><b>" + A.esc(c.nome || "Conta " + c.conta_externa) + "</b><small>ID " + A.esc(c.conta_externa) + (cl ? " · cliente " + A.esc(cl.nome) : "") + " · " + (c.ultima_sync ? "sincronizada " + new Date(c.ultima_sync).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : "nunca sincronizada") + "</small>" +
+            (c.ultimo_erro ? '<small class="cc-err">' + A.esc(traduzErro(c.ultimo_erro)) + "</small>" : "") + '</div><button class="c-btn ghost" data-sync="' + c.id + '">↻ Sincronizar</button><button class="c-x" data-rm="' + c.id + '" title="Desativar">×</button></div>';
+        }).join("") : '<p class="c-sub">Nenhuma conta cadastrada.</p>') + "</div>" +
+        '<form class="c-nova" data-nova><select name="plataforma"><option value="google">Google Ads</option><option value="meta">Meta Ads</option></select><input name="conta_externa" placeholder="ID da conta (ex.: 123-456-7890 ou act_123456)" required><input name="nome" placeholder="Nome do cliente / conta"><select name="conta_id"><option value="">Cliente da cobrança (opcional)</option>' + st.clientes.map(function (c) { return '<option value="' + c.id + '">' + A.esc(c.nome) + "</option>"; }).join("") + '</select><button class="c-btn">Adicionar</button></form>' +
+        '<details class="c-ajuda"><summary>O que é preciso para conectar</summary><div class="c-how"><div><b>Google Ads</b><ol><li>Uma conta de administrador (MCC) com acesso às contas dos clientes</li><li>Token de desenvolvedor da API (Central da API na MCC) com acesso básico aprovado</li><li>Projeto no Google Cloud com a Google Ads API ativada e um cliente OAuth</li><li>Refresh token gerado com a conta da MCC</li><li>No Supabase → Secrets: <code>GOOGLE_ADS_DEVELOPER_TOKEN</code>, <code>GOOGLE_ADS_CLIENT_ID</code>, <code>GOOGLE_ADS_CLIENT_SECRET</code>, <code>GOOGLE_ADS_REFRESH_TOKEN</code>, <code>GOOGLE_ADS_LOGIN_CUSTOMER_ID</code></li></ol></div>' +
+        '<div><b>Meta Ads</b><ol><li>Gerenciador de Negócios com acesso às contas de anúncio dos clientes</li><li>Usuário do sistema com a permissão <code>ads_read</code> nas contas</li><li>Gerar o token desse usuário (sem validade)</li><li>No Supabase → Secrets: <code>META_ADS_TOKEN</code></li></ol></div></div></details>' +
+        '<div class="c-acts"><button class="c-btn" data-sync-todas' + (st.contas.length ? "" : " disabled") + '>↻ Sincronizar todas</button><button class="c-btn ghost" data-fechar>Fechar</button></div></div>';
+      dlg.querySelector("[data-fechar]").addEventListener("click", function () { dlg.close(); });
+      dlg.querySelector("[data-nova]").addEventListener("submit", async function (e) {
+        e.preventDefault(); var f = new FormData(e.target);
+        var r = await A.sb.from("contas_anuncio").insert({ plataforma: f.get("plataforma"), conta_externa: String(f.get("conta_externa")).trim(), nome: f.get("nome") || null, conta_id: f.get("conta_id") || null });
+        if (r.error) return A.falha(r.error);
+        await recarregarContas(); desenhar(); A.toast("Conta adicionada. Clique em Sincronizar.");
+      });
+      dlg.querySelectorAll("[data-rm]").forEach(function (b) { b.addEventListener("click", async function () { var r = await A.sb.from("contas_anuncio").update({ ativo: false }).eq("id", b.dataset.rm); if (r.error) return A.falha(r.error); await recarregarContas(); desenhar(); }); });
+      var sincronizar = async function (botao, conta) {
+        botao.disabled = true; botao.textContent = "Sincronizando…";
+        var r = await A.sb.functions.invoke("ads-sync", { body: conta ? { conta: conta, dias: 30 } : { dias: 30 } });
+        await recarregarContas();
+        if (r.error) { A.toast("Não foi possível sincronizar agora.", true); desenhar(); return; }
+        var ok = (r.data.resultado || []).filter(function (x) { return !x.erro; }), ln = ok.reduce(function (s, x) { return s + x.linhas; }, 0);
+        A.toast(ok.length ? ln + " linha(s) atualizadas de " + ok.length + " conta(s)." : "Nenhuma conta sincronizou — veja o erro em cada conta.", !ok.length);
+        await carregar(A); if (ok.length) st.demo = false; desenhar(); render(el, A);
+      };
+      dlg.querySelectorAll("[data-sync]").forEach(function (b) { b.addEventListener("click", function () { sincronizar(b, b.dataset.sync); }); });
+      dlg.querySelector("[data-sync-todas]").addEventListener("click", function (e) { sincronizar(e.target, null); });
+    }
+    async function recarregarContas() { var ca = await A.sb.from("contas_anuncio").select("*").eq("ativo", true).order("criado_em"); st.contas = ca.data || []; }
+    recarregarContas().then(function () { desenhar(); if (!dlg.open) dlg.showModal(); });
+  }
+  function traduzErro(e) {
+    if (/google_nao_configurado/.test(e)) return "Faltam as credenciais do Google Ads no Supabase (Secrets).";
+    if (/meta_nao_configurado/.test(e)) return "Falta o META_ADS_TOKEN no Supabase (Secrets).";
+    if (/PERMISSION|permission|not authorized|User doesn't have permission/i.test(e)) return "Sem permissão nessa conta: dê acesso à MCC / usuário do sistema. (" + e.slice(0, 120) + ")";
+    if (/DEVELOPER_TOKEN/i.test(e)) return "Token de desenvolvedor ainda não aprovado ou inválido. (" + e.slice(0, 120) + ")";
+    return e;
   }
 
   D.modulos.push({
