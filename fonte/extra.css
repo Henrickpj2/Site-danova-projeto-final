@@ -431,3 +431,7 @@
     .dn-voz-acts { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: auto; font-size: 12px; color: #a9b7c8; }
     .dn-voz-acts label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; } .dn-voz-acts input { width: auto; accent-color: #16b8a6; }
     .dn-voz-sair { background: none; border: 1px solid rgba(255,255,255,.2); color: #e6eef7; border-radius: 9px; padding: 6px 10px; font: inherit; font-size: 12px; cursor: pointer; }
+    .footer-social { display: flex; gap: 10px; margin-top: 18px; }
+    .footer-social a { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #dbe5f0; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); transition: transform .15s, color .15s, border-color .15s, background .15s; }
+    .footer-social a:hover { transform: translateY(-2px); color: #fff; border-color: transparent; background: linear-gradient(135deg, #3ec5f0, #6b3fd4 55%, #ec3d8f); }
+    .footer-social svg { width: 19px; height: 19px; }
