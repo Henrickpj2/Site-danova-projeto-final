@@ -46,6 +46,16 @@ Tela inicial de quem é admin (só admins veem). Atualiza sozinho: a cada lead n
 - Origem dos leads com custo por lead (quando o investimento está lançado em Mídia), funil com a conversão entre etapas, ranking de corretores, empreendimentos mais procurados com unidades disponíveis.
 - Alertas clicáveis (leads novos há 24h sem contato, sem corretor, follow-ups atrasados, quentes parados, visitas do dia, faturas vencidas), feed ao vivo das movimentações e mapa de calor de dia × hora de chegada dos leads.
 
+### Campanhas · Google Ads e Meta Ads (só admin)
+
+Dashboard escuro com os números das duas plataformas lado a lado e cruzados com o CRM:
+- Período (7/14/30/90 dias ou datas livres) comparado com o período anterior; filtro por plataforma e campanha (clicar numa linha da tabela também filtra).
+- Desempenho: impressões, cliques, CTR, investimento · Conversões: conversões, taxa, custo por conversão, valor e ROAS.
+- **Do anúncio à venda:** impressões → cliques → leads no CRM → qualificados → visitas → vendas, com custo por lead e por lead qualificado *reais* (do CRM, não da plataforma).
+- Evolução diária (barras + linhas), painéis Meta Ads e Google Ads com resultados por dia da semana, CPC e CPM médios, e tabela de campanhas ordenável com variação de cada métrica.
+- **Como entram os números:** botão *Importar* → envie o CSV exportado do Google Ads (segmentado por Dia) ou do Meta Ads (detalhado por Dia). Reimportar o mesmo período atualiza, não duplica. Sem dados importados, a tela mostra números de exemplo com aviso.
+- **Ligação com o CRM:** pelo nome da campanha. No Google Ads use `utm_campaign={campaignname}` (ou o mesmo nome) no sufixo de URL; no Meta, `utm_campaign={{campaign.name}}`. Os leads dos formulários do Meta já chegam com o nome da campanha.
+
 ### Telas da plataforma
 
 | Tela | Quem vê | O que faz |

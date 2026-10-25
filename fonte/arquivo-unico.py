@@ -140,6 +140,7 @@ bloco_crm = (
     + script(ler("js/vendor/supabase-2.45.4.js").replace('throw new Error("Automatic publicPath is not supported in this browser")', 'e="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/"')) + "\n"
     + script(ler("crm/crm-modulos.js")) + "\n"
     + script(ler("crm/crm-dash.js")) + "\n"
+    + script(ler("crm/crm-campanhas.js")) + "\n"
     + script(crm_js) + "\n"
     + script(ler("js/danova-localizador.js")) + "\n"
     + script(ler("js/danova-chat.js")) + "\n"

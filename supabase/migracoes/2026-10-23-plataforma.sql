@@ -640,3 +640,29 @@ begin
   return v_id;
 end $function$;
 grant execute on function public.solicitar_video(jsonb) to anon, authenticated;
+
+-- =====================================================================
+-- PARTE 6 (24/10/2026) — Métricas de campanhas do Google Ads e do Meta Ads (importadas por CSV)
+-- =====================================================================
+create table if not exists public.campanhas_metricas (
+  id bigserial primary key,
+  data date not null,
+  plataforma text not null check (plataforma in ('google','meta')),
+  campanha text not null,
+  conjunto text not null default '',
+  impressoes bigint not null default 0 check (impressoes >= 0),
+  cliques bigint not null default 0 check (cliques >= 0),
+  custo numeric(14,2) not null default 0 check (custo >= 0),
+  moeda text not null default 'BRL' check (moeda in ('BRL','USD')),
+  conversoes numeric(12,2) not null default 0,
+  valor_conversoes numeric(14,2) not null default 0,
+  alcance bigint,
+  origem text not null default 'csv' check (origem in ('csv','api','manual')),
+  importado_por uuid references public.membros(id) on delete set null,
+  importado_em timestamptz not null default now(),
+  constraint campanhas_metricas_unica unique (data, plataforma, campanha, conjunto)
+);
+create index if not exists campanhas_metricas_data on public.campanhas_metricas(data);
+alter table public.campanhas_metricas enable row level security;
+create policy campanhas_admin on public.campanhas_metricas for all to authenticated
+  using ((select privado.eh_admin())) with check ((select privado.eh_admin()));
