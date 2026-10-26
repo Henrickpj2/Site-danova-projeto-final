@@ -180,6 +180,7 @@
 
   // ---------- carga ----------
   async function carregar(A) {
+    st.atualizadoEm = new Date();
     var desde = iso(Date.now() - 400 * DIA);
     var r = await A.sb.from("campanhas_metricas").select("data, plataforma, conta_anuncio, campanha, conjunto, impressoes, cliques, custo, moeda, conversoes, valor_conversoes, alcance, visualizacoes, video_p25, video_p50, video_p75, video_p100").gte("data", desde).order("data").limit(50000);
     if (r.error) { A.falha(r.error); st.linhas = []; } else st.linhas = r.data || [];
@@ -321,6 +322,7 @@
       '<select data-plat>' + platOpts.map(function (o) { return '<option value="' + o[0] + '"' + (st.plat === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>" +
       '<select data-camp><option value="">Todas as campanhas</option>' + camps.map(function (c) { return '<option' + (st.camp === c ? " selected" : "") + ">" + A.esc(c) + "</option>"; }).join("") + "</select>" +
       (st.linhas.some(function (r) { return r.moeda !== st.moeda; }) ? '<select data-moeda><option' + (st.moeda === "BRL" ? " selected" : "") + '>BRL</option><option' + (st.moeda === "USD" ? " selected" : "") + ">USD</option></select>" : "") +
+      '<button class="c-btn ghost c-atual" data-atualizar title="Atualiza sozinho a cada 10 minutos">↻ <span>' + (st.atualizadoEm ? "Atualizado " + st.atualizadoEm.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }) : "Atualizar") + '</span></button>' +
       '<button class="c-btn" data-contas-abrir>⚭ Contas conectadas</button><button class="c-btn ghost" data-imp-abrir>⇪ Importar CSV</button>' + "</div></div>" +
       (T ? '<p class="c-per">Totais acumulados desde o início de cada cliente · os gráficos por dia aparecem quando as contas forem sincronizadas ou o CSV for importado</p>' : '<p class="c-per">' + dt(sDe).toLocaleDateString("pt-BR") + " a " + dt(sAte).toLocaleDateString("pt-BR") + " · comparado com " + dt(sADe).toLocaleDateString("pt-BR") + " a " + dt(sAAte).toLocaleDateString("pt-BR") + (st.camp ? ' · campanha <b>' + A.esc(st.camp) + '</b> <button class="c-x" data-limpar>×</button>' : "") + "</p>") +
 
@@ -466,6 +468,7 @@
       var alvo = el.querySelector(".c-crm"); if (!alvo) return;
       alvo.scrollIntoView({ behavior: "smooth", block: "start" }); alvo.classList.remove("piscar"); void alvo.offsetWidth; alvo.classList.add("piscar");
     });
+    var ba = el.querySelector("[data-atualizar]"); if (ba) ba.addEventListener("click", function () { atualizar(true); });
     el.querySelectorAll("[data-ordcli]").forEach(function (x) { x.addEventListener("click", function () { st.ordemCli = x.dataset.ordcli; re(); }); });
     el.querySelectorAll("tr[data-cli]").forEach(function (x) { x.addEventListener("click", function () { st.conta = st.conta === x.dataset.cli ? "" : x.dataset.cli; st.camp = ""; re(); }); });
     var sn = el.querySelector("[data-nicho]"); if (sn) sn.addEventListener("change", function (e) { st.nicho = e.target.value; st.conta = ""; st.camp = ""; re(); });
@@ -590,12 +593,33 @@
     return e;
   }
 
+  // ---------- atualização automática (10 em 10 minutos) ----------
+  var INTERVALO = 10 * 60 * 1000, timer = null, carregando = false;
+  async function atualizar(manual) {
+    if (carregando || !st.el || !st.A) return;
+    var visivel = st.el.offsetParent !== null && !document.hidden, dlg = document.getElementById("cadsDlg");
+    if (!manual && (!visivel || (dlg && dlg.open))) { st.pendente = true; return; } // tela fora de vista ou janela aberta: atualiza quando voltar
+    carregando = true; var b = st.el.querySelector("[data-atualizar]"); if (b) { b.disabled = true; b.querySelector("span").textContent = "Atualizando…"; }
+    try {
+      var y = window.scrollY; await carregar(st.A); st.pendente = false; render(st.el, st.A); window.scrollTo(0, y);
+      if (manual) st.A.toast("Dados atualizados.");
+    } catch (e) { if (manual) st.A.toast("Não foi possível atualizar agora.", true); }
+    finally { carregando = false; }
+  }
+  function ligarAuto() {
+    if (timer) return;
+    timer = setInterval(function () { atualizar(false); }, INTERVALO);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden && st.pendente) atualizar(false); });
+    window.addEventListener("hashchange", function () { if (st.pendente && /campanhas/.test(location.hash)) setTimeout(function () { atualizar(false); }, 200); });
+  }
+
   D.modulos.push({
     id: "campanhas", titulo: "Campanhas", tituloLongo: "Campanhas · Google Ads e Meta Ads", icone: "◈", papeis: ["admin"], antes: "painel",
     render: async function (el, A) {
       st.el = el; st.A = A;
       if (!st.carregado) { el.innerHTML = '<div class="empty">Carregando campanhas…</div>'; await carregar(A); }
-      render(el, A);
+      else if (st.pendente || (st.atualizadoEm && Date.now() - st.atualizadoEm > INTERVALO)) { await carregar(A); st.pendente = false; }
+      render(el, A); ligarAuto();
     }
   });
   D._campanhas = { interpretar: interpretar, agg: agg }; // usado nos testes
