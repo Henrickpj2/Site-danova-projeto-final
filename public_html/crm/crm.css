@@ -580,3 +580,21 @@ table select, table input { padding: 5px 8px; font-size: 12px; }
 .cn.imoveis { border-left: 3px solid #3ec5f0; } .cn.agro { border-left: 3px solid #84cc16; } .cn.tot { border-left: 3px solid #2fdc9a; background: rgba(47,220,154,.06); }
 .c-clis thead th, .c-clis tfoot td { background: transparent; }
 .c-clis th.on { color: #fff; }
+.st { display: inline-block; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 99px; white-space: nowrap; vertical-align: middle; }
+.st.ativa { background: rgba(52,211,153,.15); color: #6ee7b7; } .st.programada { background: rgba(247,201,72,.16); color: #fcd34d; } .st.pausada { background: rgba(249,115,98,.15); color: #fca5a5; } .st.encerrada { background: rgba(148,163,184,.15); color: #cbd5e1; }
+.c-clis tr.real td { background: rgba(247,201,72,.05); }
+.nb.real { background: rgba(247,201,72,.16); color: #fcd34d; }
+.cv { display: block; font-size: 10.5px; color: var(--cm); margin-top: 2px; }
+.sem-id { color: #fcd34d; font-family: inherit; font-size: 11px; }
+.cc-ed { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.cc-ed input, .cc-ed select { background: rgba(255,255,255,.05); border: 1px solid var(--cl); color: #dbe5f0; border-radius: 8px; padding: 5px 8px; font: inherit; font-size: 12px; }
+.cc-ed input[data-ed-id] { width: 190px; }
+.c-nova { flex-wrap: wrap; }
+.c-nova { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.c-nova > * { width: 100%; min-width: 0; }
+.c-nova input[name="nome"] { grid-column: span 2; }
+.c-nova button { grid-column: 1 / -1; }
+.cc-ed { display: grid; grid-template-columns: 1.4fr 1fr 1fr; }
+.cc-ed input[data-ed-id] { width: auto; }
+@media (max-width: 560px) { .c-nova, .cc-ed { grid-template-columns: 1fr 1fr; } }
+.cc-ed select, .cc-ed input { width: 100%; min-width: 0; }
