@@ -96,7 +96,8 @@ head=f'''<!doctype html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="img/danova-logo.webp">
-  <script src="js/danova-config.js?v=20261020"></script>
+  <script src="js/danova-config.js?v=20261026"></script>
+  <script src="js/danova-consent.js?v=20261026"></script>
   <script src="js/crm-config.js?v=20261026"></script>
   <script src="js/danova-tracking.js?v=20261020" defer></script>
   <style>{css}  </style>

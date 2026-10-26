@@ -435,3 +435,12 @@
     .footer-social a { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #dbe5f0; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); transition: transform .15s, color .15s, border-color .15s, background .15s; }
     .footer-social a:hover { transform: translateY(-2px); color: #fff; border-color: transparent; background: linear-gradient(135deg, #3ec5f0, #6b3fd4 55%, #ec3d8f); }
     .footer-social svg { width: 19px; height: 19px; }
+
+/* ===== Banner de cookies (LGPD) ===== */
+.dn-cookies { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; max-width: 560px; margin: 0 auto; background: #0f1b2d; color: #e9eef5; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; padding: 16px 18px; box-shadow: 0 24px 60px rgba(0,0,0,.45); display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: 14px; line-height: 1.45; }
+.dn-cookies p { flex: 1 1 260px; margin: 0; }
+.dn-cookies a { color: #5fe0d0; }
+.dn-cookies-acts { display: flex; gap: 8px; margin-left: auto; }
+.dn-cookies button { border: 0; border-radius: 999px; padding: 10px 16px; font: 700 13px inherit; cursor: pointer; }
+.dn-ck-a { background: #16b8a6; color: #04211e; }
+.dn-ck-e { background: rgba(255,255,255,.08); color: #e9eef5; border: 1px solid rgba(255,255,255,.16) !important; }

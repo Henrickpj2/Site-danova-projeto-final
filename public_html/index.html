@@ -16,7 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="img/danova-logo.webp">
-  <script src="js/danova-config.js?v=20261020"></script>
+  <script src="js/danova-config.js?v=20261026"></script>
+  <script src="js/danova-consent.js?v=20261026"></script>
   <script src="js/crm-config.js?v=20261026"></script>
   <script src="js/danova-tracking.js?v=20261020" defer></script>
   <style>
@@ -641,6 +642,15 @@
     .footer-social a { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #dbe5f0; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); transition: transform .15s, color .15s, border-color .15s, background .15s; }
     .footer-social a:hover { transform: translateY(-2px); color: #fff; border-color: transparent; background: linear-gradient(135deg, #3ec5f0, #6b3fd4 55%, #ec3d8f); }
     .footer-social svg { width: 19px; height: 19px; }
+
+/* ===== Banner de cookies (LGPD) ===== */
+.dn-cookies { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 2147483000; max-width: 560px; margin: 0 auto; background: #0f1b2d; color: #e9eef5; border: 1px solid rgba(255,255,255,.14); border-radius: 18px; padding: 16px 18px; box-shadow: 0 24px 60px rgba(0,0,0,.45); display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: 14px; line-height: 1.45; }
+.dn-cookies p { flex: 1 1 260px; margin: 0; }
+.dn-cookies a { color: #5fe0d0; }
+.dn-cookies-acts { display: flex; gap: 8px; margin-left: auto; }
+.dn-cookies button { border: 0; border-radius: 999px; padding: 10px 16px; font: 700 13px inherit; cursor: pointer; }
+.dn-ck-a { background: #16b8a6; color: #04211e; }
+.dn-ck-e { background: rgba(255,255,255,.08); color: #e9eef5; border: 1px solid rgba(255,255,255,.16) !important; }
   </style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://danova-ai.com/#org", "name": "danova AI", "url": "https://danova-ai.com/", "logo": "https://danova-ai.com/img/danova-logo.webp", "email": "danielle@danova-ai.com", "telephone": "+1-786-382-6782", "areaServed": ["Miami", "Palm Beach", "Flórida", "Brasil"], "knowsAbout": ["Meta Ads", "Google Ads", "SEO", "tráfego pago imobiliário", "CRM imobiliário", "empreendimentos de alto padrão"], "knowsLanguage": ["pt", "en", "es"], "sameAs": ["https://www.instagram.com/danova_ia", "https://www.linkedin.com/in/danova-ai-4738103b9/", "https://www.facebook.com/profile.php?id=61577480279926", "https://wa.me/17863826782"]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://danova-ai.com/#site", "url": "https://danova-ai.com/", "name": "danova AI", "inLanguage": "pt-BR", "publisher": {"@id": "https://danova-ai.com/#org"}}</script>
@@ -1320,7 +1330,7 @@
         <div class="footer-links">
           <div class="footer-col"><strong>Explorar</strong><a href="#plataforma">Plataforma</a><a href="#como-funciona">Como funciona</a><a href="#estrategia">Estratégia</a><a href="#video">Vídeo para anúncios</a><a href="#planos">Planos</a><a href="#empreendimentos">Empreendimentos</a><a href="#faq">Perguntas frequentes</a><a href="livro.html">Livro</a></div>
           <div class="footer-col"><strong>Para empresas</strong><a href="#contato" data-interest="Construtora ou incorporadora">Construtoras</a><a href="#contato" data-interest="Imobiliária">Imobiliárias</a><a href="#contato" data-interest="Corretor de imóveis">Corretores</a><a href="#contato" data-interest="Gestor(a) de marketing">Marketing</a><a href="crm/index.html">Área de membros</a></div>
-          <div class="footer-col"><strong>Contato e transparência</strong><a href="#contato">Solicitar diagnóstico</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://www.instagram.com/danova_ia" target="_blank" rel="noopener">Instagram</a><a href="https://www.linkedin.com/in/danova-ai-4738103b9/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.facebook.com/profile.php?id=61577480279926" target="_blank" rel="noopener">Facebook</a><a href="politica-de-privacidade.html">Política de Privacidade</a><a href="termos-de-uso.html">Termos de Uso</a></div>
+          <div class="footer-col"><strong>Contato e transparência</strong><a href="#contato">Solicitar diagnóstico</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://www.instagram.com/danova_ia" target="_blank" rel="noopener">Instagram</a><a href="https://www.linkedin.com/in/danova-ai-4738103b9/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.facebook.com/profile.php?id=61577480279926" target="_blank" rel="noopener">Facebook</a><a href="politica-de-privacidade.html">Política de Privacidade</a><a href="termos-de-uso.html">Termos de Uso</a><a href="#" data-cookies>Preferências de cookies</a></div>
         </div>
       </div>
       <p class="legal-note">Danielle Lisboa Martins, Esq. · NY State Bar #10351218844 · FL Broker #3252283 · Executive Broker, Cervera Real Estate. We do business in accordance with the Federal Fair Housing Law.</p>

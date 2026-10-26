@@ -113,6 +113,17 @@ Opcional: `ATENDENTE_MODELO` e `AGENTE_MODELO` (padrão `claude-sonnet-5-5`).
 
 **Atualizar preços e projetos:** edite `supabase/functions/atendente/conhecimento.ts` (e a cópia em `agente-crm/`) e publique as funções de novo.
 
+## Medição (GTM, GA4, Pixel) e cookies
+
+- IDs em `js/danova-config.js`: use **só o GTM** (`GTM_ID`) e configure GA4 e Pixel dentro dele, **ou** preencha `GA4_ID` e `META_PIXEL_ID` direto, sem GTM. Campo vazio = nada carrega.
+- `js/danova-consent.js`: banner de cookies (PT/EN/ES) com Consent Mode v2 do Google (tudo negado até o aceite) e Pixel do Meta só depois do aceite. O link "Preferências de cookies" no rodapé reabre o aviso.
+- Sem GTM, os eventos do site são repassados automaticamente: `generate_lead` → GA4 + Pixel `Lead`; WhatsApp/telefone/e-mail → GA4 + Pixel `Contact`; `chat_message`, `chat_voz`, `video_pedido` → GA4; seções do site → `page_view`.
+
+## Aviso ao corretor
+
+- **No CRM:** sino 🔔 no topo. Ao chegar um lead para o corretor (ou qualquer lead, para o admin), toca um som e aparece uma notificação do navegador; clicar abre o lead. O primeiro clique no sino pede a permissão.
+- **Por e-mail:** gatilho `e_lead_avisar` em `leads` chama a função `avisar-lead` (via pg_net, com token guardado no Vault). O corretor recebe os leads dele; os administradores recebem todo lead novo. Precisa do secret `RESEND_API_KEY` (e domínio verificado no Resend; remetente padrão `avisos@danova-ai.com`, mude com `AVISO_REMETENTE`). Sem a chave, o aviso fica registrado em `avisos_lead` com status `sem_chave`. Migração: `supabase/migracoes/2026-10-26-aviso-lead.sql`.
+
 ## Base de conhecimento da IA (RAG)
 
 O chat do site e a análise de lead do CRM consultam a **base de conhecimento** antes de responder: a pergunta vira um vetor (modelo `gte-small`, que roda dentro do Supabase, sem chave externa), o banco (pgvector) devolve os trechos mais parecidos e a IA responde só com eles. Se nada for encontrado, usa a base fixa de `conhecimento.ts` como reserva.

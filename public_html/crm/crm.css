@@ -550,3 +550,7 @@ table select, table input { padding: 5px 8px; font-size: 12px; }
 .kb-res { margin: 12px 0 0; padding-left: 20px; display: grid; gap: 10px; }
 .kb-res p { margin: 4px 0 0; font-size: 13px; color: var(--muted); white-space: pre-line; }
 @media (max-width: 720px) { .kb-grid { grid-template-columns: 1fr; } }
+
+/* alertas de novo lead */
+.icon-btn.alertas { font-size: 17px; position: relative; }
+.icon-btn.alertas.pendente::after { content: ""; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: #ec4899; box-shadow: 0 0 0 2px #fff; }
