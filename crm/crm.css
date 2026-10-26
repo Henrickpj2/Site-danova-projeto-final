@@ -672,3 +672,4 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 }
 @media (max-width: 640px) { .c-clis td > .estm, .c-clis td > b, .c-clis td > span { align-self: flex-start; } }
 .c-atual span { font-weight: 600; } @media (max-width: 640px) { .c-fil .c-atual { grid-column: 1 / -1; } }
+.prov { display: inline-block; font-family: "DM Sans", sans-serif; font-size: 9.5px; font-weight: 800; padding: 2px 6px; border-radius: 99px; background: rgba(247,201,72,.16); color: #fcd34d; margin-left: 4px; vertical-align: middle; }
