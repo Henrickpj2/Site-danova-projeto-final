@@ -614,3 +614,60 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 .nb.veiculos { background: rgba(249,115,22,.16); color: #fdba74; }
 .cn.veiculos { border-left: 3px solid #f97316; }
 .cads.modo-totais .c-diario { display: none; }
+
+/* ===== Campanhas no celular ===== */
+.cads.modo-totais .c-seg, .cads.modo-totais .c-dt, .cads.modo-totais select[data-camp] { display: none; }
+@media (max-width: 640px) {
+  #view-campanhas { padding: 14px 12px 60px; }
+  .c-demo { font-size: 12.5px; padding: 12px 14px; }
+  .c-logos { flex-wrap: wrap; gap: 6px; width: 100%; }
+  .c-logos button { padding: 7px 10px; font-size: 12px; }
+  .c-logos button small { display: none; }
+  .c-fil { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+  .c-fil select, .c-fil .c-btn { width: 100%; min-width: 0; }
+  .c-fil .c-seg, .c-fil .c-dt { grid-column: 1 / -1; }
+  .c-dt { display: flex; gap: 6px; align-items: center; } .c-dt input { flex: 1; min-width: 0; }
+  .c-per { font-size: 11.5px; }
+  .c-box { padding: 14px 12px; }
+  .ct { padding: 11px 12px; } .ct strong { font-size: 19px; }
+  .ct-h small { font-size: 11.5px; }
+  .ct-f { font-size: 10.5px; } .ct-f .cd { font-size: 10px; padding: 2px 7px; }
+  .c-funil { grid-template-columns: 1fr 1fr; }
+  .c-kpis { grid-template-columns: 1fr 1fr; } .c-kpis b { font-size: 16px; }
+  .c-nichos { grid-template-columns: 1fr; } .cn b { font-size: 21px; }
+  .c-leg-est { font-size: 11px; }
+  /* tabela de clientes vira cartões */
+  .c-clis .c-scroll { overflow: visible; }
+  .c-clis table { min-width: 0; display: block; }
+  .c-clis thead { display: none; }
+  .c-clis tbody, .c-clis tfoot { display: grid; gap: 10px; }
+  .c-clis tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; border: 1px solid var(--cl); border-radius: 14px; padding: 12px; background: rgba(255,255,255,.025); }
+  .c-clis tr.on { border-color: #3ec5f0; }
+  .c-clis td { display: flex; flex-direction: column; gap: 2px; padding: 0; border: 0; white-space: normal; font-size: 13px; min-width: 0; }
+  .c-clis td::before { font-size: 10px; color: var(--cm); text-transform: uppercase; letter-spacing: .05em; }
+  .c-clis tbody td:nth-child(1) { order: -2; } .c-clis tbody td:nth-child(1)::before { content: "Código"; }
+  .c-clis tbody td:nth-child(2) { order: -2; } .c-clis tbody td:nth-child(2)::before { content: "ID Google Ads"; }
+  .c-clis tbody td:nth-child(3) { order: -3; grid-column: 1 / -1; font-size: 15px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px; }
+  .c-clis tbody td:nth-child(4) { order: -1; } .c-clis tbody td:nth-child(5) { order: -1; }
+  .c-clis tbody td:nth-child(4) span, .c-clis tbody td:nth-child(5) span { align-self: flex-start; }
+  .c-clis tbody td:nth-child(6) { grid-column: 1 / -1; } .c-clis tbody td:nth-child(6)::before { content: "Investido"; }
+  .c-clis tbody td.hb i { display: none; }
+  .c-clis tbody td:nth-child(7)::before { content: "Cliques"; }
+  .c-clis tbody td:nth-child(8)::before { content: "Leads"; }
+  .c-clis tbody td:nth-child(9)::before { content: "Custo por lead"; }
+  .c-clis tbody td:nth-child(10)::before { content: "Vendas"; }
+  .c-clis tbody td:nth-child(11)::before { content: "Custo por venda"; }
+  .c-clis tbody td:nth-child(12)::before { content: "Lead → venda"; }
+  .c-clis tbody td:nth-child(13)::before { content: "Vendido"; }
+  .c-clis tbody td:nth-child(14)::before { content: "Retorno"; }
+  .c-clis tfoot tr { background: rgba(47,220,154,.06); border-color: rgba(47,220,154,.3); }
+  .c-clis tfoot td:empty { display: none; }
+  .c-clis tfoot td:nth-child(3) { grid-column: 1 / -1; font-size: 15px; }
+  .c-clis tfoot td:nth-child(6)::before { content: "Investido"; } .c-clis tfoot td:nth-child(7)::before { content: "Cliques"; }
+  .c-clis tfoot td:nth-child(8)::before { content: "Leads"; } .c-clis tfoot td:nth-child(9)::before { content: "Custo por lead"; }
+  .c-clis tfoot td:nth-child(10)::before { content: "Vendas"; } .c-clis tfoot td:nth-child(11)::before { content: "Custo por venda"; }
+  .c-clis tfoot td:nth-child(12)::before { content: "Lead → venda"; } .c-clis tfoot td:nth-child(13)::before { content: "Vendido"; }
+  .c-clis tfoot td:nth-child(14)::before { content: "Retorno"; }
+  .c-clis .c-h { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+@media (max-width: 640px) { .c-clis td > .estm, .c-clis td > b, .c-clis td > span { align-self: flex-start; } }
