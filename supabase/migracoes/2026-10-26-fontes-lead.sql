@@ -5,7 +5,7 @@ create table if not exists public.fontes_lead (
   nome text not null check (char_length(nome) between 2 and 120),
   slug text not null unique check (slug ~ '^[a-z0-9][a-z0-9-]{2,59}$'),
   url text,
-  plataforma text check (plataforma is null or plataforma in ('elementor','wordpress','rd-station','typeform','google-forms','hubspot','jotform','tally','webflow','wix','outro')),
+  plataforma text check (plataforma is null or plataforma in ('elementor','wordpress','rdstation','typeform','google-forms','hubspot','jotform','tally','webflow','wix','outro')),
   conta_anuncio_id uuid references public.contas_anuncio(id) on delete set null,
   ativo boolean not null default true,
   criado_em timestamptz not null default now()
