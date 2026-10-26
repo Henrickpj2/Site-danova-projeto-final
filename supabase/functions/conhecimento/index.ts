@@ -16,10 +16,17 @@ Deno.serve(async (req) => {
   const url = Deno.env.get("SUPABASE_URL")!;
   const usuario = createClient(url, Deno.env.get("SUPABASE_ANON_KEY")!, { global: { headers: { Authorization: req.headers.get("Authorization") ?? "" } }, auth: { persistSession: false } });
   const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
-  const { data: u } = await usuario.auth.getUser();
-  if (!u?.user) return json({ erro: "nao_autenticado" }, 401);
-  const { data: me } = await usuario.from("membros").select("ativo, papel").eq("id", u.user.id).maybeSingle();
-  if (!me?.ativo || me.papel !== "admin") return json({ erro: "sem_acesso" }, 403);
+  // chamada interna do banco (pg_net) para indexar: token secreto conferido pelo hash guardado em privado.tokens_internos
+  const interno = req.headers.get("x-token-interno");
+  if (interno) {
+    const { data: ok } = await admin.rpc("validar_token_interno", { nome: "conhecimento", token: interno });
+    if (!ok) return json({ erro: "sem_acesso" }, 403);
+  } else {
+    const { data: u } = await usuario.auth.getUser();
+    if (!u?.user) return json({ erro: "nao_autenticado" }, 401);
+    const { data: me } = await usuario.from("membros").select("ativo, papel").eq("id", u.user.id).maybeSingle();
+    if (!me?.ativo || me.papel !== "admin") return json({ erro: "sem_acesso" }, 403);
+  }
 
   let corpo: Record<string, unknown>;
   try { corpo = await req.json(); } catch { return json({ erro: "json" }, 400); }

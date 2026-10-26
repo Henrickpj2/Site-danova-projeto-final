@@ -59,3 +59,13 @@ drop policy if exists "admin arquivos conhecimento" on storage.objects;
 create policy "admin arquivos conhecimento" on storage.objects for all to authenticated
   using (bucket_id = 'conhecimento' and (select privado.eh_admin()))
   with check (bucket_id = 'conhecimento' and (select privado.eh_admin()));
+
+-- token interno: permite ao próprio banco (pg_net) pedir a indexação; só o hash fica guardado
+create extension if not exists pg_net with schema extensions;
+create table if not exists privado.tokens_internos (nome text primary key, hash text not null, criado_em timestamptz not null default now());
+alter table privado.tokens_internos enable row level security;
+create or replace function public.validar_token_interno(nome text, token text)
+returns boolean language sql stable security definer set search_path = ''
+as $$ select exists (select 1 from privado.tokens_internos t where t.nome = validar_token_interno.nome and t.hash = encode(extensions.digest(token, 'sha256'), 'hex')) $$;
+revoke all on function public.validar_token_interno(text, text) from public, anon, authenticated;
+grant execute on function public.validar_token_interno(text, text) to service_role;

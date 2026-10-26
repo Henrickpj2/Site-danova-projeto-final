@@ -113,6 +113,16 @@ Opcional: `ATENDENTE_MODELO` e `AGENTE_MODELO` (padrão `claude-sonnet-5-5`).
 
 **Atualizar preços e projetos:** edite `supabase/functions/atendente/conhecimento.ts` (e a cópia em `agente-crm/`) e publique as funções de novo.
 
+## Base de conhecimento da IA (RAG)
+
+O chat do site e a análise de lead do CRM consultam a **base de conhecimento** antes de responder: a pergunta vira um vetor (modelo `gte-small`, que roda dentro do Supabase, sem chave externa), o banco (pgvector) devolve os trechos mais parecidos e a IA responde só com eles. Se nada for encontrado, usa a base fixa de `conhecimento.ts` como reserva.
+
+- **Tela Conhecimento** (CRM, só admin): adicionar texto ou arquivo (.txt, .md, .csv, .pdf, .docx), editar, ativar/desativar, excluir e **testar a busca**. Ao salvar, o documento é dividido em trechos e indexado na hora.
+- Banco: `conhecimento_docs`, `conhecimento_trechos` (vetor 384), função `buscar_conhecimento` (só o servidor chama), bucket privado `conhecimento` para os arquivos originais. Migração: `supabase/migracoes/2026-10-25-conhecimento.sql`.
+- Função `conhecimento` (indexar/buscar, só admin). O código de RAG fica em `rag.ts`, copiado em `atendente/`, `agente-crm/` e `conhecimento/`.
+- Base inicial (25/10/2026): 15 documentos (quem somos, 10 empreendimentos, tráfego pago, serviços, perguntas frequentes, preços).
+- O **agente de voz** usa a base do próprio ElevenLabs (13 documentos). Ao mudar preço ou empreendimento, atualize nos dois lugares.
+
 ## Meta Ads e Google Ads (conversões)
 
 **Leads dos formulários do Meta → CRM** (função `meta-leads`):
