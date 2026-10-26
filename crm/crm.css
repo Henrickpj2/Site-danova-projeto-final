@@ -607,3 +607,7 @@ table select, table input { padding: 5px 8px; font-size: 12px; }
 .nb.sinc { background: rgba(52,211,153,.14); color: #6ee7b7; }
 .c-dlg { max-width: 760px; }
 @media (max-width: 640px) { .cc-num { grid-template-columns: 1fr 1fr; } }
+.estm { color: #9fb3c8; font-style: normal; }
+td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
+.cc-num label .estm { font-size: 9.5px; color: #fcd34d; text-transform: none; letter-spacing: 0; }
+.c-leg-est { font-size: 11.5px; color: var(--cm); margin: 10px 2px 0; }
