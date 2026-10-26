@@ -3,6 +3,7 @@
 // Segredos: ANTHROPIC_API_KEY (obrigatório), AGENTE_MODELO (opcional, padrão claude-sonnet-5-5).
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 import { CONHECIMENTO } from "./conhecimento.ts";
+import { buscar, formatar } from "./rag.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -67,9 +68,12 @@ Deno.serve(async (req) => {
   const dadosLead = Object.fromEntries(Object.entries(lead).filter(([k, v]) => v != null && v !== "" && !["id", "corretor_id", "utm"].includes(k)));
   const historico = (eventos ?? []).map((e) => `${e.criado_em.slice(0, 10)} · ${e.tipo}${e.para_etapa ? " → " + e.para_etapa : ""}${e.texto ? ": " + e.texto : ""}`).join("\n");
 
+  const pergunta = [lead.empreendimento, lead.objetivo, lead.orcamento, lead.perfil, lead.mensagem, transcricao.slice(-600)].filter(Boolean).join(" \n");
+  const trechos = await buscar(admin, pergunta, 6);
+  const base = trechos.length ? formatar(trechos) : CONHECIMENTO;
   const system = `Você é o assistente de vendas interno da danova AI e ajuda o corretor ${me.nome} a conduzir um lead.
 Regras: use apenas os dados fornecidos e a base de conhecimento; não invente fatos sobre o cliente. Se algo não foi dito, trate como desconhecido e liste em pontos_atencao. Não prometa preço final, desconto, retorno ou aprovação de visto. Hoje é ${new Date().toISOString().slice(0, 10)}. Leads quentes: próximo contato em até 1 dia; mornos: 2 a 4 dias; frios: 7 a 14 dias.
-${CONHECIMENTO}`;
+${base}`;
   const conteudo = `DADOS DO LEAD:\n${JSON.stringify(dadosLead, null, 2)}\n\nHISTÓRICO NO CRM:\n${historico || "(vazio)"}\n\nCONVERSA NO CHAT DO SITE:\n${transcricao || "(não houve)"}`;
 
   const r = await fetch("https://api.anthropic.com/v1/messages", {

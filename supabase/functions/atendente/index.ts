@@ -3,6 +3,7 @@
 // ATENDENTE_MODELO (opcional, padrão claude-sonnet-5-5).
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 import { CONHECIMENTO, REGRAS, WHATSAPP } from "./conhecimento.ts";
+import { buscar, formatar } from "./rag.ts";
 
 const LIMITE_MSG_CONVERSA = 30;      // mensagens do cliente por conversa
 const LIMITE_CONVERSAS_IP_HORA = 6;  // conversas novas por IP por hora
@@ -147,7 +148,11 @@ Deno.serve(async (req) => {
     leadAtual = data;
   }
   const contexto = `\n\n# Contexto desta conversa\n- Data de hoje: ${new Date().toISOString().slice(0, 10)}\n- Idioma do navegador: ${idioma}\n- Página: ${c.pagina || "home"}\n- Lead já registrado no CRM: ${leadAtual ? "sim — " + JSON.stringify(leadAtual) : "ainda não"}`;
-  const system = REGRAS + "\n" + CONHECIMENTO + contexto;
+  // RAG: busca na base de conhecimento os trechos ligados à pergunta (mais a pergunta anterior, para dar contexto)
+  const anteriores = (hist ?? []).filter((m) => m.papel === "cliente").slice(-2).map((m) => m.texto).join(" \n");
+  const trechos = await buscar(db, anteriores || mensagem, 6);
+  // sem trechos (base vazia ou pergunta genérica): usa a base fixa como reserva
+  const system = REGRAS + "\n" + (trechos.length ? formatar(trechos) : CONHECIMENTO) + contexto;
   const modelo = Deno.env.get("ATENDENTE_MODELO") || "claude-sonnet-5-5";
 
   let acao: Record<string, string> | null = null;
