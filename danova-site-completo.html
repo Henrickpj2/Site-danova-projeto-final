@@ -2370,6 +2370,77 @@ window.DANOVA_CRM = {
 #crmRoot .nb.veiculos { background: rgba(249,115,22,.16); color: #fdba74; }
 #crmRoot .cn.veiculos { border-left: 3px solid #f97316; }
 #crmRoot .cads.modo-totais .c-diario { display: none; }
+#crmRoot .cads.modo-totais .c-seg, #crmRoot .cads.modo-totais .c-dt, #crmRoot .cads.modo-totais select[data-camp] { display: none; }
+@media (max-width: 640px) {
+#crmRoot #view-campanhas { padding: 14px 12px 60px; }
+#crmRoot .c-demo { font-size: 12.5px; padding: 12px 14px; }
+#crmRoot .c-logos { flex-wrap: wrap; gap: 6px; width: 100%; }
+#crmRoot .c-logos button { padding: 7px 10px; font-size: 12px; }
+#crmRoot .c-logos button small { display: none; }
+#crmRoot .c-fil { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+#crmRoot .c-fil select, #crmRoot .c-fil .c-btn { width: 100%; min-width: 0; }
+#crmRoot .c-fil .c-seg, #crmRoot .c-fil .c-dt { grid-column: 1 / -1; }
+#crmRoot .c-dt { display: flex; gap: 6px; align-items: center; }
+#crmRoot .c-dt input { flex: 1; min-width: 0; }
+#crmRoot .c-per { font-size: 11.5px; }
+#crmRoot .c-box { padding: 14px 12px; }
+#crmRoot .ct { padding: 11px 12px; }
+#crmRoot .ct strong { font-size: 19px; }
+#crmRoot .ct-h small { font-size: 11.5px; }
+#crmRoot .ct-f { font-size: 10.5px; }
+#crmRoot .ct-f .cd { font-size: 10px; padding: 2px 7px; }
+#crmRoot .c-funil { grid-template-columns: 1fr 1fr; }
+#crmRoot .c-kpis { grid-template-columns: 1fr 1fr; }
+#crmRoot .c-kpis b { font-size: 16px; }
+#crmRoot .c-nichos { grid-template-columns: 1fr; }
+#crmRoot .cn b { font-size: 21px; }
+#crmRoot .c-leg-est { font-size: 11px; }
+#crmRoot .c-clis .c-scroll { overflow: visible; }
+#crmRoot .c-clis table { min-width: 0; display: block; }
+#crmRoot .c-clis thead { display: none; }
+#crmRoot .c-clis tbody, #crmRoot .c-clis tfoot { display: grid; gap: 10px; }
+#crmRoot .c-clis tr { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; border: 1px solid var(--cl); border-radius: 14px; padding: 12px; background: rgba(255,255,255,.025); }
+#crmRoot .c-clis tr.on { border-color: #3ec5f0; }
+#crmRoot .c-clis td { display: flex; flex-direction: column; gap: 2px; padding: 0; border: 0; white-space: normal; font-size: 13px; min-width: 0; }
+#crmRoot .c-clis td::before { font-size: 10px; color: var(--cm); text-transform: uppercase; letter-spacing: .05em; }
+#crmRoot .c-clis tbody td:nth-child(1) { order: -2; }
+#crmRoot .c-clis tbody td:nth-child(1)::before { content: "Código"; }
+#crmRoot .c-clis tbody td:nth-child(2) { order: -2; }
+#crmRoot .c-clis tbody td:nth-child(2)::before { content: "ID Google Ads"; }
+#crmRoot .c-clis tbody td:nth-child(3) { order: -3; grid-column: 1 / -1; font-size: 15px; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px; }
+#crmRoot .c-clis tbody td:nth-child(4) { order: -1; }
+#crmRoot .c-clis tbody td:nth-child(5) { order: -1; }
+#crmRoot .c-clis tbody td:nth-child(4) span, #crmRoot .c-clis tbody td:nth-child(5) span { align-self: flex-start; }
+#crmRoot .c-clis tbody td:nth-child(6) { grid-column: 1 / -1; }
+#crmRoot .c-clis tbody td:nth-child(6)::before { content: "Investido"; }
+#crmRoot .c-clis tbody td.hb i { display: none; }
+#crmRoot .c-clis tbody td:nth-child(7)::before { content: "Cliques"; }
+#crmRoot .c-clis tbody td:nth-child(8)::before { content: "Leads"; }
+#crmRoot .c-clis tbody td:nth-child(9)::before { content: "Custo por lead"; }
+#crmRoot .c-clis tbody td:nth-child(10)::before { content: "Vendas"; }
+#crmRoot .c-clis tbody td:nth-child(11)::before { content: "Custo por venda"; }
+#crmRoot .c-clis tbody td:nth-child(12)::before { content: "Lead → venda"; }
+#crmRoot .c-clis tbody td:nth-child(13)::before { content: "Vendido"; }
+#crmRoot .c-clis tbody td:nth-child(14)::before { content: "Retorno"; }
+#crmRoot .c-clis tfoot tr { background: rgba(47,220,154,.06); border-color: rgba(47,220,154,.3); }
+#crmRoot .c-clis tfoot td:empty { display: none; }
+#crmRoot .c-clis tfoot td:nth-child(3) { grid-column: 1 / -1; font-size: 15px; }
+#crmRoot .c-clis tfoot td:nth-child(6)::before { content: "Investido"; }
+#crmRoot .c-clis tfoot td:nth-child(7)::before { content: "Cliques"; }
+#crmRoot .c-clis tfoot td:nth-child(8)::before { content: "Leads"; }
+#crmRoot .c-clis tfoot td:nth-child(9)::before { content: "Custo por lead"; }
+#crmRoot .c-clis tfoot td:nth-child(10)::before { content: "Vendas"; }
+#crmRoot .c-clis tfoot td:nth-child(11)::before { content: "Custo por venda"; }
+#crmRoot .c-clis tfoot td:nth-child(12)::before { content: "Lead → venda"; }
+#crmRoot .c-clis tfoot td:nth-child(13)::before { content: "Vendido"; }
+#crmRoot .c-clis tfoot td:nth-child(14)::before { content: "Retorno"; }
+#crmRoot .c-clis .c-h { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+
+@media (max-width: 640px) {
+#crmRoot .c-clis td > .estm, #crmRoot .c-clis td > b, #crmRoot .c-clis td > span { align-self: flex-start; }
+}
+
 #crmRoot { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
 #crmRoot { display: none; }
 html.crm-mode #crmRoot { display: block; }
