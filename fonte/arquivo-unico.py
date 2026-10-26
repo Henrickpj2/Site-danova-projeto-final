@@ -143,6 +143,7 @@ bloco_crm = (
     + script(ler("crm/crm-dash.js")) + "\n"
     + script(ler("crm/crm-campanhas.js")) + "\n"
     + script(ler("crm/crm-conhecimento.js")) + "\n"
+    + script(ler("crm/crm-integracoes.js")) + "\n"
     + script(crm_js) + "\n"
     + script(ler("js/danova-localizador.js")) + "\n"
     + script(ler("js/danova-chat.js")) + "\n"
