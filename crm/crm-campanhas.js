@@ -338,9 +338,17 @@
     var camps = Object.keys(campanhas).filter(function (c) { return st.plat === "todas" || campanhas[c] === st.plat; }).sort();
     var grupos = []; contasVisiveis().forEach(function (c) { var g = grupoDe(c); if (grupos.indexOf(g) < 0) grupos.push(g); });
 
+    function selo(p, cls, nome) { // estado: conectado (há contas ativas e dados), exemplo, ou sem conta
+      var contasP = contasVisiveis().filter(function (c) { return c.plataforma === p; }).length, dadosP = todas.some(function (r) { return r.plataforma === p; });
+      var est = st.demo ? "ex" : contasP && dadosP ? "on" : dadosP ? "on" : contasP ? "warn" : "off";
+      var txt = st.demo ? "exemplo" : dadosP ? contasP + " conta" + (contasP === 1 ? "" : "s") : contasP ? "sem dados" : "conectar";
+      var tit = st.plat === p ? "Mostrando só " + nome + " — clique para ver todas as plataformas" : "Filtrar o dashboard por " + nome;
+      return '<button type="button" class="' + cls + (st.plat === p ? " ativo" : "") + '" data-selo="' + p + '" title="' + tit + '"><i class="' + est + '"></i>' + nome + " <small>" + txt + "</small></button>";
+    }
     el.innerHTML = '<div class="cads">' +
       (st.demo ? '<div class="c-demo"><b>DADOS DE EXEMPLO</b> — ' + (st.linhas.length ? "você está vendo números fictícios." : "ainda não há métricas importadas. Importe os relatórios do Google Ads e do Meta Ads para ver seus números reais.") + (st.linhas.length ? ' <button data-real>Ver meus dados</button>' : ' <button data-imp-abrir>Importar relatórios</button>') + "</div>" : "") +
-      '<div class="c-bar"><div class="c-logos"><span class="lg-g">Google Ads</span><span class="lg-m">Meta Ads</span><span class="lg-c">CRM</span></div>' +
+      '<div class="c-bar"><div class="c-logos">' + selo("google", "lg-g", "Google Ads") + selo("meta", "lg-m", "Meta Ads") +
+      '<button type="button" class="lg-c" data-ir-crm title="Ver o cruzamento das campanhas com o CRM: leads, qualificados, visitas e vendas"><i class="' + (A.S.leads.length || st.demo ? (st.demo ? "ex" : "on") : "off") + '"></i>CRM <small>' + (st.demo ? "exemplo" : n0(A.S.leads.length) + " leads") + "</small></button></div>" +
       '<div class="c-fil"><div class="c-seg">' + [7, 14, 30, 90].map(function (d) { return '<button data-dias="' + d + '"' + (!st.de && st.dias === d ? ' class="on"' : "") + ">" + d + "d</button>"; }).join("") + "</div>" +
       '<label class="c-dt"><input type="date" data-de value="' + sDe + '"> – <input type="date" data-ate value="' + sAte + '"></label>' +
       (grupos.length ? '<select data-conta><option value="">Todos os clientes</option>' + grupos.map(function (g) { return '<option value="' + A.esc(g) + '"' + (st.conta === g ? " selected" : "") + ">" + A.esc(rotuloGrupo(g)) + "</option>"; }).join("") + "</select>" : "") +
@@ -459,6 +467,15 @@
 
     // eventos
     var re = function () { render(el, A); };
+    el.querySelectorAll("[data-selo]").forEach(function (x) { x.addEventListener("click", function () {
+      var p = x.dataset.selo, temDados = todas.some(function (r) { return r.plataforma === p; });
+      if (!temDados && !st.demo) { abrirContas(el, A); return; } // ainda não conectado: abre o cadastro de contas
+      st.plat = st.plat === p ? "todas" : p; st.camp = ""; re();
+    }); });
+    var irCrm = el.querySelector("[data-ir-crm]"); if (irCrm) irCrm.addEventListener("click", function () {
+      var alvo = el.querySelector(".c-crm"); if (!alvo) return;
+      alvo.scrollIntoView({ behavior: "smooth", block: "start" }); alvo.classList.remove("piscar"); void alvo.offsetWidth; alvo.classList.add("piscar");
+    });
     el.querySelectorAll("[data-ordcli]").forEach(function (x) { x.addEventListener("click", function () { st.ordemCli = x.dataset.ordcli; re(); }); });
     el.querySelectorAll("tr[data-cli]").forEach(function (x) { x.addEventListener("click", function () { st.conta = st.conta === x.dataset.cli ? "" : x.dataset.cli; st.camp = ""; re(); }); });
     var sn = el.querySelector("[data-nicho]"); if (sn) sn.addEventListener("change", function (e) { st.nicho = e.target.value; st.conta = ""; st.camp = ""; re(); });
