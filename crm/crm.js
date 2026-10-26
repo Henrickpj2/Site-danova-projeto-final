@@ -108,14 +108,60 @@
     S.membros = b.data || [];
   }
 
+  // =============== ALERTAS DE NOVO LEAD (som + notificação do navegador) ===============
+  var ALERTA = { ligado: (function () { try { return localStorage.getItem("dn_alertas") !== "0"; } catch (e) { return true; } })(), audio: null };
+  function bip() {
+    try {
+      var C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+      ALERTA.audio = ALERTA.audio || new C(); var ctx = ALERTA.audio, t = ctx.currentTime;
+      [880, 1320].forEach(function (f, i) { var o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = f; o.type = "sine"; g.gain.setValueAtTime(0.0001, t + i * 0.16); g.gain.exponentialRampToValueAtTime(0.25, t + i * 0.16 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + i * 0.16 + 0.15); o.connect(g); g.connect(ctx.destination); o.start(t + i * 0.16); o.stop(t + i * 0.16 + 0.16); });
+    } catch (e) { /* sem áudio */ }
+  }
+  function alertarLead(l, motivo) {
+    if (!ALERTA.ligado || !l) return;
+    var nome = l.nome || l.email || l.telefone || "Lead";
+    var corpo = [l.empreendimento, l.objetivo, l.orcamento].filter(Boolean).join(" · ") || "Abra o CRM para ver os detalhes.";
+    bip();
+    try {
+      if ("Notification" in window && Notification.permission === "granted") {
+        var n = new Notification(motivo + ": " + nome, { body: corpo, tag: "lead-" + l.id, icon: "../img/danova-logo.webp" });
+        n.onclick = function () { window.focus(); abrirLead(l.id); n.close(); };
+      }
+    } catch (e) { /* navegador sem notificação */ }
+  }
+  function botaoAlertas() {
+    var box = $(".top-actions"); if (!box || $("#alertasBtn")) return;
+    var b = document.createElement("button"); b.id = "alertasBtn"; b.type = "button"; b.className = "icon-btn alertas";
+    var pintar = function () {
+      var perm = "Notification" in window ? Notification.permission : "denied";
+      b.textContent = ALERTA.ligado ? "🔔" : "🔕";
+      b.title = !ALERTA.ligado ? "Alertas de novos leads desligados — clique para ligar" : perm === "granted" ? "Alertas ligados (som + notificação) — clique para desligar" : perm === "denied" ? "Alertas só com som: o navegador bloqueou as notificações" : "Clique para permitir notificações de novos leads";
+      b.classList.toggle("pendente", ALERTA.ligado && perm === "default");
+    };
+    b.addEventListener("click", function () {
+      var perm = "Notification" in window ? Notification.permission : "denied";
+      if (ALERTA.ligado && perm === "default") { Notification.requestPermission().then(function () { pintar(); bip(); toast("Alertas de novos leads ligados."); }); return; }
+      ALERTA.ligado = !ALERTA.ligado; try { localStorage.setItem("dn_alertas", ALERTA.ligado ? "1" : "0"); } catch (e) { /* ok */ }
+      pintar(); if (ALERTA.ligado) bip(); toast(ALERTA.ligado ? "Alertas de novos leads ligados." : "Alertas desligados.");
+    });
+    box.insertBefore(b, box.firstChild); pintar();
+  }
+  function ehMeu(l) { return l && (isAdmin() || l.corretor_id === S.me.id); }
+
   function tempoReal() {
     if (S.canal) return;
+    botaoAlertas();
     S.canal = sb.channel("leads-crm")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "leads" }, async function (p) {
         toast("Novo lead: " + (p.new.nome || p.new.email || p.new.telefone));
+        if (ehMeu(p.new)) alertarLead(p.new, isAdmin() && p.new.corretor_id !== S.me.id ? "Novo lead" : "Novo lead para você");
         await carregar(); if (TITULOS_NUCLEO.indexOf(S.view) >= 0) render();
       })
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "leads" }, async function () { await carregar(); if (!S.aberto && TITULOS_NUCLEO.indexOf(S.view) >= 0) render(); })
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "leads" }, async function (p) {
+        var antes = S.leads.find(function (x) { return x.id === p.new.id; });
+        if (!isAdmin() && p.new.corretor_id === S.me.id && (!antes || antes.corretor_id !== S.me.id)) alertarLead(p.new, "Lead atribuído a você");
+        await carregar(); if (!S.aberto && TITULOS_NUCLEO.indexOf(S.view) >= 0) render();
+      })
       .subscribe();
   }
 
