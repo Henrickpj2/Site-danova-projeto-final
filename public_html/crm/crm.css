@@ -613,3 +613,4 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 .c-leg-est { font-size: 11.5px; color: var(--cm); margin: 10px 2px 0; }
 .nb.veiculos { background: rgba(249,115,22,.16); color: #fdba74; }
 .cn.veiculos { border-left: 3px solid #f97316; }
+.cads.modo-totais .c-diario { display: none; }
