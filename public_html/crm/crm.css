@@ -554,3 +554,22 @@ table select, table input { padding: 5px 8px; font-size: 12px; }
 /* alertas de novo lead */
 .icon-btn.alertas { font-size: 17px; position: relative; }
 .icon-btn.alertas.pendente::after { content: ""; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: #ec4899; box-shadow: 0 0 0 2px #fff; }
+
+/* clientes Google Ads (campanhas) */
+.c-clis table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 900px; }
+.c-clis th { text-align: left; color: var(--cm); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; padding: 8px; border-bottom: 1px solid var(--cl); white-space: nowrap; user-select: none; }
+.c-clis th[data-ordcli] { cursor: pointer; } .c-clis th.on { color: #fff; }
+.c-clis td { padding: 9px 8px; border-bottom: 1px solid rgba(255,255,255,.05); color: #dbe5f0; white-space: nowrap; }
+.c-clis td.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; font-size: 12px; }
+.c-clis tbody tr { cursor: pointer; } .c-clis tbody tr:hover, .c-clis tbody tr.on { background: rgba(31,111,235,.12); }
+.c-clis tfoot td { font-weight: 800; color: #fff; border-bottom: 0; }
+.nb { display: inline-block; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 99px; background: rgba(255,255,255,.08); color: #cdd7e4; }
+.nb.imoveis { background: rgba(62,197,240,.15); color: #7fd6f5; } .nb.agro { background: rgba(132,204,22,.16); color: #b5e36a; }
+.c-nichos { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.cn { border: 1px solid var(--cl); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,.03); }
+.cn small { color: var(--cm); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; display: block; }
+.cn b { font: 800 24px "Manrope", sans-serif; color: #fff; display: block; margin: 4px 0 2px; }
+.cn span { color: var(--cm); font-size: 12px; }
+.cn.imoveis { border-left: 3px solid #3ec5f0; } .cn.agro { border-left: 3px solid #84cc16; } .cn.tot { border-left: 3px solid #2fdc9a; background: rgba(47,220,154,.06); }
+.c-clis thead th, .c-clis tfoot td { background: transparent; }
+.c-clis th.on { color: #fff; }

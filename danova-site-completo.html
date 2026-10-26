@@ -2296,6 +2296,28 @@ window.DANOVA_CRM = {
 }
 #crmRoot .icon-btn.alertas { font-size: 17px; position: relative; }
 #crmRoot .icon-btn.alertas.pendente::after { content: ""; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; border-radius: 50%; background: #ec4899; box-shadow: 0 0 0 2px #fff; }
+#crmRoot .c-clis table { width: 100%; border-collapse: collapse; font-size: 12.5px; min-width: 900px; }
+#crmRoot .c-clis th { text-align: left; color: var(--cm); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; padding: 8px; border-bottom: 1px solid var(--cl); white-space: nowrap; user-select: none; }
+#crmRoot .c-clis th[data-ordcli] { cursor: pointer; }
+#crmRoot .c-clis th.on { color: #fff; }
+#crmRoot .c-clis td { padding: 9px 8px; border-bottom: 1px solid rgba(255,255,255,.05); color: #dbe5f0; white-space: nowrap; }
+#crmRoot .c-clis td.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: #9fb3c8; font-size: 12px; }
+#crmRoot .c-clis tbody tr { cursor: pointer; }
+#crmRoot .c-clis tbody tr:hover, #crmRoot .c-clis tbody tr.on { background: rgba(31,111,235,.12); }
+#crmRoot .c-clis tfoot td { font-weight: 800; color: #fff; border-bottom: 0; }
+#crmRoot .nb { display: inline-block; font-size: 10.5px; font-weight: 800; padding: 3px 8px; border-radius: 99px; background: rgba(255,255,255,.08); color: #cdd7e4; }
+#crmRoot .nb.imoveis { background: rgba(62,197,240,.15); color: #7fd6f5; }
+#crmRoot .nb.agro { background: rgba(132,204,22,.16); color: #b5e36a; }
+#crmRoot .c-nichos { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 14px; }
+#crmRoot .cn { border: 1px solid var(--cl); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,.03); }
+#crmRoot .cn small { color: var(--cm); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; display: block; }
+#crmRoot .cn b { font: 800 24px "Manrope", sans-serif; color: #fff; display: block; margin: 4px 0 2px; }
+#crmRoot .cn span { color: var(--cm); font-size: 12px; }
+#crmRoot .cn.imoveis { border-left: 3px solid #3ec5f0; }
+#crmRoot .cn.agro { border-left: 3px solid #84cc16; }
+#crmRoot .cn.tot { border-left: 3px solid #2fdc9a; background: rgba(47,220,154,.06); }
+#crmRoot .c-clis thead th, #crmRoot .c-clis tfoot td { background: transparent; }
+#crmRoot .c-clis th.on { color: #fff; }
 #crmRoot { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
 #crmRoot { display: none; }
 html.crm-mode #crmRoot { display: block; }
@@ -3279,7 +3301,7 @@ html.crm-mode body { background: #f4f6fa; }
   var COR = { google: "#3ec5f0", meta: "#8b5cf6" };
   var NOME = { google: "Google Ads", meta: "Meta Ads" };
   var QUALIF = ["qualificado", "visita", "proposta", "contrato", "fechado"];
-  var st = { plat: "todas", camp: "", dias: 30, de: null, ate: null, demo: false, linhas: [], moeda: "BRL", ordem: "custo", desc: true, graf: "custo", el: null, A: null, carregado: false, conta: "", contas: [], clientes: [] };
+  var st = { plat: "todas", camp: "", dias: 30, de: null, ate: null, demo: false, linhas: [], moeda: "BRL", ordem: "custo", desc: true, graf: "custo", el: null, A: null, carregado: false, conta: "", nicho: "", contas: [], clientes: [], ordemCli: "vendido" };
 
   // ---------- utilidades ----------
   function iso(d) { var x = new Date(d); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0, 10); }
@@ -3317,12 +3339,35 @@ html.crm-mode body { background: #f4f6fa; }
   }
 
   // ---------- dados de exemplo (não são gravados): 5 campanhas de prospecção em vídeo no Meta e 5 no Google ----------
-  var DEMO_CONTAS = [
-    { id: "d1", plataforma: "google", conta_externa: "123-456-7890", nome: "Incorporadora Atlântica (exemplo)" },
-    { id: "d2", plataforma: "meta", conta_externa: "act_100200300", nome: "Incorporadora Atlântica (exemplo)" },
-    { id: "d3", plataforma: "google", conta_externa: "987-654-3210", nome: "Residencial Costa Azul (exemplo)" },
-    { id: "d4", plataforma: "meta", conta_externa: "act_400500600", nome: "Residencial Costa Azul (exemplo)" }
+  // 20 clientes de exemplo no Google Ads: [ID da conta, cliente, nicho, verba mensal R$, vendas fechadas/mês, ticket médio R$]
+  var DEMO_CLIENTES = [
+    ["123-456-7890", "Incorporadora Atlântica", "imoveis", 85000, 6, 1450000],
+    ["987-654-3210", "Residencial Costa Azul", "imoveis", 62000, 4, 980000],
+    ["214-583-9061", "Construtora Horizonte Sul", "imoveis", 48000, 5, 720000],
+    ["305-772-1184", "Urbana Vertical Incorporações", "imoveis", 120000, 9, 1850000],
+    ["418-209-6637", "Grupo Mirante Empreendimentos", "imoveis", 54000, 3, 2400000],
+    ["529-640-3315", "Litoral Prime Imóveis", "imoveis", 36000, 4, 650000],
+    ["631-087-4429", "Vale Nobre Loteamentos", "imoveis", 28000, 11, 280000],
+    ["742-318-5506", "Torres do Parque Incorporadora", "imoveis", 72000, 5, 1200000],
+    ["853-491-2278", "Alto Padrão Brickell Realty", "imoveis", 95000, 3, 3600000],
+    ["964-125-8803", "Reserva das Águas Condomínio", "imoveis", 40000, 6, 890000],
+    ["175-836-4092", "Imobiliária Ponto Central", "imoveis", 22000, 7, 520000],
+    ["286-947-1150", "Incorporadora Nova Era", "imoveis", 66000, 5, 1050000],
+    ["397-058-6624", "AgroMáquinas Cerrado", "agro", 58000, 7, 1350000],
+    ["408-169-7735", "Tratores Planalto Revenda", "agro", 44000, 9, 680000],
+    ["519-270-8846", "Colheita Forte Implementos", "agro", 76000, 4, 2900000],
+    ["620-381-9957", "Campo Verde Máquinas Agrícolas", "agro", 39000, 6, 940000],
+    ["731-492-0068", "Pivô & Irrigação Sertão", "agro", 31000, 5, 760000],
+    ["842-503-1179", "Semeadoras Alto Paraná", "agro", 27000, 8, 410000],
+    ["953-614-2280", "MaxAgro Pulverizadores", "agro", 52000, 5, 1600000],
+    ["164-725-3391", "Rural Tech Concessionária", "agro", 88000, 6, 2200000]
   ];
+  var NICHO = { imoveis: "Imóveis", agro: "Máquinas agrícolas" };
+  var DEMO_CONTAS = DEMO_CLIENTES.map(function (c, i) { return { id: "g" + i, plataforma: "google", conta_externa: c[0], nome: c[1], nicho: c[2], ticket: c[5], verba: c[3] }; }).concat([
+    { id: "m1", plataforma: "meta", conta_externa: "act_100200300", nome: "Incorporadora Atlântica", nicho: "imoveis", ticket: 1450000 },
+    { id: "m2", plataforma: "meta", conta_externa: "act_400500600", nome: "Residencial Costa Azul", nicho: "imoveis", ticket: 980000 }
+  ]);
+  var DEMO_VENDA = {}; // campanha → { taxa: vendas por conversão, ticket }
   function demo() {
     // [plataforma, conta, campanha, impressões/dia, CTR %, CPC R$, conv. % dos cliques, views % das impressões, retenção 25/50/75/100 %]
     var camps = [
@@ -3337,6 +3382,24 @@ html.crm-mode body { background: #f4f6fa; }
       ["meta", "400500600", "Prospecção · Advantage+ · Vídeo lançamento Brickell", 38000, 1.2, .8, 3.4, 40, [46, 28, 19, 13]],
       ["meta", "100200300", "Prospecção · Reels · Alto padrão LATAM (ES)", 29000, 1.3, .7, 3.1, 37, [50, 31, 21, 15]]
     ];
+    // 2 campanhas Google por cliente, com verba coerente com o mensal [plataforma, conta, campanha, impressões/dia, CTR %, CPC R$, conv. % dos cliques, views %, retenção]
+    var MODELOS = {
+      imoveis: [["Pesquisa · Lançamento", 4.8, 2.9, 7.5, 0], ["Performance Max · Decorado e plantas", 1.3, 1.7, 4.2, 9]],
+      agro: [["Pesquisa · Tratores e colheitadeiras", 5.6, 3.8, 6.1, 0], ["YouTube · Demonstração em campo", .8, 1.3, 2.4, 34]]
+    };
+    DEMO_CLIENTES.forEach(function (cl, i) {
+      var md = MODELOS[cl[2]], idc = cl[0].replace(/\D/g, "");
+      md.forEach(function (mo, k) {
+        var gastoDia = cl[3] / 30 * (k ? .4 : .6) * (i < 2 ? .6 : 1), imp = Math.round(gastoDia / (mo[2] * mo[1] / 100));
+        camps.push(["google", idc, mo[0] + " · " + cl[1], imp, mo[1], mo[2], mo[3], mo[4], mo[4] ? [60, 40, 28, 19] : [0, 0, 0, 0]]);
+      });
+    });
+    // taxa de venda por conversão, para cada cliente fechar ~as vendas/mês definidas
+    DEMO_CLIENTES.forEach(function (cl) {
+      var idc = cl[0].replace(/\D/g, ""), cs = camps.filter(function (c) { return c[1] === idc; });
+      var convMes = cs.reduce(function (s2, c) { return s2 + c[3] * c[4] / 100 * c[6] / 100 * 30; }, 0) || 1;
+      cs.forEach(function (c) { DEMO_VENDA[c[2]] = { taxa: cl[4] / convMes / 1.25, ticket: cl[5] }; }); // 1,25 = crescimento médio do período recente
+    });
     var seed = 11, rnd = function () { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
     var rows = [], hoje = new Date(); hoje.setHours(12, 0, 0, 0);
     for (var d = 120; d >= 1; d--) {
@@ -3355,6 +3418,8 @@ html.crm-mode body { background: #f4f6fa; }
   function crmDemo(camp, conv) { // leads/qualificados/vendas coerentes com as conversões de exemplo
     var h = 0; for (var i = 0; i < camp.length; i++) h = (h * 31 + camp.charCodeAt(i)) % 97;
     var leads = Math.round(conv * (.82 + h / 500)), q = Math.round(leads * (.24 + h / 900)), v = Math.round(q * (.05 + h / 3000) * 10) / 10;
+    var dv = DEMO_VENDA[camp];
+    if (dv) { var vd = Math.round(conv * dv.taxa); return { leads: leads, qual: Math.max(q, vd * 4), vis: Math.max(Math.round(q * .45), vd * 2), vendas: vd, valor: vd * dv.ticket }; }
     return { leads: leads, qual: q, vis: Math.round(q * .45), vendas: Math.floor(v), valor: Math.floor(v) * 1450000 };
   }
 
@@ -3519,7 +3584,8 @@ html.crm-mode body { background: #f4f6fa; }
     var len = Math.round((ate - de) / DIA) + 1, antAte = new Date(de.getTime() - DIA), antDe = new Date(antAte.getTime() - (len - 1) * DIA);
     var sDe = iso(de), sAte = iso(ate), sADe = iso(antDe), sAAte = iso(antAte);
     var todas = fonte(), m = st.demo ? "BRL" : st.moeda;
-    var filtro = function (r) { return (st.plat === "todas" || r.plataforma === st.plat) && (!st.camp || r.campanha === st.camp) && (!st.conta || contaGrupo(r)); };
+    var idsNicho = st.nicho ? contasVisiveis().filter(function (c) { return c.nicho === st.nicho; }).map(idConta) : null;
+    var filtro = function (r) { return (st.plat === "todas" || r.plataforma === st.plat) && (!st.camp || r.campanha === st.camp) && (!st.conta || contaGrupo(r)) && (!idsNicho || idsNicho.indexOf(String(r.conta_anuncio || "")) >= 0); };
     function contaGrupo(r) { // filtro por cliente: junta as contas Google e Meta do mesmo nome/cliente
       var alvo = contasVisiveis().filter(function (c) { return grupoDe(c) === st.conta; }).map(idConta);
       return alvo.indexOf(String(r.conta_anuncio || "")) >= 0;
@@ -3544,7 +3610,9 @@ html.crm-mode body { background: #f4f6fa; }
       return { porC: porC, semC: semC };
     }
     var crmP = crmDe(sDe, sAte), crmA = crmDe(sADe, sAAte);
-    var somaCRM = function (crm, campo) { return Object.keys(crm.porC).filter(function (c) { return (st.plat === "todas" || campanhas[c] === st.plat) && (!st.camp || c === st.camp); }).reduce(function (s, c) { return s + (crm.porC[c][campo] || 0); }, 0); };
+    var campsP = {}, campsQ = {}; P.forEach(function (r) { campsP[r.campanha] = 1; }); Q.forEach(function (r) { campsQ[r.campanha] = 1; });
+    var somaCRM = function (crm, campo) { var sel = crm === crmA ? campsQ : campsP; return Object.keys(crm.porC).filter(function (c) { return sel[c]; }).reduce(function (s, c) { return s + (crm.porC[c][campo] || 0); }, 0); };
+    var mValor = st.demo ? "BRL" : "USD";
     var leadsP = somaCRM(crmP, "leads"), leadsA = somaCRM(crmA, "leads"), qualP = somaCRM(crmP, "qual"), qualA = somaCRM(crmA, "qual"), vendasP = somaCRM(crmP, "vendas"), valorP = somaCRM(crmP, "valor"), visP = somaCRM(crmP, "vis");
 
     // série diária
@@ -3554,7 +3622,7 @@ html.crm-mode body { background: #f4f6fa; }
     var sCPC = dias.map(function (_, i) { return sCli[i] ? sCusto[i] / sCli[i] : 0; }), sCPM = dias.map(function (_, i) { return sImp[i] ? sCusto[i] / sImp[i] * 1000 : 0; });
     var platRows = function (p) { return P.filter(function (r) { return r.plataforma === p; }); };
     var gA = agg(platRows("google")), mA = agg(platRows("meta"));
-    var leadsPlat = function (p) { return Object.keys(crmP.porC).filter(function (c) { return campanhas[c] === p; }).reduce(function (s, c) { return s + crmP.porC[c].leads; }, 0); };
+    var leadsPlat = function (p) { return Object.keys(crmP.porC).filter(function (c) { return campanhas[c] === p && campsP[c]; }).reduce(function (s, c) { return s + crmP.porC[c].leads; }, 0); };
 
     var tile = function (cls, ic, t, v, d, sub) { return '<div class="ct ' + cls + '"><div class="ct-h"><small>' + t + "</small><span>" + ic + '</span></div><strong>' + v + '</strong><div class="ct-f">' + (d || "") + (sub ? "<span>" + sub + "</span>" : "") + "</div></div>"; };
     var platOpts = [["todas", "Todas"], ["google", "Google Ads"], ["meta", "Meta Ads"]];
@@ -3567,6 +3635,7 @@ html.crm-mode body { background: #f4f6fa; }
       '<div class="c-fil"><div class="c-seg">' + [7, 14, 30, 90].map(function (d) { return '<button data-dias="' + d + '"' + (!st.de && st.dias === d ? ' class="on"' : "") + ">" + d + "d</button>"; }).join("") + "</div>" +
       '<label class="c-dt"><input type="date" data-de value="' + sDe + '"> – <input type="date" data-ate value="' + sAte + '"></label>' +
       (grupos.length ? '<select data-conta><option value="">Todos os clientes</option>' + grupos.map(function (g) { return '<option value="' + A.esc(g) + '"' + (st.conta === g ? " selected" : "") + ">" + A.esc(rotuloGrupo(g)) + "</option>"; }).join("") + "</select>" : "") +
+      (contasVisiveis().some(function (c) { return c.nicho; }) ? '<select data-nicho><option value="">Todos os nichos</option>' + Object.keys(NICHO).map(function (k) { return '<option value="' + k + '"' + (st.nicho === k ? " selected" : "") + ">" + NICHO[k] + "</option>"; }).join("") + "</select>" : "") +
       '<select data-plat>' + platOpts.map(function (o) { return '<option value="' + o[0] + '"' + (st.plat === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") + "</select>" +
       '<select data-camp><option value="">Todas as campanhas</option>' + camps.map(function (c) { return '<option' + (st.camp === c ? " selected" : "") + ">" + A.esc(c) + "</option>"; }).join("") + "</select>" +
       (!st.demo && st.linhas.some(function (r) { return r.moeda !== st.moeda; }) ? '<select data-moeda><option' + (st.moeda === "BRL" ? " selected" : "") + '>BRL</option><option' + (st.moeda === "USD" ? " selected" : "") + ">USD</option></select>" : "") +
@@ -3592,9 +3661,10 @@ html.crm-mode body { background: #f4f6fa; }
       }).join("") + '</div><div class="c-kpis">' +
       '<div><small>Custo por lead (CRM)</small><b>' + (leadsP ? cur(a.custo / leadsP, m) : "—") + "</b>" + (leadsP && leadsA ? dlt(a.custo / leadsP, b.custo / leadsA, true) : "") + "</div>" +
       '<div><small>Custo por lead qualificado</small><b>' + (qualP ? cur(a.custo / qualP, m) : "—") + "</b>" + (qualP && qualA ? dlt(a.custo / qualP, b.custo / qualA, true) : "") + "</div>" +
-      '<div><small>Vendido (CRM)</small><b>' + (valorP ? "US$ " + kfmt(valorP) : "—") + "</b><span>" + vendasP + " venda(s)</span></div>" +
+      '<div><small>Vendido (CRM)</small><b>' + (valorP ? curK(valorP, mValor) : "—") + "</b><span>" + vendasP + " venda(s)" + (valorP && a.custo && mValor === m ? " · " + (valorP / a.custo).toLocaleString("pt-BR", { maximumFractionDigits: 0 }) + "x o investimento" : "") + "</span></div>" +
       '<div><small>Leads sem campanha identificada</small><b>' + crmP.semC.leads + "</b><span>vieram de Meta/Google sem utm_campaign</span></div></div></section>" +
 
+      '<section class="c-box c-clis"><div class="c-h"><h3>Clientes Google Ads <small>contas com campanhas ativas</small></h3><small>clique num cliente para filtrar o dashboard</small></div><div data-clis></div></section>' +
       '<section class="c-box"><div class="c-h"><h3>Evolução diária</h3><div class="c-seg sm">' + [["custo", "Investimento"], ["conv", "Conversões"], ["cliques", "Cliques"]].map(function (g) { return '<button data-graf="' + g[0] + '"' + (st.graf === g[0] ? ' class="on"' : "") + ">" + g[1] + "</button>"; }).join("") + '</div></div><div class="c-combo-w" data-combo></div><div class="c-leg" data-leg></div></section>' +
 
       '<div class="c-grid2">' + ["meta", "google"].map(function (p) {
@@ -3654,8 +3724,35 @@ html.crm-mode body { background: #f4f6fa; }
           "<td>" + (o.x.conv ? cur(o.x.cpa, m) : "—") + "</td><td>" + o.leads + "</td><td>" + o.qual + "</td><td>" + (o.leads ? cur(o.cpl, m) : "—") + "</td><td>" + (o.vendas || "—") + "</td><td>" + (o.x.views ? kfmt(o.x.views) : "—") + "</td><td>" + (o.x.views ? pct(o.x.vtr) : "—") + "</td></tr>";
       }).join("") + '</tbody><tfoot><tr><td>Total</td><td>' + kfmt(a.imp) + "</td><td>" + kfmt(a.cli) + "</td><td>" + pct(a.ctr) + "</td><td>" + curK(a.custo, m) + "</td><td>" + n0(a.conv) + "</td><td>" + (a.conv ? cur(a.cpa, m) : "—") + "</td><td>" + leadsP + "</td><td>" + qualP + "</td><td>" + (leadsP ? cur(a.custo / leadsP, m) : "—") + "</td><td>" + vendasP + "</td><td>" + (a.views ? kfmt(a.views) : "—") + "</td><td>" + (a.views ? pct(a.vtr) : "—") + "</td></tr></tfoot></table></div>" : '<div class="c-vazio">Nenhuma campanha com dados neste período.</div>';
 
+    // tabela de clientes Google Ads (por conta)
+    var campConta = {}; todas.forEach(function (r) { campConta[r.campanha] = String(r.conta_anuncio || ""); });
+    var cliG = contasVisiveis().filter(function (c) { return c.plataforma === "google" && (!st.nicho || c.nicho === st.nicho); }).map(function (c) {
+      var idc = idConta(c), rows = P.filter(function (r) { return r.plataforma === "google" && String(r.conta_anuncio) === idc; }), x = agg(rows), k = { leads: 0, vendas: 0, valor: 0 }, nc = {};
+      rows.forEach(function (r) { nc[r.campanha] = 1; });
+      Object.keys(crmP.porC).forEach(function (cp) { if (campConta[cp] === idc && campanhas[cp] === "google") { var o = crmP.porC[cp]; k.leads += o.leads || 0; k.vendas += o.vendas || 0; k.valor += o.valor || 0; } });
+      return { c: c, idc: idc, x: x, camps: Object.keys(nc).length, leads: k.leads, vendas: k.vendas, valor: k.valor, roi: x.custo ? k.valor / x.custo : 0 };
+    });
+    var ordCli = { vendido: function (o) { return o.valor; }, custo: function (o) { return o.x.custo; }, vendas: function (o) { return o.vendas; }, leads: function (o) { return o.leads; }, roi: function (o) { return o.roi; }, nome: function (o) { return o.c.nome; } }[st.ordemCli] || function (o) { return o.valor; };
+    cliG.sort(function (p, q) { var x1 = ordCli(p), y1 = ordCli(q); return st.ordemCli === "nome" ? String(x1).localeCompare(String(y1)) : y1 - x1; });
+    var tot = cliG.reduce(function (t, o) { t.custo += o.x.custo; t.conv += o.x.conv; t.leads += o.leads; t.vendas += o.vendas; t.valor += o.valor; return t; }, { custo: 0, conv: 0, leads: 0, vendas: 0, valor: 0 });
+    var mxV = Math.max.apply(null, cliG.map(function (o) { return o.valor; }).concat([1]));
+    var thc = function (k, t) { return '<th data-ordcli="' + k + '"' + (st.ordemCli === k ? ' class="on"' : "") + ">" + t + (st.ordemCli === k ? " ▾" : "") + "</th>"; };
+    var porNicho = {}; cliG.forEach(function (o) { var n = o.c.nicho || "outro"; var t = porNicho[n] = porNicho[n] || { cl: 0, custo: 0, vendas: 0, valor: 0 }; t.cl++; t.custo += o.x.custo; t.vendas += o.vendas; t.valor += o.valor; });
+    el.querySelector("[data-clis]").innerHTML = cliG.length ?
+      '<div class="c-nichos">' + Object.keys(porNicho).map(function (n) { var t = porNicho[n]; return '<div class="cn ' + n + '"><small>' + (NICHO[n] || "Outros") + " · " + t.cl + ' clientes</small><b>' + curK(t.valor, mValor) + '</b><span>' + t.vendas + " vendas fechadas · investimento " + curK(t.custo, m) + "</span></div>"; }).join("") +
+      '<div class="cn tot"><small>Total · ' + cliG.length + ' clientes</small><b>' + curK(tot.valor, mValor) + "</b><span>" + tot.vendas + " vendas · investimento " + curK(tot.custo, m) + (tot.custo && mValor === m ? " · " + (tot.valor / tot.custo).toLocaleString("pt-BR", { maximumFractionDigits: 0 }) + "x" : "") + "</span></div></div>" +
+      '<div class="c-scroll"><table><thead><tr><th>ID da conta</th>' + thc("nome", "Cliente") + "<th>Nicho</th><th>Campanhas</th>" + thc("custo", "Investimento") + "<th>Conversões</th>" + thc("leads", "Leads") + thc("vendas", "Vendas fechadas") + thc("vendido", "Vendido") + thc("roi", "Retorno") + "</tr></thead><tbody>" +
+      cliG.map(function (o) {
+        var g = grupoDe(o.c);
+        return '<tr data-cli="' + A.esc(g) + '"' + (st.conta === g ? ' class="on"' : "") + '><td class="mono">' + A.esc(o.c.conta_externa) + "</td><td><b>" + A.esc(o.c.nome) + '</b></td><td><span class="nb ' + (o.c.nicho || "") + '">' + (NICHO[o.c.nicho] || "—") + "</span></td><td>" + o.camps + "</td><td>" + curK(o.x.custo, m) + "</td><td>" + n0(o.x.conv) + "</td><td>" + n0(o.leads) + "</td><td>" + (o.vendas || "—") + '</td><td class="hb"><i style="width:' + (o.valor / mxV * 100).toFixed(1) + '%;background:rgba(47,220,154,.22)"></i><span><b>' + (o.valor ? curK(o.valor, mValor) : "—") + "</b></span></td><td>" + (o.roi && mValor === m ? o.roi.toLocaleString("pt-BR", { maximumFractionDigits: 0 }) + "x" : "—") + "</td></tr>";
+      }).join("") + '</tbody><tfoot><tr><td></td><td>Total</td><td></td><td></td><td>' + curK(tot.custo, m) + "</td><td>" + n0(tot.conv) + "</td><td>" + n0(tot.leads) + "</td><td>" + tot.vendas + "</td><td>" + curK(tot.valor, mValor) + "</td><td>" + (tot.custo && mValor === m ? (tot.valor / tot.custo).toLocaleString("pt-BR", { maximumFractionDigits: 0 }) + "x" : "—") + "</td></tr></tfoot></table></div>"
+      : '<div class="c-vazio">Nenhuma conta do Google Ads cadastrada. Use "Contas conectadas" para adicionar.</div>';
+
     // eventos
     var re = function () { render(el, A); };
+    el.querySelectorAll("[data-ordcli]").forEach(function (x) { x.addEventListener("click", function () { st.ordemCli = x.dataset.ordcli; re(); }); });
+    el.querySelectorAll("tr[data-cli]").forEach(function (x) { x.addEventListener("click", function () { st.conta = st.conta === x.dataset.cli ? "" : x.dataset.cli; st.camp = ""; re(); }); });
+    var sn = el.querySelector("[data-nicho]"); if (sn) sn.addEventListener("change", function (e) { st.nicho = e.target.value; st.conta = ""; st.camp = ""; re(); });
     el.querySelectorAll("[data-dias]").forEach(function (x) { x.addEventListener("click", function () { st.dias = +x.dataset.dias; st.de = st.ate = null; re(); }); });
     el.querySelector("[data-de]").addEventListener("change", function (e) { st.de = e.target.value; st.ate = el.querySelector("[data-ate]").value; re(); });
     el.querySelector("[data-ate]").addEventListener("change", function (e) { st.ate = e.target.value; st.de = el.querySelector("[data-de]").value; re(); });
