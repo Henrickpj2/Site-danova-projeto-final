@@ -23,3 +23,6 @@ create trigger contas_anuncio_codigo before insert on public.contas_anuncio for 
 
 -- Campos preenchidos por estimativa (some ao informar o real)
 alter table public.contas_anuncio add column if not exists estimados text[] not null default '{}';
+
+alter table public.contas_anuncio drop constraint if exists contas_anuncio_nicho_check;
+alter table public.contas_anuncio add constraint contas_anuncio_nicho_check check (nicho in ('imoveis','agro','veiculos','outro'));
