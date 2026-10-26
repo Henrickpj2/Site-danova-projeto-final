@@ -671,3 +671,4 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
   .c-clis .c-h { flex-direction: column; align-items: flex-start; gap: 4px; }
 }
 @media (max-width: 640px) { .c-clis td > .estm, .c-clis td > b, .c-clis td > span { align-self: flex-start; } }
+.c-atual span { font-weight: 600; } @media (max-width: 640px) { .c-fil .c-atual { grid-column: 1 / -1; } }
