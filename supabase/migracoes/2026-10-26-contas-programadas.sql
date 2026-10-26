@@ -20,3 +20,6 @@ begin
 end $$;
 drop trigger if exists contas_anuncio_codigo on public.contas_anuncio;
 create trigger contas_anuncio_codigo before insert on public.contas_anuncio for each row execute function public.contas_anuncio_codigo();
+
+-- Campos preenchidos por estimativa (some ao informar o real)
+alter table public.contas_anuncio add column if not exists estimados text[] not null default '{}';
