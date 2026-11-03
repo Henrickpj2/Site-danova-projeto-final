@@ -6,6 +6,6 @@ window.DANOVA_CRM = {
   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9leWxmd2FzcXZibnlienJ3dGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NDkxNDYsImV4cCI6MjEwODEyNTE0Nn0.xfl5HyVe4RGqs0VYNt-a7Rox1Ro9ORQlkdNirxG3FeY",
   // Agente de voz ElevenLabs (público; o ID não é segredo). Deixe "" para usar o modo de voz antigo (Whisper/navegador).
   // ID do Gerenciador de Negócios (Business Manager) da danova no Meta — aparece para o cliente na instrução de autorização.
-  metaBusinessId: "",
+  metaBusinessId: "1027044478984506",
   elevenAgentId: "agent_9101m5t5g6gfe0ns594fy3v2b3dn"
 };
