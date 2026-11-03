@@ -2584,7 +2584,7 @@ footer{background:var(--ink);color:rgba(245,237,225,.45);padding:30px 36px;displ
 
 <footer>
   <div><div class="ftbrand">Danielle Lisboa Martins</div><div class="ftinfo">Palestrante · Autora · Advogada · Broker<br>NY · FL · Brasil · <a href="/" style="color:var(--T3)">danova.ai</a> · <a href="https://catalisadordemudancas.com" style="color:var(--T3)">catalisadordemudancas.com</a></div></div>
-  <div class="ftlks"><a class="ftlk" href="#quiz-section">Teste</a><a class="ftlk" href="#cal-section">Inspirações</a><a class="ftlk" href="#livro">Livro</a><a class="ftlk" href="#palestra">Palestra</a><a class="ftlk" href="#blog">Blog</a><a class="ftlk" href="/intelligence">Imóveis</a></div>
+  <div class="ftlks"><a class="ftlk" href="#quiz-section">Teste</a><a class="ftlk" href="#cal-section">Inspirações</a><a class="ftlk" href="#livro">Livro</a><a class="ftlk" href="#palestra">Palestra</a><a class="ftlk" href="#blog">Blog</a><a class="ftlk" href="/">Imóveis</a></div>
   <div class="ftq">"Raízes que sustentam,<br>asas que elevam."</div>
 </footer>
 
@@ -2595,7 +2595,7 @@ footer{background:var(--ink);color:rgba(245,237,225,.45);padding:30px 36px;displ
 <script>
 // ══ PHOTOS — injected
 var PRAIA='img/dn-021.webp',PALESTRA='img/dn-024.webp',LIVRO='img/dn-025.webp';
-(function(){var m=[['hbg',PRAIA],['s2',PRAIA],['vthumb',PALESTRA],['s1',PALESTRA],['fphoto',PALESTRA],['bookImg',LIVRO]];m.forEach(function(x){var e=document.getElementById(x[0]);if(e&&x[1])e.src=x[1];});})();
+(function(){var m=[['hbg',PRAIA],['s2',PRAIA],['vthumb',PALESTRA],['s1',PALESTRA],['fphoto',PALESTRA],['bookImg',LIVRO]];m.forEach(function(x){var e=document.getElementById(x[0]);if(!e||!x[1])return;e.onerror=function(){e.style.visibility='hidden';e.removeAttribute('src');};e.src=x[1];});})();
 
 // ══ CORE
 function S(id){var e=document.getElementById(id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});}
