@@ -1,0 +1,27 @@
+# Mantém o banco do CRM (Supabase, plano gratuito) ativo: o Supabase pausa projetos sem acesso por cerca de 7 dias.
+# Roda todo dia às 09:17 (horário de Brasília) e também pode ser disparado à mão em Actions → "Manter Supabase ativo" → Run workflow.
+# Usa só a chave pública (anon), a mesma que já está no site. A função manter_ativo() não lê nem grava dados.
+name: Manter Supabase ativo
+on:
+  schedule:
+    - cron: "17 12 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Acessar o banco
+        env:
+          URL: https://oeylfwasqvbnybzrwtgf.supabase.co
+          ANON: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9leWxmd2FzcXZibnlienJ3dGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NDkxNDYsImV4cCI6MjEwODEyNTE0Nn0.xfl5HyVe4RGqs0VYNt-a7Rox1Ro9ORQlkdNirxG3FeY
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o resp.txt -w "%{http_code}" -X POST "$URL/rest/v1/rpc/manter_ativo" \
+              -H "apikey: $ANON" -H "Authorization: Bearer $ANON" -H "Content-Type: application/json" -d '{}')
+            echo "Tentativa $i: HTTP $code · $(cat resp.txt)"
+            [ "$code" = "200" ] && exit 0
+            sleep 30
+          done
+          echo "::error::O banco não respondeu. Ele pode ter sido pausado: entre no painel do Supabase e clique em Restore project."
+          exit 1
