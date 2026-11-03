@@ -35,7 +35,7 @@ jobs:
           port: 21
           timeout: 120000
           local-dir: ./public_html/
-          server-dir: public_html/
+          server-dir: ./   # a raiz da conta FTP já é o public_html do site
       - name: Enviar arquivos (nova tentativa)
         if: env.TEM_FTP == 'true' && steps.envio1.outcome == 'failure'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -48,7 +48,7 @@ jobs:
           echo "DNS www.danova-ai.com: $(getent hosts www.danova-ai.com || echo 'não resolve')"
           echo "DNS provisório: $(getent hosts danova-ai-com-417732.hostingersite.com || echo 'não resolve')"
           ok=0
-          for base in "https://danova-ai.com" "https://danova-ai-com-417732.hostingersite.com"; do
+          for base in "https://danova-ai-com-417732.hostingersite.com" "https://danova-ai.com"; do
             code=$(curl -s -L -o pagina.html -w "%{http_code}" -H "Cache-Control: no-cache" "$base/crm/?v=$GITHUB_RUN_ID" || echo "falhou($?)")
             echo "$base/crm/ → HTTP $code"
             if [ "$code" = "200" ] && grep -q 'name="creci"' pagina.html; then echo "  versão nova no ar (cadastro com CRECI)."; ok=1; fi
