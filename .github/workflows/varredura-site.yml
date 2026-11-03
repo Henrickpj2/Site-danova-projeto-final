@@ -1,0 +1,13 @@
+name: Varredura do site
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 11 * * 1"   # toda segunda, 08:23 (Brasília)
+jobs:
+  varrer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm i playwright@1.48.2 --no-save --silent && npx playwright install --with-deps chromium >/dev/null
+      - run: node ferramentas/varredura.js
