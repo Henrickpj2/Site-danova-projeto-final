@@ -111,7 +111,7 @@ trocas = [
     ("emailRedirectTo: location.origin + location.pathname", "emailRedirectTo: location.origin + location.pathname + \"#crm\""),
     ("redirectTo: location.origin + location.pathname", "redirectTo: location.origin + location.pathname + \"#crm\""),
     ("esc(location.origin + location.pathname)", "esc(location.origin + location.pathname + \"#crm\")"),
-    ('var v = (location.hash || "").replace("#", "");', 'var v = (location.hash || "").replace(/^#crm\\/?/, "");'),
+    ('var v = (location.hash || "").replace("#", "").split("?")[0];', 'var v = (location.hash || "").replace(/^#crm\\/?/, "").split("?")[0];'),
     ('history.replaceState(null, "", "#" + v);', 'history.replaceState(null, "", "#crm/" + v);'),
     ('else if (ev === "SIGNED_IN" && !recuperando && !S.me) { iniciar(); }', 'else if (ev === "SIGNED_IN" && !recuperando && !S.me && window.__crmAtivo) { iniciar(); }'),
     ("\n  iniciar();\n})();", "\n  window.danovaAbrirCRM = function () { if (!window.__crmIniciado) { window.__crmIniciado = true; iniciar(); } };\n})();"),
