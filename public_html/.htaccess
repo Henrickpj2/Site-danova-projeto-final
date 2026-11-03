@@ -30,7 +30,16 @@ RewriteRule ^DANOVA_Catalisador_v12\.html$ /livro.html [L,R=301]
 #    Para reativar, mova-a para uma pasta protegida por senha (hPanel > Segurança >
 #    Diretórios protegidos por senha) DEPOIS de trocar as chaves e a senha.
 RewriteRule ^buscador\.html$ - [F,L]
+
+# 6) Arquivos internos nunca ficam públicos (403): arquivos ocultos (.env, .git, controle do envio
+#    automático…), cópias de pastas, código-fonte e backups. A pasta .well-known continua acessível.
+RewriteRule (^|/)\.(?!well-known/) - [F,L]
+RewriteRule ^public_html(/|$) - [F,L]
+RewriteRule \.(sql|md|py|ts|sh|bak|old|orig|log|ini|env|yml|yaml|lock|zip|tar|gz|7z)$ - [F,L,NC]
 </IfModule>
+
+# Sem listagem de pastas
+Options -Indexes
 
 # Compressão (LiteSpeed já faz Brotli; isto cobre fallback)
 <IfModule mod_deflate.c>
@@ -67,7 +76,14 @@ Header set Cache-Control "public, max-age=31536000, immutable"
 Header always set X-Content-Type-Options "nosniff"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
 Header always set X-Frame-Options "SAMEORIGIN"
-Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+# Microfone liberado só para o próprio site (atendente por voz); câmera, localização e pagamento bloqueados.
+Header always set Permissions-Policy "camera=(), microphone=(self), geolocation=(), payment=(), usb=(), interest-cohort=()"
+# HTTPS obrigatório por 1 ano (o navegador nunca tenta a versão sem cadeado)
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+# Política de conteúdo básica: ninguém incorpora o site em outro (clickjacking), sem plugins e sem <base> injetado.
+Header always set Content-Security-Policy "upgrade-insecure-requests; frame-ancestors 'self'; object-src 'none'; base-uri 'self'"
+Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+Header always unset X-Powered-By
 </IfModule>
 
 # Tipos corretos

@@ -1,0 +1,7 @@
+# Área de membros: nunca indexar no Google nem guardar em cache compartilhado.
+<IfModule mod_headers.c>
+Header always set X-Robots-Tag "noindex, nofollow"
+<FilesMatch "\.(html)$">
+Header set Cache-Control "no-store"
+</FilesMatch>
+</IfModule>

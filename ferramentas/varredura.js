@@ -35,7 +35,7 @@ const BASE = process.env.BASE || 'https://danova-ai.com';
   // links externos
   for (const u of [...externos].slice(0, 40)) { try { const r = await fetch(u, { method: 'GET', redirect: 'follow' }); if (r.status >= 400 && ![401, 403, 429, 999].includes(r.status)) problemas.push(`link externo ${r.status} ${u}`); } catch (e) { problemas.push(`link externo falhou ${u}`); } }
   // arquivos que não deveriam ser públicos
-  const sensiveis = ['/.htaccess', '/.ftp-deploy-sync-state.json', '/.git/config', '/public_html/index.html', '/buscador.html', '/api/.htaccess', '/crm/_teste-camp.html', '/crm/_teste-int.html', '/_teste-lp.html', '/.env', '/wp-config.php', '/fonte/build.py', '/supabase/'];
+  const sensiveis = ['/crm/.htaccess', '/README.md', '/public_html/', '/.htaccess', '/.ftp-deploy-sync-state.json', '/.git/config', '/public_html/index.html', '/buscador.html', '/api/.htaccess', '/crm/_teste-camp.html', '/crm/_teste-int.html', '/_teste-lp.html', '/.env', '/wp-config.php', '/fonte/build.py', '/supabase/'];
   for (const s of sensiveis) { const r = await fetch(BASE + s, { redirect: 'manual' }); console.log(`exposição ${s} → ${r.status}`); if (r.status === 200) problemas.push(`arquivo exposto ao público: ${s}`); }
   // cabeçalhos
   const h = (await fetch(BASE + '/')).headers;
