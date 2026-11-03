@@ -99,7 +99,7 @@
     var admin = A.isAdmin(), papel = A.S.me.papel;
     var cx = (await A.sb.rpc("meta_conexoes_status")).data || [];
     var minha = cx.filter(function (c) { return c.minha; })[0] || null;
-    var qc = A.sb.from("contas_anuncio").select("id, nome, conta_externa, moeda, conta_id, conexao_id, ultima_sync, ultimo_erro, ativo").eq("plataforma", "meta").eq("ativo", true).order("nome");
+    var qc = A.sb.from("contas_anuncio").select("id, nome, conta_externa, moeda, conta_id, conexao_id, ultima_sync, ultimo_erro, ativo, fonte_dados, situacao").eq("plataforma", "meta").eq("ativo", true).order("nome");
     var contas = (await qc).data || [];
     var clientes = admin ? ((await A.sb.from("contas").select("id, nome").order("nome")).data || []) : [];
     if (admin && st.cliente) contas = contas.filter(function (c) { return st.cliente === "__agencia" ? !c.conta_id : c.conta_id === st.cliente; });
@@ -130,7 +130,7 @@
     var ultima = ativas.map(function (c) { return c.ultima_sync; }).filter(Boolean).sort().pop();
     var erros = ativas.filter(function (c) { return c.ultimo_erro; });
 
-    // --- cartão de conexão
+    // --- módulo de conexão: ID da conta de anúncios + integrador autorizado (Make); login do Facebook como opção avançada
     var podeConectar = admin || (papel === "construtora" && A.S.me.conta_id);
     var aviso = "";
     if (RET) {
@@ -138,16 +138,34 @@
       aviso = rr === "ok" ? '<p class="an-ok">✓ Facebook conectado. Escolha abaixo as contas de anúncio que entram no painel.</p>' :
         rr === "cancelado" ? '<p class="an-erro">Conexão cancelada no Facebook.</p>' : '<p class="an-erro">Não foi possível conectar: ' + A.esc(RET.get("motivo") || "erro") + "</p>";
     }
+    var BM = (window.DANOVA_CRM && window.DANOVA_CRM.metaBusinessId) || "";
+    var SIT = { aguardando: ["Aguardando autorização", "an-p-esp"], conectada: ["Conectada", "an-p-ok"], erro: ["Sem acesso", "an-p-erro"] };
     var dias = minha && minha.expira_em ? Math.round((new Date(minha.expira_em) - Date.now()) / 864e5) : null;
-    var conexaoHtml = '<div class="card an-con">' + aviso + (minha ?
-      '<div class="an-con-l"><span class="an-fb">f</span><div><b>Meta Ads conectado' + (minha.usuario_nome ? " · " + A.esc(minha.usuario_nome) : "") + "</b><small>" +
-        (minha.status === "ativa" ? (dias !== null ? "Autorização válida até " + new Date(minha.expira_em).toLocaleDateString("pt-BR") + (dias < 15 ? ' — <b class="an-txt-erro">reconecte em breve</b>' : "") : "Autorização ativa") : '<b class="an-txt-erro">' + A.esc(minha.ultimo_erro || "Reconecte o Facebook") + "</b>") +
-        " · " + minha.contas.filter(function (c) { return c.ativo; }).length + " conta(s) vinculada(s)</small></div></div>" +
-      '<div class="an-acts"><button class="btn primary" data-escolher>Escolher contas de anúncio</button><button class="btn ghost" data-conectar>Reconectar</button><button class="btn ghost an-perigo" data-desconectar>Desconectar</button></div>'
-      : podeConectar ? '<div class="an-con-l"><span class="an-fb">f</span><div><b>Conecte sua conta Meta Ads</b><small>Você autoriza pelo login oficial do Facebook, escolhe a conta de anúncios e acompanha aqui investimento, alcance, cliques e resultados das suas campanhas. Acesso só de leitura: nada é alterado nos seus anúncios.</small></div></div>' +
-        '<div class="an-acts"><button class="btn primary an-btn-fb" data-conectar>Conectar minha conta Meta Ads</button></div>'
-      : '<p class="an-erro">Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.</p>') +
-      '<div class="an-selbox" data-selbox hidden></div></div>';
+    var listaContas = contas.length ? '<div class="an-lista">' + contas.map(function (c) {
+      var sit = c.fonte_dados === "oauth" ? ["Conectada (login Facebook)", "an-p-ok"] : (SIT[c.situacao] || SIT.aguardando);
+      return '<div class="an-conta"><div><b>' + A.esc(c.nome) + '</b><small>act_' + A.esc(String(c.conta_externa || "").replace(/\D/g, "")) + (c.ultima_sync ? " · atualizada em " + new Date(c.ultima_sync).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "") + "</small>" +
+        (c.situacao === "erro" && c.ultimo_erro ? '<small class="an-txt-erro">' + A.esc(c.ultimo_erro) + "</small>" : "") + '</div><span class="pill ' + sit[1] + '">' + sit[0] + "</span>" +
+        (c.fonte_dados !== "oauth" ? '<button class="btn ghost small" data-buscar="' + c.id + '">Buscar agora</button>' : "") + '<button class="btn ghost small an-perigo" data-remover="' + c.id + '">Remover</button></div>';
+    }).join("") + "</div>" : "";
+    var aguardando = contas.some(function (c) { return c.fonte_dados !== "oauth" && c.situacao !== "conectada"; });
+    var conexaoHtml = '<div class="card an-con">' + aviso +
+      '<div class="an-mod-h"><span class="an-fb">f</span><div><h3>Integração Meta Ads</h3><small>Módulo de conexão</small></div></div>' +
+      (podeConectar ? '<form class="an-form" data-form-act><label>ID da conta de anúncios<input name="act" placeholder="act_000000000000000" autocomplete="off" inputmode="numeric" required></label>' +
+        (admin ? '<label>Cliente<select name="cliente"><option value="">Agência (sem cliente)</option>' + clientes.map(function (c) { return '<option value="' + c.id + '"' + (st.cliente === c.id ? " selected" : "") + ">" + A.esc(c.nome) + "</option>"; }).join("") + "</select></label>" : "") +
+        '<button class="btn primary an-btn-fb" type="submit">Conectar conta Meta</button></form>' +
+        '<p class="an-dica">O ID fica no Gerenciador de Anúncios, no seletor de contas (o número depois de <b>act_</b>).</p>'
+        : '<p class="an-erro">Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.</p>') +
+      listaContas +
+      (aguardando ? '<div class="an-autoriza"><b>Falta autorizar o acesso</b><p>Só o número da conta não libera os dados: o dono da conta precisa dar acesso de leitura à danova AI.</p><ol>' +
+        '<li>Abra <b>business.facebook.com → Configurações do negócio → Contas → Contas de anúncios</b> e selecione a conta.</li>' +
+        '<li>Clique em <b>Atribuir parceiros</b> (ou “Adicionar pessoas/parceiros”) e informe o ID do negócio da danova AI: <b>' + (BM ? A.esc(BM) : "peça à equipe danova AI") + "</b>.</li>" +
+        "<li>Marque a permissão <b>Ver desempenho</b> (somente leitura) e confirme.</li><li>Volte aqui e clique em <b>Buscar agora</b>.</li></ol></div>" : "") +
+      '<div class="an-dados"><b>Dados que serão importados</b><ul>' + ["Campanhas ativas e pausadas", "Investimento total", "Gastos por campanha", "Impressões e alcance", "Cliques e CTR", "CPC e CPM", "Leads e custo por lead", "Resultados por período"].map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul></div>" +
+      '<details class="an-avancado"' + (minha ? " open" : "") + '><summary>Conectar pelo login do Facebook (opção avançada)</summary>' + (minha ?
+        '<p class="an-dica">Conectado como <b>' + A.esc(minha.usuario_nome || "—") + "</b> · " + (minha.status === "ativa" ? (dias !== null ? "válido até " + new Date(minha.expira_em).toLocaleDateString("pt-BR") + (dias < 15 ? ' — <b class="an-txt-erro">reconecte em breve</b>' : "") : "ativo") : '<b class="an-txt-erro">' + A.esc(minha.ultimo_erro || "reconecte") + "</b>") + "</p>" +
+        '<div class="an-acts"><button class="btn ghost" data-escolher>Escolher contas</button><button class="btn ghost" data-conectar>Reconectar</button><button class="btn ghost an-perigo" data-desconectar>Desconectar</button></div>'
+        : '<p class="an-dica">Alternativa para quem prefere autorizar com o próprio Facebook (exige o app Meta da danova configurado).</p><div class="an-acts"><button class="btn ghost" data-conectar>Conectar com Facebook</button></div>') +
+      '</details><div class="an-selbox" data-selbox hidden></div></div>';
 
     // --- filtros
     var filtros = '<div class="filters an-filtros">' +
@@ -178,7 +196,8 @@
         "</tbody></table></div>" : '<p class="an-carr">Sem dados no período.</p>') + "</div>";
 
     var corpo;
-    if (!contas.length) corpo = '<div class="card"><p class="an-carr">' + (minha ? "Escolha as contas de anúncio que entram no painel (botão acima)." : podeConectar ? "Conecte sua conta Meta Ads para ver o desempenho das suas campanhas aqui." : "") + "</p></div>";
+    if (!contas.length) corpo = '<div class="card an-demo"><p class="an-carr">Informe o ID da conta de anúncios acima para ver aqui o desempenho das suas campanhas: investimento, impressões, alcance, cliques, CTR, CPC, CPM, leads e custo por lead, por período.</p></div>';
+    else if (!linhas.length && !antes.length) corpo = filtros + '<div class="card an-demo"><p class="an-carr">' + (aguardando ? "Assim que o acesso for autorizado, as campanhas, o investimento, as impressões, o alcance, os cliques, o CTR, o CPC, o CPM e os leads aparecem aqui, com gráfico por dia e comparação com o período anterior." : "Sem dados no período escolhido. Clique em “Atualizar agora” para buscar no Meta.") + "</p></div>";
     else corpo = filtros + (misto ? '<p class="an-erro">As contas escolhidas usam moedas diferentes; os totais misturam valores. Filtre por conta para ver cada moeda.</p>' : "") +
       (erros.length ? '<p class="an-erro">⚠ ' + A.esc(erros[0].nome) + ": " + A.esc(erros[0].ultimo_erro) + "</p>" : "") +
       kpis + '<div class="card an-graf"><h3>Investimento e resultados por dia</h3><div class="an-canvas"><canvas data-graf></canvas></div></div>' + tabela;
@@ -212,6 +231,29 @@
     el.querySelectorAll("[data-f]").forEach(function (s) { s.addEventListener("change", function () { var k = s.dataset.f; st[k] = k === "dias" ? +s.value : s.value; if (k === "cliente") { st.conta = ""; st.campanha = ""; } if (k === "conta") st.campanha = ""; render(el, A); }); });
     el.querySelectorAll("[data-aba]").forEach(function (b) { b.addEventListener("click", function () { st.aba = b.dataset.aba; render(el, A); }); });
     el.querySelectorAll("[data-conectar]").forEach(function (b) { b.addEventListener("click", function () { conectar(A, b); }); });
+    var fa = el.querySelector("[data-form-act]");
+    if (fa) fa.addEventListener("submit", async function (e) {
+      e.preventDefault(); var b = fa.querySelector("button"), f = new FormData(fa), act = String(f.get("act") || "").replace(/\D/g, "");
+      if (act.length < 6 || act.length > 20) return A.toast("Confira o ID: são só números, como act_123456789012345.", true);
+      b.disabled = true; b.textContent = "Conectando…";
+      var args = { p_act: act }; if (admin) args.p_cliente = f.get("cliente") || null;
+      var r = await A.sb.rpc("meta_registrar_conta", args);
+      if (r.error) { b.disabled = false; b.textContent = "Conectar conta Meta"; var m = r.error.message || ""; return A.toast(/conta_de_outro_cliente/.test(m) ? "Esta conta já está vinculada a outro cliente." : /id_invalido/.test(m) ? "ID inválido." : /sem_conta/.test(m) ? "Seu login não está ligado a uma empresa." : m, true); }
+      try { await chamar(A, "meta-integrador", { acao: "disparar", conta: r.data.id, dias: 30 }); A.toast("Conta " + r.data.act + " registrada. Buscando os dados no Meta…"); }
+      catch (x) { A.toast(x.codigo === "integrador_nao_configurado" ? "Conta registrada. A busca automática começa assim que a integração da danova for ativada." : "Conta registrada. " + msgErro(x)); }
+      st.conta = ""; render(el, A);
+    });
+    el.querySelectorAll("[data-buscar]").forEach(function (b) { b.addEventListener("click", async function () {
+      b.disabled = true; var t = b.textContent; b.textContent = "Buscando…";
+      try { await chamar(A, "meta-integrador", { acao: "disparar", conta: b.dataset.buscar, dias: 30 }); A.toast("Pedido enviado. Os dados aparecem em alguns instantes."); setTimeout(function () { render(el, A); }, 15000); }
+      catch (x) { A.toast(x.codigo === "integrador_nao_configurado" ? "A integração da danova ainda não foi ativada." : msgErro(x), true); }
+      b.disabled = false; b.textContent = t;
+    }); });
+    el.querySelectorAll("[data-remover]").forEach(function (b) { b.addEventListener("click", async function () {
+      if (!window.confirm("Remover esta conta do painel? Os dados já importados ficam guardados.")) return;
+      var r = await A.sb.rpc("meta_remover_conta", { p_id: b.dataset.remover }); if (r.error) return A.toast(r.error.message, true);
+      A.toast("Conta removida do painel."); render(el, A);
+    }); });
     var be = el.querySelector("[data-escolher]"), box = el.querySelector("[data-selbox]");
     var abrirSel = function () { seletorContas(box, A, minha.id, async function () { st.conta = ""; await sincronizar(el, A, null, true); }); };
     if (be) be.addEventListener("click", abrirSel);
@@ -229,7 +271,8 @@
     var t = botao && botao.textContent; if (botao) { botao.disabled = true; botao.textContent = "Buscando no Meta…"; }
     var corpo = { plataforma: "meta", dias: Math.max(st.dias * 2, 30) };
     if (st.conta) corpo.conta = st.conta;
-    try { var d = await chamar(A, "ads-sync", corpo); var ruins = (d.resultado || []).filter(function (x) { return x.erro; }); A.toast(ruins.length ? "Atualizado com aviso: " + ruins[0].erro : "Dados atualizados."); }
+    try { try { await chamar(A, "meta-integrador", { acao: "disparar", conta: st.conta || undefined, dias: Math.min(Math.max(st.dias * 2, 30), 90) }); } catch (x) { if (x.codigo !== "sem_contas" && x.codigo !== "integrador_nao_configurado") throw x; }
+      var d = await chamar(A, "ads-sync", corpo).catch(function (x) { if (x.codigo === "sem_contas") return { resultado: [] }; throw x; }); var ruins = (d.resultado || []).filter(function (x) { return x.erro; }); A.toast(ruins.length ? "Atualizado com aviso: " + ruins[0].erro : "Dados atualizados."); }
     catch (x) { if (!silencioso || x.codigo !== "sem_contas") A.toast(msgErro(x), true); }
     finally { if (botao) { botao.disabled = false; botao.textContent = t; } render(el, A); }
   }
