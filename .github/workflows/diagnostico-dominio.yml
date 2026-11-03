@@ -1,0 +1,13 @@
+name: Diagnóstico do domínio
+on: workflow_dispatch
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          sudo apt-get install -y -qq whois >/dev/null 2>&1 || true
+          for r in 1.1.1.1 8.8.8.8; do echo "== @$r"; dig +short NS danova-ai.com @$r; dig +short A danova-ai.com @$r; dig danova-ai.com @$r | grep -E "status:"; done
+          echo "== registro .com"; dig +short NS danova-ai.com @a.gtld-servers.net; dig danova-ai.com NS @a.gtld-servers.net +norec | grep -E "status:|AUTHORITY" 
+          echo "== whois"; whois danova-ai.com 2>/dev/null | grep -iE "Registrar:|Expir|Status|Name Server|Updated|Creation" | head -20
+          echo "== site provisório"
+          for p in / /index.html /crm/ /crm/index.html /.ftp-deploy-sync-state.json; do echo "$p → $(curl -s -o /tmp/r -w '%{http_code}' https://danova-ai-com-417732.hostingersite.com$p) $(head -c 120 /tmp/r | tr '\n' ' ')"; done
