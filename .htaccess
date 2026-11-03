@@ -4,6 +4,9 @@
 # antigo — cole este bloco NO TOPO dele e mantenha o restante.
 # ===================================================================
 
+# Página inicial: o site (index.html) tem prioridade sobre páginas padrão da Hostinger (index.php/default.php).
+DirectoryIndex index.html index.php
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 
