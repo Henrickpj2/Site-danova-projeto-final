@@ -741,3 +741,12 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 .cad-aceite{display:flex!important;flex-direction:row!important;gap:8px;align-items:flex-start;font-size:.82rem;font-weight:400;line-height:1.4}
 .cad-aceite input{width:auto!important;margin-top:3px}
 @media (max-width:420px){.cad-linha{grid-template-columns:1fr 96px}}
+
+#view-integracoes .ig-meta-imp{margin-top:12px;padding:12px;border:1px dashed rgba(139,92,246,.45);border-radius:10px;display:flex;flex-direction:column;gap:6px;font-size:.86rem}
+#view-integracoes .ig-meta-imp span{opacity:.8;line-height:1.45}
+#view-integracoes .ig-dias{display:flex;gap:8px;align-items:center;font-size:.82rem}
+#view-integracoes .ig-dias select{width:auto}
+#view-integracoes .ig-imp-res{font-size:.84rem;margin-top:8px}
+#view-integracoes .ig-imp-res ul{margin:6px 0;padding-left:18px;max-height:180px;overflow:auto}
+#view-integracoes .ig-imp-res small{opacity:.65}
+#view-integracoes .ig-erro{color:#f59e0b}
