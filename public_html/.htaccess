@@ -33,10 +33,17 @@ RewriteRule ^buscador\.html$ - [F,L]
 
 # 6) Arquivos internos nunca ficam públicos (403): arquivos ocultos (.env, .git, controle do envio
 #    automático…), cópias de pastas, código-fonte e backups. A pasta .well-known continua acessível.
-RewriteRule (^|/)\.(?!well-known/) - [F,L]
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule (^|/)\. - [F,L]
 RewriteRule ^public_html(/|$) - [F,L]
 RewriteRule \.(sql|md|py|ts|sh|bak|old|orig|log|ini|env|yml|yaml|lock|zip|tar|gz|7z)$ - [F,L,NC]
 </IfModule>
+
+# Reforço (vale mesmo em subpastas com .htaccess próprio): arquivos ocultos e a cópia duplicada "public_html".
+<FilesMatch "^\.">
+Require all denied
+</FilesMatch>
+RedirectMatch 403 ^/public_html(/|$)
 
 # Sem listagem de pastas
 Options -Indexes
