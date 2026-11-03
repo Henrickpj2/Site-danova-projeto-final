@@ -14,3 +14,6 @@ jobs:
           curl -s -D /tmp/h -o /tmp/r $B/ ; grep -iE "^(server|x-powered|platform|location|content-type)" /tmp/h; grep -o "<title>[^<]*" /tmp/r; grep -oE 'src="[^"]+"' /tmp/r | head -8
           for p in /public_html/index.html /public_html/crm/ /api/lead.php /robots.txt /llms.txt /js/crm-config.js; do echo "$p → $(curl -s -o /tmp/r -w '%{http_code}' $B$p)"; done
           echo "== NS dns-parking"; dig danova-ai.com A @aster.dns-parking.com | grep -E "status:|^danova"; dig danova-ai.com A @helios.dns-parking.com | grep -E "status:|^danova"
+          echo "== danova-ai.com"
+          curl -s -L -o /tmp/r "https://danova-ai.com/?v=$GITHUB_RUN_ID"; grep -o "<title>[^<]*" /tmp/r
+          curl -s -L -o /tmp/c -w "crm HTTP %{http_code}\n" "https://danova-ai.com/crm/?v=$GITHUB_RUN_ID"; grep -q 'name="creci"' /tmp/c && echo "CRM novo (CRECI) no ar" || echo "CRM sem o cadastro novo"
