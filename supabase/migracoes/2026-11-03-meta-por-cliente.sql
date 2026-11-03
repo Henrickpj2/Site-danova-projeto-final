@@ -1,0 +1,7 @@
+-- Plano de integração Meta (aplicada em 03/11/2026): cada cliente conecta a própria conta Meta Ads e vê o próprio painel.
+-- Tabelas: meta_conexoes (token por login, só servidor), meta_insights (diário por anúncio), contas_anuncio.conexao_id.
+-- RLS: admin vê tudo; cliente (papel construtora) vê só as contas de anúncio vinculadas à conta dele (privado.contas_anuncio_minhas()).
+-- Funções: meta_conexoes_status() (sem token), integracoes_status() (páginas do Lead Ads).
+-- Agendamento (pg_cron): ads-sync-diario 06:10 BRT (3 dias) e ads-sync-semanal domingo 06:40 BRT (30 dias),
+--   via privado.disparar_ads_sync() com token interno guardado no Vault (ads_sync_token) e hash em privado.tokens_internos.
+-- Definições completas: consulte o banco (pg_get_functiondef / \d+) — o SQL aplicado está no histórico de migrações do Supabase.

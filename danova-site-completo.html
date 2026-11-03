@@ -2542,6 +2542,80 @@ window.DANOVA_CRM = {
 #crmRoot #view-integracoes .ig-avancado summary {cursor:pointer;font-weight:600}
 #crmRoot #view-integracoes .ig-avancado ol {padding-left:18px;line-height:1.5}
 #crmRoot #view-integracoes .ig-avancado li {margin:4px 0}
+#crmRoot #view-integracoes .ig-sel {margin-top:14px;padding:14px;border:1px solid rgba(139,92,246,.35);border-radius:12px;background:rgba(139,92,246,.05)}
+#crmRoot #view-integracoes .ig-sel h4 {margin:4px 0 10px;font-size:.92rem}
+#crmRoot #view-integracoes .ig-sel-lista, #crmRoot #view-integracoes .ig-camp-lista {display:flex;flex-direction:column;gap:6px;max-height:340px;overflow:auto;margin-bottom:10px}
+#crmRoot #view-integracoes .ig-sel-item {display:flex!important;flex-direction:row!important;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid rgba(255,255,255,.08);border-radius:8px;cursor:pointer;font-weight:400}
+#crmRoot #view-integracoes .ig-sel-item input {width:auto!important;margin-top:3px}
+#crmRoot #view-integracoes .ig-sel-item span {display:flex;flex-direction:column;gap:2px;font-size:.86rem}
+#crmRoot #view-integracoes .ig-sel-item small {opacity:.7;font-size:.76rem}
+#crmRoot #view-integracoes .ig-sel-item.todas {border-color:rgba(34,197,94,.4)}
+#crmRoot #view-integracoes .ig-camp {border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px;margin-bottom:8px}
+#crmRoot #view-integracoes .ig-camp-h {display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#crmRoot #view-integracoes .ig-camp-h small {opacity:.7;flex:1}
+#crmRoot #view-integracoes .ig-camp-lista {margin-top:10px}
+#crmRoot #view-integracoes .ig-filtro {display:flex;gap:6px}
+#crmRoot #view-integracoes .ig-carr {opacity:.75;font-size:.85rem}
+@media (max-width:640px){
+#crmRoot #view-integracoes .ig-camp-h {flex-direction:column;align-items:flex-start}
+}
+#crmRoot #view-integracoes .ig-sel h4 {color:#e8eef6}
+#crmRoot #view-integracoes .ig-sel-item, #crmRoot #view-integracoes .ig-sel-item b, #crmRoot #view-integracoes .ig-camp-h b {color:#e8eef6}
+#crmRoot #view-integracoes .ig-sel-item small {color:#9fb0c4;opacity:1}
+#crmRoot #view-integracoes .ig-sel-item:has(input:checked) {border-color:rgba(22,184,166,.55);background:rgba(22,184,166,.06)}
+#crmRoot #view-integracoes .ig-sel-item:has(input:disabled) {opacity:.75}
+#crmRoot #view-integracoes .ig-sel-item .ig-chip {transform:scale(.85);transform-origin:left center;display:inline-block}
+#crmRoot #view-integracoes .ig-dias {color:#c9d5e3}
+#crmRoot #view-integracoes .ig-dias select {color:#142033}
+#crmRoot .an .card {margin-bottom:16px}
+#crmRoot .an-con-l {display:flex;gap:14px;align-items:flex-start}
+#crmRoot .an-con-l b {display:block;font-size:15px;margin-bottom:4px}
+#crmRoot .an-con-l small {color:var(--muted);font-size:13px;line-height:1.45;display:block}
+#crmRoot .an-fb {flex:0 0 40px;height:40px;border-radius:10px;background:#1877f2;color:#fff;display:grid;place-items:center;font:800 22px/1 "Manrope",sans-serif}
+#crmRoot .an-acts {display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+#crmRoot .an-btn-fb {background:#1877f2!important;border-color:#1877f2!important;color:#fff!important}
+#crmRoot .an-perigo {color:var(--red)!important}
+#crmRoot .an-ok {color:var(--green);font-weight:600;margin:0 0 10px}
+#crmRoot .an-erro {color:#b45309;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:8px 12px;font-size:13px;margin:0 0 12px}
+#crmRoot .an-txt-erro {color:var(--red)}
+#crmRoot .an-carr {color:var(--muted);font-size:13px;margin:6px 0}
+#crmRoot .an-selbox {margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+#crmRoot .an-selbox h4 {font-size:14px;margin-bottom:10px}
+#crmRoot .an-sel {display:flex;flex-direction:column;gap:6px;max-height:320px;overflow:auto}
+#crmRoot .an-sel-item {display:flex!important;flex-direction:row!important;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-weight:500;color:var(--ink)}
+#crmRoot .an-sel-item input {width:auto!important;margin-top:3px}
+#crmRoot .an-sel-item span {display:flex;flex-direction:column;gap:2px;font-size:13px}
+#crmRoot .an-sel-item small {color:var(--muted);font-weight:400;font-size:12px}
+#crmRoot .an-sel-item:has(input:checked) {border-color:var(--teal);background:#effbf9}
+#crmRoot .an-sel-item.bloq {opacity:.55;cursor:not-allowed}
+#crmRoot .an-cli {margin-top:12px;max-width:360px}
+#crmRoot .an-filtros label {display:flex;flex-direction:column;gap:4px;font-size:11px}
+#crmRoot .an-sync {color:var(--muted);font-size:12px}
+#crmRoot .an-kpis {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:16px}
+#crmRoot .an-kpis .kpi strong {font-size:22px}
+#crmRoot .an-var {font-style:normal;font-size:11px;font-weight:700;margin-left:4px;color:var(--muted);white-space:nowrap}
+#crmRoot .an-var.bom {color:var(--green)}
+#crmRoot .an-var.ruim {color:var(--red)}
+#crmRoot .an-canvas {position:relative;height:280px}
+#crmRoot .an-abas {display:flex;gap:6px;margin-bottom:12px}
+#crmRoot .an-abas button {border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink)}
+#crmRoot .an-abas button.on {background:var(--navy);color:#fff;border-color:var(--navy)}
+#crmRoot .an-tab td small {display:block;color:var(--muted);font-size:11px}
+#crmRoot .an-tab td, #crmRoot .an-tab th {white-space:nowrap}
+#crmRoot .an-tab td:first-child {white-space:normal;min-width:180px}
+#crmRoot .an-p-ok {background:#dcfce7;color:#166534}
+#crmRoot .an-p-erro {background:#fee2e2;color:#991b1b}
+@media (max-width:1100px){
+#crmRoot .an-kpis {grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media (max-width:640px){
+#crmRoot .an-kpis {grid-template-columns:repeat(2,minmax(0,1fr))}
+#crmRoot .an-kpis .kpi strong {font-size:18px}
+#crmRoot .an-canvas {height:220px}
+#crmRoot .an-con-l {flex-direction:column}
+}
+
 #crmRoot { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
 #crmRoot { display: none; }
 html.crm-mode #crmRoot { display: block; }
@@ -4381,7 +4455,9 @@ html.crm-mode body { background: #f4f6fa; }
     st.erroTabela = !!r.error; st.fontes = r.data || [];
     var c = await A.sb.from("contas_anuncio").select("id, plataforma, nome, conta_externa, estimados, ultima_sync, ultimo_erro, codigo").eq("ativo", true).order("codigo");
     st.contas = c.data || [];
-    var ist = await A.sb.rpc("integracoes_status"); st.meta = (ist.data && ist.data.meta) || null;
+    var ist = await A.sb.rpc("meta_conexoes_status"); st.conexoes = ist.data || [];
+    st.meta = st.conexoes.filter(function (c) { return c.minha; })[0] || null;
+    var ip = await A.sb.rpc("integracoes_status"); st.paginas = (ip.data && ip.data.meta) || null;
     await A.carregar();
   }
 
@@ -4395,17 +4471,20 @@ html.crm-mode body { background: #f4f6fa; }
     var aviso = "";
     if (RET) {
       var r = RET.get("meta");
-      aviso = r === "ok" ? '<p class="ig-ok">✓ Facebook conectado! ' + (+RET.get("paginas") ? RET.get("paginas") + " página(s) encontrada(s), " + RET.get("assinadas") + " recebendo leads dos formulários. " : "") + "Importando contas e métricas…</p>" :
+      aviso = r === "ok" ? '<p class="ig-ok">✓ Facebook conectado! ' + (+RET.get("paginas") ? RET.get("paginas") + " página(s) encontrada(s), " + RET.get("assinadas") + " recebendo leads dos formulários. " : "") + "Agora escolha os gerenciadores e as campanhas abaixo.</p>" :
         r === "cancelado" ? '<p class="ig-erro">Conexão cancelada no Facebook. Clique em “Conectar com Facebook” para tentar de novo.</p>' :
         '<p class="ig-erro">Não foi possível conectar: ' + A.esc(RET.get("motivo") || "erro") + "</p>";
     }
     var topo = '<div class="ig-top"><span class="ig-logo m">∞</span><div><h3>Meta Ads</h3><small>' + m.length + " conta(s) · " + comMeta + " lead(s) do Lead Ads</small></div>" + (con ? chip("on", "Conectado") : chip("off", "Não conectado")) + "</div>";
     var corpo;
     if (con) {
-      corpo = '<div class="ig-meta-con"><b>Conectado como ' + A.esc(con.nome || "—") + "</b><span>" + (con.paginas ? con.paginas + " página(s) · " + con.paginas_assinadas + " recebendo leads dos formulários" : "Nenhuma página do Facebook encontrada (só métricas)") + "</span>" +
-        "<span>Autorização válida até " + dt(con.expira_em) + (dias !== null && dias < 15 ? ' <b class="ig-erro">— reconecte em breve</b>' : "") + "</span></div>" +
+      var pg = st.paginas || {};
+      corpo = '<div class="ig-meta-con"><b>Conectado como ' + A.esc(con.usuario_nome || "—") + "</b><span>" + con.contas.filter(function (c) { return c.ativo; }).length + " conta(s) de anúncio vinculada(s) · " + (pg.paginas ? pg.paginas + " página(s), " + pg.paginas_assinadas + " recebendo leads dos formulários" : "nenhuma página recebendo leads") + "</span>" +
+        "<span>" + (con.status === "ativa" ? "Autorização válida até " + dt(con.expira_em) + (dias !== null && dias < 15 ? ' <b class="ig-erro">— reconecte em breve</b>' : "") : '<b class="ig-erro">' + A.esc(con.ultimo_erro || "Reconecte o Facebook") + "</b>") + "</span>" +
+        (st.conexoes.length > 1 ? "<span>" + (st.conexoes.length - 1) + " cliente(s) também conectaram a própria conta (veja em Meus anúncios).</span>" : "") + "</div>" +
         '<label class="ig-dias">Período das métricas <select data-imp-dias><option value="30">30 dias</option><option value="90" selected>90 dias</option><option value="180">180 dias</option><option value="365">12 meses</option></select></label>' +
-        '<div class="ig-acts"><button class="c-btn" data-importar-meta>Atualizar contas e métricas</button><button class="c-btn ghost" data-conectar-meta>Reconectar</button><button class="c-btn ghost" data-ir="campanhas">Contas de anúncio</button><button class="c-btn ghost danger" data-desconectar-meta>Desconectar</button></div>';
+        '<div class="ig-acts"><button class="c-btn" data-seletor-meta>Escolher contas e campanhas</button><button class="c-btn ghost" data-sync-meta>Atualizar métricas</button><button class="c-btn ghost" data-ir="anuncios">Ver painel</button><button class="c-btn ghost" data-conectar-meta>Reconectar</button><button class="c-btn ghost danger" data-desconectar-meta>Desconectar</button></div>' +
+        '<div class="ig-sel" data-sel hidden></div>';
     } else {
       corpo = '<div class="ig-meta-imp"><b>Conecte em 1 clique</b><span>Entre com o Facebook que administra o seu Gerenciador de Negócios e autorize. O CRM passa a puxar sozinho todas as contas de anúncio, as métricas de todas as campanhas e os leads dos formulários instantâneos.</span></div>' +
         '<div class="ig-acts"><button class="c-btn fb" data-conectar-meta>Conectar com Facebook</button></div>';
@@ -4418,25 +4497,71 @@ html.crm-mode body { background: #f4f6fa; }
       "<li>No Supabase (Edge Functions → Secrets), salve <b>META_APP_ID</b> (ID do app) e <b>META_APP_SECRET</b> (Chave secreta do app).</li></ol>" +
       '<small class="ig-lbl">Webhook de leads (o CRM configura sozinho ao conectar):</small><div class="ig-code"><code>' + META_WEBHOOK + '</code><button type="button" class="c-btn ghost" data-copiar="' + META_WEBHOOK + '">Copiar</button></div></details></section>';
   }
-  async function importarMeta(el, A, bImp) {
-    var res = el.querySelector("[data-imp-res]"), dias = +(el.querySelector("[data-imp-dias]") || {}).value || 90;
-    var ERR = { meta_nao_configurado: "O Facebook ainda não está conectado. Clique em “Conectar com Facebook”.", sem_acesso: "Só administradores podem importar.", nao_autenticado: "Sua sessão expirou. Entre de novo." };
-    var txt = bImp ? bImp.textContent : ""; if (bImp) { bImp.disabled = true; bImp.textContent = "Buscando contas no Meta…"; }
-    res.innerHTML = "";
+
+
+  function invocar(A, corpo) {
+    return A.sb.functions.invoke("ads-sync", { body: corpo }).then(async function (r) {
+      var e = r.data && r.data.erro; try { var j = r.error && r.error.context && await r.error.context.json(); if (j && j.erro) e = j.erro; } catch (x) {}
+      if (r.error && !e) e = r.error.message || "falha";
+      if (e) throw new Error(e === "meta_nao_configurado" ? "O Facebook não está conectado." : e);
+      return r.data;
+    });
+  }
+  var STATUS_CAMP = { active: ["Ativa", "on"], paused: ["Pausada", "off"], archived: ["Arquivada", "off"], deleted: ["Excluída", "off"], campaign_paused: ["Pausada", "off"], in_process: ["Em análise", "off"], with_issues: ["Com problema", "off"] };
+  async function abrirSeletor(el, A) {
+    var box = el.querySelector("[data-sel]"); if (!box || !st.meta) return;
+    box.hidden = false; box.innerHTML = '<div data-contas-box></div><div data-camp-area></div>';
+    var cbox = box.querySelector("[data-contas-box]");
+    var mostrar = async function () {
+      var ist = await A.sb.rpc("meta_conexoes_status"); st.conexoes = ist.data || []; st.meta = st.conexoes.filter(function (c) { return c.minha; })[0] || st.meta;
+      mostrarCampanhas(box, A, (st.meta.contas || []).filter(function (c) { return c.ativo; }).map(function (c) { return { conta_crm: c.id, nome: c.nome, campanhas: 0 }; }));
+    };
+    D.meta.seletorContas(cbox, A, st.meta.id, async function () { cbox.hidden = false; cbox.innerHTML = '<p class="ig-ok">✓ Contas salvas. Agora, se quiser, escolha as campanhas de cada uma.</p>'; await carregar(A); await mostrar(); });
+    await mostrar();
+  }
+  function mostrarCampanhas(box, A, contas) {
+    var area = box.querySelector("[data-camp-area]"); if (!area) return;
+    if (!contas.length) { area.innerHTML = ""; return; }
+    area.innerHTML = '<h4>2. Quais campanhas acompanhar em cada gerenciador?</h4>' + contas.map(function (c) {
+      return '<div class="ig-camp" data-conta="' + A.esc(c.conta_crm) + '"><div class="ig-camp-h"><b>' + A.esc(c.nome) + '</b><small>' + (c.campanhas ? c.campanhas + " campanha(s) escolhida(s)" : "todas as campanhas") + '</small><button class="c-btn ghost" data-abrir-camp>Escolher campanhas</button></div><div class="ig-camp-lista" hidden></div></div>';
+    }).join("") + '<div class="ig-acts"><button class="c-btn" data-puxar>Puxar métricas agora</button></div>';
+    area.querySelectorAll("[data-abrir-camp]").forEach(function (b) { b.addEventListener("click", async function () {
+      var bloco = b.closest(".ig-camp"), lista = bloco.querySelector(".ig-camp-lista"), conta = bloco.dataset.conta;
+      if (!lista.hidden) { lista.hidden = true; return; }
+      lista.hidden = false; lista.innerHTML = '<p class="ig-carr">Buscando campanhas…</p>';
+      try {
+        var d = await invocar(A, { acao: "listar_campanhas", conta: conta });
+        if (!d.campanhas.length) { lista.innerHTML = '<p class="ig-carr">Nenhuma campanha nesta conta.</p>'; return; }
+        lista.innerHTML = '<label class="ig-sel-item todas"><input type="checkbox" data-todas' + (d.todas ? " checked" : "") + '><span><b>Todas as campanhas</b><small>inclusive as que forem criadas depois</small></span></label>' +
+          '<div class="ig-filtro"><button type="button" class="c-btn ghost" data-marcar="ativas">Só as ativas</button><button type="button" class="c-btn ghost" data-marcar="nenhuma">Desmarcar</button></div>' +
+          d.campanhas.map(function (k) { var st2 = STATUS_CAMP[k.status] || [k.status || "—", "off"]; return '<label class="ig-sel-item"><input type="checkbox" data-camp value="' + A.esc(k.id) + '" data-nome="' + A.esc(k.nome) + '" data-status="' + A.esc(k.status) + '"' + (k.selecionada ? " checked" : "") + '><span><b>' + A.esc(k.nome) + "</b><small>" + chip(st2[1], st2[0]) + (k.objetivo ? " " + A.esc(k.objetivo.replace(/^OUTCOME_/, "").toLowerCase()) : "") + "</small></span></label>"; }).join("") +
+          '<div class="ig-acts"><button class="c-btn" data-salvar-camp>Salvar campanhas</button></div>';
+        var todas = lista.querySelector("[data-todas]"), camps = lista.querySelectorAll("[data-camp]");
+        var sync = function () { camps.forEach(function (i) { i.disabled = todas.checked; if (todas.checked) i.checked = true; }); };
+        todas.addEventListener("change", sync); sync();
+        lista.querySelectorAll("[data-marcar]").forEach(function (m) { m.addEventListener("click", function () { todas.checked = false; sync(); camps.forEach(function (i) { i.checked = m.dataset.marcar === "ativas" && i.dataset.status === "active"; }); }); });
+        lista.querySelector("[data-salvar-camp]").addEventListener("click", async function () {
+          var bs = this, escolhidas = todas.checked ? [] : Array.prototype.filter.call(camps, function (i) { return i.checked; }).map(function (i) { return { id: i.value, nome: i.dataset.nome }; });
+          if (!todas.checked && !escolhidas.length) return A.toast("Marque pelo menos uma campanha (ou “Todas”).", true);
+          bs.disabled = true; bs.textContent = "Salvando…";
+          try { await invocar(A, { acao: "salvar_campanhas", conta: conta, campanhas: escolhidas }); bloco.querySelector(".ig-camp-h small").textContent = escolhidas.length ? escolhidas.length + " campanha(s) escolhida(s)" : "todas as campanhas"; lista.hidden = true; A.toast("Campanhas salvas."); }
+          catch (x) { A.toast(x.message, true); }
+          finally { bs.disabled = false; bs.textContent = "Salvar campanhas"; }
+        });
+      } catch (x) { lista.innerHTML = '<p class="ig-erro">' + A.esc(x.message) + "</p>"; }
+    }); });
+    area.querySelector("[data-puxar]").addEventListener("click", function () { sincronizarMeta(box.closest(".ig-card"), A, this); });
+  }
+  async function sincronizarMeta(card, A, b) {
+    var res = card.querySelector("[data-imp-res]"), dias = +(card.querySelector("[data-imp-dias]") || {}).value || 90, t = b.textContent;
+    b.disabled = true; b.textContent = "Puxando métricas…"; res.innerHTML = "";
     try {
-      var r = await A.sb.functions.invoke("ads-sync", { body: { acao: "importar_meta" } });
-      if (r.error || !r.data || r.data.erro) { var e = (r.data && r.data.erro) || (r.error && r.error.message) || "falha"; try { var j = r.error && r.error.context && await r.error.context.json(); if (j && j.erro) e = j.erro; } catch (x) {} res.innerHTML = '<p class="ig-erro">' + A.esc(ERR[e] || e) + "</p>"; return; }
-      var d = r.data;
-      if (!d.total) { res.innerHTML = '<p class="ig-erro">A conexão funcionou, mas este Facebook não enxerga nenhuma conta de anúncio. Conecte com o perfil que administra o Gerenciador de Negócios.</p>'; return; }
-      res.innerHTML = "<p><b>" + d.total + " conta(s) encontrada(s)</b> · " + d.novas + " nova(s) · " + d.atualizadas + " já existiam. Puxando métricas de " + dias + " dias…</p>" +
-        "<ul>" + d.contas.slice(0, 30).map(function (c) { return "<li>" + A.esc(c.nome) + (c.empresa ? " <small>" + A.esc(c.empresa) + "</small>" : "") + " <small>· " + c.status + "</small></li>"; }).join("") + "</ul>";
-      if (bImp) bImp.textContent = "Puxando métricas…";
-      var s = await A.sb.functions.invoke("ads-sync", { body: { dias: dias, plataforma: "meta" } });
-      var lista = (s.data && s.data.resultado) || [], ok = lista.filter(function (x) { return !x.erro; }), ruins = lista.filter(function (x) { return x.erro; });
-      res.insertAdjacentHTML("beforeend", "<p>✓ Métricas atualizadas em " + ok.length + " conta(s)" + (ruins.length ? " · " + ruins.length + " com erro (veja em Campanhas → Contas)" : "") + ".</p>");
-      A.toast("Contas e métricas do Meta atualizadas.");
-    } catch (x) { res.innerHTML = '<p class="ig-erro">' + A.esc(x.message || String(x)) + "</p>"; }
-    finally { if (bImp) { bImp.disabled = false; bImp.textContent = txt; } }
+      var d = await invocar(A, { dias: dias, plataforma: "meta" });
+      var lista = d.resultado || [], ok = lista.filter(function (x) { return !x.erro; }), ruins = lista.filter(function (x) { return x.erro; });
+      res.innerHTML = "<p>✓ Métricas de " + dias + " dias atualizadas em " + ok.length + " gerenciador(es) · " + ok.reduce(function (s, x) { return s + (x.linhas || 0); }, 0) + " linha(s) de campanha/dia" + (ruins.length ? ' · <span class="ig-erro">' + ruins.length + " com erro: " + A.esc(ruins[0].erro) + "</span>" : "") + ".</p>";
+      A.toast("Métricas do Meta atualizadas.");
+    } catch (x) { res.innerHTML = '<p class="ig-erro">' + A.esc(x.message === "sem_contas" ? "Nenhum gerenciador escolhido ainda. Clique em “Escolher gerenciadores e campanhas”." : x.message) + "</p>"; }
+    finally { b.disabled = false; b.textContent = t; }
   }
 
   function render(el, A) {
@@ -4486,26 +4611,29 @@ html.crm-mode body { background: #f4f6fa; }
     el.querySelectorAll("[data-dias]").forEach(function (b) { b.addEventListener("click", function () { st.dias = +b.dataset.dias; render(el, A); }); });
     el.querySelectorAll("[data-copiar]").forEach(function (b) { b.addEventListener("click", function () { copiar(b.dataset.copiar, A); }); });
     el.querySelectorAll("[data-ir]").forEach(function (b) { b.addEventListener("click", function () { A.irPara(b.dataset.ir); }); });
-    var bImp = el.querySelector("[data-importar-meta]");
-    if (bImp) bImp.addEventListener("click", function () { importarMeta(el, A, bImp); });
+    var bSel = el.querySelector("[data-seletor-meta]");
+    if (bSel) bSel.addEventListener("click", function () { abrirSeletor(el, A); });
+    var bSync = el.querySelector("[data-sync-meta]");
+    if (bSync) bSync.addEventListener("click", function () { sincronizarMeta(el.querySelector(".ig-card.m"), A, bSync); });
     el.querySelectorAll("[data-conectar-meta]").forEach(function (b) { b.addEventListener("click", async function () {
+      if (!D.meta) return A.toast("Recarregue a página (Ctrl+Shift+R).", true);
       b.disabled = true; var t = b.textContent; b.textContent = "Abrindo o Facebook…";
-      var r = await A.sb.functions.invoke("meta-conectar", { body: { acao: "iniciar" } });
-      var e = r.data && r.data.erro; try { var j = r.error && r.error.context && await r.error.context.json(); if (j && j.erro) e = j.erro; } catch (x) {}
-      if (r.data && r.data.url) { window.location.href = r.data.url; return; }
-      b.disabled = false; b.textContent = t;
-      var res = el.querySelector("[data-imp-res]");
-      res.innerHTML = '<p class="ig-erro">' + (e === "app_nao_configurado" ? "Falta a configuração do app do Meta (feita uma única vez): abra “Configuração do app do Meta” logo abaixo e siga os 4 passos." : A.esc(e || (r.error && r.error.message) || "Não foi possível abrir o Facebook agora.")) + "</p>";
-      var det = el.querySelector(".ig-avancado"); if (det && e === "app_nao_configurado") det.open = true;
+      try { var d = await D.meta.chamar(A, "meta-conectar", { acao: "iniciar" }); window.location.href = d.url; }
+      catch (x) {
+        b.disabled = false; b.textContent = t;
+        var res = el.querySelector("[data-imp-res]");
+        res.innerHTML = '<p class="ig-erro">' + (x.codigo === "app_nao_configurado" ? "Falta a configuração do app do Meta (feita uma única vez): abra “Configuração do app do Meta” logo abaixo e siga os 4 passos." : A.esc(D.meta.msgErro(x))) + "</p>";
+        var det = el.querySelector(".ig-avancado"); if (det && x.codigo === "app_nao_configurado") det.open = true;
+      }
     }); });
     var bDes = el.querySelector("[data-desconectar-meta]");
     if (bDes) bDes.addEventListener("click", async function () {
       if (!window.confirm("Desconectar o Facebook? O CRM para de puxar métricas e leads dos formulários até você conectar de novo.")) return;
-      var r = await A.sb.functions.invoke("meta-conectar", { body: { acao: "desconectar" } });
+      var r = await A.sb.functions.invoke("meta-conectar", { body: { acao: "desconectar", conexao: st.meta && st.meta.id } });
       if (r.error) return A.toast("Não foi possível desconectar agora.", true);
       A.toast("Facebook desconectado."); await carregar(A); render(el, A);
     });
-    if (RET && RET.get("meta") === "ok" && !st.retornoFeito) { st.retornoFeito = true; importarMeta(el, A, el.querySelector("[data-importar-meta]")); }
+    if (RET && RET.get("meta") === "ok" && !st.retornoFeito) { st.retornoFeito = true; abrirSeletor(el, A); }
     el.querySelectorAll("[data-nova]").forEach(function (f) { f.addEventListener("submit", async function (e) {
       e.preventDefault(); var fd = new FormData(f), nome = String(fd.get("nome") || "").trim(); if (!nome) return;
       var conta = st.contas.find(function (c) { return c.id === fd.get("conta"); });
@@ -4528,6 +4656,247 @@ html.crm-mode body { background: #f4f6fa; }
     id: "integracoes", titulo: "Integrações", tituloLongo: "Integrações · origem dos leads", icone: "⛓", papeis: ["admin"],
     render: async function (el, A) { el.innerHTML = '<div class="empty">Carregando integrações…</div>'; await carregar(A); render(el, A); }
   });
+})();
+
+</script>
+<script>
+/* danova AI CRM — "Meus anúncios": cada cliente conecta a própria conta Meta Ads (OAuth oficial), escolhe as contas
+   de anúncio e vê o painel de desempenho: investimento, CPM, impressões, alcance, frequência, cliques, CTR, CPC,
+   resultados e custo por resultado, por campanha, conjunto e anúncio, com comparação com o período anterior.
+   O admin vê todos os clientes. Tokens ficam só no servidor (funções meta-conectar e ads-sync). */
+(function () {
+  "use strict";
+  var D = window.DanovaCRM = window.DanovaCRM || {}; D.modulos = D.modulos || [];
+  var CHART = "../js/vendor/chart-4.4.1.umd.min.js"; // Chart.js 4.4.1 servido pelo próprio site
+  var st = { dias: 30, conta: "", campanha: "", aba: "campanha", cliente: "", grafico: null };
+  var RET = window.location.hash.indexOf("anuncios?") >= 0 && window.location.hash.indexOf("meta=") >= 0 ? new URLSearchParams(window.location.hash.split("?")[1] || "") : null;
+  if (RET) { try { history.replaceState(null, "", location.pathname + "#anuncios"); } catch (e) {} }
+
+  // ---------- utilidades ----------
+  function n(v) { return Number(v) || 0; }
+  function fmtN(v, d) { return n(v).toLocaleString("pt-BR", { maximumFractionDigits: d == null ? 0 : d, minimumFractionDigits: d || 0 }); }
+  function fmtM(v, moeda) { if (!isFinite(v)) return "—"; return n(v).toLocaleString("pt-BR", { style: "currency", currency: moeda === "USD" ? "USD" : "BRL", maximumFractionDigits: 2 }); }
+  function pct(v) { return isFinite(v) ? fmtN(v * 100, 2) + "%" : "—"; }
+  function div(a, b) { return b ? a / b : NaN; }
+  function isoDia(d) { var z = new Date(d.getTime() - d.getTimezoneOffset() * 6e4); return z.toISOString().slice(0, 10); }
+  function carregarChart() {
+    if (window.Chart) return Promise.resolve();
+    return new Promise(function (ok, erro) { var s = document.createElement("script"); s.src = CHART; s.onload = ok; s.onerror = erro; document.head.appendChild(s); });
+  }
+  async function chamar(A, fn, corpo) {
+    var r = await A.sb.functions.invoke(fn, { body: corpo });
+    var e = r.data && r.data.erro, det = r.data && r.data.detalhe;
+    try { var j = r.error && r.error.context && await r.error.context.json(); if (j) { e = j.erro || e; det = j.detalhe || det; } } catch (x) {}
+    if (r.error && !e) e = r.error.message || "falha";
+    if (e) { var err = new Error(det || e); err.codigo = e; throw err; }
+    return r.data;
+  }
+  var ERROS = {
+    app_nao_configurado: "A conexão com o Meta ainda não foi ativada pela equipe danova AI.",
+    sem_conta_vinculada: "Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.",
+    sem_acesso: "Seu perfil não tem acesso a esta função.", nao_autenticado: "Sua sessão expirou. Entre de novo.",
+    conexao_nao_encontrada: "Conexão não encontrada. Conecte de novo.", sem_contas: "Nenhuma conta de anúncio vinculada ainda."
+  };
+  function msgErro(x) { return ERROS[x.codigo] || x.message || "Não foi possível concluir agora."; }
+
+  // ---------- conexão e escolha de contas (usado aqui e na tela Integrações) ----------
+  async function conectar(A, botao) {
+    var t = botao.textContent; botao.disabled = true; botao.textContent = "Abrindo o Facebook…";
+    try { var d = await chamar(A, "meta-conectar", { acao: "iniciar" }); window.location.href = d.url; }
+    catch (x) { botao.disabled = false; botao.textContent = t; A.toast(msgErro(x), true); }
+  }
+  async function seletorContas(box, A, conexao, aoSalvar) {
+    box.hidden = false; box.innerHTML = '<p class="an-carr">Buscando as contas de anúncio deste Facebook…</p>';
+    var clientes = [];
+    if (A.isAdmin()) clientes = (await A.sb.from("contas").select("id, nome").order("nome")).data || [];
+    try {
+      var d = await chamar(A, "meta-conectar", { acao: "listar_contas", conexao: conexao });
+      if (!d.contas.length) { box.innerHTML = '<p class="an-erro">Este Facebook não tem acesso a nenhuma conta de anúncios. Entre com o perfil que administra o Gerenciador de Anúncios.</p>'; return; }
+      box.innerHTML = '<h4>Quais contas de anúncio entram no painel?</h4><div class="an-sel">' + d.contas.map(function (c) {
+        var bloq = c.de_outro_cliente;
+        return '<label class="an-sel-item' + (bloq ? " bloq" : "") + '"><input type="checkbox" value="' + A.esc(c.id) + '"' + (c.vinculada ? " checked" : "") + (bloq ? " disabled" : "") + '><span><b>' + A.esc(c.nome) + "</b><small>" +
+          (c.empresa ? A.esc(c.empresa) + " · " : "") + "ID " + A.esc(c.id) + " · " + A.esc(c.moeda || "") + " · " + A.esc(c.status) + (bloq ? " · já vinculada a outro cliente" : "") + "</small></span></label>";
+      }).join("") + "</div>" +
+        (A.isAdmin() ? '<label class="an-cli">Cliente das contas marcadas <select data-cli><option value="__manter">Manter como está</option><option value="">Agência (sem cliente)</option>' + clientes.map(function (c) { return '<option value="' + c.id + '">' + A.esc(c.nome) + "</option>"; }).join("") + "</select></label>" : "") +
+        '<div class="an-acts"><button class="btn primary" data-salvar>Salvar contas</button><button class="btn ghost" data-fechar>Fechar</button></div>';
+      box.querySelector("[data-fechar]").addEventListener("click", function () { box.hidden = true; box.innerHTML = ""; });
+      box.querySelector("[data-salvar]").addEventListener("click", async function () {
+        var b = this, ids = Array.prototype.map.call(box.querySelectorAll(".an-sel input:checked:not(:disabled)"), function (i) { return i.value; });
+        var corpo = { acao: "vincular", conexao: conexao, ids: ids }, cli = box.querySelector("[data-cli]");
+        if (cli && cli.value !== "__manter") corpo.cliente = cli.value || null;
+        b.disabled = true; b.textContent = "Salvando…";
+        try {
+          var r = await chamar(A, "meta-conectar", corpo);
+          A.toast(r.vinculadas + " conta(s) vinculada(s)." + (r.recusadas ? " " + r.recusadas + " já pertence(m) a outro cliente." : ""));
+          box.hidden = true; box.innerHTML = ""; if (aoSalvar) aoSalvar(r);
+        } catch (x) { A.toast(msgErro(x), true); b.disabled = false; b.textContent = "Salvar contas"; }
+      });
+    } catch (x) { box.innerHTML = '<p class="an-erro">' + A.esc(msgErro(x)) + "</p>"; }
+  }
+  D.meta = { conectar: conectar, seletorContas: seletorContas, chamar: chamar, msgErro: msgErro };
+
+  // ---------- agregação ----------
+  function somar(linhas) {
+    var t = { custo: 0, impressoes: 0, alcance: 0, cliques: 0, cliques_link: 0, leads: 0, resultados: 0, valor: 0 };
+    linhas.forEach(function (l) { t.custo += n(l.custo); t.impressoes += n(l.impressoes); t.alcance += n(l.alcance); t.cliques += n(l.cliques); t.cliques_link += n(l.cliques_link); t.leads += n(l.leads); t.resultados += n(l.resultados); t.valor += n(l.valor_conversoes); });
+    t.cpm = div(t.custo, t.impressoes) * 1000; t.ctr = div(t.cliques, t.impressoes); t.cpc = div(t.custo, t.cliques);
+    t.freq = div(t.impressoes, t.alcance); t.cpr = div(t.custo, t.resultados);
+    return t;
+  }
+  function variacao(atual, antes, inverso, neutro) {
+    if (!isFinite(atual) || !isFinite(antes) || !antes) return "";
+    var v = (atual - antes) / antes, bom = inverso ? v < 0 : v > 0;
+    if (Math.abs(v) < 0.0005) return ' <em class="an-var">= 0%</em>';
+    return ' <em class="an-var ' + (neutro || Math.abs(v) < 0.005 ? "" : bom ? "bom" : "ruim") + '">' + (v > 0 ? "▲ " : "▼ ") + fmtN(Math.abs(v) * 100, 1) + "%</em>";
+  }
+  function agrupar(linhas, chave, nome) {
+    var g = {};
+    linhas.forEach(function (l) { var k = l[chave] || "—"; (g[k] = g[k] || { nome: l[nome] || "Sem nome", campanha: l.campanha, conjunto: l.conjunto, linhas: [] }).linhas.push(l); });
+    return Object.keys(g).map(function (k) { var x = g[k]; var s = somar(x.linhas); s.nome = x.nome; s.campanha = x.campanha; s.conjunto = x.conjunto; return s; }).sort(function (a, b) { return b.custo - a.custo; });
+  }
+
+  // ---------- tela ----------
+  async function render(el, A) {
+    el.innerHTML = '<div class="empty">Carregando seus anúncios…</div>';
+    var admin = A.isAdmin(), papel = A.S.me.papel;
+    var cx = (await A.sb.rpc("meta_conexoes_status")).data || [];
+    var minha = cx.filter(function (c) { return c.minha; })[0] || null;
+    var qc = A.sb.from("contas_anuncio").select("id, nome, conta_externa, moeda, conta_id, conexao_id, ultima_sync, ultimo_erro, ativo").eq("plataforma", "meta").eq("ativo", true).order("nome");
+    var contas = (await qc).data || [];
+    var clientes = admin ? ((await A.sb.from("contas").select("id, nome").order("nome")).data || []) : [];
+    if (admin && st.cliente) contas = contas.filter(function (c) { return st.cliente === "__agencia" ? !c.conta_id : c.conta_id === st.cliente; });
+    if (st.conta && !contas.some(function (c) { return c.id === st.conta; })) st.conta = "";
+    var ativas = st.conta ? contas.filter(function (c) { return c.id === st.conta; }) : contas;
+    var ids = ativas.map(function (c) { return String(c.conta_externa || "").replace(/\D/g, ""); });
+    var moeda = (ativas[0] && ativas[0].moeda) || "BRL";
+    var misto = ativas.some(function (c) { return (c.moeda || "BRL") !== moeda; });
+
+    // período atual e anterior
+    var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    var fim = new Date(hoje.getTime() - 864e5), ini = new Date(fim.getTime() - (st.dias - 1) * 864e5);
+    var fimAnt = new Date(ini.getTime() - 864e5), iniAnt = new Date(fimAnt.getTime() - (st.dias - 1) * 864e5);
+    var linhas = [], antes = [], camps = [];
+    if (ids.length) {
+      var r = await A.sb.from("meta_insights").select("data, conta_anuncio, campanha_id, campanha, conjunto_id, conjunto, anuncio_id, anuncio, impressoes, alcance, cliques, cliques_link, custo, leads, resultados, valor_conversoes")
+        .in("conta_anuncio", ids).gte("data", isoDia(iniAnt)).lte("data", isoDia(fim)).limit(20000);
+      var todas = r.data || [];
+      var camposVistos = {};
+      todas.forEach(function (l) { if (!camposVistos[l.campanha_id]) { camposVistos[l.campanha_id] = 1; camps.push({ id: l.campanha_id, nome: l.campanha }); } });
+      camps.sort(function (a, b) { return a.nome.localeCompare(b.nome); });
+      if (st.campanha && !camposVistos[st.campanha]) st.campanha = "";
+      todas = todas.filter(function (l) { return !st.campanha || l.campanha_id === st.campanha; });
+      linhas = todas.filter(function (l) { return l.data >= isoDia(ini); });
+      antes = todas.filter(function (l) { return l.data < isoDia(ini); });
+    }
+    var T = somar(linhas), P = somar(antes);
+    var ultima = ativas.map(function (c) { return c.ultima_sync; }).filter(Boolean).sort().pop();
+    var erros = ativas.filter(function (c) { return c.ultimo_erro; });
+
+    // --- cartão de conexão
+    var podeConectar = admin || (papel === "construtora" && A.S.me.conta_id);
+    var aviso = "";
+    if (RET) {
+      var rr = RET.get("meta");
+      aviso = rr === "ok" ? '<p class="an-ok">✓ Facebook conectado. Escolha abaixo as contas de anúncio que entram no painel.</p>' :
+        rr === "cancelado" ? '<p class="an-erro">Conexão cancelada no Facebook.</p>' : '<p class="an-erro">Não foi possível conectar: ' + A.esc(RET.get("motivo") || "erro") + "</p>";
+    }
+    var dias = minha && minha.expira_em ? Math.round((new Date(minha.expira_em) - Date.now()) / 864e5) : null;
+    var conexaoHtml = '<div class="card an-con">' + aviso + (minha ?
+      '<div class="an-con-l"><span class="an-fb">f</span><div><b>Meta Ads conectado' + (minha.usuario_nome ? " · " + A.esc(minha.usuario_nome) : "") + "</b><small>" +
+        (minha.status === "ativa" ? (dias !== null ? "Autorização válida até " + new Date(minha.expira_em).toLocaleDateString("pt-BR") + (dias < 15 ? ' — <b class="an-txt-erro">reconecte em breve</b>' : "") : "Autorização ativa") : '<b class="an-txt-erro">' + A.esc(minha.ultimo_erro || "Reconecte o Facebook") + "</b>") +
+        " · " + minha.contas.filter(function (c) { return c.ativo; }).length + " conta(s) vinculada(s)</small></div></div>" +
+      '<div class="an-acts"><button class="btn primary" data-escolher>Escolher contas de anúncio</button><button class="btn ghost" data-conectar>Reconectar</button><button class="btn ghost an-perigo" data-desconectar>Desconectar</button></div>'
+      : podeConectar ? '<div class="an-con-l"><span class="an-fb">f</span><div><b>Conecte sua conta Meta Ads</b><small>Você autoriza pelo login oficial do Facebook, escolhe a conta de anúncios e acompanha aqui investimento, alcance, cliques e resultados das suas campanhas. Acesso só de leitura: nada é alterado nos seus anúncios.</small></div></div>' +
+        '<div class="an-acts"><button class="btn primary an-btn-fb" data-conectar>Conectar minha conta Meta Ads</button></div>'
+      : '<p class="an-erro">Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.</p>') +
+      '<div class="an-selbox" data-selbox hidden></div></div>';
+
+    // --- filtros
+    var filtros = '<div class="filters an-filtros">' +
+      (admin ? '<label>Cliente <select data-f="cliente"><option value="">Todos</option><option value="__agencia"' + (st.cliente === "__agencia" ? " selected" : "") + '>Agência (sem cliente)</option>' + clientes.map(function (c) { return '<option value="' + c.id + '"' + (st.cliente === c.id ? " selected" : "") + ">" + A.esc(c.nome) + "</option>"; }).join("") + "</select></label>" : "") +
+      (contas.length > 1 ? '<label>Conta <select data-f="conta"><option value="">Todas (' + contas.length + ')</option>' + contas.map(function (c) { return '<option value="' + c.id + '"' + (st.conta === c.id ? " selected" : "") + ">" + A.esc(c.nome) + "</option>"; }).join("") + "</select></label>" : "") +
+      '<label>Período <select data-f="dias">' + [[7, "Últimos 7 dias"], [14, "Últimos 14 dias"], [30, "Últimos 30 dias"], [60, "Últimos 60 dias"], [90, "Últimos 90 dias"]].map(function (p) { return '<option value="' + p[0] + '"' + (st.dias === p[0] ? " selected" : "") + ">" + p[1] + "</option>"; }).join("") + "</select></label>" +
+      '<label>Campanha <select data-f="campanha"><option value="">Todas</option>' + camps.map(function (c) { return '<option value="' + A.esc(c.id) + '"' + (st.campanha === c.id ? " selected" : "") + ">" + A.esc(c.nome) + "</option>"; }).join("") + "</select></label>" +
+      '<span class="spacer"></span><small class="an-sync">' + (ultima ? "Atualizado em " + new Date(ultima).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "Ainda não sincronizado") + '</small><button class="btn ghost" data-atualizar' + (ativas.length ? "" : " disabled") + ">Atualizar agora</button></div>";
+
+    var kpis = '<div class="kpis an-kpis">' + [
+      ["Investimento", fmtM(T.custo, moeda) + variacao(T.custo, P.custo, false, true)],
+      ["Resultados", fmtN(T.resultados) + variacao(T.resultados, P.resultados), T.leads ? fmtN(T.leads) + " lead(s)" : "leads e conversões"],
+      ["Custo por resultado", fmtM(T.cpr, moeda) + variacao(T.cpr, P.cpr, true)],
+      ["Impressões", fmtN(T.impressoes) + variacao(T.impressoes, P.impressoes)],
+      ["Alcance", fmtN(T.alcance) + variacao(T.alcance, P.alcance), "soma diária"],
+      ["Frequência", fmtN(T.freq, 2) + variacao(T.freq, P.freq, true), "impressões ÷ alcance"],
+      ["CPM", fmtM(T.cpm, moeda) + variacao(T.cpm, P.cpm, true), "custo por mil impressões"],
+      ["Cliques", fmtN(T.cliques) + variacao(T.cliques, P.cliques), fmtN(T.cliques_link) + " no link"],
+      ["CTR", pct(T.ctr) + variacao(T.ctr, P.ctr)],
+      ["CPC", fmtM(T.cpc, moeda) + variacao(T.cpc, P.cpc, true)]
+    ].map(function (k) { return '<div class="kpi"><small>' + k[0] + "</small><strong>" + k[1] + "</strong><span>" + (k[2] || "vs. " + st.dias + " dias anteriores") + "</span></div>"; }).join("") + "</div>";
+
+    var nivel = { campanha: ["campanha_id", "campanha", "Campanha"], conjunto: ["conjunto_id", "conjunto", "Conjunto de anúncios"], anuncio: ["anuncio_id", "anuncio", "Anúncio"] }[st.aba];
+    var grupos = agrupar(linhas, nivel[0], nivel[1]);
+    var tabela = '<div class="card"><div class="an-abas">' + [["campanha", "Campanhas"], ["conjunto", "Conjuntos"], ["anuncio", "Anúncios"]].map(function (a) { return '<button class="' + (st.aba === a[0] ? "on" : "") + '" data-aba="' + a[0] + '">' + a[1] + "</button>"; }).join("") + "</div>" +
+      (grupos.length ? '<div class="table-wrap"><table class="an-tab"><thead><tr><th>' + nivel[2] + "</th><th>Investimento</th><th>Impressões</th><th>Cliques</th><th>CTR</th><th>CPC</th><th>CPM</th><th>Resultados</th><th>Custo/result.</th></tr></thead><tbody>" +
+        grupos.map(function (g) { return "<tr><td><b>" + A.esc(g.nome) + "</b>" + (st.aba !== "campanha" ? "<small>" + A.esc(st.aba === "anuncio" ? (g.campanha || "") + (g.conjunto ? " › " + g.conjunto : "") : g.campanha || "") + "</small>" : "") + "</td><td>" + fmtM(g.custo, moeda) + "</td><td>" + fmtN(g.impressoes) + "</td><td>" + fmtN(g.cliques) + "</td><td>" + pct(g.ctr) + "</td><td>" + fmtM(g.cpc, moeda) + "</td><td>" + fmtM(g.cpm, moeda) + "</td><td>" + fmtN(g.resultados) + "</td><td>" + fmtM(g.cpr, moeda) + "</td></tr>"; }).join("") +
+        "</tbody></table></div>" : '<p class="an-carr">Sem dados no período.</p>') + "</div>";
+
+    var corpo;
+    if (!contas.length) corpo = '<div class="card"><p class="an-carr">' + (minha ? "Escolha as contas de anúncio que entram no painel (botão acima)." : podeConectar ? "Conecte sua conta Meta Ads para ver o desempenho das suas campanhas aqui." : "") + "</p></div>";
+    else corpo = filtros + (misto ? '<p class="an-erro">As contas escolhidas usam moedas diferentes; os totais misturam valores. Filtre por conta para ver cada moeda.</p>' : "") +
+      (erros.length ? '<p class="an-erro">⚠ ' + A.esc(erros[0].nome) + ": " + A.esc(erros[0].ultimo_erro) + "</p>" : "") +
+      kpis + '<div class="card an-graf"><h3>Investimento e resultados por dia</h3><div class="an-canvas"><canvas data-graf></canvas></div></div>' + tabela;
+
+    el.innerHTML = '<div class="an">' + conexaoHtml + corpo +
+      (admin && cx.length ? '<div class="card"><h3>Conexões Meta dos clientes <small>' + cx.length + "</small></h3><div class=\"table-wrap\"><table><thead><tr><th>Login</th><th>Cliente</th><th>Facebook</th><th>Situação</th><th>Contas</th><th>Última sincronização</th></tr></thead><tbody>" +
+        cx.map(function (c) { return "<tr><td>" + A.esc(c.membro) + "</td><td>" + A.esc(c.cliente || "Agência") + "</td><td>" + A.esc(c.usuario_nome || "—") + '</td><td><span class="pill ' + (c.status === "ativa" ? "an-p-ok" : "an-p-erro") + '">' + A.esc(c.status) + "</span>" + (c.ultimo_erro ? "<small>" + A.esc(c.ultimo_erro) + "</small>" : "") + "</td><td>" + c.contas.filter(function (x) { return x.ativo; }).map(function (x) { return A.esc(x.nome); }).join(", ") + "</td><td>" + (c.ultima_sync ? new Date(c.ultima_sync).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "—") + "</td></tr>"; }).join("") +
+        "</tbody></table></div></div>" : "") + "</div>";
+
+    // gráfico
+    var canvas = el.querySelector("[data-graf]");
+    if (canvas && linhas.length) {
+      try {
+        await carregarChart();
+        var porDia = {}; for (var d = new Date(ini); d <= fim; d = new Date(d.getTime() + 864e5)) porDia[isoDia(d)] = { custo: 0, res: 0 };
+        linhas.forEach(function (l) { if (porDia[l.data]) { porDia[l.data].custo += n(l.custo); porDia[l.data].res += n(l.resultados); } });
+        var rot = Object.keys(porDia);
+        if (st.grafico) { try { st.grafico.destroy(); } catch (e) {} }
+        st.grafico = new window.Chart(canvas, {
+          data: { labels: rot.map(function (x) { return x.slice(8, 10) + "/" + x.slice(5, 7); }), datasets: [
+            { type: "bar", label: "Investimento", data: rot.map(function (x) { return Math.round(porDia[x].custo * 100) / 100; }), backgroundColor: "rgba(22,184,166,.55)", borderRadius: 4, yAxisID: "y" },
+            { type: "line", label: "Resultados", data: rot.map(function (x) { return porDia[x].res; }), borderColor: "#6b3fd4", backgroundColor: "#6b3fd4", tension: .3, pointRadius: 2, yAxisID: "y2" }] },
+          options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+            plugins: { legend: { position: "bottom" }, tooltip: { callbacks: { label: function (c) { return c.dataset.label + ": " + (c.datasetIndex === 0 ? fmtM(c.parsed.y, moeda) : fmtN(c.parsed.y)); } } } },
+            scales: { y: { beginAtZero: true, ticks: { callback: function (v) { return fmtM(v, moeda); } } }, y2: { beginAtZero: true, position: "right", grid: { drawOnChartArea: false } } } }
+        });
+      } catch (e) { canvas.parentNode.innerHTML = '<p class="an-carr">Não foi possível carregar o gráfico.</p>'; }
+    } else if (canvas) canvas.parentNode.innerHTML = '<p class="an-carr">Sem dados no período. Clique em “Atualizar agora” para buscar no Meta.</p>';
+
+    // eventos
+    el.querySelectorAll("[data-f]").forEach(function (s) { s.addEventListener("change", function () { var k = s.dataset.f; st[k] = k === "dias" ? +s.value : s.value; if (k === "cliente") { st.conta = ""; st.campanha = ""; } if (k === "conta") st.campanha = ""; render(el, A); }); });
+    el.querySelectorAll("[data-aba]").forEach(function (b) { b.addEventListener("click", function () { st.aba = b.dataset.aba; render(el, A); }); });
+    el.querySelectorAll("[data-conectar]").forEach(function (b) { b.addEventListener("click", function () { conectar(A, b); }); });
+    var be = el.querySelector("[data-escolher]"), box = el.querySelector("[data-selbox]");
+    var abrirSel = function () { seletorContas(box, A, minha.id, async function () { st.conta = ""; await sincronizar(el, A, null, true); }); };
+    if (be) be.addEventListener("click", abrirSel);
+    var bd = el.querySelector("[data-desconectar]");
+    if (bd) bd.addEventListener("click", async function () {
+      if (!window.confirm("Desconectar sua conta Meta Ads? O painel para de receber dados novos até você conectar de novo.")) return;
+      try { await chamar(A, "meta-conectar", { acao: "desconectar", conexao: minha.id }); A.toast("Conta Meta desconectada."); render(el, A); } catch (x) { A.toast(msgErro(x), true); }
+    });
+    var ba = el.querySelector("[data-atualizar]");
+    if (ba) ba.addEventListener("click", function () { sincronizar(el, A, ba); });
+    if (RET && RET.get("meta") === "ok" && minha && !st.retornoFeito) { st.retornoFeito = true; abrirSel(); }
+  }
+
+  async function sincronizar(el, A, botao, silencioso) {
+    var t = botao && botao.textContent; if (botao) { botao.disabled = true; botao.textContent = "Buscando no Meta…"; }
+    var corpo = { plataforma: "meta", dias: Math.max(st.dias * 2, 30) };
+    if (st.conta) corpo.conta = st.conta;
+    try { var d = await chamar(A, "ads-sync", corpo); var ruins = (d.resultado || []).filter(function (x) { return x.erro; }); A.toast(ruins.length ? "Atualizado com aviso: " + ruins[0].erro : "Dados atualizados."); }
+    catch (x) { if (!silencioso || x.codigo !== "sem_contas") A.toast(msgErro(x), true); }
+    finally { if (botao) { botao.disabled = false; botao.textContent = t; } render(el, A); }
+  }
+
+  D.modulos.push({ id: "anuncios", titulo: "Meus anúncios", tituloLongo: "Meus anúncios · Meta Ads", icone: "f", papeis: ["construtora", "admin"], render: render });
 })();
 
 </script>

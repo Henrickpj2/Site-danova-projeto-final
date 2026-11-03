@@ -65,3 +65,26 @@ export function limparId(plataforma, id) {
   if (plataforma === "google") return id.replace(/\D/g, "");
   return id.replace(/^act_/, "").replace(/\D/g, "");
 }
+
+// Nível anúncio (meta_insights): campanha → conjunto → anúncio, por dia.
+export function camposMetaAnuncio() {
+  return "campaign_id,campaign_name,adset_id,adset_name,ad_id,ad_name,impressions,reach,clicks,inline_link_clicks,spend,actions,action_values";
+}
+export function mapearMetaAnuncio(dados, contaExterna, moeda) {
+  return (dados || []).map((r) => {
+    const leads = primeiroTipo(r.actions);
+    const compras = somaAcoes(r.actions, ["offsite_conversion.fb_pixel_purchase", "purchase", "onsite_web_purchase"]);
+    return {
+      data: r.date_start, conta_anuncio: contaExterna,
+      campanha_id: String(r.campaign_id || ""), campanha: String(r.campaign_name || "Sem nome").slice(0, 300),
+      conjunto_id: String(r.adset_id || ""), conjunto: String(r.adset_name || "").slice(0, 300),
+      anuncio_id: String(r.ad_id || ""), anuncio: String(r.ad_name || "").slice(0, 300),
+      impressoes: Number(r.impressions || 0), alcance: r.reach ? Number(r.reach) : null,
+      cliques: Number(r.clicks || 0), cliques_link: Number(r.inline_link_clicks || 0),
+      custo: Math.round(Number(r.spend || 0) * 100) / 100, moeda: moeda || null,
+      leads, resultados: leads + compras,
+      valor_conversoes: Math.round(somaAcoes(r.action_values, ["offsite_conversion.fb_pixel_purchase", "purchase", "onsite_web_purchase"]) * 100) / 100,
+      atualizado_em: new Date().toISOString(),
+    };
+  });
+}
