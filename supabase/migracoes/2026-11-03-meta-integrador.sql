@@ -1,0 +1,7 @@
+-- Integração Meta Ads por ID da conta (act_…) via integrador autorizado (Make). Aplicada em 03/11/2026.
+-- contas_anuncio.fonte_dados ('oauth'|'integrador'|'manual') e situacao ('aguardando'|'conectada'|'erro').
+-- RPCs: meta_registrar_conta(p_act, p_nome, p_cliente) e meta_remover_conta(p_id) — cliente só na conta dele.
+-- Token interno 'meta-integrador' (hash em privado.tokens_internos; valor no Vault meta_integrador_token).
+-- public.disparar_meta_integrador(p_contas, p_dias): envia ao webhook do Make (Vault make_meta_webhook) {token, retorno, desde, ate, contas[]}.
+-- pg_cron: meta-integrador-diario 06:20 BRT (3 dias) e meta-integrador-semanal domingo 06:50 BRT (30 dias).
+-- Função de retorno: supabase/functions/meta-integrador.
