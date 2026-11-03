@@ -10,4 +10,7 @@ jobs:
           echo "== registro .com"; dig +short NS danova-ai.com @a.gtld-servers.net; dig danova-ai.com NS @a.gtld-servers.net +norec | grep -E "status:|AUTHORITY" 
           echo "== whois"; whois danova-ai.com 2>/dev/null | grep -iE "Registrar:|Expir|Status|Name Server|Updated|Creation" | head -20
           echo "== site provisório"
-          for p in / /index.html /crm/ /crm/index.html /.ftp-deploy-sync-state.json; do echo "$p → $(curl -s -o /tmp/r -w '%{http_code}' https://danova-ai-com-417732.hostingersite.com$p) $(head -c 120 /tmp/r | tr '\n' ' ')"; done
+          B=https://danova-ai-com-417732.hostingersite.com
+          curl -s -D /tmp/h -o /tmp/r $B/ ; grep -iE "^(server|x-powered|platform|location|content-type)" /tmp/h; grep -o "<title>[^<]*" /tmp/r; grep -oE 'src="[^"]+"' /tmp/r | head -8
+          for p in /public_html/index.html /public_html/crm/ /api/lead.php /robots.txt /llms.txt /js/crm-config.js; do echo "$p → $(curl -s -o /tmp/r -w '%{http_code}' $B$p)"; done
+          echo "== NS dns-parking"; dig danova-ai.com A @aster.dns-parking.com | grep -E "status:|^danova"; dig danova-ai.com A @helios.dns-parking.com | grep -E "status:|^danova"
