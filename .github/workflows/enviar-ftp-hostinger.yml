@@ -28,7 +28,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with: &ftp
           server: 185.173.111.243
-          username: u392943334.danova-ai-com-417732.hostingersite.com
+          username: u392943334.danova-ai.com
           password: ${{ secrets.FTP_SENHA }}
           protocol: ftps
           security: loose
@@ -48,7 +48,7 @@ jobs:
           echo "DNS www.danova-ai.com: $(getent hosts www.danova-ai.com || echo 'não resolve')"
           echo "DNS provisório: $(getent hosts danova-ai-com-417732.hostingersite.com || echo 'não resolve')"
           ok=0
-          for base in "https://danova-ai-com-417732.hostingersite.com" "https://danova-ai.com"; do
+          for base in "https://danova-ai.com" "https://danova-ai-com-417732.hostingersite.com"; do
             code=$(curl -s -L -o pagina.html -w "%{http_code}" -H "Cache-Control: no-cache" "$base/crm/?v=$GITHUB_RUN_ID" || echo "falhou($?)")
             echo "$base/crm/ → HTTP $code"
             if [ "$code" = "200" ] && grep -q 'name="creci"' pagina.html; then echo "  versão nova no ar (cadastro com CRECI)."; ok=1; fi
