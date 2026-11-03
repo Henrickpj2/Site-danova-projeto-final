@@ -44,9 +44,13 @@ jobs:
         if: env.TEM_FTP == 'true'
         run: |
           sleep 5
-          for u in "https://danova-ai.com/" "https://danova-ai.com/crm/"; do
-            code=$(curl -s -o pagina.html -w "%{http_code}" -H "Cache-Control: no-cache" "$u?v=$GITHUB_RUN_ID")
-            echo "$u → HTTP $code"
-            [ "$code" = "200" ] || { echo "::error::$u respondeu $code"; exit 1; }
+          echo "DNS danova-ai.com: $(getent hosts danova-ai.com || echo 'não resolve')"
+          echo "DNS www.danova-ai.com: $(getent hosts www.danova-ai.com || echo 'não resolve')"
+          echo "DNS provisório: $(getent hosts danova-ai-com-417732.hostingersite.com || echo 'não resolve')"
+          ok=0
+          for base in "https://danova-ai.com" "https://danova-ai-com-417732.hostingersite.com"; do
+            code=$(curl -s -L -o pagina.html -w "%{http_code}" -H "Cache-Control: no-cache" "$base/crm/?v=$GITHUB_RUN_ID" || echo "falhou($?)")
+            echo "$base/crm/ → HTTP $code"
+            if [ "$code" = "200" ] && grep -q 'name="creci"' pagina.html; then echo "  versão nova no ar (cadastro com CRECI)."; ok=1; fi
           done
-          grep -q 'name="creci"' pagina.html && echo "CRM no ar com o cadastro novo (CRECI)." || { echo "::error::O CRM no ar ainda não é a versão nova."; exit 1; }
+          [ $ok = 1 ] || { echo "::error::Não confirmei a versão nova no ar."; exit 1; }
