@@ -1,0 +1,3 @@
+-- Cadastro completo do corretor: o gatilho criar_membro passa a gravar CRECI (licenca), regiões, idiomas e especialidades
+-- enviados no formulário "Solicitar acesso". Valores filtrados e limitados. (Aplicada em 02/11/2026.)
+-- Ver a definição completa em: select pg_get_functiondef('public.criar_membro'::regproc);
