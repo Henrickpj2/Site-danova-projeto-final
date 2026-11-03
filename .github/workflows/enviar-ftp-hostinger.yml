@@ -40,3 +40,13 @@ jobs:
         if: env.TEM_FTP == 'true' && steps.envio1.outcome == 'failure'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with: *ftp
+      - name: Conferir o site no ar
+        if: env.TEM_FTP == 'true'
+        run: |
+          sleep 5
+          for u in "https://danova-ai.com/" "https://danova-ai.com/crm/"; do
+            code=$(curl -s -o pagina.html -w "%{http_code}" -H "Cache-Control: no-cache" "$u?v=$GITHUB_RUN_ID")
+            echo "$u → HTTP $code"
+            [ "$code" = "200" ] || { echo "::error::$u respondeu $code"; exit 1; }
+          done
+          grep -q 'name="creci"' pagina.html && echo "CRM no ar com o cadastro novo (CRECI)." || { echo "::error::O CRM no ar ainda não é a versão nova."; exit 1; }
