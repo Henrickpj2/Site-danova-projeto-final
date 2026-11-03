@@ -1,6 +1,7 @@
 // danova AI — recebe leads dos formulários do Meta (Facebook/Instagram Lead Ads) e cria no CRM.
 // Configure no app do Meta (Webhooks → Page → campo "leadgen") a URL desta função e o token de verificação.
-// Segredos: META_VERIFY_TOKEN, META_APP_SECRET, META_PAGE_TOKEN (token de página com leads_retrieval), META_GRAPH_VERSION (opcional, padrão v23.0)
+// Segredos: META_APP_SECRET; META_VERIFY_TOKEN e META_PAGE_TOKEN são opcionais quando o admin usa "Conectar com Facebook"
+// (o token de verificação e os tokens de cada página ficam nas tabelas integracoes / meta_paginas). META_GRAPH_VERSION opcional.
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
 const ok = (b: unknown = "ok", s = 200) => new Response(typeof b === "string" ? b : JSON.stringify(b), { status: s });
@@ -43,7 +44,13 @@ Deno.serve(async (req) => {
   const url = new URL(req.url);
   if (req.method === "GET") {
     // verificação do webhook pelo Meta
-    if (url.searchParams.get("hub.mode") === "subscribe" && url.searchParams.get("hub.verify_token") === Deno.env.get("META_VERIFY_TOKEN")) {
+    let verif = Deno.env.get("META_VERIFY_TOKEN") || "";
+    if (!verif) {
+      const dbv = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
+      const { data } = await dbv.from("integracoes").select("token").eq("provedor", "meta_verify").maybeSingle();
+      verif = data?.token || "";
+    }
+    if (verif && url.searchParams.get("hub.mode") === "subscribe" && url.searchParams.get("hub.verify_token") === verif) {
       return ok(url.searchParams.get("hub.challenge") ?? "");
     }
     return ok("forbidden", 403);
@@ -54,19 +61,23 @@ Deno.serve(async (req) => {
   const segredo = Deno.env.get("META_APP_SECRET");
   if (!segredo || !(await assinaturaValida(bruto, req.headers.get("x-hub-signature-256"), segredo))) return ok("assinatura", 401);
 
-  const token = Deno.env.get("META_PAGE_TOKEN");
+  const tokenPadrao = Deno.env.get("META_PAGE_TOKEN") || "";
   const versao = Deno.env.get("META_GRAPH_VERSION") || "v23.0";
   const db = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
   let corpo: any; try { corpo = JSON.parse(bruto); } catch { return ok("json", 400); }
 
   const resultados: unknown[] = [];
+  const tokensPagina = new Map<string, string>();
   for (const entry of corpo.entry ?? []) {
+    const pagina = String(entry.id || "");
+    if (pagina && !tokensPagina.has(pagina)) { const { data: p } = await db.from("meta_paginas").select("token").eq("id", pagina).maybeSingle(); tokensPagina.set(pagina, p?.token || ""); }
+    const token = tokensPagina.get(pagina) || tokenPadrao;
     for (const ch of entry.changes ?? []) {
       if (ch.field !== "leadgen" || !ch.value?.leadgen_id) continue;
       const leadgenId = String(ch.value.leadgen_id);
       const { data: existe } = await db.from("leads").select("id").eq("meta_lead_id", leadgenId).maybeSingle();
       if (existe) { resultados.push({ leadgenId, duplicado: true }); continue; }
-      if (!token) { resultados.push({ leadgenId, erro: "META_PAGE_TOKEN ausente" }); continue; }
+      if (!token) { resultados.push({ leadgenId, erro: "página sem token (conecte com Facebook no CRM)" }); continue; }
       const r = await fetch(`https://graph.facebook.com/${versao}/${leadgenId}?fields=field_data,created_time,ad_id,ad_name,adset_name,campaign_name,form_id,platform&access_token=${encodeURIComponent(token)}`);
       if (!r.ok) { console.error(await r.text()); resultados.push({ leadgenId, erro: "graph " + r.status }); continue; }
       const lead = await r.json();

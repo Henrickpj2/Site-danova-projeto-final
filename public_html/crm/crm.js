@@ -124,7 +124,7 @@
     $(".top-actions").hidden = ehConstrutora;
     await carregar();
     if (!ehConstrutora) tempoReal();
-    var v = (location.hash || "").replace("#", "");
+    var v = (location.hash || "").replace("#", "").split("?")[0];
     var permitidas = (ehConstrutora ? ["conta"] : ["painel", "funil", "leads", "conta"].concat(isAdmin() ? ["corretores"] : []))
       .concat(modulosDoPapel().map(function (m) { return m.id; }));
     var inicial = ehConstrutora ? "portal" : (isAdmin() && permitidas.indexOf("dash") >= 0 ? "dash" : "painel");

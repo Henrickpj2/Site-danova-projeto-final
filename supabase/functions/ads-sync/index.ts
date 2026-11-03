@@ -12,6 +12,7 @@ const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
 const env = (k: string) => Deno.env.get(k) || "";
 const iso = (d: Date) => d.toISOString().slice(0, 10);
+let TOKEN_META = ""; // META_ADS_TOKEN (segredo) ou a conexão "Conectar com Facebook" (tabela integracoes)
 
 async function tokenGoogle() {
   const r = await fetch("https://oauth2.googleapis.com/token", {
@@ -34,7 +35,7 @@ async function puxarGoogle(cid: string, desde: string, ate: string, token: strin
 }
 
 async function puxarMeta(act: string, desde: string, ate: string) {
-  const ver = env("META_GRAPH_VERSION") || "v23.0", tk = env("META_ADS_TOKEN");
+  const ver = env("META_GRAPH_VERSION") || "v23.0", tk = TOKEN_META;
   const c = await fetch(`https://graph.facebook.com/${ver}/act_${act}?fields=currency,name&access_token=${encodeURIComponent(tk)}`);
   const conta = await c.json();
   if (!c.ok) throw new Error("Meta: " + (conta?.error?.message || c.status));
@@ -53,7 +54,7 @@ async function puxarMeta(act: string, desde: string, ate: string) {
 // Lista TODAS as contas de anúncio que o token do Meta enxerga: as atribuídas ao usuário do sistema
 // e as próprias/de clientes de cada Gerenciador de Negócios a que ele tem acesso.
 async function listarContasMeta() {
-  const ver = env("META_GRAPH_VERSION") || "v23.0", tk = encodeURIComponent(env("META_ADS_TOKEN"));
+  const ver = env("META_GRAPH_VERSION") || "v23.0", tk = encodeURIComponent(TOKEN_META);
   const campos = "account_id,name,currency,account_status,business{name}";
   const contas = new Map<string, { id: string; nome: string; moeda: string; status: number; empresa: string }>();
   async function paginar(inicio: string) {
@@ -94,10 +95,12 @@ Deno.serve(async (req) => {
   const dias = Math.min(Math.max(Number(corpo.dias) || 30, 1), 365);
   const ate = new Date(Date.now() - 864e5), desde = new Date(ate.getTime() - (dias - 1) * 864e5);
   const db = createClient(url, env("SUPABASE_SERVICE_ROLE_KEY"), { auth: { persistSession: false } });
+  TOKEN_META = env("META_ADS_TOKEN");
+  if (!TOKEN_META) { const { data: i } = await db.from("integracoes").select("token").eq("provedor", "meta").maybeSingle(); TOKEN_META = i?.token || ""; }
 
   // Importa todas as contas do Gerenciador de Negócios do Meta (não altera as já cadastradas, só atualiza nome/moeda/status).
   if (corpo.acao === "importar_meta") {
-    if (!env("META_ADS_TOKEN")) return json({ erro: "meta_nao_configurado" }, 400);
+    if (!TOKEN_META) return json({ erro: "meta_nao_configurado" }, 400);
     try {
       const lista = await listarContasMeta();
       const { data: existentes } = await db.from("contas_anuncio").select("id, conta_externa").eq("plataforma", "meta");
@@ -134,7 +137,7 @@ Deno.serve(async (req) => {
         tokenG = tokenG || await tokenGoogle();
         linhas = await puxarGoogle(id, iso(desde), iso(ate), tokenG) as Record<string, unknown>[];
       } else {
-        if (!env("META_ADS_TOKEN")) throw new Error("meta_nao_configurado");
+        if (!TOKEN_META) throw new Error("meta_nao_configurado");
         const m = await puxarMeta(id, iso(desde), iso(ate));
         linhas = m.linhas as Record<string, unknown>[]; extra = { nome: c.nome || m.nome, moeda: m.moeda };
       }
