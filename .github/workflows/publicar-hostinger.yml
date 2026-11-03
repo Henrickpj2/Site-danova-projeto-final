@@ -1,0 +1,31 @@
+# Publica a pasta public_html no ramo "hostinger" sempre que o site muda no ramo main.
+# A Hostinger (hPanel → Avançado → Git) puxa esse ramo direto para o public_html do domínio danova-ai.com.
+# O ramo "hostinger" contém SÓ os arquivos do site (sem fonte/, supabase/ etc.) e mantém o histórico (avança sem reescrever).
+name: Publicar na Hostinger
+on:
+  push:
+    branches: [main]
+    paths: ["public_html/**", ".github/workflows/publicar-hostinger.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: publicar-hostinger
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Separar a pasta do site e enviar para o ramo hostinger
+        run: |
+          git config user.name "danova-deploy"
+          git config user.email "deploy@users.noreply.github.com"
+          git subtree split --prefix=public_html -b hostinger
+          git push origin hostinger:hostinger
+      - name: Avisar a Hostinger (se o webhook estiver configurado)
+        env:
+          HOOK: ${{ secrets.HOSTINGER_WEBHOOK }}
+        if: env.HOOK != ''
+        run: curl -fsS -X POST "$HOOK" -o /dev/null && echo "Hostinger avisada."
