@@ -4,7 +4,8 @@
 //   Google Ads: GOOGLE_ADS_DEVELOPER_TOKEN, GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_CLIENT_SECRET, GOOGLE_ADS_REFRESH_TOKEN,
 //               GOOGLE_ADS_LOGIN_CUSTOMER_ID (ID da conta MCC, só números), GOOGLE_ADS_API_VERSION (opcional, padrão v21)
 //   Meta Ads:   META_ADS_TOKEN (token de usuário do sistema com ads_read), META_GRAPH_VERSION (opcional, padrão v23.0)
-// Ações: { acao: "importar_meta" } cadastra todas as contas de anúncio do Gerenciador de Negócios; { plataforma: "meta" } sincroniza só o Meta.
+// Ações: listar_contas_meta / salvar_contas_meta {ids} / listar_campanhas {conta} / salvar_campanhas {conta, campanhas}; importar_meta (todas);
+// { plataforma: "meta" } sincroniza só o Meta (respeitando as campanhas escolhidas em contas_anuncio.campanhas_sel).
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 import { gaqlConsulta, mapearGoogle, camposMeta, mapearMeta, limparId } from "./mapear.ts";
 
@@ -34,13 +35,14 @@ async function puxarGoogle(cid: string, desde: string, ate: string, token: strin
   return mapearGoogle(JSON.parse(t), cid);
 }
 
-async function puxarMeta(act: string, desde: string, ate: string) {
+async function puxarMeta(act: string, desde: string, ate: string, campanhas: string[] = []) {
   const ver = env("META_GRAPH_VERSION") || "v23.0", tk = TOKEN_META;
   const c = await fetch(`https://graph.facebook.com/${ver}/act_${act}?fields=currency,name&access_token=${encodeURIComponent(tk)}`);
   const conta = await c.json();
   if (!c.ok) throw new Error("Meta: " + (conta?.error?.message || c.status));
   let url = `https://graph.facebook.com/${ver}/act_${act}/insights?level=campaign&time_increment=1&limit=500&fields=${camposMeta()}` +
-    `&time_range=${encodeURIComponent(JSON.stringify({ since: desde, until: ate }))}&access_token=${encodeURIComponent(tk)}`;
+    `&time_range=${encodeURIComponent(JSON.stringify({ since: desde, until: ate }))}&access_token=${encodeURIComponent(tk)}` +
+    (campanhas.length ? `&filtering=${encodeURIComponent(JSON.stringify([{ field: "campaign.id", operator: "IN", value: campanhas }]))}` : "");
   const linhas: unknown[] = [];
   for (let pag = 0; url && pag < 40; pag++) {
     const r = await fetch(url); const j = await r.json();
@@ -79,6 +81,18 @@ async function listarContasMeta() {
   }
   return [...contas.values()];
 }
+async function campanhasMeta(act: string) {
+  const ver = env("META_GRAPH_VERSION") || "v23.0", tk = encodeURIComponent(TOKEN_META);
+  const lista: { id: string; nome: string; status: string; objetivo: string; inicio: string | null }[] = [];
+  let url = `https://graph.facebook.com/${ver}/act_${act}/campaigns?fields=id,name,effective_status,objective,start_time&limit=200&access_token=${tk}`;
+  for (let pag = 0; url && pag < 10; pag++) {
+    const r = await fetch(url); const j = await r.json();
+    if (!r.ok) throw new Error("Meta: " + (j?.error?.message || r.status));
+    for (const c of j.data ?? []) lista.push({ id: String(c.id), nome: c.name || "Sem nome", status: String(c.effective_status || "").toLowerCase(), objetivo: c.objective || "", inicio: c.start_time || null });
+    url = j.paging?.next || "";
+  }
+  return lista;
+}
 const statusMeta = (s: number) => s === 1 ? "ativa" : (s === 2 || s === 101) ? "encerrada" : "pausada";
 
 Deno.serve(async (req) => {
@@ -90,13 +104,58 @@ Deno.serve(async (req) => {
   const { data: me } = await usuario.from("membros").select("ativo, papel").eq("id", u.user.id).maybeSingle();
   if (!me?.ativo || me.papel !== "admin") return json({ erro: "sem_acesso" }, 403);
 
-  let corpo: { conta?: string; dias?: number; acao?: string; plataforma?: string } = {};
+  let corpo: { conta?: string; dias?: number; acao?: string; plataforma?: string; ids?: string[]; campanhas?: { id: string; nome?: string }[] } = {};
   try { corpo = await req.json(); } catch { /* sem corpo */ }
   const dias = Math.min(Math.max(Number(corpo.dias) || 30, 1), 365);
   const ate = new Date(Date.now() - 864e5), desde = new Date(ate.getTime() - (dias - 1) * 864e5);
   const db = createClient(url, env("SUPABASE_SERVICE_ROLE_KEY"), { auth: { persistSession: false } });
   TOKEN_META = env("META_ADS_TOKEN");
   if (!TOKEN_META) { const { data: i } = await db.from("integracoes").select("token").eq("provedor", "meta").maybeSingle(); TOKEN_META = i?.token || ""; }
+
+  // ---------- escolha de contas e campanhas ----------
+  if (corpo.acao === "listar_contas_meta" || corpo.acao === "salvar_contas_meta" || corpo.acao === "listar_campanhas" || corpo.acao === "salvar_campanhas") {
+    if (!TOKEN_META) return json({ erro: "meta_nao_configurado" }, 400);
+    try {
+      const { data: existentes } = await db.from("contas_anuncio").select("id, conta_externa, nome, ativo, campanhas_sel").eq("plataforma", "meta");
+      const porExt = new Map((existentes ?? []).map((e) => [String(e.conta_externa || "").replace(/\D/g, ""), e]));
+      if (corpo.acao === "listar_contas_meta") {
+        const lista = await listarContasMeta();
+        return json({ contas: lista.map((a) => { const e = porExt.get(a.id); return { id: a.id, nome: a.nome, empresa: a.empresa, moeda: a.moeda, status: statusMeta(a.status), selecionada: !!(e && e.ativo), conta_crm: e?.id || null, campanhas: (e?.campanhas_sel || []).length }; }) });
+      }
+      if (corpo.acao === "salvar_contas_meta") {
+        const ids = new Set((corpo.ids || []).map((x) => String(x).replace(/\D/g, "")).filter(Boolean));
+        const lista = await listarContasMeta();
+        let ativadas = 0, desativadas = 0;
+        for (const a of lista) {
+          const e = porExt.get(a.id);
+          if (ids.has(a.id)) {
+            if (e) { if (!e.ativo) { await db.from("contas_anuncio").update({ ativo: true, moeda: a.moeda, status: statusMeta(a.status) }).eq("id", e.id); } }
+            else { await db.from("contas_anuncio").insert({ plataforma: "meta", conta_externa: a.id, nome: a.empresa && !a.nome.includes(a.empresa) ? `${a.nome} · ${a.empresa}` : a.nome, moeda: a.moeda, status: statusMeta(a.status), ativo: true, nicho: "outro" }); }
+            ativadas++;
+          } else if (e && e.ativo) { await db.from("contas_anuncio").update({ ativo: false }).eq("id", e.id); desativadas++; }
+        }
+        return json({ ativadas, desativadas });
+      }
+      const conta = (existentes ?? []).find((e) => e.id === corpo.conta);
+      if (!conta) return json({ erro: "conta_nao_encontrada" }, 404);
+      const act = limparId("meta", conta.conta_externa);
+      if (corpo.acao === "listar_campanhas") {
+        const sel = new Set((conta.campanhas_sel || []).map((c: { id: string }) => String(c.id)));
+        const lista = await campanhasMeta(act);
+        return json({ todas: sel.size === 0, campanhas: lista.map((c) => ({ ...c, selecionada: sel.size === 0 || sel.has(c.id) })) });
+      }
+      // salvar_campanhas: lista vazia = todas as campanhas da conta
+      const escolhidas = (corpo.campanhas || []).slice(0, 300).map((c) => ({ id: String(c.id).replace(/\D/g, ""), nome: String(c.nome || "").slice(0, 200) })).filter((c) => c.id);
+      await db.from("contas_anuncio").update({ campanhas_sel: escolhidas }).eq("id", conta.id);
+      if (escolhidas.length) {
+        const nomes = escolhidas.map((c) => c.nome).filter(Boolean);
+        if (nomes.length) await db.from("campanhas_metricas").delete().eq("plataforma", "meta").eq("conta_anuncio", act).not("campanha", "in", `(${nomes.map((n) => '"' + n.replace(/"/g, '\\"') + '"').join(",")})`);
+      }
+      return json({ ok: true, campanhas: escolhidas.length });
+    } catch (e) {
+      return json({ erro: String((e as Error).message || e).slice(0, 400) }, 502);
+    }
+  }
 
   // Importa todas as contas do Gerenciador de Negócios do Meta (não altera as já cadastradas, só atualiza nome/moeda/status).
   if (corpo.acao === "importar_meta") {
@@ -138,7 +197,8 @@ Deno.serve(async (req) => {
         linhas = await puxarGoogle(id, iso(desde), iso(ate), tokenG) as Record<string, unknown>[];
       } else {
         if (!TOKEN_META) throw new Error("meta_nao_configurado");
-        const m = await puxarMeta(id, iso(desde), iso(ate));
+        const sel = Array.isArray(c.campanhas_sel) ? c.campanhas_sel.map((x: { id: string }) => String(x.id)).filter(Boolean) : [];
+        const m = await puxarMeta(id, iso(desde), iso(ate), sel);
         linhas = m.linhas as Record<string, unknown>[]; extra = { nome: c.nome || m.nome, moeda: m.moeda };
       }
       for (let i = 0; i < linhas.length; i += 500) {
