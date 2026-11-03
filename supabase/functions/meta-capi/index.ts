@@ -5,7 +5,7 @@ import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 
 const cors = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type" };
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, "Content-Type": "application/json" } });
-const NOMES: Record<string, string> = { qualificado: "Lead qualificado", visita: "Visita", proposta: "Proposta", contrato: "Contrato", fechado: "Venda" };
+const NOMES: Record<string, string> = { lead: "Lead", qualificado: "Lead qualificado", visita: "Visita", proposta: "Proposta", contrato: "Contrato", fechado: "Venda" };
 
 async function sha(t: string) {
   const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
