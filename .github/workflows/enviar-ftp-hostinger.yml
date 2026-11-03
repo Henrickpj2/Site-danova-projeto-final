@@ -22,12 +22,21 @@ jobs:
       - uses: actions/checkout@v4
         if: env.TEM_FTP == 'true'
       - name: Enviar arquivos
+        id: envio1
         if: env.TEM_FTP == 'true'
+        continue-on-error: true
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
+        with: &ftp
           server: 185.173.111.243
           username: u392943334.danova-ai-com-417732.hostingersite.com
           password: ${{ secrets.FTP_SENHA }}
+          protocol: ftps
+          security: loose
+          port: 21
+          timeout: 120000
           local-dir: ./public_html/
           server-dir: public_html/
-          port: 21
+      - name: Enviar arquivos (nova tentativa)
+        if: env.TEM_FTP == 'true' && steps.envio1.outcome == 'failure'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with: *ftp
