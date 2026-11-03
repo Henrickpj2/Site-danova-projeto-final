@@ -4,6 +4,7 @@
 //   Google Ads: GOOGLE_ADS_DEVELOPER_TOKEN, GOOGLE_ADS_CLIENT_ID, GOOGLE_ADS_CLIENT_SECRET, GOOGLE_ADS_REFRESH_TOKEN,
 //               GOOGLE_ADS_LOGIN_CUSTOMER_ID (ID da conta MCC, só números), GOOGLE_ADS_API_VERSION (opcional, padrão v21)
 //   Meta Ads:   META_ADS_TOKEN (token de usuário do sistema com ads_read), META_GRAPH_VERSION (opcional, padrão v23.0)
+// Ações: { acao: "importar_meta" } cadastra todas as contas de anúncio do Gerenciador de Negócios; { plataforma: "meta" } sincroniza só o Meta.
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
 import { gaqlConsulta, mapearGoogle, camposMeta, mapearMeta, limparId } from "./mapear.ts";
 
@@ -49,6 +50,36 @@ async function puxarMeta(act: string, desde: string, ate: string) {
   return { linhas, nome: conta.name as string, moeda: conta.currency as string };
 }
 
+// Lista TODAS as contas de anúncio que o token do Meta enxerga: as atribuídas ao usuário do sistema
+// e as próprias/de clientes de cada Gerenciador de Negócios a que ele tem acesso.
+async function listarContasMeta() {
+  const ver = env("META_GRAPH_VERSION") || "v23.0", tk = encodeURIComponent(env("META_ADS_TOKEN"));
+  const campos = "account_id,name,currency,account_status,business{name}";
+  const contas = new Map<string, { id: string; nome: string; moeda: string; status: number; empresa: string }>();
+  async function paginar(inicio: string) {
+    let url = inicio;
+    for (let pag = 0; url && pag < 20; pag++) {
+      const r = await fetch(url); const j = await r.json();
+      if (!r.ok) throw new Error("Meta: " + (j?.error?.message || r.status));
+      for (const a of j.data ?? []) {
+        const id = String(a.account_id || "").replace(/\D/g, "");
+        if (id && !contas.has(id)) contas.set(id, { id, nome: a.name || "Conta " + id, moeda: a.currency || "", status: Number(a.account_status) || 0, empresa: a.business?.name || "" });
+      }
+      url = j.paging?.next || "";
+    }
+  }
+  await paginar(`https://graph.facebook.com/${ver}/me/adaccounts?fields=${campos}&limit=200&access_token=${tk}`);
+  const rb = await fetch(`https://graph.facebook.com/${ver}/me/businesses?fields=id,name&limit=100&access_token=${tk}`);
+  const negocios = rb.ok ? ((await rb.json()).data ?? []) : [];
+  for (const n of negocios) {
+    for (const tipo of ["owned_ad_accounts", "client_ad_accounts"]) {
+      try { await paginar(`https://graph.facebook.com/${ver}/${n.id}/${tipo}?fields=${campos}&limit=200&access_token=${tk}`); } catch { /* sem permissão nessa lista */ }
+    }
+  }
+  return [...contas.values()];
+}
+const statusMeta = (s: number) => s === 1 ? "ativa" : (s === 2 || s === 101) ? "encerrada" : "pausada";
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   const url = env("SUPABASE_URL");
@@ -58,13 +89,37 @@ Deno.serve(async (req) => {
   const { data: me } = await usuario.from("membros").select("ativo, papel").eq("id", u.user.id).maybeSingle();
   if (!me?.ativo || me.papel !== "admin") return json({ erro: "sem_acesso" }, 403);
 
-  let corpo: { conta?: string; dias?: number } = {};
+  let corpo: { conta?: string; dias?: number; acao?: string; plataforma?: string } = {};
   try { corpo = await req.json(); } catch { /* sem corpo */ }
   const dias = Math.min(Math.max(Number(corpo.dias) || 30, 1), 365);
   const ate = new Date(Date.now() - 864e5), desde = new Date(ate.getTime() - (dias - 1) * 864e5);
   const db = createClient(url, env("SUPABASE_SERVICE_ROLE_KEY"), { auth: { persistSession: false } });
+
+  // Importa todas as contas do Gerenciador de Negócios do Meta (não altera as já cadastradas, só atualiza nome/moeda/status).
+  if (corpo.acao === "importar_meta") {
+    if (!env("META_ADS_TOKEN")) return json({ erro: "meta_nao_configurado" }, 400);
+    try {
+      const lista = await listarContasMeta();
+      const { data: existentes } = await db.from("contas_anuncio").select("id, conta_externa").eq("plataforma", "meta");
+      const ja = new Map((existentes ?? []).map((e) => [String(e.conta_externa || "").replace(/\D/g, ""), e.id]));
+      let novas = 0, atualizadas = 0;
+      for (const a of lista) {
+        if (ja.has(a.id)) {
+          await db.from("contas_anuncio").update({ moeda: a.moeda, status: statusMeta(a.status), ativo: a.status !== 101 }).eq("id", ja.get(a.id));
+          atualizadas++;
+        } else {
+          const { error } = await db.from("contas_anuncio").insert({ plataforma: "meta", conta_externa: a.id, nome: a.empresa && !a.nome.includes(a.empresa) ? `${a.nome} · ${a.empresa}` : a.nome, moeda: a.moeda, status: statusMeta(a.status), ativo: a.status !== 101, nicho: "outro" });
+          if (!error) novas++;
+        }
+      }
+      return json({ total: lista.length, novas, atualizadas, contas: lista.map((a) => ({ id: a.id, nome: a.nome, empresa: a.empresa, status: statusMeta(a.status) })) });
+    } catch (e) {
+      return json({ erro: String((e as Error).message || e).slice(0, 400) }, 502);
+    }
+  }
   let q = db.from("contas_anuncio").select("*").eq("ativo", true);
   if (corpo.conta) q = q.eq("id", corpo.conta);
+  if (corpo.plataforma === "meta" || corpo.plataforma === "google") q = q.eq("plataforma", corpo.plataforma);
   const { data: contas } = await q;
   if (!contas?.length) return json({ erro: "sem_contas" }, 400);
 

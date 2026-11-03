@@ -94,7 +94,9 @@
       '<section class="c-box ig-card m"><div class="ig-top"><span class="ig-logo m">∞</span><div><h3>Meta Ads</h3><small>' + m.length + " conta(s) · " + comMeta + " lead(s) do Lead Ads</small></div>" + (mSync || comMeta ? chip("on", "Recebendo") : chip("off", "Não conectado")) + "</div>" +
         '<ul class="ck"><li><b>Formulários instantâneos (Lead Ads):</b> cada lead entra sozinho no CRM com campanha e anúncio.</li><li><b>Métricas:</b> com o token de usuário do sistema (ads_read), o sistema puxa investimento e resultados.</li><li><b>API de Conversões:</b> as etapas do funil voltam para o Meta.</li></ul>' +
         '<small class="ig-lbl">URL de retorno (webhook) para o app do Meta — objeto Page, campo leadgen:</small><div class="ig-code"><code>' + META_WEBHOOK + '</code><button type="button" class="c-btn ghost" data-copiar="' + META_WEBHOOK + '">Copiar</button></div>' +
-        '<div class="ig-acts"><button class="c-btn" data-ir="campanhas">Contas de anúncio</button></div></section>' +
+        '<div class="ig-meta-imp"><b>Conectar o Gerenciador de Negócios inteiro</b><span>Com o token do usuário do sistema (ads_read) salvo no Supabase como META_ADS_TOKEN, o CRM encontra sozinho todas as contas de anúncio do seu Gerenciador e puxa as métricas de todas as campanhas.</span>' +
+        '<label class="ig-dias">Período <select data-imp-dias><option value="30">30 dias</option><option value="90" selected>90 dias</option><option value="180">180 dias</option><option value="365">12 meses</option></select></label></div>' +
+        '<div class="ig-acts"><button class="c-btn" data-importar-meta>Importar todas as contas e métricas</button><button class="c-btn ghost" data-ir="campanhas">Contas de anúncio</button></div><div class="ig-imp-res" data-imp-res></div></section>' +
       "</div>" +
 
       '<section class="c-box"><div class="c-h"><h3>Landing pages <small>páginas de captura dos clientes</small></h3></div>' + semTabela +
@@ -115,6 +117,28 @@
     el.querySelectorAll("[data-dias]").forEach(function (b) { b.addEventListener("click", function () { st.dias = +b.dataset.dias; render(el, A); }); });
     el.querySelectorAll("[data-copiar]").forEach(function (b) { b.addEventListener("click", function () { copiar(b.dataset.copiar, A); }); });
     el.querySelectorAll("[data-ir]").forEach(function (b) { b.addEventListener("click", function () { A.irPara(b.dataset.ir); }); });
+    var bImp = el.querySelector("[data-importar-meta]");
+    if (bImp) bImp.addEventListener("click", async function () {
+      var res = el.querySelector("[data-imp-res]"), dias = +(el.querySelector("[data-imp-dias]") || {}).value || 90;
+      var ERR = { meta_nao_configurado: "Falta salvar o token do Meta no Supabase (Edge Functions → Secrets → META_ADS_TOKEN).", sem_acesso: "Só administradores podem importar.", nao_autenticado: "Sua sessão expirou. Entre de novo." };
+      function erroDe(r) { var c = r.error && r.error.context; return (r.data && r.data.erro) || (c && c.status === 400 ? "meta_nao_configurado" : "") || (r.error && r.error.message) || "falha"; }
+      bImp.disabled = true; bImp.textContent = "Buscando contas no Meta…"; res.innerHTML = "";
+      try {
+        var r = await A.sb.functions.invoke("ads-sync", { body: { acao: "importar_meta" } });
+        if (r.error || !r.data || r.data.erro) { var e = erroDe(r); try { var j = r.error && r.error.context && await r.error.context.json(); if (j && j.erro) e = j.erro; } catch (x) {} res.innerHTML = '<p class="ig-erro">' + A.esc(ERR[e] || e) + "</p>"; return; }
+        var d = r.data;
+        if (!d.total) { res.innerHTML = '<p class="ig-erro">O token funcionou, mas não enxerga nenhuma conta de anúncio. No Gerenciador de Negócios, dê ao usuário do sistema acesso às contas de anúncio.</p>'; return; }
+        res.innerHTML = "<p><b>" + d.total + " conta(s) encontrada(s)</b> · " + d.novas + " nova(s) · " + d.atualizadas + " já existiam. Puxando métricas de " + dias + " dias…</p>" +
+          "<ul>" + d.contas.slice(0, 30).map(function (c) { return "<li>" + A.esc(c.nome) + (c.empresa ? " <small>" + A.esc(c.empresa) + "</small>" : "") + " <small>· " + c.status + "</small></li>"; }).join("") + "</ul>";
+        bImp.textContent = "Puxando métricas…";
+        var s = await A.sb.functions.invoke("ads-sync", { body: { dias: dias, plataforma: "meta" } });
+        var lista = (s.data && s.data.resultado) || [], meta = lista.filter(function (x) { return x.plataforma === "meta"; });
+        var ok = meta.filter(function (x) { return !x.erro; }), ruins = meta.filter(function (x) { return x.erro; });
+        res.insertAdjacentHTML("beforeend", "<p>✓ Métricas atualizadas em " + ok.length + " conta(s)" + (ruins.length ? " · " + ruins.length + " com erro (veja em Campanhas → Contas)" : "") + ".</p>");
+        A.toast("Contas do Meta importadas."); await carregar(A);
+      } catch (x) { res.innerHTML = '<p class="ig-erro">' + A.esc(x.message || String(x)) + "</p>"; }
+      finally { bImp.disabled = false; bImp.textContent = "Importar todas as contas e métricas"; }
+    });
     el.querySelectorAll("[data-nova]").forEach(function (f) { f.addEventListener("submit", async function (e) {
       e.preventDefault(); var fd = new FormData(f), nome = String(fd.get("nome") || "").trim(); if (!nome) return;
       var conta = st.contas.find(function (c) { return c.id === fd.get("conta"); });
