@@ -5,6 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
+          set +e
           sudo apt-get install -y -qq whois >/dev/null 2>&1 || true
           for r in 1.1.1.1 8.8.8.8; do echo "== @$r"; dig +short NS danova-ai.com @$r; dig +short A danova-ai.com @$r; dig danova-ai.com @$r | grep -E "status:"; done
           echo "== registro .com"; dig +short NS danova-ai.com @a.gtld-servers.net; dig danova-ai.com NS @a.gtld-servers.net +norec | grep -E "status:|AUTHORITY" 
