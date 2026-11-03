@@ -41,16 +41,48 @@
 
   $("#loginForm").addEventListener("submit", async function (e) {
     e.preventDefault(); var f = new FormData(e.target), b = e.target.querySelector("button"); b.disabled = true;
-    var r = await sb.auth.signInWithPassword({ email: f.get("email").trim(), password: f.get("senha") });
+    var r; try { r = await sb.auth.signInWithPassword({ email: f.get("email").trim(), password: f.get("senha") }); } catch (err) { r = { error: { message: "Failed to fetch" } }; }
+    if (r.error && erroRede(r.error.message)) r.error.message = "Não conseguimos falar com o servidor agora. Tente de novo em alguns instantes.";
     b.disabled = false;
     if (r.error) return mostrarAuth("login", r.error.message === "Invalid login credentials" ? "E-mail ou senha incorretos." : r.error.message === "Email not confirmed" ? "Confirme seu e-mail pelo link que enviamos antes de entrar." : r.error.message, "err");
   });
+  function erroRede(m) { return /failed to fetch|networkerror|load failed|fetch/i.test(m || ""); }
   $("#cadastroForm").addEventListener("submit", async function (e) {
-    e.preventDefault(); var f = new FormData(e.target), b = e.target.querySelector("button"); b.disabled = true;
-    var r = await sb.auth.signUp({ email: f.get("email").trim(), password: f.get("senha"), options: { data: { nome: f.get("nome").trim(), telefone: f.get("telefone").trim() }, emailRedirectTo: location.origin + location.pathname } });
-    b.disabled = false;
-    if (r.error) return mostrarAuth("cadastro", r.error.message, "err");
-    e.target.reset();
+    e.preventDefault(); var form = e.target, f = new FormData(form), b = form.querySelector("button[type=submit]");
+    var v = function (k) { return String(f.get(k) || "").trim(); };
+    var faltando = ["nome", "telefone", "email", "creci", "senha", "senha2"].filter(function (k) { return !v(k); });
+    if (faltando.length) { var el = form.querySelector('[name="' + faltando[0] + '"]'); el.focus(); return mostrarAuth("cadastro", "Preencha todos os campos com *.", "err"); }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v("email"))) return mostrarAuth("cadastro", "Confira o e-mail.", "err");
+    if (v("telefone").replace(/\D/g, "").length < 10) return mostrarAuth("cadastro", "Informe o WhatsApp com DDD.", "err");
+    if (!/^[A-Za-z0-9.\-\/ ]{3,20}$/.test(v("creci"))) return mostrarAuth("cadastro", "Confira o número do CRECI (ex.: 123456-F).", "err");
+    if (v("senha").length < 8) return mostrarAuth("cadastro", "A senha precisa ter pelo menos 8 caracteres.", "err");
+    if (v("senha") !== v("senha2")) return mostrarAuth("cadastro", "As senhas não conferem.", "err");
+    if (!f.get("aceite")) return mostrarAuth("cadastro", "Marque a autorização de uso dos dados para continuar.", "err");
+    var uf = v("uf"), creci = v("creci").toUpperCase();
+    var dados = {
+      nome: v("nome"), telefone: v("telefone"),
+      licenca: uf === "FL" ? "FL " + creci : "CRECI " + creci + "/" + uf,
+      regioes: v("regioes").split(/[,;]/).map(function (x) { return x.trim(); }).filter(Boolean).slice(0, 10),
+      idiomas: f.getAll("idiomas"), especialidades: f.getAll("especialidades")
+    };
+    if (!dados.idiomas.length) dados.idiomas = ["pt"];
+    b.disabled = true; b.textContent = "Enviando…";
+    var r, tentativa = 0;
+    while (true) {
+      try { r = await sb.auth.signUp({ email: v("email"), password: v("senha"), options: { data: dados, emailRedirectTo: location.origin + location.pathname } }); }
+      catch (err) { r = { error: { message: err && err.message || "Failed to fetch" } }; }
+      if (r.error && erroRede(r.error.message) && tentativa++ < 2) { await new Promise(function (ok) { setTimeout(ok, 2500); }); continue; }
+      break;
+    }
+    b.disabled = false; b.textContent = "Solicitar acesso";
+    if (r.error) {
+      var m = r.error.message || "";
+      return mostrarAuth("cadastro", erroRede(m) ? "Não conseguimos falar com o servidor agora. Verifique sua internet e tente de novo em alguns instantes." :
+        /already registered|already been registered/i.test(m) ? "Este e-mail já tem cadastro. Volte ao login ou use “Esqueci a senha”." :
+        /rate limit|too many/i.test(m) ? "Muitas tentativas seguidas. Aguarde alguns minutos e tente de novo." :
+        /password/i.test(m) ? "Senha fraca: use pelo menos 8 caracteres, misturando letras e números." : m, "err");
+    }
+    form.reset();
     mostrarAuth("login", "Cadastro recebido! Confirme seu e-mail pelo link enviado. Depois, um administrador libera seu acesso.", "ok");
   });
   $("#recuperarForm").addEventListener("submit", async function (e) {
@@ -452,6 +484,18 @@
   }
 
   // =============== CORRETORES ===============
+  var IDIOMA_NOME = { pt: "Português", en: "Inglês", es: "Espanhol", fr: "Francês", it: "Italiano", de: "Alemão" };
+  var ESPECIALIDADES = ["Lançamentos", "Alto padrão", "Revenda", "Locação", "Comercial", "Rural e terrenos", "Investidores internacionais", "Imóveis na Flórida"];
+  function perfilCorretor(m) {
+    var p = [];
+    if (m.regioes && m.regioes.length) p.push("📍 " + m.regioes.map(esc).join(", "));
+    if (m.idiomas && m.idiomas.length) p.push("🗣 " + m.idiomas.map(function (i) { return IDIOMA_NOME[i] || esc(i); }).join(", "));
+    if (m.especialidades && m.especialidades.length) p.push("★ " + m.especialidades.map(esc).join(", "));
+    return p.length ? '<span class="sub">' + p.join(" · ") + "</span>" : "";
+  }
+  function chipsHtml(nome, itens, marcados) {
+    return '<div class="chips">' + itens.map(function (it) { var v = it[0], t = it[1]; return '<label class="chip"><input type="checkbox" name="' + nome + '" value="' + esc(v) + '"' + ((marcados || []).indexOf(v) >= 0 ? " checked" : "") + "><span>" + esc(t) + "</span></label>"; }).join("") + "</div>";
+  }
   function rCorretores() {
     if (!isAdmin()) return;
     var rows = S.membros.slice().sort(function (a, b) { return (a.ativo === b.ativo ? 0 : a.ativo ? 1 : -1) || (a.nome || "").localeCompare(b.nome || ""); }).map(function (m) {
@@ -460,7 +504,7 @@
       var fe = meus.filter(function (l) { return l.etapa === "fechado"; }).length;
       var pe = meus.filter(function (l) { return l.etapa === "perdido"; }).length;
       var eu = m.id === S.me.id;
-      return '<tr class="' + (m.ativo ? "" : "pending-row") + '"><td><strong>' + esc(m.nome) + (eu ? " (você)" : "") + '</strong><span class="sub">' + esc(m.email) + (m.telefone ? " · " + esc(m.telefone) : "") + "</span>" + (m.ativo ? "" : '<span class="sub" style="color:#c06a12;font-weight:700">Aguardando aprovação</span>') + "</td>" +
+      return '<tr class="' + (m.ativo ? "" : "pending-row") + '"><td><strong>' + esc(m.nome) + (eu ? " (você)" : "") + '</strong><span class="sub">' + esc(m.email) + (m.telefone ? " · " + esc(m.telefone) : "") + "</span>" + (m.licenca ? '<span class="sub">🪪 ' + esc(m.licenca) + "</span>" : '<span class="sub" style="color:#c06a12">Sem CRECI informado</span>') + perfilCorretor(m) + (m.ativo ? "" : '<span class="sub" style="color:#c06a12;font-weight:700">Aguardando aprovação · cadastrado em ' + dt(m.criado_em) + "</span>") + "</td>" +
         '<td><select data-papel="' + m.id + '"' + (eu ? " disabled" : "") + '><option value="corretor"' + (m.papel === "corretor" ? " selected" : "") + '>Corretor</option><option value="admin"' + (m.papel === "admin" ? " selected" : "") + ">Administrador</option>" + '<option value="construtora"' + (m.papel === "construtora" ? " selected" : "") + ">Construtora</option></select></td>" +
         '<td><label class="switch" title="Acesso liberado"><input type="checkbox" data-ativo="' + m.id + '"' + (m.ativo ? " checked" : "") + (eu ? " disabled" : "") + "><span></span></label></td>" +
         "<td>" + meus.length + '</td><td class="hide-sm">' + ab + '</td><td class="hide-sm">' + fe + '</td><td class="hide-sm">' + (fe + pe ? Math.round(fe / (fe + pe) * 100) + "%" : "—") + "</td>" +
@@ -487,11 +531,17 @@
     var m = S.me;
     $("#view-conta").innerHTML = '<div class="grid2"><form class="card stack" id="contaForm"><h3>Seus dados</h3>' +
       '<label>Nome<input name="nome" value="' + esc(m.nome) + '" required></label><label>WhatsApp<input name="telefone" value="' + esc(m.telefone || "") + '"></label>' +
-      '<label>Licença / CRECI<input name="licenca" value="' + esc(m.licenca || "") + '"></label><label>E-mail<input value="' + esc(m.email) + '" disabled></label><button class="btn primary">Salvar</button></form>' +
+      '<label>Registro Profissional (CRECI)<input name="licenca" value="' + esc(m.licenca || "") + '" placeholder="CRECI 123456-F/SP" maxlength="40"></label>' +
+      '<label>Cidades / regiões onde atua<input name="regioes" value="' + esc((m.regioes || []).join(", ")) + '" placeholder="Ex.: Ribeirão Preto, Franca" maxlength="300"></label>' +
+      '<div class="cad-grupo"><span>Idiomas que atende</span>' + chipsHtml("idiomas", Object.keys(IDIOMA_NOME).map(function (k) { return [k, IDIOMA_NOME[k]]; }), m.idiomas) + "</div>" +
+      '<div class="cad-grupo"><span>Especialidades</span>' + chipsHtml("especialidades", ESPECIALIDADES.map(function (x) { return [x, x]; }), m.especialidades) + "</div>" +
+      '<label>E-mail<input value="' + esc(m.email) + '" disabled></label><button class="btn primary">Salvar</button></form>' +
       '<form class="card stack" id="senhaForm"><h3>Trocar senha</h3><label>Nova senha<input name="senha" type="password" minlength="8" required autocomplete="new-password"></label><button class="btn primary">Atualizar senha</button></form></div>';
     $("#contaForm").addEventListener("submit", async function (e) {
       e.preventDefault(); var f = new FormData(e.target);
-      var dados = { nome: f.get("nome").trim(), telefone: f.get("telefone").trim() || null, licenca: f.get("licenca").trim() || null };
+      var dados = { nome: f.get("nome").trim(), telefone: f.get("telefone").trim() || null, licenca: f.get("licenca").trim() || null,
+        regioes: String(f.get("regioes") || "").split(/[,;]/).map(function (x) { return x.trim(); }).filter(Boolean).slice(0, 10),
+        idiomas: f.getAll("idiomas").length ? f.getAll("idiomas") : ["pt"], especialidades: f.getAll("especialidades") };
       var r = await sb.from("membros").update(dados).eq("id", m.id);
       if (r.error) return falha(r.error); Object.assign(S.me, dados); $("#meNome").textContent = dados.nome; toast("Dados salvos.");
     });

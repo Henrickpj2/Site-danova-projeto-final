@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="crm.css?v=20261026f">
+  <link rel="stylesheet" href="crm.css?v=20261102">
 </head>
 <body>
   <!-- ===== Acesso ===== -->
@@ -26,11 +26,20 @@
         <div class="auth-links"><a href="#" data-auth="cadastro">Sou corretor · solicitar acesso</a><a href="#" data-auth="recuperar">Esqueci a senha</a></div>
       </form>
 
-      <form id="cadastroForm" class="stack" hidden>
-        <label>Nome completo<input name="nome" required autocomplete="name"></label>
-        <label>WhatsApp<input name="telefone" type="tel" autocomplete="tel" placeholder="+1 786 000-0000"></label>
-        <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
-        <label>Senha (mínimo 8 caracteres)<input name="senha" type="password" required minlength="8" autocomplete="new-password"></label>
+      <form id="cadastroForm" class="stack" hidden novalidate>
+        <p class="cad-passo">1 · Seus dados</p>
+        <label>Nome completo *<input name="nome" required autocomplete="name" maxlength="120"></label>
+        <label>WhatsApp *<input name="telefone" type="tel" required autocomplete="tel" placeholder="(16) 99999-0000" maxlength="30"></label>
+        <label>E-mail *<input name="email" type="email" required autocomplete="email"></label>
+        <p class="cad-passo">2 · Registro Profissional (CRECI)</p>
+        <div class="cad-linha"><label>Número do CRECI *<input name="creci" required placeholder="Ex.: 123456-F" maxlength="20" autocomplete="off"></label><label class="cad-uf">Estado *<select name="uf"><option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option><option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option><option>RS</option><option>RO</option><option>RR</option><option>SC</option><option selected>SP</option><option>SE</option><option>TO</option><option value="FL">EUA · Flórida</option></select></label></div>
+        <label>Cidades / regiões onde atua<input name="regioes" placeholder="Ex.: Ribeirão Preto, Franca, Miami" maxlength="300"></label>
+        <div class="cad-grupo"><span>Idiomas que atende</span><div class="chips"><label class="chip"><input type="checkbox" name="idiomas" value="pt" checked><span>Português</span></label><label class="chip"><input type="checkbox" name="idiomas" value="en"><span>Inglês</span></label><label class="chip"><input type="checkbox" name="idiomas" value="es"><span>Espanhol</span></label><label class="chip"><input type="checkbox" name="idiomas" value="fr"><span>Francês</span></label><label class="chip"><input type="checkbox" name="idiomas" value="it"><span>Italiano</span></label></div></div>
+        <div class="cad-grupo"><span>Especialidades</span><div class="chips"><label class="chip"><input type="checkbox" name="especialidades" value="Lançamentos"><span>Lançamentos</span></label><label class="chip"><input type="checkbox" name="especialidades" value="Alto padrão"><span>Alto padrão</span></label><label class="chip"><input type="checkbox" name="especialidades" value="Revenda"><span>Revenda</span></label><label class="chip"><input type="checkbox" name="especialidades" value="Locação"><span>Locação</span></label><label class="chip"><input type="checkbox" name="especialidades" value="Comercial"><span>Comercial</span></label><label class="chip"><input type="checkbox" name="especialidades" value="Rural e terrenos"><span>Rural e terrenos</span></label><label class="chip"><input type="checkbox" name="especialidades" value="Investidores internacionais"><span>Investidores internacionais</span></label><label class="chip"><input type="checkbox" name="especialidades" value="Imóveis na Flórida"><span>Imóveis na Flórida</span></label></div></div>
+        <p class="cad-passo">3 · Acesso</p>
+        <label>Senha (mínimo 8 caracteres) *<input name="senha" type="password" required minlength="8" autocomplete="new-password"></label>
+        <label>Confirme a senha *<input name="senha2" type="password" required minlength="8" autocomplete="new-password"></label>
+        <label class="cad-aceite"><input type="checkbox" name="aceite" required> <span>Autorizo a danova AI a usar estes dados para liberar meu acesso e distribuir leads, conforme a <a href="../politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
         <button class="btn primary" type="submit">Solicitar acesso</button>
         <p class="note">Seu acesso fica pendente até a aprovação de um administrador.</p>
         <div class="auth-links"><a href="#" data-auth="login">← Voltar para o login</a></div>
@@ -107,6 +116,6 @@
   <script src="crm-campanhas.js?v=20261026e"></script>
   <script src="crm-conhecimento.js?v=20261026"></script>
   <script src="crm-integracoes.js?v=20261026"></script>
-  <script src="crm.js?v=20261026"></script>
+  <script src="crm.js?v=20261102"></script>
 </body>
 </html>
