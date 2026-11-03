@@ -1,9 +1,6 @@
 # Envia a pasta public_html para a Hostinger por FTP sempre que o site muda no ramo main.
-# Só funciona depois de cadastrar, em GitHub → Settings → Secrets and variables → Actions → New repository secret:
-#   FTP_SERVIDOR  (ex.: ftp.danova-ai.com ou o IP mostrado no hPanel → Arquivos → Contas FTP)
-#   FTP_USUARIO   (ex.: u123456789)
-#   FTP_SENHA     (senha da conta FTP)
-#   FTP_PASTA     (opcional; padrão "public_html/")
+# Servidor e usuário (não confidenciais) ficam aqui. Só a senha é segredo:
+#   GitHub → Settings → Secrets and variables → Actions → New repository secret → Name: FTP_SENHA
 # Envia só o que mudou. Não apaga arquivos que existam só no servidor.
 name: Enviar para a Hostinger (FTP)
 on:
@@ -21,15 +18,16 @@ jobs:
     steps:
       - name: Conferir configuração
         if: env.TEM_FTP != 'true'
-        run: echo "::notice::FTP ainda não configurado (faltam os segredos FTP_SERVIDOR, FTP_USUARIO e FTP_SENHA). Nada foi enviado."
+        run: echo "::notice::FTP ainda não configurado (falta cadastrar o segredo FTP_SENHA). Nada foi enviado."
       - uses: actions/checkout@v4
         if: env.TEM_FTP == 'true'
       - name: Enviar arquivos
         if: env.TEM_FTP == 'true'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_SERVIDOR }}
-          username: ${{ secrets.FTP_USUARIO }}
+          server: 185.173.111.243
+          username: u392943334.danova-ai-com-417732.hostingersite.com
           password: ${{ secrets.FTP_SENHA }}
           local-dir: ./public_html/
-          server-dir: ${{ secrets.FTP_PASTA || 'public_html/' }}
+          server-dir: public_html/
+          port: 21
