@@ -17,3 +17,6 @@ jobs:
           echo "== danova-ai.com"
           curl -s -L -o /tmp/r "https://danova-ai.com/?v=$GITHUB_RUN_ID"; grep -o "<title>[^<]*" /tmp/r
           curl -s -L -o /tmp/c -w "crm HTTP %{http_code}\n" "https://danova-ai.com/crm/?v=$GITHUB_RUN_ID"; grep -q 'name="creci"' /tmp/c && echo "CRM novo (CRECI) no ar" || echo "CRM sem o cadastro novo"
+          echo "== versão do CRM no ar"
+          curl -s "https://danova-ai.com/crm/?v=$GITHUB_RUN_ID" | grep -o 'crm-integracoes.js?v=[0-9a-z]*'
+          curl -s "https://danova-ai.com/crm/crm-integracoes.js?v=20261103" | grep -c 'data-importar-meta' | sed 's/^/botão importar no arquivo: /'
