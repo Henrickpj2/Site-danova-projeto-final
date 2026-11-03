@@ -1,10 +1,10 @@
--- Integrações: landing pages e formulários externos cadastrados no CRM (tela "Integrações").
+-- Integrações: landing pages e formulários externos (tela "Integrações"). Aplicada em 03/11/2026.
 create table if not exists public.fontes_lead (
   id uuid primary key default gen_random_uuid(),
   tipo text not null check (tipo in ('landing','formulario')),
   nome text not null check (char_length(nome) between 2 and 120),
   slug text not null unique check (slug ~ '^[a-z0-9][a-z0-9-]{2,59}$'),
-  url text,
+  url text check (url is null or (char_length(url) <= 300 and url ~* '^https?://')),
   plataforma text check (plataforma is null or plataforma in ('elementor','wordpress','rdstation','typeform','google-forms','hubspot','jotform','tally','webflow','wix','outro')),
   conta_anuncio_id uuid references public.contas_anuncio(id) on delete set null,
   ativo boolean not null default true,
