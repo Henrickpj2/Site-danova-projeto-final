@@ -64,7 +64,7 @@
     var aviso = "";
     if (RET) {
       var r = RET.get("meta");
-      aviso = r === "ok" ? '<p class="ig-ok">✓ Facebook conectado! ' + (+RET.get("paginas") ? RET.get("paginas") + " página(s) encontrada(s), " + RET.get("assinadas") + " recebendo leads dos formulários. " : "") + "Importando contas e métricas…</p>" :
+      aviso = r === "ok" ? '<p class="ig-ok">✓ Facebook conectado! ' + (+RET.get("paginas") ? RET.get("paginas") + " página(s) encontrada(s), " + RET.get("assinadas") + " recebendo leads dos formulários. " : "") + "Agora escolha os gerenciadores e as campanhas abaixo.</p>" :
         r === "cancelado" ? '<p class="ig-erro">Conexão cancelada no Facebook. Clique em “Conectar com Facebook” para tentar de novo.</p>' :
         '<p class="ig-erro">Não foi possível conectar: ' + A.esc(RET.get("motivo") || "erro") + "</p>";
     }
@@ -74,7 +74,8 @@
       corpo = '<div class="ig-meta-con"><b>Conectado como ' + A.esc(con.nome || "—") + "</b><span>" + (con.paginas ? con.paginas + " página(s) · " + con.paginas_assinadas + " recebendo leads dos formulários" : "Nenhuma página do Facebook encontrada (só métricas)") + "</span>" +
         "<span>Autorização válida até " + dt(con.expira_em) + (dias !== null && dias < 15 ? ' <b class="ig-erro">— reconecte em breve</b>' : "") + "</span></div>" +
         '<label class="ig-dias">Período das métricas <select data-imp-dias><option value="30">30 dias</option><option value="90" selected>90 dias</option><option value="180">180 dias</option><option value="365">12 meses</option></select></label>' +
-        '<div class="ig-acts"><button class="c-btn" data-importar-meta>Atualizar contas e métricas</button><button class="c-btn ghost" data-conectar-meta>Reconectar</button><button class="c-btn ghost" data-ir="campanhas">Contas de anúncio</button><button class="c-btn ghost danger" data-desconectar-meta>Desconectar</button></div>';
+        '<div class="ig-acts"><button class="c-btn" data-seletor-meta>Escolher gerenciadores e campanhas</button><button class="c-btn ghost" data-sync-meta>Atualizar métricas</button><button class="c-btn ghost" data-conectar-meta>Reconectar</button><button class="c-btn ghost danger" data-desconectar-meta>Desconectar</button></div>' +
+        '<div class="ig-sel" data-sel hidden></div>';
     } else {
       corpo = '<div class="ig-meta-imp"><b>Conecte em 1 clique</b><span>Entre com o Facebook que administra o seu Gerenciador de Negócios e autorize. O CRM passa a puxar sozinho todas as contas de anúncio, as métricas de todas as campanhas e os leads dos formulários instantâneos.</span></div>' +
         '<div class="ig-acts"><button class="c-btn fb" data-conectar-meta>Conectar com Facebook</button></div>';
@@ -106,6 +107,82 @@
       A.toast("Contas e métricas do Meta atualizadas.");
     } catch (x) { res.innerHTML = '<p class="ig-erro">' + A.esc(x.message || String(x)) + "</p>"; }
     finally { if (bImp) { bImp.disabled = false; bImp.textContent = txt; } }
+  }
+
+  function invocar(A, corpo) {
+    return A.sb.functions.invoke("ads-sync", { body: corpo }).then(async function (r) {
+      var e = r.data && r.data.erro; try { var j = r.error && r.error.context && await r.error.context.json(); if (j && j.erro) e = j.erro; } catch (x) {}
+      if (r.error && !e) e = r.error.message || "falha";
+      if (e) throw new Error(e === "meta_nao_configurado" ? "O Facebook não está conectado." : e);
+      return r.data;
+    });
+  }
+  var STATUS_CAMP = { active: ["Ativa", "on"], paused: ["Pausada", "off"], archived: ["Arquivada", "off"], deleted: ["Excluída", "off"], campaign_paused: ["Pausada", "off"], in_process: ["Em análise", "off"], with_issues: ["Com problema", "off"] };
+  async function abrirSeletor(el, A) {
+    var box = el.querySelector("[data-sel]"); if (!box) return;
+    box.hidden = false; box.innerHTML = '<p class="ig-carr">Buscando seus gerenciadores de anúncios no Meta…</p>';
+    try {
+      var d = await invocar(A, { acao: "listar_contas_meta" });
+      if (!d.contas.length) { box.innerHTML = '<p class="ig-erro">Este Facebook não enxerga nenhuma conta de anúncio. Reconecte com o perfil que administra o Gerenciador de Negócios.</p>'; return; }
+      box.innerHTML = '<h4>1. Quais gerenciadores (contas de anúncio) entram no CRM?</h4><div class="ig-sel-lista">' +
+        d.contas.map(function (c) { return '<label class="ig-sel-item"><input type="checkbox" value="' + A.esc(c.id) + '"' + (c.selecionada ? " checked" : "") + '><span><b>' + A.esc(c.nome) + "</b><small>" + (c.empresa ? A.esc(c.empresa) + " · " : "") + "ID " + A.esc(c.id) + " · " + A.esc(c.moeda || "") + " · " + c.status + "</small></span></label>"; }).join("") +
+        '</div><div class="ig-acts"><button class="c-btn" data-salvar-contas>Salvar e escolher campanhas</button><button class="c-btn ghost" data-fechar-sel>Fechar</button></div><div data-camp-area></div>';
+      box.querySelector("[data-fechar-sel]").addEventListener("click", function () { box.hidden = true; box.innerHTML = ""; });
+      box.querySelector("[data-salvar-contas]").addEventListener("click", async function () {
+        var b = this, ids = Array.prototype.map.call(box.querySelectorAll(".ig-sel-lista input:checked"), function (i) { return i.value; });
+        if (!ids.length && !window.confirm("Nenhum gerenciador marcado: o CRM vai parar de puxar métricas do Meta. Continuar?")) return;
+        b.disabled = true; b.textContent = "Salvando…";
+        try { await invocar(A, { acao: "salvar_contas_meta", ids: ids }); var d2 = await invocar(A, { acao: "listar_contas_meta" }); await carregar(A); mostrarCampanhas(box, A, d2.contas.filter(function (c) { return c.selecionada && c.conta_crm; })); A.toast("Gerenciadores salvos."); }
+        catch (x) { A.toast(x.message, true); }
+        finally { b.disabled = false; b.textContent = "Salvar e escolher campanhas"; }
+      });
+      var ja = d.contas.filter(function (c) { return c.selecionada && c.conta_crm; });
+      if (ja.length) mostrarCampanhas(box, A, ja);
+    } catch (x) { box.innerHTML = '<p class="ig-erro">' + A.esc(x.message) + "</p>"; }
+  }
+  function mostrarCampanhas(box, A, contas) {
+    var area = box.querySelector("[data-camp-area]"); if (!area) return;
+    if (!contas.length) { area.innerHTML = ""; return; }
+    area.innerHTML = '<h4>2. Quais campanhas acompanhar em cada gerenciador?</h4>' + contas.map(function (c) {
+      return '<div class="ig-camp" data-conta="' + A.esc(c.conta_crm) + '"><div class="ig-camp-h"><b>' + A.esc(c.nome) + '</b><small>' + (c.campanhas ? c.campanhas + " campanha(s) escolhida(s)" : "todas as campanhas") + '</small><button class="c-btn ghost" data-abrir-camp>Escolher campanhas</button></div><div class="ig-camp-lista" hidden></div></div>';
+    }).join("") + '<div class="ig-acts"><button class="c-btn" data-puxar>Puxar métricas agora</button></div>';
+    area.querySelectorAll("[data-abrir-camp]").forEach(function (b) { b.addEventListener("click", async function () {
+      var bloco = b.closest(".ig-camp"), lista = bloco.querySelector(".ig-camp-lista"), conta = bloco.dataset.conta;
+      if (!lista.hidden) { lista.hidden = true; return; }
+      lista.hidden = false; lista.innerHTML = '<p class="ig-carr">Buscando campanhas…</p>';
+      try {
+        var d = await invocar(A, { acao: "listar_campanhas", conta: conta });
+        if (!d.campanhas.length) { lista.innerHTML = '<p class="ig-carr">Nenhuma campanha nesta conta.</p>'; return; }
+        lista.innerHTML = '<label class="ig-sel-item todas"><input type="checkbox" data-todas' + (d.todas ? " checked" : "") + '><span><b>Todas as campanhas</b><small>inclusive as que forem criadas depois</small></span></label>' +
+          '<div class="ig-filtro"><button type="button" class="c-btn ghost" data-marcar="ativas">Só as ativas</button><button type="button" class="c-btn ghost" data-marcar="nenhuma">Desmarcar</button></div>' +
+          d.campanhas.map(function (k) { var st2 = STATUS_CAMP[k.status] || [k.status || "—", "off"]; return '<label class="ig-sel-item"><input type="checkbox" data-camp value="' + A.esc(k.id) + '" data-nome="' + A.esc(k.nome) + '" data-status="' + A.esc(k.status) + '"' + (k.selecionada ? " checked" : "") + '><span><b>' + A.esc(k.nome) + "</b><small>" + chip(st2[1], st2[0]) + (k.objetivo ? " " + A.esc(k.objetivo.replace(/^OUTCOME_/, "").toLowerCase()) : "") + "</small></span></label>"; }).join("") +
+          '<div class="ig-acts"><button class="c-btn" data-salvar-camp>Salvar campanhas</button></div>';
+        var todas = lista.querySelector("[data-todas]"), camps = lista.querySelectorAll("[data-camp]");
+        var sync = function () { camps.forEach(function (i) { i.disabled = todas.checked; if (todas.checked) i.checked = true; }); };
+        todas.addEventListener("change", sync); sync();
+        lista.querySelectorAll("[data-marcar]").forEach(function (m) { m.addEventListener("click", function () { todas.checked = false; sync(); camps.forEach(function (i) { i.checked = m.dataset.marcar === "ativas" && i.dataset.status === "active"; }); }); });
+        lista.querySelector("[data-salvar-camp]").addEventListener("click", async function () {
+          var bs = this, escolhidas = todas.checked ? [] : Array.prototype.filter.call(camps, function (i) { return i.checked; }).map(function (i) { return { id: i.value, nome: i.dataset.nome }; });
+          if (!todas.checked && !escolhidas.length) return A.toast("Marque pelo menos uma campanha (ou “Todas”).", true);
+          bs.disabled = true; bs.textContent = "Salvando…";
+          try { await invocar(A, { acao: "salvar_campanhas", conta: conta, campanhas: escolhidas }); bloco.querySelector(".ig-camp-h small").textContent = escolhidas.length ? escolhidas.length + " campanha(s) escolhida(s)" : "todas as campanhas"; lista.hidden = true; A.toast("Campanhas salvas."); }
+          catch (x) { A.toast(x.message, true); }
+          finally { bs.disabled = false; bs.textContent = "Salvar campanhas"; }
+        });
+      } catch (x) { lista.innerHTML = '<p class="ig-erro">' + A.esc(x.message) + "</p>"; }
+    }); });
+    area.querySelector("[data-puxar]").addEventListener("click", function () { sincronizarMeta(box.closest(".ig-card"), A, this); });
+  }
+  async function sincronizarMeta(card, A, b) {
+    var res = card.querySelector("[data-imp-res]"), dias = +(card.querySelector("[data-imp-dias]") || {}).value || 90, t = b.textContent;
+    b.disabled = true; b.textContent = "Puxando métricas…"; res.innerHTML = "";
+    try {
+      var d = await invocar(A, { dias: dias, plataforma: "meta" });
+      var lista = d.resultado || [], ok = lista.filter(function (x) { return !x.erro; }), ruins = lista.filter(function (x) { return x.erro; });
+      res.innerHTML = "<p>✓ Métricas de " + dias + " dias atualizadas em " + ok.length + " gerenciador(es) · " + ok.reduce(function (s, x) { return s + (x.linhas || 0); }, 0) + " linha(s) de campanha/dia" + (ruins.length ? ' · <span class="ig-erro">' + ruins.length + " com erro: " + A.esc(ruins[0].erro) + "</span>" : "") + ".</p>";
+      A.toast("Métricas do Meta atualizadas.");
+    } catch (x) { res.innerHTML = '<p class="ig-erro">' + A.esc(x.message === "sem_contas" ? "Nenhum gerenciador escolhido ainda. Clique em “Escolher gerenciadores e campanhas”." : x.message) + "</p>"; }
+    finally { b.disabled = false; b.textContent = t; }
   }
 
   function render(el, A) {
@@ -155,8 +232,10 @@
     el.querySelectorAll("[data-dias]").forEach(function (b) { b.addEventListener("click", function () { st.dias = +b.dataset.dias; render(el, A); }); });
     el.querySelectorAll("[data-copiar]").forEach(function (b) { b.addEventListener("click", function () { copiar(b.dataset.copiar, A); }); });
     el.querySelectorAll("[data-ir]").forEach(function (b) { b.addEventListener("click", function () { A.irPara(b.dataset.ir); }); });
-    var bImp = el.querySelector("[data-importar-meta]");
-    if (bImp) bImp.addEventListener("click", function () { importarMeta(el, A, bImp); });
+    var bSel = el.querySelector("[data-seletor-meta]");
+    if (bSel) bSel.addEventListener("click", function () { abrirSeletor(el, A); });
+    var bSync = el.querySelector("[data-sync-meta]");
+    if (bSync) bSync.addEventListener("click", function () { sincronizarMeta(el.querySelector(".ig-card.m"), A, bSync); });
     el.querySelectorAll("[data-conectar-meta]").forEach(function (b) { b.addEventListener("click", async function () {
       b.disabled = true; var t = b.textContent; b.textContent = "Abrindo o Facebook…";
       var r = await A.sb.functions.invoke("meta-conectar", { body: { acao: "iniciar" } });
@@ -174,7 +253,7 @@
       if (r.error) return A.toast("Não foi possível desconectar agora.", true);
       A.toast("Facebook desconectado."); await carregar(A); render(el, A);
     });
-    if (RET && RET.get("meta") === "ok" && !st.retornoFeito) { st.retornoFeito = true; importarMeta(el, A, el.querySelector("[data-importar-meta]")); }
+    if (RET && RET.get("meta") === "ok" && !st.retornoFeito) { st.retornoFeito = true; abrirSeletor(el, A); }
     el.querySelectorAll("[data-nova]").forEach(function (f) { f.addEventListener("submit", async function (e) {
       e.preventDefault(); var fd = new FormData(f), nome = String(fd.get("nome") || "").trim(); if (!nome) return;
       var conta = st.contas.find(function (c) { return c.id === fd.get("conta"); });
