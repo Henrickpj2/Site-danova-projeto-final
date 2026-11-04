@@ -150,6 +150,8 @@ window.DANOVA_CRM = {
   url: "https://oeylfwasqvbnybzrwtgf.supabase.co",
   anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9leWxmd2FzcXZibnlienJ3dGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI1NDkxNDYsImV4cCI6MjEwODEyNTE0Nn0.xfl5HyVe4RGqs0VYNt-a7Rox1Ro9ORQlkdNirxG3FeY",
   // Agente de voz ElevenLabs (público; o ID não é segredo). Deixe "" para usar o modo de voz antigo (Whisper/navegador).
+  // ID do Gerenciador de Negócios (Business Manager) da danova no Meta — aparece para o cliente na instrução de autorização.
+  metaBusinessId: "",   // preencher com o ID do Gerenciador de Negócios (não o da conta de anúncios)
   elevenAgentId: "agent_9101m5t5g6gfe0ns594fy3v2b3dn"
 };
 
@@ -786,6 +788,40 @@ window.DANOVA_CRM = {
 .dn-cookies button { border: 0; border-radius: 999px; padding: 10px 16px; font: 700 13px inherit; cursor: pointer; }
 .dn-ck-a { background: #16b8a6; color: #04211e; }
 .dn-ck-e { background: rgba(255,255,255,.08); color: #e9eef5; border: 1px solid rgba(255,255,255,.16) !important; }
+
+    /* ===== Eventos ===== */
+    .event-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .event-card { position: relative; overflow: hidden; border-radius: var(--radius); padding: 28px; color: #fff; display: flex; flex-direction: column; gap: 14px; min-height: 260px;
+      background: radial-gradient(120% 90% at 100% 0%, rgba(107,63,212,.55), transparent 60%), radial-gradient(90% 80% at 0% 100%, rgba(22,184,166,.35), transparent 60%), linear-gradient(160deg, var(--navy-2), var(--navy)); box-shadow: var(--shadow); }
+    .event-card::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; mask-image: linear-gradient(180deg, #000, transparent 75%); }
+    .event-card > * { position: relative; z-index: 1; }
+    .event-top { display: flex; justify-content: space-between; align-items: center; }
+    .event-tag { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #62e0d1; border: 1px solid rgba(98,224,209,.35); border-radius: 999px; padding: 5px 11px; }
+    .event-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.08); color: #62e0d1; font-size: 18px; }
+    .event-card h3 { font-size: 22px; line-height: 1.2; margin-top: auto; }
+    .event-link { color: #62e0d1; font-size: 13px; font-weight: 700; }
+    .event-link:hover { text-decoration: underline; }
+    .event-actions { display: flex; gap: 10px; }
+    .event-btn { flex: 1; border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.06); color: #fff; border-radius: 999px; padding: 11px 16px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .2s, border-color .2s; }
+    .event-btn:hover, .event-btn:focus-visible { background: var(--teal); border-color: var(--teal); color: #06211f; }
+    .event-modal { position: fixed; inset: 0; z-index: 90; background: rgba(6,13,24,.78); backdrop-filter: blur(6px); display: grid; place-items: center; padding: 16px; }
+    .event-modal[hidden] { display: none; }
+    .event-modal-box { width: min(980px, 100%); max-height: 90vh; overflow: auto; background: var(--navy); color: #fff; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); padding: 22px; }
+    .event-modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+    .event-modal-head small { color: #62e0d1; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .event-modal-head h3 { font-size: 20px; margin-top: 4px; }
+    .event-modal-x { border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 15px; }
+    .event-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+    .event-galeria img, .event-galeria video, .event-galeria iframe { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 12px; background: #000; border: 0; display: block; }
+    .event-galeria.videos { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+    .event-vazio { text-align: center; padding: 40px 16px; color: #c2ccda; }
+    .event-vazio b { display: block; color: #fff; font-size: 16px; margin-bottom: 6px; }
+    @media (max-width: 900px) { .event-grid { grid-template-columns: 1fr; } .event-card { min-height: 0; } }
+    /* Menu com "Eventos": sem quebra de linha e mais compacto em telas médias */
+    .nav-links a { white-space: nowrap; }
+    @media (max-width: 1320px) and (min-width: 721px) { .nav-links { gap: 18px; } .nav-links .btn { padding: 12px 16px; } }
+    @media (max-width: 1120px) and (min-width: 721px) { .nav-links { gap: 13px; } .nav-links a:not(.btn) { font-size: 12px; } .nav-links .nav-login { padding: 8px 12px; } }
+    @media (max-width: 980px) and (min-width: 721px) { .nav-links a[href="#como-funciona"], .nav-links a[href="#para-quem"] { display: none; } }
   </style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://danova-ai.com/#org", "name": "danova AI", "url": "https://danova-ai.com/", "logo": "https://danova-ai.com/img/danova-logo.webp", "email": "danielle@danova-ai.com", "telephone": "+1-786-382-6782", "areaServed": ["Miami", "Palm Beach", "Flórida", "Brasil"], "knowsAbout": ["Meta Ads", "Google Ads", "SEO", "tráfego pago imobiliário", "CRM imobiliário", "empreendimentos de alto padrão"], "knowsLanguage": ["pt", "en", "es"], "sameAs": ["https://www.instagram.com/danova_ia", "https://www.linkedin.com/in/danova-ai-4738103b9/", "https://www.facebook.com/profile.php?id=61577480279926", "https://wa.me/17863826782"]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://danova-ai.com/#site", "url": "https://danova-ai.com/", "name": "danova AI", "inLanguage": "pt-BR", "publisher": {"@id": "https://danova-ai.com/#org"}}</script>
@@ -813,6 +849,7 @@ window.DANOVA_CRM = {
         <a href="#plataforma">Plataforma</a>
         <a href="#como-funciona">Como funciona</a>
         <a href="#empreendimentos">Empreendimentos</a>
+        <a href="#eventos">Eventos</a>
         <a href="#video">Vídeo para anúncios</a>
         <a href="#planos">Planos</a>
         <a href="#para-quem">Para quem</a>
@@ -1241,6 +1278,50 @@ window.DANOVA_CRM = {
       </div>
     </section>
 
+    <section class="section section-light" id="eventos">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Agenda e presença</div>
+          <h2>Eventos.</h2>
+          <p>Onde a danova AI esteve e vai estar. Veja as fotos e os vídeos de cada encontro.</p>
+        </div>
+        <div class="event-grid">
+          <article class="event-card" data-evento="sinal-junho-fifa-2026">
+            <div class="event-top"><span class="event-tag">2026</span><span class="event-ico" aria-hidden="true">◎</span></div>
+            <h3>Sinal Junho FIFA 2026</h3>
+            <div class="event-actions">
+              <button type="button" class="event-btn" data-galeria="fotos">Fotos</button>
+              <button type="button" class="event-btn" data-galeria="videos">Vídeos</button>
+            </div>
+          </article>
+          <article class="event-card" data-evento="cmi-rio-2026">
+            <div class="event-top"><span class="event-tag">2026</span><span class="event-ico" aria-hidden="true">◈</span></div>
+            <h3>CMI Rio 2026</h3>
+            <a class="event-link" href="https://www.cmi2026brazil.org/" target="_blank" rel="noopener">Site oficial do evento ↗</a>
+            <div class="event-actions">
+              <button type="button" class="event-btn" data-galeria="fotos">Fotos</button>
+              <button type="button" class="event-btn" data-galeria="videos">Vídeos</button>
+            </div>
+          </article>
+          <article class="event-card" data-evento="global-family-office-2026">
+            <div class="event-top"><span class="event-tag">2026</span><span class="event-ico" aria-hidden="true">◆</span></div>
+            <h3>Global Family Office 2026</h3>
+            <div class="event-actions">
+              <button type="button" class="event-btn" data-galeria="fotos">Fotos</button>
+              <button type="button" class="event-btn" data-galeria="videos">Vídeos</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="event-modal" id="eventModal" hidden role="dialog" aria-modal="true" aria-labelledby="eventModalTitulo">
+      <div class="event-modal-box">
+        <div class="event-modal-head"><div><small id="eventModalTipo">Fotos</small><h3 id="eventModalTitulo">Evento</h3></div><button type="button" class="event-modal-x" data-fechar-evento aria-label="Fechar">✕</button></div>
+        <div class="event-modal-body" id="eventModalCorpo"></div>
+      </div>
+    </div>
+
     <section class="section section-dark" id="para-quem">
       <div class="container">
         <div class="section-head">
@@ -1463,7 +1544,7 @@ window.DANOVA_CRM = {
           <div class="footer-social" aria-label="Redes sociais da DANOVA-AI"><a href="https://www.instagram.com/danova_ia" target="_blank" rel="noopener" aria-label="Instagram da DANOVA-AI" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.linkedin.com/in/danova-ai-4738103b9/" target="_blank" rel="noopener" aria-label="LinkedIn da DANOVA-AI" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4V9.5Z"/></svg></a><a href="https://www.facebook.com/profile.php?id=61577480279926" target="_blank" rel="noopener" aria-label="Facebook da DANOVA-AI" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.87.25-1.46 1.5-1.46h1.6V4.46A21 21 0 0 0 14.27 4.3c-2.3 0-3.87 1.4-3.87 3.98v2.22H7.8v3h2.6V21h3.1Z"/></svg></a><a href="https://wa.me/17863826782" target="_blank" rel="noopener" aria-label="WhatsApp da DANOVA-AI" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></a></div>
         </div>
         <div class="footer-links">
-          <div class="footer-col"><strong>Explorar</strong><a href="#plataforma">Plataforma</a><a href="#como-funciona">Como funciona</a><a href="#estrategia">Estratégia</a><a href="#video">Vídeo para anúncios</a><a href="#planos">Planos</a><a href="#empreendimentos">Empreendimentos</a><a href="#faq">Perguntas frequentes</a><a href="https://danova-ai.com/livro.html" target="_blank" rel="noopener">Livro</a></div>
+          <div class="footer-col"><strong>Explorar</strong><a href="#plataforma">Plataforma</a><a href="#como-funciona">Como funciona</a><a href="#estrategia">Estratégia</a><a href="#video">Vídeo para anúncios</a><a href="#planos">Planos</a><a href="#empreendimentos">Empreendimentos</a><a href="#eventos">Eventos</a><a href="#faq">Perguntas frequentes</a><a href="https://danova-ai.com/livro.html" target="_blank" rel="noopener">Livro</a></div>
           <div class="footer-col"><strong>Para empresas</strong><a href="#contato" data-interest="Construtora ou incorporadora">Construtoras</a><a href="#contato" data-interest="Imobiliária">Imobiliárias</a><a href="#contato" data-interest="Corretor de imóveis">Corretores</a><a href="#contato" data-interest="Gestor(a) de marketing">Marketing</a><a href="#crm">Área de membros</a></div>
           <div class="footer-col"><strong>Contato e transparência</strong><a href="#contato">Solicitar diagnóstico</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://www.instagram.com/danova_ia" target="_blank" rel="noopener">Instagram</a><a href="https://www.linkedin.com/in/danova-ai-4738103b9/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.facebook.com/profile.php?id=61577480279926" target="_blank" rel="noopener">Facebook</a><a href="https://danova-ai.com/politica-de-privacidade.html">Política de Privacidade</a><a href="https://danova-ai.com/termos-de-uso.html">Termos de Uso</a><a href="#" data-cookies>Preferências de cookies</a></div>
         </div>
@@ -1648,6 +1729,45 @@ window.DANOVA_CRM = {
       nums.forEach(n => io.observe(n));
     })();
 
+
+    // ===== Eventos: galeria de fotos e vídeos =====
+    // Para publicar: coloque os arquivos em img/eventos/<evento>/ e liste aqui.
+    // Fotos: "img/eventos/cmi-rio-2026/01.webp"  ·  Vídeos: arquivo .mp4 ou link do YouTube/Vimeo.
+    const DANOVA_EVENTOS = {
+      "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: [], videos: [] },
+      "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: [], videos: [] },
+      "global-family-office-2026": { nome: "Global Family Office 2026", fotos: [], videos: [] }
+    };
+    (function () {
+      const modal = document.getElementById("eventModal"); if (!modal) return;
+      const corpo = document.getElementById("eventModalCorpo"), titulo = document.getElementById("eventModalTitulo"), tipoEl = document.getElementById("eventModalTipo");
+      let voltarPara = null;
+      const esc = v => String(v).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      const embed = url => {
+        const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/);
+        if (yt) return '<iframe src="https://www.youtube-nocookie.com/embed/' + yt[1] + '" title="Vídeo do evento" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+        const vm = url.match(/vimeo\.com\/(\d+)/);
+        if (vm) return '<iframe src="https://player.vimeo.com/video/' + vm[1] + '" title="Vídeo do evento" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+        return '<video src="' + esc(url) + '" controls preload="metadata" playsinline></video>';
+      };
+      const abrir = (id, tipo, botao) => {
+        const ev = DANOVA_EVENTOS[id]; if (!ev) return;
+        const itens = ev[tipo] || [];
+        tipoEl.textContent = tipo === "fotos" ? "Fotos" : "Vídeos"; titulo.textContent = ev.nome;
+        corpo.innerHTML = itens.length
+          ? '<div class="event-galeria ' + tipo + '">' + itens.map((u, i) => tipo === "fotos"
+              ? '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="' + esc(ev.nome) + " — foto " + (i + 1) + '" loading="lazy"></a>'
+              : embed(u)).join("") + "</div>"
+          : '<div class="event-vazio"><b>' + (tipo === "fotos" ? "Fotos em breve" : "Vídeos em breve") + '</b>Assim que o material do evento estiver pronto, ele aparece aqui.</div>';
+        voltarPara = botao; modal.hidden = false; document.body.style.overflow = "hidden";
+        modal.querySelector("[data-fechar-evento]").focus();
+        if (window.dataLayer) window.dataLayer.push({ event: "evento_galeria", evento: id, tipo: tipo });
+      };
+      const fechar = () => { modal.hidden = true; document.body.style.overflow = ""; corpo.innerHTML = ""; if (voltarPara) voltarPara.focus(); };
+      document.querySelectorAll(".event-card [data-galeria]").forEach(b => b.addEventListener("click", () => abrir(b.closest(".event-card").dataset.evento, b.dataset.galeria, b)));
+      modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-fechar-evento]")) fechar(); });
+      document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) fechar(); });
+    })();
 
   </script>
 <style>
@@ -2614,6 +2734,32 @@ window.DANOVA_CRM = {
 #crmRoot .an-kpis .kpi strong {font-size:18px}
 #crmRoot .an-canvas {height:220px}
 #crmRoot .an-con-l {flex-direction:column}
+}
+#crmRoot .an-mod-h {display:flex;gap:12px;align-items:center;margin-bottom:14px}
+#crmRoot .an-mod-h h3 {margin:0;font-size:17px}
+#crmRoot .an-mod-h small {color:var(--muted);font-size:12px}
+#crmRoot .an-form {display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}
+#crmRoot .an-form label {flex:1 1 260px;max-width:420px}
+#crmRoot .an-form input {font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+#crmRoot .an-dica {color:var(--muted);font-size:12.5px;margin:8px 0 0}
+#crmRoot .an-lista {display:flex;flex-direction:column;gap:8px;margin-top:14px}
+#crmRoot .an-conta {display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;flex-wrap:wrap}
+#crmRoot .an-conta>div {flex:1;min-width:180px}
+#crmRoot .an-conta b {display:block;font-size:14px}
+#crmRoot .an-conta small {display:block;color:var(--muted);font-size:12px}
+#crmRoot .an-p-esp {background:#fef3c7;color:#92400e}
+#crmRoot .an-autoriza {margin-top:14px;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px 14px;font-size:13px}
+#crmRoot .an-autoriza p {margin:4px 0 6px;color:#78350f}
+#crmRoot .an-autoriza ol {margin:0;padding-left:18px;line-height:1.55}
+#crmRoot .an-dados {margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+#crmRoot .an-dados b {font-size:13px}
+#crmRoot .an-dados ul {list-style:none;padding:0;margin:10px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 14px}
+#crmRoot .an-dados li {font-size:13px;padding-left:20px;position:relative}
+#crmRoot .an-dados li::before {content:"✓";position:absolute;left:0;color:var(--teal);font-weight:800}
+#crmRoot .an-avancado {margin-top:14px;font-size:13px}
+#crmRoot .an-avancado summary {cursor:pointer;color:var(--muted);font-weight:600}
+@media (max-width:900px){
+#crmRoot .an-dados ul {grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 
 #crmRoot { min-height: 100vh; background: var(--bg); color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; font-size: 14px; line-height: 1.5; }
@@ -4761,7 +4907,7 @@ html.crm-mode body { background: #f4f6fa; }
     var admin = A.isAdmin(), papel = A.S.me.papel;
     var cx = (await A.sb.rpc("meta_conexoes_status")).data || [];
     var minha = cx.filter(function (c) { return c.minha; })[0] || null;
-    var qc = A.sb.from("contas_anuncio").select("id, nome, conta_externa, moeda, conta_id, conexao_id, ultima_sync, ultimo_erro, ativo").eq("plataforma", "meta").eq("ativo", true).order("nome");
+    var qc = A.sb.from("contas_anuncio").select("id, nome, conta_externa, moeda, conta_id, conexao_id, ultima_sync, ultimo_erro, ativo, fonte_dados, situacao").eq("plataforma", "meta").eq("ativo", true).order("nome");
     var contas = (await qc).data || [];
     var clientes = admin ? ((await A.sb.from("contas").select("id, nome").order("nome")).data || []) : [];
     if (admin && st.cliente) contas = contas.filter(function (c) { return st.cliente === "__agencia" ? !c.conta_id : c.conta_id === st.cliente; });
@@ -4792,7 +4938,7 @@ html.crm-mode body { background: #f4f6fa; }
     var ultima = ativas.map(function (c) { return c.ultima_sync; }).filter(Boolean).sort().pop();
     var erros = ativas.filter(function (c) { return c.ultimo_erro; });
 
-    // --- cartão de conexão
+    // --- módulo de conexão: ID da conta de anúncios + integrador autorizado (Make); login do Facebook como opção avançada
     var podeConectar = admin || (papel === "construtora" && A.S.me.conta_id);
     var aviso = "";
     if (RET) {
@@ -4800,16 +4946,34 @@ html.crm-mode body { background: #f4f6fa; }
       aviso = rr === "ok" ? '<p class="an-ok">✓ Facebook conectado. Escolha abaixo as contas de anúncio que entram no painel.</p>' :
         rr === "cancelado" ? '<p class="an-erro">Conexão cancelada no Facebook.</p>' : '<p class="an-erro">Não foi possível conectar: ' + A.esc(RET.get("motivo") || "erro") + "</p>";
     }
+    var BM = (window.DANOVA_CRM && window.DANOVA_CRM.metaBusinessId) || "";
+    var SIT = { aguardando: ["Aguardando autorização", "an-p-esp"], conectada: ["Conectada", "an-p-ok"], erro: ["Sem acesso", "an-p-erro"] };
     var dias = minha && minha.expira_em ? Math.round((new Date(minha.expira_em) - Date.now()) / 864e5) : null;
-    var conexaoHtml = '<div class="card an-con">' + aviso + (minha ?
-      '<div class="an-con-l"><span class="an-fb">f</span><div><b>Meta Ads conectado' + (minha.usuario_nome ? " · " + A.esc(minha.usuario_nome) : "") + "</b><small>" +
-        (minha.status === "ativa" ? (dias !== null ? "Autorização válida até " + new Date(minha.expira_em).toLocaleDateString("pt-BR") + (dias < 15 ? ' — <b class="an-txt-erro">reconecte em breve</b>' : "") : "Autorização ativa") : '<b class="an-txt-erro">' + A.esc(minha.ultimo_erro || "Reconecte o Facebook") + "</b>") +
-        " · " + minha.contas.filter(function (c) { return c.ativo; }).length + " conta(s) vinculada(s)</small></div></div>" +
-      '<div class="an-acts"><button class="btn primary" data-escolher>Escolher contas de anúncio</button><button class="btn ghost" data-conectar>Reconectar</button><button class="btn ghost an-perigo" data-desconectar>Desconectar</button></div>'
-      : podeConectar ? '<div class="an-con-l"><span class="an-fb">f</span><div><b>Conecte sua conta Meta Ads</b><small>Você autoriza pelo login oficial do Facebook, escolhe a conta de anúncios e acompanha aqui investimento, alcance, cliques e resultados das suas campanhas. Acesso só de leitura: nada é alterado nos seus anúncios.</small></div></div>' +
-        '<div class="an-acts"><button class="btn primary an-btn-fb" data-conectar>Conectar minha conta Meta Ads</button></div>'
-      : '<p class="an-erro">Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.</p>') +
-      '<div class="an-selbox" data-selbox hidden></div></div>';
+    var listaContas = contas.length ? '<div class="an-lista">' + contas.map(function (c) {
+      var sit = c.fonte_dados === "oauth" ? ["Conectada (login Facebook)", "an-p-ok"] : (SIT[c.situacao] || SIT.aguardando);
+      return '<div class="an-conta"><div><b>' + A.esc(c.nome) + '</b><small>act_' + A.esc(String(c.conta_externa || "").replace(/\D/g, "")) + (c.ultima_sync ? " · atualizada em " + new Date(c.ultima_sync).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "") + "</small>" +
+        (c.situacao === "erro" && c.ultimo_erro ? '<small class="an-txt-erro">' + A.esc(c.ultimo_erro) + "</small>" : "") + '</div><span class="pill ' + sit[1] + '">' + sit[0] + "</span>" +
+        (c.fonte_dados !== "oauth" ? '<button class="btn ghost small" data-buscar="' + c.id + '">Buscar agora</button>' : "") + '<button class="btn ghost small an-perigo" data-remover="' + c.id + '">Remover</button></div>';
+    }).join("") + "</div>" : "";
+    var aguardando = contas.some(function (c) { return c.fonte_dados !== "oauth" && c.situacao !== "conectada"; });
+    var conexaoHtml = '<div class="card an-con">' + aviso +
+      '<div class="an-mod-h"><span class="an-fb">f</span><div><h3>Integração Meta Ads</h3><small>Módulo de conexão</small></div></div>' +
+      (podeConectar ? '<form class="an-form" data-form-act><label>ID da conta de anúncios<input name="act" placeholder="act_000000000000000" autocomplete="off" inputmode="numeric" required></label>' +
+        (admin ? '<label>Cliente<select name="cliente"><option value="">Agência (sem cliente)</option>' + clientes.map(function (c) { return '<option value="' + c.id + '"' + (st.cliente === c.id ? " selected" : "") + ">" + A.esc(c.nome) + "</option>"; }).join("") + "</select></label>" : "") +
+        '<button class="btn primary an-btn-fb" type="submit">Conectar conta Meta</button></form>' +
+        '<p class="an-dica">O ID fica no Gerenciador de Anúncios, no seletor de contas (o número depois de <b>act_</b>).</p>'
+        : '<p class="an-erro">Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.</p>') +
+      listaContas +
+      (aguardando ? '<div class="an-autoriza"><b>Falta autorizar o acesso</b><p>Só o número da conta não libera os dados: o dono da conta precisa dar acesso de leitura à danova AI.</p><ol>' +
+        '<li>Abra <b>business.facebook.com → Configurações do negócio → Contas → Contas de anúncios</b> e selecione a conta.</li>' +
+        '<li>Clique em <b>Atribuir parceiros</b> (ou “Adicionar pessoas/parceiros”) e informe o ID do negócio da danova AI: <b>' + (BM ? A.esc(BM) : "peça à equipe danova AI") + "</b>.</li>" +
+        "<li>Marque a permissão <b>Ver desempenho</b> (somente leitura) e confirme.</li><li>Volte aqui e clique em <b>Buscar agora</b>.</li></ol></div>" : "") +
+      '<div class="an-dados"><b>Dados que serão importados</b><ul>' + ["Campanhas ativas e pausadas", "Investimento total", "Gastos por campanha", "Impressões e alcance", "Cliques e CTR", "CPC e CPM", "Leads e custo por lead", "Resultados por período"].map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul></div>" +
+      '<details class="an-avancado"' + (minha ? " open" : "") + '><summary>Conectar pelo login do Facebook (opção avançada)</summary>' + (minha ?
+        '<p class="an-dica">Conectado como <b>' + A.esc(minha.usuario_nome || "—") + "</b> · " + (minha.status === "ativa" ? (dias !== null ? "válido até " + new Date(minha.expira_em).toLocaleDateString("pt-BR") + (dias < 15 ? ' — <b class="an-txt-erro">reconecte em breve</b>' : "") : "ativo") : '<b class="an-txt-erro">' + A.esc(minha.ultimo_erro || "reconecte") + "</b>") + "</p>" +
+        '<div class="an-acts"><button class="btn ghost" data-escolher>Escolher contas</button><button class="btn ghost" data-conectar>Reconectar</button><button class="btn ghost an-perigo" data-desconectar>Desconectar</button></div>'
+        : '<p class="an-dica">Alternativa para quem prefere autorizar com o próprio Facebook (exige o app Meta da danova configurado).</p><div class="an-acts"><button class="btn ghost" data-conectar>Conectar com Facebook</button></div>') +
+      '</details><div class="an-selbox" data-selbox hidden></div></div>';
 
     // --- filtros
     var filtros = '<div class="filters an-filtros">' +
@@ -4840,7 +5004,8 @@ html.crm-mode body { background: #f4f6fa; }
         "</tbody></table></div>" : '<p class="an-carr">Sem dados no período.</p>') + "</div>";
 
     var corpo;
-    if (!contas.length) corpo = '<div class="card"><p class="an-carr">' + (minha ? "Escolha as contas de anúncio que entram no painel (botão acima)." : podeConectar ? "Conecte sua conta Meta Ads para ver o desempenho das suas campanhas aqui." : "") + "</p></div>";
+    if (!contas.length) corpo = '<div class="card an-demo"><p class="an-carr">Informe o ID da conta de anúncios acima para ver aqui o desempenho das suas campanhas: investimento, impressões, alcance, cliques, CTR, CPC, CPM, leads e custo por lead, por período.</p></div>';
+    else if (!linhas.length && !antes.length) corpo = filtros + '<div class="card an-demo"><p class="an-carr">' + (aguardando ? "Assim que o acesso for autorizado, as campanhas, o investimento, as impressões, o alcance, os cliques, o CTR, o CPC, o CPM e os leads aparecem aqui, com gráfico por dia e comparação com o período anterior." : "Sem dados no período escolhido. Clique em “Atualizar agora” para buscar no Meta.") + "</p></div>";
     else corpo = filtros + (misto ? '<p class="an-erro">As contas escolhidas usam moedas diferentes; os totais misturam valores. Filtre por conta para ver cada moeda.</p>' : "") +
       (erros.length ? '<p class="an-erro">⚠ ' + A.esc(erros[0].nome) + ": " + A.esc(erros[0].ultimo_erro) + "</p>" : "") +
       kpis + '<div class="card an-graf"><h3>Investimento e resultados por dia</h3><div class="an-canvas"><canvas data-graf></canvas></div></div>' + tabela;
@@ -4874,6 +5039,29 @@ html.crm-mode body { background: #f4f6fa; }
     el.querySelectorAll("[data-f]").forEach(function (s) { s.addEventListener("change", function () { var k = s.dataset.f; st[k] = k === "dias" ? +s.value : s.value; if (k === "cliente") { st.conta = ""; st.campanha = ""; } if (k === "conta") st.campanha = ""; render(el, A); }); });
     el.querySelectorAll("[data-aba]").forEach(function (b) { b.addEventListener("click", function () { st.aba = b.dataset.aba; render(el, A); }); });
     el.querySelectorAll("[data-conectar]").forEach(function (b) { b.addEventListener("click", function () { conectar(A, b); }); });
+    var fa = el.querySelector("[data-form-act]");
+    if (fa) fa.addEventListener("submit", async function (e) {
+      e.preventDefault(); var b = fa.querySelector("button"), f = new FormData(fa), act = String(f.get("act") || "").replace(/\D/g, "");
+      if (act.length < 6 || act.length > 20) return A.toast("Confira o ID: são só números, como act_123456789012345.", true);
+      b.disabled = true; b.textContent = "Conectando…";
+      var args = { p_act: act }; if (admin) args.p_cliente = f.get("cliente") || null;
+      var r = await A.sb.rpc("meta_registrar_conta", args);
+      if (r.error) { b.disabled = false; b.textContent = "Conectar conta Meta"; var m = r.error.message || ""; return A.toast(/conta_de_outro_cliente/.test(m) ? "Esta conta já está vinculada a outro cliente." : /id_invalido/.test(m) ? "ID inválido." : /sem_conta/.test(m) ? "Seu login não está ligado a uma empresa." : m, true); }
+      try { await chamar(A, "meta-integrador", { acao: "disparar", conta: r.data.id, dias: 30 }); A.toast("Conta " + r.data.act + " registrada. Buscando os dados no Meta…"); }
+      catch (x) { A.toast(x.codigo === "integrador_nao_configurado" ? "Conta registrada. A busca automática começa assim que a integração da danova for ativada." : "Conta registrada. " + msgErro(x)); }
+      st.conta = ""; render(el, A);
+    });
+    el.querySelectorAll("[data-buscar]").forEach(function (b) { b.addEventListener("click", async function () {
+      b.disabled = true; var t = b.textContent; b.textContent = "Buscando…";
+      try { await chamar(A, "meta-integrador", { acao: "disparar", conta: b.dataset.buscar, dias: 30 }); A.toast("Pedido enviado. Os dados aparecem em alguns instantes."); setTimeout(function () { render(el, A); }, 15000); }
+      catch (x) { A.toast(x.codigo === "integrador_nao_configurado" ? "A integração da danova ainda não foi ativada." : msgErro(x), true); }
+      b.disabled = false; b.textContent = t;
+    }); });
+    el.querySelectorAll("[data-remover]").forEach(function (b) { b.addEventListener("click", async function () {
+      if (!window.confirm("Remover esta conta do painel? Os dados já importados ficam guardados.")) return;
+      var r = await A.sb.rpc("meta_remover_conta", { p_id: b.dataset.remover }); if (r.error) return A.toast(r.error.message, true);
+      A.toast("Conta removida do painel."); render(el, A);
+    }); });
     var be = el.querySelector("[data-escolher]"), box = el.querySelector("[data-selbox]");
     var abrirSel = function () { seletorContas(box, A, minha.id, async function () { st.conta = ""; await sincronizar(el, A, null, true); }); };
     if (be) be.addEventListener("click", abrirSel);
@@ -4891,7 +5079,8 @@ html.crm-mode body { background: #f4f6fa; }
     var t = botao && botao.textContent; if (botao) { botao.disabled = true; botao.textContent = "Buscando no Meta…"; }
     var corpo = { plataforma: "meta", dias: Math.max(st.dias * 2, 30) };
     if (st.conta) corpo.conta = st.conta;
-    try { var d = await chamar(A, "ads-sync", corpo); var ruins = (d.resultado || []).filter(function (x) { return x.erro; }); A.toast(ruins.length ? "Atualizado com aviso: " + ruins[0].erro : "Dados atualizados."); }
+    try { try { await chamar(A, "meta-integrador", { acao: "disparar", conta: st.conta || undefined, dias: Math.min(Math.max(st.dias * 2, 30), 90) }); } catch (x) { if (x.codigo !== "sem_contas" && x.codigo !== "integrador_nao_configurado") throw x; }
+      var d = await chamar(A, "ads-sync", corpo).catch(function (x) { if (x.codigo === "sem_contas") return { resultado: [] }; throw x; }); var ruins = (d.resultado || []).filter(function (x) { return x.erro; }); A.toast(ruins.length ? "Atualizado com aviso: " + ruins[0].erro : "Dados atualizados."); }
     catch (x) { if (!silencioso || x.codigo !== "sem_contas") A.toast(msgErro(x), true); }
     finally { if (botao) { botao.disabled = false; botao.textContent = t; } render(el, A); }
   }

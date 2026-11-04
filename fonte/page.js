@@ -165,3 +165,42 @@
       nums.forEach(n => io.observe(n));
     })();
 
+
+    // ===== Eventos: galeria de fotos e vídeos =====
+    // Para publicar: coloque os arquivos em img/eventos/<evento>/ e liste aqui.
+    // Fotos: "img/eventos/cmi-rio-2026/01.webp"  ·  Vídeos: arquivo .mp4 ou link do YouTube/Vimeo.
+    const DANOVA_EVENTOS = {
+      "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: [], videos: [] },
+      "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: [], videos: [] },
+      "global-family-office-2026": { nome: "Global Family Office 2026", fotos: [], videos: [] }
+    };
+    (function () {
+      const modal = document.getElementById("eventModal"); if (!modal) return;
+      const corpo = document.getElementById("eventModalCorpo"), titulo = document.getElementById("eventModalTitulo"), tipoEl = document.getElementById("eventModalTipo");
+      let voltarPara = null;
+      const esc = v => String(v).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      const embed = url => {
+        const yt = url.match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([\w-]{6,})/);
+        if (yt) return '<iframe src="https://www.youtube-nocookie.com/embed/' + yt[1] + '" title="Vídeo do evento" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+        const vm = url.match(/vimeo\.com\/(\d+)/);
+        if (vm) return '<iframe src="https://player.vimeo.com/video/' + vm[1] + '" title="Vídeo do evento" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+        return '<video src="' + esc(url) + '" controls preload="metadata" playsinline></video>';
+      };
+      const abrir = (id, tipo, botao) => {
+        const ev = DANOVA_EVENTOS[id]; if (!ev) return;
+        const itens = ev[tipo] || [];
+        tipoEl.textContent = tipo === "fotos" ? "Fotos" : "Vídeos"; titulo.textContent = ev.nome;
+        corpo.innerHTML = itens.length
+          ? '<div class="event-galeria ' + tipo + '">' + itens.map((u, i) => tipo === "fotos"
+              ? '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="' + esc(ev.nome) + " — foto " + (i + 1) + '" loading="lazy"></a>'
+              : embed(u)).join("") + "</div>"
+          : '<div class="event-vazio"><b>' + (tipo === "fotos" ? "Fotos em breve" : "Vídeos em breve") + '</b>Assim que o material do evento estiver pronto, ele aparece aqui.</div>';
+        voltarPara = botao; modal.hidden = false; document.body.style.overflow = "hidden";
+        modal.querySelector("[data-fechar-evento]").focus();
+        if (window.dataLayer) window.dataLayer.push({ event: "evento_galeria", evento: id, tipo: tipo });
+      };
+      const fechar = () => { modal.hidden = true; document.body.style.overflow = ""; corpo.innerHTML = ""; if (voltarPara) voltarPara.focus(); };
+      document.querySelectorAll(".event-card [data-galeria]").forEach(b => b.addEventListener("click", () => abrir(b.closest(".event-card").dataset.evento, b.dataset.galeria, b)));
+      modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-fechar-evento]")) fechar(); });
+      document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) fechar(); });
+    })();
