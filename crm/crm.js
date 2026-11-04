@@ -459,11 +459,12 @@
       (isAdmin() ? '<select data-f="corretor"><option value="">Todos os corretores</option><option value="_sem"' + (f.corretor === "_sem" ? " selected" : "") + ">Sem corretor</option>" + S.membros.filter(function (m) { return m.ativo; }).map(function (m) { return '<option value="' + m.id + '"' + (f.corretor === m.id ? " selected" : "") + ">" + esc(m.nome) + "</option>"; }).join("") + "</select>" : "") +
       '<select data-f="emp"><option value="">Todos os empreendimentos</option>' + EMPREENDIMENTOS.map(function (n) { return '<option' + (f.emp === n ? " selected" : "") + ">" + esc(n) + "</option>"; }).join("") + "</select>" +
       '<select data-f="periodo"><option value="">Todo o período</option>' + [[7, "Últimos 7 dias"], [30, "Últimos 30 dias"], [90, "Últimos 90 dias"]].map(function (p) { return '<option value="' + p[0] + '"' + (String(f.periodo) === String(p[0]) ? " selected" : "") + ">" + p[1] + "</option>"; }).join("") + "</select>" +
-      '<span class="spacer"></span>' + (comExport ? '<button class="btn ghost small" data-action="csv">Exportar CSV</button>' : "") + "</div>";
+      '<span class="spacer"></span>' + (comExport ? '<button class="btn ghost small" data-action="importar">⬆ Importar planilha</button><button class="btn ghost small" data-action="csv">Exportar CSV</button>' : "") + "</div>";
   }
   function ligarFiltros(root) {
     $$("[data-f]", root).forEach(function (s) { s.addEventListener("change", function () { S.f[s.dataset.f] = s.value; render(); }); });
     var c = $("[data-action=csv]", root); if (c) c.addEventListener("click", exportarCSV);
+    var im = $("[data-action=importar]", root); if (im) im.addEventListener("click", function () { if (window.DanovaCRM && window.DanovaCRM.importar) window.DanovaCRM.importar(); });
   }
   function rLeads() {
     var L = filtrados();
@@ -716,7 +717,7 @@
 
   var API = {
     sb: sb, S: S, $: $, $$: $$, esc: esc, dt: dt, money: money, toast: toast, falha: falha, tag: tag, etapaNome: etapaNome, ETAPAS: ETAPAS, ABERTAS: ABERTAS,
-    abrirLead: abrirLead, carregar: carregar, render: render, irPara: irPara, isAdmin: isAdmin, hojeISO: hojeISO, isoLocal: isoLocal, barras: barras, kpi: kpi, contar: contar
+    EMPREENDIMENTOS: EMPREENDIMENTOS, abrirLead: abrirLead, carregar: carregar, render: render, irPara: irPara, isAdmin: isAdmin, hojeISO: hojeISO, isoLocal: isoLocal, barras: barras, kpi: kpi, contar: contar
   };
   window.DanovaCRM = window.DanovaCRM || {};
   window.DanovaCRM.api = API;
