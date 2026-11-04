@@ -171,7 +171,7 @@
     // Fotos: "img/eventos/cmi-rio-2026/01.webp"  ·  Vídeos: arquivo .mp4 ou link do YouTube/Vimeo.
     const DANOVA_EVENTOS = {
       "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: ["img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp"], videos: [] },
-      "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: [], videos: [] },
+      "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: ["img/eventos/cmi-rio-2026/01.webp", "img/eventos/cmi-rio-2026/02.webp", "img/eventos/cmi-rio-2026/03.webp", "img/eventos/cmi-rio-2026/04.webp", "img/eventos/cmi-rio-2026/05.webp", "img/eventos/cmi-rio-2026/06.webp"], videos: [] },
       "global-family-office-2026": { nome: "Global Family Office 2026", fotos: [], videos: [] }
     };
     (function () {
