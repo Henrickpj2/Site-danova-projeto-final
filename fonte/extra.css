@@ -483,3 +483,6 @@
     .event-galeria.fotos a { overflow: hidden; border-radius: 12px; display: block; }
     .event-galeria.fotos a:hover img { transform: scale(1.04); }
     .event-n { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--teal); color: #06211f; font-size: 11px; font-weight: 800; margin-left: 4px; }
+    .video-inst { margin: 44px auto 0; max-width: 980px; }
+    .video-inst video { width: 100%; aspect-ratio: 16/9; display: block; border-radius: 18px; background: #05060a; box-shadow: 0 24px 60px rgba(11,20,36,.22); }
+    .video-inst figcaption { margin-top: 12px; text-align: center; font-size: 14px; color: var(--muted); }
