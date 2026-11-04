@@ -39,7 +39,10 @@ Deno.serve(async (req) => {
     if (!Array.isArray(linhas)) return json({ erro: "linhas_invalidas" }, 400);
     const sel = new Set((Array.isArray(conta.campanhas_sel) ? conta.campanhas_sel : []).map((c: { id: string }) => String(c.id)));
     const moeda = String(corpo.moeda || conta.moeda || "BRL").toUpperCase().slice(0, 3);
-    const anuncios = mapearMetaAnuncio(linhas.slice(0, 20000), act, moeda)
+    // O Make entrega datas como "2026-10-05T03:00:00.000Z" e números como texto ou número: normaliza antes de mapear.
+    const brutas = (linhas as Record<string, unknown>[]).slice(0, 20000).map((r) => ({ ...r, date_start: String(r?.date_start ?? "").slice(0, 10) }));
+    if (brutas.length) console.log("meta-integrador amostra", act, brutas.length, JSON.stringify(brutas[0]).slice(0, 600));
+    const anuncios = mapearMetaAnuncio(brutas, act, moeda)
       .filter((l: { data: string; anuncio_id: string; campanha_id: string }) => /^\d{4}-\d{2}-\d{2}$/.test(l.data) && l.anuncio_id && (!sel.size || sel.has(l.campanha_id)));
     // campanha/dia para a tela Campanhas (soma dos anúncios; alcance somado é aproximado)
     const porCamp = new Map<string, Record<string, unknown>>();
@@ -63,7 +66,7 @@ Deno.serve(async (req) => {
     const extra: Record<string, unknown> = { situacao: "conectada", ultimo_erro: null, ultima_sync: agora, moeda };
     if (corpo.nome) extra.nome = String(corpo.nome).slice(0, 120);
     await db.from("contas_anuncio").update(extra).eq("id", conta.id);
-    return json({ ok: true, anuncios: anuncios.length, campanhas_dia: camps.length });
+    return json({ ok: true, recebidas: brutas.length, anuncios: anuncios.length, campanhas_dia: camps.length });
   }
 
   // ---------- CRM (login) ----------
