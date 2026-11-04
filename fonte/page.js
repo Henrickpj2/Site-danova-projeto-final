@@ -170,7 +170,7 @@
     // Para publicar: coloque os arquivos em img/eventos/<evento>/ e liste aqui.
     // Fotos: "img/eventos/cmi-rio-2026/01.webp"  ·  Vídeos: arquivo .mp4 ou link do YouTube/Vimeo.
     const DANOVA_EVENTOS = {
-      "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: [], videos: [] },
+      "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: ["img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp"], videos: [] },
       "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: [], videos: [] },
       "global-family-office-2026": { nome: "Global Family Office 2026", fotos: [], videos: [] }
     };
@@ -201,6 +201,7 @@
       };
       const fechar = () => { modal.hidden = true; document.body.style.overflow = ""; corpo.innerHTML = ""; if (voltarPara) voltarPara.focus(); };
       document.querySelectorAll(".event-card [data-galeria]").forEach(b => b.addEventListener("click", () => abrir(b.closest(".event-card").dataset.evento, b.dataset.galeria, b)));
+      document.querySelectorAll(".event-card [data-galeria]").forEach(b => { const ev = DANOVA_EVENTOS[b.closest(".event-card").dataset.evento]; const n = ev && (ev[b.dataset.galeria] || []).length; if (n) b.innerHTML = b.textContent + ' <span class="event-n">' + n + "</span>"; });
       modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-fechar-evento]")) fechar(); });
       document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) fechar(); });
     })();
