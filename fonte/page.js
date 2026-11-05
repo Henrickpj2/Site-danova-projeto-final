@@ -169,6 +169,44 @@
     // ===== Eventos: galeria de fotos e vídeos =====
     // Para publicar: coloque os arquivos em img/eventos/<evento>/ e liste aqui.
     // Fotos: "img/eventos/cmi-rio-2026/01.webp"  ·  Vídeos: arquivo .mp4 ou link do YouTube/Vimeo.
+    // Carrossel do mosaico "Eventos, Marketing & PR" (arrastar para o lado)
+    const DANOVA_CARROSSEIS = {
+      networking: { nome: "Eventos & Networking", fotos: ["img/eventos/global-family-office-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp", "img/eventos/global-family-office-2026/03.webp", "img/eventos/cmi-rio-2026/04.webp"] },
+      imprensa: { nome: "PR & Imprensa", fotos: ["img/eventos/global-family-office-2026/05.webp", "img/eventos/cmi-rio-2026/05.webp", "img/imprensa/painel-politico-1.webp", "img/imprensa/painel-politico-2.webp", "img/imprensa/painel-politico-3.webp"] },
+      campanhas: { nome: "Campanhas & Lançamentos", fotos: ["img/eventos/sinal-junho-fifa-2026/08.webp", "img/eventos/sinal-junho-fifa-2026/09.webp", "img/eventos/sinal-junho-fifa-2026/10.webp", "img/eventos/sinal-junho-fifa-2026/11.webp", "img/eventos/global-family-office-2026/02.webp", "img/eventos/global-family-office-2026/04.webp"] },
+      conteudo: { nome: "Conteúdo & Autoridade", fotos: ["img/eventos/sinal-junho-fifa-2026/06.webp", "img/eventos/sinal-junho-fifa-2026/07.webp", "img/eventos/sinal-junho-fifa-2026/12.webp", "img/eventos/sinal-junho-fifa-2026/video-01.mp4#t=0.1"] }
+    };
+    (function () {
+      const box = document.getElementById("carrossel"); if (!box) return;
+      const trilho = document.getElementById("crsTrilho"), tit = document.getElementById("crsTit"), cont = document.getElementById("crsCont");
+      const esc = v => String(v).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      let voltar = null, total = 0;
+      document.querySelectorAll("[data-carrossel]").forEach(b => { const c = DANOVA_CARROSSEIS[b.dataset.carrossel]; const q = b.querySelector(".evx-qtd"); if (c && q) q.textContent = c.fotos.length + " ›"; });
+      const atual = () => Math.round(trilho.scrollLeft / Math.max(1, trilho.clientWidth));
+      const marcar = () => { const i = atual(); cont.textContent = (i + 1) + " / " + total; trilho.querySelectorAll("video").forEach((v, k) => { if (k !== i && !v.paused) v.pause(); }); };
+      const ir = d => trilho.scrollTo({ left: (atual() + d) * trilho.clientWidth, behavior: "smooth" });
+      const fechar = () => { box.hidden = true; document.body.style.overflow = ""; trilho.innerHTML = ""; if (voltar) voltar.focus(); };
+      const abrir = (k, botao) => {
+        const c = DANOVA_CARROSSEIS[k]; if (!c) return; voltar = botao; total = c.fotos.length; tit.textContent = c.nome;
+        trilho.innerHTML = c.fotos.map((u, i) => '<figure class="crs-slide">' + (/\.mp4/.test(u)
+          ? '<video src="' + esc(u) + '" controls playsinline preload="metadata"></video>'
+          : '<img src="' + esc(u) + '" alt="' + esc(c.nome) + " — " + (i + 1) + '" loading="' + (i < 2 ? "eager" : "lazy") + '" draggable="false">') + "</figure>").join("");
+        box.hidden = false; document.body.style.overflow = "hidden"; trilho.scrollLeft = 0; marcar(); trilho.focus();
+        if (window.dataLayer) window.dataLayer.push({ event: "carrossel_eventos", galeria: k });
+      };
+      document.querySelectorAll("[data-carrossel]").forEach(b => b.addEventListener("click", () => abrir(b.dataset.carrossel, b)));
+      let t; trilho.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(marcar, 60); });
+      box.querySelector(".crs-prev").addEventListener("click", () => ir(-1));
+      box.querySelector(".crs-next").addEventListener("click", () => ir(1));
+      box.querySelector("[data-crs-x]").addEventListener("click", fechar);
+      let arrastou = false;
+      box.addEventListener("click", e => { if (arrastou) { arrastou = false; return; } if (e.target === box || e.target.classList.contains("crs-slide")) fechar(); });
+      document.addEventListener("keydown", e => { if (box.hidden) return; if (e.key === "Escape") fechar(); else if (e.key === "ArrowRight") ir(1); else if (e.key === "ArrowLeft") ir(-1); });
+      // arrastar com o mouse no computador
+      let x0 = null, s0 = 0; trilho.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.target.tagName === "VIDEO") return; x0 = e.clientX; s0 = trilho.scrollLeft; trilho.style.scrollSnapType = "none"; });
+      window.addEventListener("pointermove", e => { if (x0 !== null) trilho.scrollLeft = s0 - (e.clientX - x0); });
+      window.addEventListener("pointerup", e => { if (x0 === null) return; const dx = e.clientX - x0; x0 = null; arrastou = Math.abs(dx) > 5; trilho.style.scrollSnapType = ""; const base = Math.round(s0 / trilho.clientWidth); const alvo = Math.abs(dx) > 50 ? base + (dx < 0 ? 1 : -1) : base; trilho.scrollTo({ left: alvo * trilho.clientWidth, behavior: "smooth" }); });
+    })();
     const DANOVA_EVENTOS = {
       "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: ["img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp", "img/eventos/sinal-junho-fifa-2026/06.webp", "img/eventos/sinal-junho-fifa-2026/07.webp", "img/eventos/sinal-junho-fifa-2026/08.webp", "img/eventos/sinal-junho-fifa-2026/09.webp", "img/eventos/sinal-junho-fifa-2026/10.webp", "img/eventos/sinal-junho-fifa-2026/11.webp", "img/eventos/sinal-junho-fifa-2026/12.webp"], videos: ["img/eventos/sinal-junho-fifa-2026/video-01.mp4#t=0.1"] },
       "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: ["img/eventos/cmi-rio-2026/01.webp", "img/eventos/cmi-rio-2026/02.webp", "img/eventos/cmi-rio-2026/03.webp", "img/eventos/cmi-rio-2026/04.webp", "img/eventos/cmi-rio-2026/05.webp", "img/eventos/cmi-rio-2026/06.webp"], videos: [] },

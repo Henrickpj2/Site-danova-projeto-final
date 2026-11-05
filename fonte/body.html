@@ -315,10 +315,10 @@ __CARDS__
 
         <!-- Mosaico editorial: troque a foto de cada bloco em data-foto / src (img/eventos/servicos/...) -->
         <div class="evx-mosaico">
-          <figure class="evx-tile evx-a"><img src="img/eventos/global-family-office-2026/01.webp" alt="Networking em evento internacional" loading="lazy"><figcaption><b>Eventos &amp; Networking</b><span>Relacionamentos estratégicos e experiências exclusivas.</span></figcaption></figure>
-          <figure class="evx-tile evx-b"><img src="img/eventos/global-family-office-2026/05.webp" alt="Painel com palestrantes em conferência" loading="lazy"><figcaption><b>PR &amp; Imprensa</b><span>Entrevistas, reportagens e posicionamento na mídia.</span></figcaption></figure>
-          <figure class="evx-tile evx-c"><img src="img/eventos/sinal-junho-fifa-2026/08.webp" alt="Palco de evento com patrocinadores" loading="lazy"><figcaption><b>Campanhas &amp; Lançamentos</b><span>Divulgação, convites, RSVP e geração de oportunidades.</span></figcaption></figure>
-          <figure class="evx-tile evx-d"><img src="img/eventos/sinal-junho-fifa-2026/06.webp" alt="Apresentação de empreendimento em palco" loading="lazy"><figcaption><b>Conteúdo &amp; Autoridade</b><span>Vídeos, entrevistas, cobertura e conteúdo pós-evento.</span></figcaption></figure>
+          <button type="button" class="evx-tile evx-a" data-carrossel="networking" aria-label="Ver fotos: Eventos &amp; Networking"><img src="img/eventos/global-family-office-2026/01.webp" alt="Networking em evento internacional" loading="lazy"><span class="evx-qtd" aria-hidden="true"></span><span class="evx-cap"><b>Eventos &amp; Networking</b><span>Relacionamentos estratégicos e experiências exclusivas.</span></span></button>
+          <button type="button" class="evx-tile evx-b" data-carrossel="imprensa" aria-label="Ver fotos: PR &amp; Imprensa"><img src="img/eventos/global-family-office-2026/05.webp" alt="Painel com palestrantes em conferência" loading="lazy"><span class="evx-qtd" aria-hidden="true"></span><span class="evx-cap"><b>PR &amp; Imprensa</b><span>Entrevistas, reportagens e posicionamento na mídia.</span></span></button>
+          <button type="button" class="evx-tile evx-c" data-carrossel="campanhas" aria-label="Ver fotos: Campanhas &amp; Lançamentos"><img src="img/eventos/sinal-junho-fifa-2026/08.webp" alt="Palco de evento com patrocinadores" loading="lazy"><span class="evx-qtd" aria-hidden="true"></span><span class="evx-cap"><b>Campanhas &amp; Lançamentos</b><span>Divulgação, convites, RSVP e geração de oportunidades.</span></span></button>
+          <button type="button" class="evx-tile evx-d" data-carrossel="conteudo" aria-label="Ver fotos: Conteúdo &amp; Autoridade"><img src="img/eventos/sinal-junho-fifa-2026/06.webp" alt="Apresentação de empreendimento em palco" loading="lazy"><span class="evx-qtd" aria-hidden="true"></span><span class="evx-cap"><b>Conteúdo &amp; Autoridade</b><span>Vídeos, entrevistas, cobertura e conteúdo pós-evento.</span></span></button>
         </div>
 
         <div class="evx-head2"><div class="eyebrow">O que fazemos</div></div>
@@ -404,6 +404,12 @@ __CARDS__
         </div>
       </div>
     </section>
+
+    <div class="crs" id="carrossel" hidden role="dialog" aria-modal="true" aria-labelledby="crsTit">
+      <div class="crs-top"><div><small id="crsSub">Galeria</small><h3 id="crsTit"></h3></div><div class="crs-dir"><span id="crsCont"></span><button type="button" class="crs-x" data-crs-x aria-label="Fechar">✕</button></div></div>
+      <div class="crs-palco"><button type="button" class="crs-seta crs-prev" aria-label="Foto anterior">‹</button><div class="crs-trilho" id="crsTrilho" tabindex="0"></div><button type="button" class="crs-seta crs-next" aria-label="Próxima foto">›</button></div>
+      <p class="crs-dica">Arraste para o lado ou use as setas</p>
+    </div>
 
     <div class="event-modal" id="eventModal" hidden role="dialog" aria-modal="true" aria-labelledby="eventModalTitulo">
       <div class="event-modal-box">
