@@ -40,6 +40,36 @@
       const option = Array.from(select.options).find(o => o.text === text);
       if (option) select.value = option.value;
     }
+    // Jornadas do formulário de contato: demonstração, parceiro, empreendimento, diagnóstico
+    const JORNADAS = {
+      demo: { t: "Agende uma demonstração da plataforma", p: "Mostramos o dashboard, a integração com Meta e Google Ads, o CRM e a IA com a sua operação em mente.", b: "Agendar demonstração", goal: "Plataforma danova AI (CRM)", ph: "Quantos empreendimentos e corretores você tem hoje? O que quer acompanhar?", ev: "solicitar_demo" },
+      parceiro: { t: "Cadastro de parceiro", p: "Conte quem você é e onde atua. Retornamos para alinhar a parceria.", b: "Enviar cadastro de parceiro", goal: "Parceria comercial", ph: "Sua experiência, região e o tipo de parceria que procura", ev: "cadastro_parceiro" },
+      empreendimento: { t: "Receba plantas, preços e disponibilidade", p: "Diga o empreendimento e o que procura. Enviamos as informações atualizadas.", b: "Quero receber as informações", goal: "Investimento / renda", perfil: "Investidor ou comprador", ph: "Orçamento, prazo, número de quartos, objetivo (morar, investir, EB-5)", ev: "lead_empreendimento" },
+      diagnostico: { t: "Solicite um diagnóstico de marketing", p: "Mapeamos seus canais, o atendimento e os indicadores — e mostramos onde o investimento está se perdendo.", b: "Solicitar diagnóstico", goal: "", ph: "O que você deseja melhorar na operação: campanhas, leads, atendimento, vendas", ev: "diagnostico_marketing" }
+    };
+    const jInput = document.getElementById("jornada");
+    function definirJornada(j) {
+      const cfg = JORNADAS[j]; if (!cfg || !jInput) return;
+      jInput.value = j;
+      document.querySelectorAll(".jornadas [data-j]").forEach(b => b.setAttribute("aria-selected", b.dataset.j === j ? "true" : "false"));
+      document.getElementById("jTitulo").textContent = cfg.t;
+      document.getElementById("jTexto").textContent = cfg.p;
+      document.getElementById("jBotao").innerHTML = cfg.b + " <span>↗</span>";
+      document.getElementById("notes").placeholder = cfg.ph;
+      document.querySelectorAll("#leadForm [data-js]").forEach(w => {
+        const on = w.dataset.js.split(" ").includes(j); w.hidden = !on;
+        w.querySelectorAll("[required], [data-req]").forEach(el => { if (on) { if (el.dataset.req) el.required = true; } else if (el.required) { el.dataset.req = "1"; el.required = false; } });
+      });
+      const goal = document.getElementById("goal"), prof = document.getElementById("profile");
+      if (cfg.goal) { const o = Array.from(goal.options).find(x => x.text === cfg.goal); if (o) goal.value = o.value; } else if (goal.dataset.auto) goal.value = "";
+      goal.dataset.auto = cfg.goal ? j : "";
+      if (cfg.perfil) { const o = Array.from(prof.options).find(x => x.text === cfg.perfil); if (o) prof.value = o.value; }
+      const ok = document.getElementById("formOk"); if (ok) ok.hidden = true;
+    }
+    document.querySelectorAll(".jornadas [data-j]").forEach(b => b.addEventListener("click", () => definirJornada(b.dataset.j)));
+    document.querySelectorAll("[data-jornada]").forEach(a => a.addEventListener("click", () => definirJornada(a.dataset.jornada)));
+    definirJornada((location.hash.match(/jornada=(\w+)/) || [])[1] || "demo");
+
     document.querySelectorAll("[data-project]").forEach(link =>
       link.addEventListener("click", () => selectByText(projectSelect, link.dataset.project)));
     document.querySelectorAll("[data-interest]").forEach(link =>
@@ -86,35 +116,48 @@
       document.getElementById("fullMessage").value = buildMessage();
     }, true);
 
-    form.addEventListener("submit", event => {
+    // Envio com confirmação: a conversão (generate_lead) só é registrada depois que o CRM confirma o recebimento.
+    form.addEventListener("submit", async event => {
       event.preventDefault();
       if (!form.checkValidity()) return;
-      // Envia o lead estruturado direto para o CRM (Supabase). O e-mail de aviso segue pelo /api/lead.php.
+      const btn = document.getElementById("jBotao"), ok = document.getElementById("formOk"), j = (jInput && jInput.value) || "diagnostico";
+      const msg = buildMessage(), whats = "https://wa.me/" + DANOVA_WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+      const txtBtn = btn.innerHTML; btn.disabled = true; btn.textContent = "Enviando…";
+      let confirmado = false;
       try {
         const crm = window.DANOVA_CRM;
         if (crm && crm.url) {
           const dados = Object.fromEntries(new FormData(form).entries());
-          dados.lead_page = "home"; dados.source = "leadForm";
-          dados.notes = [dados.company ? "Empresa: " + dados.company : "", dados.notes || "",
+          dados.lead_page = "home"; dados.source = "leadForm-" + j;
+          dados.notes = ["Assunto: " + (JORNADAS[j] ? JORNADAS[j].t : j), dados.company ? "Empresa: " + dados.company : "", dados.notes || "",
             "Consentimento de contato e Política de Privacidade: aceito em " + new Date().toLocaleString("pt-BR")].filter(Boolean).join("\n");
           dados.language = (document.documentElement.lang || "pt").slice(0, 2);
-          fetch(crm.url + "/rest/v1/rpc/enviar_lead", {
-            method: "POST", keepalive: true,
+          const r = await fetch(crm.url + "/rest/v1/rpc/enviar_lead", {
+            method: "POST",
             headers: { "Content-Type": "application/json", apikey: crm.anonKey, Authorization: "Bearer " + crm.anonKey },
             body: JSON.stringify({ dados: dados })
-          }).catch(() => {});
+          });
+          confirmado = r.ok;
         }
-      } catch (e) {}
+      } catch (e) { confirmado = false; }
       if (!window.__danovaTracking) {
-        // Fallback se o script de medição não carregar: envia direto ao receptor de leads.
         const payload = Object.fromEntries(new FormData(form).entries());
-        payload.source = "leadForm"; payload.page = "home";
+        payload.source = "leadForm-" + j; payload.page = "home";
         fetch("/api/lead.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), keepalive: true }).catch(() => {});
       }
-      const url = "https://wa.me/" + DANOVA_WHATSAPP_NUMBER + "?text=" + encodeURIComponent(buildMessage());
-      window.open(url, "_blank", "noopener,noreferrer");
-      showToast("Obrigado! Recebemos sua solicitação — a conversa no WhatsApp foi aberta em uma nova aba.");
-      form.reset();
+      btn.disabled = false; btn.innerHTML = txtBtn;
+      document.getElementById("formOkWhats").href = whats;
+      if (confirmado) {
+        if (window.danovaConfirmarLead) window.danovaConfirmarLead(form, { jornada: j, lead_type: j });
+        if (window.dataLayer && JORNADAS[j]) window.dataLayer.push({ event: JORNADAS[j].ev, jornada: j });
+        ok.querySelector("b").textContent = "Recebemos sua solicitação.";
+        ok.hidden = false; form.reset(); definirJornada(j);
+        ok.hidden = false; ok.scrollIntoView({ block: "center", behavior: "smooth" });
+      } else {
+        ok.querySelector("b").textContent = "Não conseguimos confirmar o envio.";
+        ok.hidden = false;
+        showToast("Não conseguimos confirmar o envio agora. Use o WhatsApp para falar com a equipe.");
+      }
     });
 
     // Pedido de vídeo pronto para anúncios → CRM (lead + pedido). O e-mail de aviso segue pelo script de medição.

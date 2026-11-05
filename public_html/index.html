@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1424">
-  <title>DANOVA-AI | Real Estate Intelligence · tráfego pago, CRM e vendas imobiliárias</title>
-  <meta name="description" content="DANOVA-AI conecta campanhas de Meta Ads e Google Ads, leads, corretores e vendas para transformar marketing imobiliário em performance mensurável. CRM, IA e vídeo para anúncios.">
+  <meta name="theme-color" content="#142B3C">
+  <title>DANOVA-AI | Real Estate Intelligence — a inteligência por trás das vendas imobiliárias</title>
+  <meta name="description" content="Plataforma que conecta tráfego pago, CRM, inteligência artificial e gestão comercial para construtoras, imobiliárias e corretores: dashboard, Meta Ads, Google Ads, CRM, IA e eventos.">
   <link rel="canonical" href="https://danova-ai.com/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="danova AI | Tráfego pago que vende empreendimentos">
-  <meta property="og:description" content="Meta Ads e Google Ads para lançamentos imobiliários, há 10 anos. Do anúncio à venda, com CRM e IA.">
+  <meta property="og:title" content="DANOVA-AI | A inteligência por trás das vendas imobiliárias">
+  <meta property="og:description" content="Tráfego pago, CRM, inteligência artificial e gestão comercial em uma única plataforma — investimentos, campanhas, leads, corretores e resultados em um só lugar.">
   <meta property="og:image" content="https://danova-ai.com/img/og-danova.jpg">
   <meta property="og:url" content="https://danova-ai.com/">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
@@ -25,17 +27,19 @@
   <script src="js/danova-tracking.js?v=20261020" defer></script>
   <style>
     :root {
-      --navy: #0b1424;
-      --navy-2: #101f33;
-      --slate: #24364b;
-      --teal: #16b8a6;
-      --teal-dark: #0e8f83;
-      --ice: #f4f7fa;
+      --navy: #142B3C;
+      --navy-2: #1B3547;
+      --slate: #24313A;
+      --teal: #C6A66B;
+      --teal-dark: #8C6D35;
+      --ice: #F7F7F5;
       --white: #fff;
-      --text: #172334;
-      --muted: #66758a;
-      --line: rgba(18, 35, 54, .12);
-      --shadow: 0 22px 70px rgba(8, 22, 39, .12);
+      --text: #24313A;
+      --muted: #5E6A72;
+      --gold: #C6A66B;
+      --sand: #E9E3D8;
+      --line: rgba(36, 49, 58, .12);
+      --shadow: 0 22px 70px rgba(20, 43, 60, .12);
       --radius: 22px;
       --max: 1180px;
     }
@@ -47,10 +51,10 @@
     button, input, select, textarea { font: inherit; }
     button, a { -webkit-tap-highlight-color: transparent; }
     .container { width: min(var(--max), calc(100% - 40px)); margin-inline: auto; }
-    .topbar { background: #07101d; color: #d8e1ec; font-size: 12px; letter-spacing: .04em; }
+    .topbar { background: #0E1F2B; color: #d8e1ec; font-size: 12px; letter-spacing: .04em; }
     .topbar-inner { min-height: 36px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
     .topbar a { color: var(--teal); }
-    header { position: sticky; top: 0; z-index: 50; background: rgba(11,20,36,.96); backdrop-filter: blur(14px); color: white; border-bottom: 1px solid rgba(255,255,255,.08); }
+    header { position: sticky; top: 0; z-index: 50; background: rgba(20,43,60,.96); backdrop-filter: blur(14px); color: white; border-bottom: 1px solid rgba(255,255,255,.08); }
     .nav { min-height: 78px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
     .brand { display: inline-flex; align-items: center; gap: 10px; font: 800 24px/1 "Manrope", sans-serif; letter-spacing: -.06em; white-space: nowrap; }
     .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border: 1.5px solid var(--teal); color: var(--teal); border-radius: 11px; font-size: 18px; letter-spacing: 0; }
@@ -59,27 +63,28 @@
     .nav-links a:hover { color: var(--teal); }
     .btn { border: 0; border-radius: 999px; padding: 13px 20px; display: inline-flex; justify-content: center; align-items: center; gap: 9px; font-weight: 700; font-size: 13px; cursor: pointer; transition: transform .2s, background .2s, border-color .2s; }
     .btn:hover { transform: translateY(-2px); }
-    .btn-primary { background: var(--teal); color: #06211f; }
-    .btn-primary:hover { background: #32d0bd; }
+    .btn-primary { background: var(--teal); color: #142B3C; }
+    .btn-primary:hover { background: #D4B87F; }
     .btn-outline { border: 1px solid rgba(255,255,255,.3); color: white; background: transparent; }
     .btn-outline-dark { border: 1px solid var(--line); color: var(--navy); background: white; }
     .menu-toggle { display: none; background: transparent; color: white; border: 1px solid rgba(255,255,255,.25); border-radius: 10px; padding: 8px 11px; cursor: pointer; }
     .eyebrow { color: var(--teal-dark); font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; display: flex; align-items: center; gap: 10px; }
     .eyebrow::before { content: ""; width: 24px; height: 2px; background: currentColor; }
-    h1, h2, h3, h4 { font-family: "Manrope", sans-serif; letter-spacing: -.045em; line-height: 1.13; margin: 0; }
+    h1, h2, h3, h4 { font-family: "Manrope", sans-serif; letter-spacing: -.03em; line-height: 1.13; margin: 0; }
+    h1, h2 { font-family: "Playfair Display", Georgia, serif; font-weight: 500; letter-spacing: -.015em; line-height: 1.08; }
     h1 { font-size: clamp(42px, 6vw, 76px); color: white; max-width: 760px; }
     h2 { font-size: clamp(30px, 4vw, 48px); }
     h3 { font-size: 21px; }
     p { margin: 0; }
     .hero { position: relative; min-height: 660px; color: white; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
     .hero-content { position: relative; z-index: 1; padding: 92px 0 104px; }
-    .hero .eyebrow { color: #62e0d1; margin-bottom: 24px; }
-    .hero h1 span { color: #63dfd0; }
+    .hero .eyebrow { color: #D9C08F; margin-bottom: 24px; }
+    .hero h1 span { color: #D9C08F; }
     .hero-copy { color: #d6e0eb; max-width: 600px; margin-top: 24px; font-size: 17px; }
     .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
     .hero-note { display: flex; gap: 10px; align-items: center; color: #c4d0de; font-size: 12px; margin-top: 26px; }
-    .hero-note::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 5px rgba(22,184,166,.15); }
-    .hero-stat { position: absolute; right: max(20px, calc((100vw - var(--max))/2)); bottom: 42px; z-index: 2; background: rgba(11,20,36,.72); border: 1px solid rgba(255,255,255,.2); border-radius: 18px; padding: 20px 24px; width: 240px; backdrop-filter: blur(12px); }
+    .hero-note::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 5px rgba(198,166,107,.15); }
+    .hero-stat { position: absolute; right: max(20px, calc((100vw - var(--max))/2)); bottom: 42px; z-index: 2; background: rgba(20,43,60,.72); border: 1px solid rgba(255,255,255,.2); border-radius: 18px; padding: 20px 24px; width: 240px; backdrop-filter: blur(12px); }
     .hero-stat strong { display: block; font: 700 15px "Manrope", sans-serif; }
     .hero-stat small { color: #c4d0de; display: block; margin-top: 5px; font-size: 12px; }
     .section { padding: 100px 0; }
@@ -92,18 +97,18 @@
     .value-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
     .value-card { padding: 26px; background: white; border: 1px solid var(--line); border-radius: var(--radius); min-height: 220px; transition: transform .2s, box-shadow .2s; }
     .value-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-    .icon-box { width: 48px; height: 48px; display: grid; place-items: center; background: rgba(22,184,166,.12); color: var(--teal-dark); border-radius: 15px; margin-bottom: 24px; }
+    .icon-box { width: 48px; height: 48px; display: grid; place-items: center; background: rgba(198,166,107,.12); color: var(--teal-dark); border-radius: 15px; margin-bottom: 24px; }
     .icon-box svg { width: 23px; height: 23px; }
     .value-card p { color: var(--muted); font-size: 14px; margin-top: 11px; }
     .split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
     .split-image { min-height: 470px; border-radius: 28px; overflow: hidden; position: relative; background: #d8e1e8; }
     .split-image img { width: 100%; height: 100%; min-height: 470px; object-fit: cover; }
-    .image-tag { position: absolute; bottom: 22px; left: 22px; right: 22px; background: rgba(11,20,36,.88); color: white; padding: 18px 20px; border-radius: 16px; backdrop-filter: blur(12px); }
+    .image-tag { position: absolute; bottom: 22px; left: 22px; right: 22px; background: rgba(20,43,60,.88); color: white; padding: 18px 20px; border-radius: 16px; backdrop-filter: blur(12px); }
     .image-tag strong { display: block; font-family: "Manrope", sans-serif; }
     .image-tag span { display: block; font-size: 12px; color: #cbd5e1; margin-top: 4px; }
     .check-list { display: grid; gap: 17px; margin: 28px 0 32px; }
     .check-item { display: flex; align-items: flex-start; gap: 12px; }
-    .check { flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(22,184,166,.15); color: var(--teal-dark); font-size: 13px; font-weight: 800; margin-top: 2px; }
+    .check { flex: 0 0 22px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; background: rgba(198,166,107,.15); color: var(--teal-dark); font-size: 13px; font-weight: 800; margin-top: 2px; }
     .check-item strong { display: block; font-size: 14px; }
     .check-item span { display: block; font-size: 13px; color: var(--muted); margin-top: 3px; }
     .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
@@ -115,7 +120,7 @@
     .property-image { height: 235px; position: relative; overflow: hidden; background: #dbe4ec; }
     .property-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
     .property-card:hover .property-image img { transform: scale(1.04); }
-    .property-badge { position: absolute; top: 15px; left: 15px; background: rgba(11,20,36,.88); color: white; border-radius: 999px; padding: 7px 11px; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .property-badge { position: absolute; top: 15px; left: 15px; background: rgba(20,43,60,.88); color: white; border-radius: 999px; padding: 7px 11px; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
     .property-body { padding: 23px; }
     .location { color: var(--muted); font-size: 12px; display: flex; gap: 7px; align-items: center; margin-bottom: 10px; }
     .location svg { width: 14px; height: 14px; color: var(--teal-dark); }
@@ -128,17 +133,17 @@
     .empty-state { display: none; padding: 26px; border: 1px dashed var(--line); border-radius: 16px; color: var(--muted); text-align: center; }
     .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
     .audience-card { border: 1px solid rgba(255,255,255,.12); border-radius: 20px; padding: 28px; background: rgba(255,255,255,.035); }
-    .audience-card .icon-box { background: rgba(22,184,166,.15); color: #63dfd0; }
+    .audience-card .icon-box { background: rgba(198,166,107,.15); color: #D9C08F; }
     .audience-card p { color: #c2ccda; font-size: 14px; margin-top: 12px; }
-    .audience-card a { display: inline-block; color: #63dfd0; font-size: 12px; font-weight: 800; margin-top: 22px; }
+    .audience-card a { display: inline-block; color: #D9C08F; font-size: 12px; font-weight: 800; margin-top: 22px; }
     .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: steps; }
     .step { border-top: 1px solid var(--line); padding-top: 22px; counter-increment: steps; }
     .step::before { content: "0" counter(steps); display: block; color: var(--teal-dark); font: 800 13px "Manrope", sans-serif; margin-bottom: 20px; }
     .step p { color: var(--muted); font-size: 13px; margin-top: 10px; }
-    .cta-band { background: linear-gradient(115deg, #101f33, #0b1424 65%, #123b42); color: white; border-radius: 28px; padding: 54px; display: flex; align-items: center; justify-content: space-between; gap: 28px; position: relative; overflow: hidden; }
-    .cta-band::after { content: ""; position: absolute; width: 300px; height: 300px; border: 1px solid rgba(99,223,208,.22); border-radius: 50%; right: 12%; top: -190px; box-shadow: 0 0 0 35px rgba(99,223,208,.03), 0 0 0 70px rgba(99,223,208,.025); }
+    .cta-band { background: linear-gradient(115deg, #1B3547, #142B3C 65%, #1f3a4d); color: white; border-radius: 28px; padding: 54px; display: flex; align-items: center; justify-content: space-between; gap: 28px; position: relative; overflow: hidden; }
+    .cta-band::after { content: ""; position: absolute; width: 300px; height: 300px; border: 1px solid rgba(217,192,143,.22); border-radius: 50%; right: 12%; top: -190px; box-shadow: 0 0 0 35px rgba(217,192,143,.03), 0 0 0 70px rgba(217,192,143,.025); }
     .cta-copy { position: relative; z-index: 1; max-width: 650px; }
-    .cta-copy .eyebrow { color: #63dfd0; margin-bottom: 16px; }
+    .cta-copy .eyebrow { color: #D9C08F; margin-bottom: 16px; }
     .cta-copy p { color: #c2ccda; margin-top: 14px; }
     .cta-band .btn { position: relative; z-index: 1; flex-shrink: 0; }
     .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items: start; }
@@ -154,11 +159,11 @@
     .field { display: grid; gap: 7px; }
     .field.full { grid-column: 1 / -1; }
     label { font-size: 12px; font-weight: 700; }
-    input, select, textarea { width: 100%; padding: 13px 14px; border: 1px solid #d9e0e8; border-radius: 11px; background: #fbfcfd; color: var(--text); outline: none; font-size: 13px; }
-    input:focus, select:focus, textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(22,184,166,.12); }
+    input, select, textarea { width: 100%; padding: 13px 14px; border: 1px solid #d9e0e8; border-radius: 11px; background: #FBFAF7; color: var(--text); outline: none; font-size: 13px; }
+    input:focus, select:focus, textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(198,166,107,.12); }
     textarea { min-height: 100px; resize: vertical; }
     .form-note { color: var(--muted); font-size: 11px; margin-top: 12px; }
-    footer { background: #07101d; color: white; padding: 54px 0 24px; }
+    footer { background: #0E1F2B; color: white; padding: 54px 0 24px; }
     .footer-top { display: flex; justify-content: space-between; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,.12); }
     .footer-brand { max-width: 350px; }
     .footer-brand p { color: #a9b7c8; font-size: 13px; margin-top: 17px; }
@@ -225,7 +230,7 @@
     .about-photo { min-height: 560px; }
     .about-photo img { min-height: 560px; object-position: center 20%; }
     .creds { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; }
-    .creds span { font-size: 11px; font-weight: 700; padding: 7px 12px; border-radius: 999px; background: rgba(22,184,166,.1); color: var(--teal-dark); }
+    .creds span { font-size: 11px; font-weight: 700; padding: 7px 12px; border-radius: 999px; background: rgba(198,166,107,.1); color: var(--teal-dark); }
     .book { display: flex; gap: 18px; align-items: center; margin-top: 30px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; }
     .book img { width: 64px; border-radius: 6px; box-shadow: 0 8px 18px rgba(8,22,39,.18); }
     .book strong { display: block; font-size: 14px; }
@@ -233,7 +238,7 @@
     .book a { color: var(--teal-dark); font-weight: 800; font-size: 12px; display: inline-block; margin-top: 6px; }
     .network-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 42px; }
     .network-item { padding: 22px; border-radius: 18px; border: 1px solid rgba(255,255,255,.12); }
-    .network-item small { color: #63dfd0; font-weight: 800; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
+    .network-item small { color: #D9C08F; font-weight: 800; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
     .network-item h4 { font-size: 17px; margin-top: 8px; }
     .network-item p { color: #c2ccda; font-size: 13px; margin-top: 8px; }
     .legal-note { color: #8291a4; font-size: 11px; margin-top: 18px; max-width: 900px; }
@@ -246,24 +251,24 @@
     @media (max-width: 1180px) { header .brand-logo { height: 36px; } }
     footer .brand-logo { height: 48px; }
     /* ---- Hero + Localizador ---- */
-    :root { --hot: #ec3d8f; --violet: #6b3fd4; --sky: #3ec5f0; --amber: #f7a24a; }
-    .hero { min-height: 0; background: radial-gradient(900px 600px at 80% 30%, rgba(107,63,212,.30), transparent 65%), radial-gradient(700px 500px at 95% 90%, rgba(236,61,143,.16), transparent 70%), #080f1d; }
+    :root { --hot: #C6A66B; --violet: #A8884E; --sky: #E9E3D8; --amber: #D9C08F; }
+    .hero { min-height: 0; background: radial-gradient(900px 600px at 80% 30%, rgba(168,136,78,.30), transparent 65%), radial-gradient(700px 500px at 95% 90%, rgba(198,166,107,.16), transparent 70%), #080f1d; }
     .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(ellipse at 70% 40%, #000 25%, transparent 75%); -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 25%, transparent 75%); }
     .hero-layout { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.08fr; gap: 48px; align-items: center; padding: 64px 0 76px; }
     .hero-content { padding: 0; }
     .hero h1 { font-size: clamp(38px, 4.6vw, 62px); }
-    .hero h1 span { background: linear-gradient(90deg, #63dfd0, var(--sky) 35%, #b48cff 70%, var(--hot)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero h1 span { background: linear-gradient(90deg, #D9C08F, var(--sky) 35%, #b48cff 70%, var(--hot)); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .hero-copy strong { color: white; }
     .hero-proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 34px; max-width: 560px; }
-    .hero-proof div { border-left: 2px solid rgba(99,223,208,.6); padding: 2px 0 2px 12px; }
+    .hero-proof div { border-left: 2px solid rgba(217,192,143,.6); padding: 2px 0 2px 12px; }
     .hero-proof strong { display: block; font: 800 15px "Manrope", sans-serif; color: white; }
     .hero-proof span { display: block; font-size: 11.5px; color: #a9b7c8; margin-top: 2px; }
 
     .loc-wrap { width: 100%; max-width: 620px; justify-self: end; }
     .loc-kicker { display: flex; align-items: center; gap: 8px; color: #c4d0de; font-size: 12px; margin: 0 0 10px 4px; }
-    .loc-kicker span { width: 8px; height: 8px; border-radius: 50%; background: var(--hot); box-shadow: 0 0 0 5px rgba(236,61,143,.18); }
+    .loc-kicker span { width: 8px; height: 8px; border-radius: 50%; background: var(--hot); box-shadow: 0 0 0 5px rgba(198,166,107,.18); }
     .loc-card { background: #fff; color: var(--text); border-radius: 22px; padding: 20px; box-shadow: 0 40px 90px rgba(0,0,0,.45); position: relative; }
-    .loc-card::before { content: ""; position: absolute; inset: -1.5px; border-radius: 23px; z-index: -1; background: linear-gradient(120deg, #3ec5f0, #6b3fd4 40%, #ec3d8f 75%, #f7a24a); }
+    .loc-card::before { content: ""; position: absolute; inset: -1.5px; border-radius: 23px; z-index: -1; background: linear-gradient(120deg, #E9E3D8, #A8884E 40%, #C6A66B 75%, #D9C08F); }
     .loc-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
     .loc-title { font-size: 20px; letter-spacing: -.03em; color: var(--navy); }
     .loc-head p { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
@@ -275,11 +280,11 @@
     .loc-range input { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 99px; padding: 0; border: 0; background: #e3e8ef; outline: none; box-shadow: none; }
     .loc-range input::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: white; border: 3px solid var(--hot); box-shadow: 0 2px 8px rgba(0,0,0,.2); cursor: pointer; }
     .loc-range input::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: white; border: 3px solid var(--hot); cursor: pointer; }
-    .loc-range input:focus-visible { box-shadow: 0 0 0 3px rgba(107,63,212,.25); }
+    .loc-range input:focus-visible { box-shadow: 0 0 0 3px rgba(168,136,78,.25); }
     .loc-group { display: grid; grid-template-columns: 62px 1fr; gap: 8px; align-items: start; }
     .loc-group > span { font-size: 12px; font-weight: 700; color: #3a4a60; padding-top: 6px; }
     .loc-group > div { display: flex; flex-wrap: wrap; gap: 6px; }
-    .loc-group button { border: 1px solid #d9e0e8; background: #fbfcfd; border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 700; color: #4a5a70; cursor: pointer; transition: .15s; }
+    .loc-group button { border: 1px solid #d9e0e8; background: #FBFAF7; border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 700; color: #4a5a70; cursor: pointer; transition: .15s; }
     .loc-group button:hover { border-color: var(--violet); color: var(--violet); }
     .loc-group button.on { background: var(--navy); border-color: var(--navy); color: white; }
     .loc-body { display: grid; grid-template-columns: 138px 1fr; gap: 14px; }
@@ -293,7 +298,7 @@
     .loc-pin.hl .loc-dot { fill: var(--amber); r: 9; }
     @keyframes locPulse { 0% { opacity: .9; r: 7; } 100% { opacity: 0; r: 20; } }
     .loc-results { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; align-content: start; }
-    .loc-results li { display: grid; grid-template-columns: 64px 1fr 30px; gap: 10px; align-items: center; padding: 8px; border: 1px solid #e6ebf1; border-radius: 13px; background: #fbfcfd; animation: locIn .35s ease both; transition: border-color .2s; }
+    .loc-results li { display: grid; grid-template-columns: 64px 1fr 30px; gap: 10px; align-items: center; padding: 8px; border: 1px solid #e6ebf1; border-radius: 13px; background: #FBFAF7; animation: locIn .35s ease both; transition: border-color .2s; }
     .loc-results li:hover { border-color: var(--violet); }
     @keyframes locIn { from { opacity: 0; transform: translateY(6px); } }
     .loc-results img { width: 64px; height: 64px; object-fit: cover; border-radius: 9px; }
@@ -309,17 +314,17 @@
     .loc-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #edf0f4; }
     .loc-foot a:not(.btn) { font-size: 12px; font-weight: 700; color: var(--teal-dark); }
     .property-card.flash { animation: cardFlash 1.6s ease; }
-    @keyframes cardFlash { 0%, 60% { box-shadow: 0 0 0 4px rgba(236,61,143,.55), var(--shadow); } }
+    @keyframes cardFlash { 0%, 60% { box-shadow: 0 0 0 4px rgba(198,166,107,.55), var(--shadow); } }
 
     /* ---- Estratégia: Meta Ads e Google Ads ---- */
     .channel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .channel-card { background: white; border: 1px solid var(--line); border-radius: 22px; padding: 26px; position: relative; overflow: hidden; }
     .channel-card::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; }
-    .channel-card.meta::after { background: linear-gradient(90deg, #3ec5f0, #6b3fd4, #ec3d8f); }
+    .channel-card.meta::after { background: linear-gradient(90deg, #E9E3D8, #A8884E, #C6A66B); }
     .channel-card.google::after { background: linear-gradient(90deg, #4285f4, #34a853, #fbbc05, #ea4335); }
     .channel-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
     .channel-logo { width: 46px; height: 46px; border-radius: 14px; display: grid; place-items: center; font: 800 22px "Manrope", sans-serif; color: white; flex: 0 0 46px; }
-    .meta .channel-logo { background: linear-gradient(135deg, #3ec5f0, #6b3fd4); }
+    .meta .channel-logo { background: linear-gradient(135deg, #E9E3D8, #A8884E); }
     .google .channel-logo { background: linear-gradient(135deg, #4285f4, #34a853); }
     .channel-head h3 { font-size: 22px; }
     .channel-head small { display: block; color: var(--muted); font-size: 12px; }
@@ -329,18 +334,18 @@
     .channel-card li::before { content: ""; position: absolute; left: 2px; top: 8px; width: 8px; height: 8px; border-radius: 3px; background: var(--teal); }
     .channel-card li strong { color: var(--navy); }
     .metrics-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 18px; padding: 16px 20px; border-radius: 16px; background: var(--navy); color: white; }
-    .metrics-strip span { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #63dfd0; margin-right: 6px; }
+    .metrics-strip span { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #D9C08F; margin-right: 6px; }
     .metrics-strip b { font-size: 13px; font-weight: 700; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.08); }
 
     /* ---- Funil ---- */
     .flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; counter-reset: none; }
     .flow li { position: relative; padding: 18px 16px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
-    .flow li:not(:last-child)::after { content: "→"; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: #63dfd0; font-weight: 800; z-index: 1; }
-    .flow i { display: block; font: 800 12px "Manrope", sans-serif; font-style: normal; background: linear-gradient(90deg, #3ec5f0, #ec3d8f); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .flow li:not(:last-child)::after { content: "→"; position: absolute; right: -10px; top: 50%; transform: translateY(-50%); color: #D9C08F; font-weight: 800; z-index: 1; }
+    .flow i { display: block; font: 800 12px "Manrope", sans-serif; font-style: normal; background: linear-gradient(90deg, #E9E3D8, #C6A66B); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .flow strong { display: block; font: 800 16px "Manrope", sans-serif; margin-top: 8px; }
     .flow span { display: block; font-size: 12.5px; color: #a9b7c8; margin-top: 6px; }
-    .flow li:last-child { background: linear-gradient(135deg, rgba(62,197,240,.18), rgba(236,61,143,.2)); border-color: rgba(236,61,143,.4); }
-    .flow-loop { margin-top: 18px; color: #c2ccda; font-size: 14px; padding: 14px 18px; border: 1px dashed rgba(99,223,208,.4); border-radius: 14px; }
+    .flow li:last-child { background: linear-gradient(135deg, rgba(233,227,216,.18), rgba(198,166,107,.2)); border-color: rgba(198,166,107,.4); }
+    .flow-loop { margin-top: 18px; color: #c2ccda; font-size: 14px; padding: 14px 18px; border: 1px dashed rgba(217,192,143,.4); border-radius: 14px; }
     .steps-5 { grid-template-columns: repeat(5, 1fr); }
 
     @media (max-width: 1100px) { .flow { grid-template-columns: repeat(3, 1fr); } .flow li:nth-child(3)::after { display: none; } }
@@ -371,34 +376,34 @@
     /* ---- Chat do atendente virtual ---- */
     .whatsapp-float { bottom: 92px; width: 50px; height: 50px; }
     .dn-chat { position: fixed; right: 22px; bottom: 22px; z-index: 60; font-family: "DM Sans", sans-serif; }
-    .dn-chat-launcher { display: flex; align-items: center; gap: 9px; border: 0; cursor: pointer; color: white; padding: 13px 18px 13px 14px; border-radius: 999px; font-weight: 700; font-size: 14px; background: linear-gradient(120deg, #3ec5f0, #6b3fd4 45%, #ec3d8f 80%, #f7a24a); box-shadow: 0 14px 34px rgba(107,63,212,.4); position: relative; }
+    .dn-chat-launcher { display: flex; align-items: center; gap: 9px; border: 0; cursor: pointer; color: white; padding: 13px 18px 13px 14px; border-radius: 999px; font-weight: 700; font-size: 14px; background: linear-gradient(120deg, #E9E3D8, #A8884E 45%, #C6A66B 80%, #D9C08F); box-shadow: 0 14px 34px rgba(168,136,78,.4); position: relative; }
     .dn-chat-launcher svg { width: 22px; height: 22px; }
     .dn-chat-dot { position: absolute; top: 6px; left: 30px; width: 9px; height: 9px; border-radius: 50%; background: #2fe39a; border: 2px solid #fff; }
     .dn-chat.open .dn-chat-launcher { display: none; }
     .dn-chat-panel[hidden] { display: none !important; }
     .dn-chat-panel { width: min(390px, calc(100vw - 32px)); height: min(600px, calc(100vh - 120px)); background: #fff; border-radius: 20px; box-shadow: 0 30px 80px rgba(8,15,29,.35); display: flex; flex-direction: column; overflow: hidden; color: #142033; }
-    .dn-chat-head { display: flex; gap: 11px; align-items: center; padding: 14px 16px; color: white; background: radial-gradient(400px 200px at 90% 0%, rgba(236,61,143,.4), transparent 60%), #0b1424; }
+    .dn-chat-head { display: flex; gap: 11px; align-items: center; padding: 14px 16px; color: white; background: radial-gradient(400px 200px at 90% 0%, rgba(198,166,107,.4), transparent 60%), #142B3C; }
     .dn-chat-head strong { display: block; font: 800 15px "Manrope", sans-serif; }
     .dn-chat-head small { display: block; font-size: 11px; color: #a9b7c8; }
-    .dn-chat-avatar { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; font: 800 18px "Manrope", sans-serif; background: linear-gradient(135deg, #3ec5f0, #6b3fd4, #ec3d8f, #f7a24a); flex: 0 0 36px; }
+    .dn-chat-avatar { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; font: 800 18px "Manrope", sans-serif; background: linear-gradient(135deg, #E9E3D8, #A8884E, #C6A66B, #D9C08F); flex: 0 0 36px; }
     .dn-chat-x { margin-left: auto; background: rgba(255,255,255,.1); border: 0; color: white; width: 32px; height: 32px; border-radius: 9px; cursor: pointer; }
-    .dn-chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #f4f6fa; }
+    .dn-chat-msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #F7F7F5; }
     .dn-msg { max-width: 86%; padding: 10px 13px; border-radius: 14px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; word-wrap: break-word; }
     .dn-agente { background: #fff; border: 1px solid #e3e8ef; border-bottom-left-radius: 4px; align-self: flex-start; }
-    .dn-cliente { background: #0b1424; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+    .dn-cliente { background: #142B3C; color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
     .dn-digitando { color: #8fa0b5; letter-spacing: 3px; animation: dnPulse 1s infinite; }
     @keyframes dnPulse { 50% { opacity: .4; } }
     .dn-wpp { display: inline-block; margin-top: 8px; background: #19b77a; color: white !important; padding: 7px 12px; border-radius: 9px; font-weight: 700; font-size: 13px; text-decoration: none; }
-    .dn-chat-chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 12px 0; background: #f4f6fa; }
+    .dn-chat-chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 12px 0; background: #F7F7F5; }
     .dn-chat-chips:empty { display: none; }
     .dn-chat-chips button { border: 1px solid #d6dde7; background: #fff; border-radius: 999px; padding: 6px 11px; font-size: 12px; font-weight: 600; cursor: pointer; color: #3a4a60; }
-    .dn-chat-chips button:hover { border-color: #6b3fd4; color: #6b3fd4; }
-    .dn-chat-form { display: flex; gap: 8px; padding: 10px 12px; background: #f4f6fa; align-items: flex-end; }
+    .dn-chat-chips button:hover { border-color: #A8884E; color: #A8884E; }
+    .dn-chat-form { display: flex; gap: 8px; padding: 10px 12px; background: #F7F7F5; align-items: flex-end; }
     .dn-chat-form textarea { flex: 1; resize: none; min-height: 42px; height: 42px; line-height: 1.4; border: 1px solid #d6dde7; border-radius: 12px; padding: 10px 12px; font: inherit; font-size: 14px; max-height: 110px; outline: none; background: #fff; color: #142033; }
-    .dn-chat-form textarea:focus { border-color: #6b3fd4; box-shadow: 0 0 0 3px rgba(107,63,212,.14); }
-    .dn-chat-form button { width: 42px; height: 42px; border: 0; border-radius: 12px; cursor: pointer; color: white; font-size: 16px; background: linear-gradient(135deg, #6b3fd4, #ec3d8f); }
-    .dn-chat-foot { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 8px 14px 10px; font-size: 10.5px; color: #8291a4; background: #f4f6fa; border-top: 1px solid #e3e8ef; }
-    .dn-chat-new { background: none; border: 0; color: #6b3fd4; font-weight: 700; font-size: 11px; cursor: pointer; white-space: nowrap; }
+    .dn-chat-form textarea:focus { border-color: #A8884E; box-shadow: 0 0 0 3px rgba(168,136,78,.14); }
+    .dn-chat-form button { width: 42px; height: 42px; border: 0; border-radius: 12px; cursor: pointer; color: white; font-size: 16px; background: linear-gradient(135deg, #A8884E, #C6A66B); }
+    .dn-chat-foot { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 8px 14px 10px; font-size: 10.5px; color: #8291a4; background: #F7F7F5; border-top: 1px solid #e3e8ef; }
+    .dn-chat-new { background: none; border: 0; color: #A8884E; font-weight: 700; font-size: 11px; cursor: pointer; white-space: nowrap; }
     @media (max-width: 720px) {
       .dn-chat { right: 12px; bottom: 12px; }
       .dn-chat-label { display: none; }
@@ -411,8 +416,8 @@
 
     /* ---- Estratégia: 3 canais ---- */
     .channel-grid { grid-template-columns: repeat(3, 1fr); }
-    .channel-card.seo::after { background: linear-gradient(90deg, #16b8a6, #3ec5f0, #f7a24a); }
-    .seo .channel-logo { background: linear-gradient(135deg, #16b8a6, #f7a24a); }
+    .channel-card.seo::after { background: linear-gradient(90deg, #C6A66B, #E9E3D8, #D9C08F); }
+    .seo .channel-logo { background: linear-gradient(135deg, #C6A66B, #D9C08F); }
     .channel-card .channel-head { flex-wrap: wrap; }
     .channel-card .channel-role { margin-left: 0; }
     .channel-card .channel-head > div { flex: 1 1 140px; }
@@ -424,16 +429,16 @@
     .eco-col span { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; font-weight: 700; color: var(--navy); box-shadow: 0 6px 18px rgba(8,22,39,.05); }
     .eco-col::after, .eco-core::after { content: "→"; position: absolute; right: -21px; top: 50%; transform: translateY(-50%); font: 800 18px "Manrope", sans-serif; color: var(--teal); }
     .eco-res::after { display: none; }
-    .eco-col .c-google { border-left: 4px solid #4285f4; } .eco-col .c-meta { border-left: 4px solid #6b3fd4; } .eco-col .c-seo { border-left: 4px solid #16b8a6; }
-    .eco-res span { background: linear-gradient(120deg, rgba(62,197,240,.12), rgba(236,61,143,.12)); border-color: rgba(236,61,143,.25); }
+    .eco-col .c-google { border-left: 4px solid #4285f4; } .eco-col .c-meta { border-left: 4px solid #A8884E; } .eco-col .c-seo { border-left: 4px solid #C6A66B; }
+    .eco-res span { background: linear-gradient(120deg, rgba(233,227,216,.12), rgba(198,166,107,.12)); border-color: rgba(198,166,107,.25); }
     .eco-core { position: relative; background: var(--navy); color: white; border-radius: 22px; padding: 22px 18px; text-align: center; box-shadow: 0 24px 60px rgba(8,22,39,.28); }
-    .eco-core::before { content: ""; position: absolute; inset: -2px; border-radius: 24px; padding: 2px; background: linear-gradient(135deg, #3ec5f0, #6b3fd4, #ec3d8f); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
+    .eco-core::before { content: ""; position: absolute; inset: -2px; border-radius: 24px; padding: 2px; background: linear-gradient(135deg, #E9E3D8, #A8884E, #C6A66B); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none; }
     .eco-core img { width: 132px; height: auto; margin: 0 auto 14px; display: block; }
     .eco-mods { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .eco-mods b { font-size: 12.5px; padding: 9px 6px; border-radius: 10px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); }
     .feat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 26px; }
     .feat-grid article { border: 1px solid var(--line); border-radius: 18px; padding: 18px; background: white; }
-    .feat-grid i { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; font: 800 15px "Manrope", sans-serif; font-style: normal; color: white; background: linear-gradient(135deg, #3ec5f0, #6b3fd4); margin-bottom: 12px; }
+    .feat-grid i { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 10px; font: 800 15px "Manrope", sans-serif; font-style: normal; color: white; background: linear-gradient(135deg, #E9E3D8, #A8884E); margin-bottom: 12px; }
     .feat-grid h3 { font-size: 15.5px; margin-bottom: 6px; }
     .feat-grid p { font-size: 13px; color: var(--muted); margin: 0; }
 
@@ -449,14 +454,14 @@
     .vf figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 10px 8px; font-size: 11px; font-weight: 700; background: linear-gradient(transparent, rgba(5,12,24,.85)); color: white; }
     .video-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
     .video-list li { padding-left: 24px; position: relative; color: #c2ccda; font-size: 14.5px; }
-    .video-list li::before { content: "✓"; position: absolute; left: 0; color: #63dfd0; font-weight: 800; }
+    .video-list li::before { content: "✓"; position: absolute; left: 0; color: #D9C08F; font-weight: 800; }
     .video-list strong { color: white; }
     .video-form { color: var(--text); }
     .video-form .form-note { margin: 0 0 18px; }
     .chips { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
     .chips legend { font-size: 13px; font-weight: 700; margin-bottom: 7px; padding: 0; width: 100%; }
     .chips label { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; font-size: 13px; font-weight: 600; cursor: pointer; }
-    .chips label:has(input:checked) { border-color: var(--teal); background: rgba(22,184,166,.1); }
+    .chips label:has(input:checked) { border-color: var(--teal); background: rgba(198,166,107,.1); }
     .chips input { width: auto; margin: 0; accent-color: var(--teal); }
 
     /* ---- Planos ---- */
@@ -472,9 +477,9 @@
     .plan li::before { content: "✓"; position: absolute; left: 0; color: var(--teal); font-weight: 800; }
     .plan .btn { align-self: flex-start; }
     .plan-main { background: var(--navy); color: white; border: 0; box-shadow: 0 30px 70px rgba(8,22,39,.25); position: relative; overflow: hidden; }
-    .plan-main::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, #3ec5f0, #6b3fd4, #ec3d8f); }
-    .plan-main > small { color: #63dfd0; } .plan-main .plan-price b, .plan-main .plan-plus { color: white; } .plan-main .plan-price span { color: #a9b7c8; }
-    .plan-main li { color: #c2ccda; } .plan-main li::before { color: #63dfd0; }
+    .plan-main::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: linear-gradient(90deg, #E9E3D8, #A8884E, #C6A66B); }
+    .plan-main > small { color: #D9C08F; } .plan-main .plan-price b, .plan-main .plan-plus { color: white; } .plan-main .plan-price span { color: #a9b7c8; }
+    .plan-main li { color: #c2ccda; } .plan-main li::before { color: #D9C08F; }
     .plan-note { font-size: 12px; color: #8fa0b5; margin: 0; }
 
     /* ---- FAQ ---- */
@@ -513,16 +518,16 @@
     .hd { border: 1px solid rgba(255,255,255,.16); border-radius: 24px; padding: 22px; background: rgba(255,255,255,.06); box-shadow: 0 30px 80px rgba(0,0,0,.3); backdrop-filter: blur(12px); transform: perspective(1000px) rotateY(-4deg); }
     .hd-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 20px; }
     .hd-top strong { color: #f5f8fb; font-family: "Manrope", sans-serif; }
-    .hd-top span { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; color: #77eadb; background: rgba(22,184,166,.13); border: 1px solid rgba(22,184,166,.3); border-radius: 99px; padding: 5px 9px; }
+    .hd-top span { font-size: 10.5px; font-weight: 800; letter-spacing: .08em; color: #77eadb; background: rgba(198,166,107,.13); border: 1px solid rgba(198,166,107,.3); border-radius: 99px; padding: 5px 9px; }
     .hd-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .hd-metric { padding: 16px; border-radius: 15px; background: rgba(5,13,25,.42); border: 1px solid rgba(255,255,255,.07); }
     .hd-metric label { display: block; color: #9fb0c2; font-size: 12px; font-weight: 600; }
     .hd-metric b { display: block; font: 800 27px "Manrope", sans-serif; color: white; margin: 6px 0 2px; }
     .hd-metric small { color: #75e2d2; font-size: 11.5px; }
     .hd-chart { height: 120px; margin-top: 14px; padding: 15px; border-radius: 15px; background: rgba(5,13,25,.3); display: flex; align-items: flex-end; gap: 9px; }
-    .hd-chart i { display: block; flex: 1; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, #63dfd0, #6b3fd4); opacity: .85; }
+    .hd-chart i { display: block; flex: 1; border-radius: 6px 6px 2px 2px; background: linear-gradient(180deg, #D9C08F, #A8884E); opacity: .85; }
     .hd-caption { display: flex; justify-content: space-between; gap: 12px; color: #9fb0c2; font-size: 11.5px; margin-top: 10px; }
-    .hd-caption a { color: #63dfd0; font-weight: 700; white-space: nowrap; }
+    .hd-caption a { color: #D9C08F; font-weight: 700; white-space: nowrap; }
 
     .trust-strip { background: white; border-bottom: 1px solid var(--line); }
     .trust-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 22px 0; }
@@ -536,7 +541,7 @@
     .flow5 article { position: relative; padding: 22px 18px; border-radius: 18px; background: white; border: 1px solid var(--line); }
     .flow5 article:not(:last-child)::after { content: "→"; position: absolute; right: -12px; top: 30px; color: var(--teal); font-weight: 800; z-index: 1; }
     .flow5 i { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: white; font: 800 15px "Manrope", sans-serif; font-style: normal; margin-bottom: 16px; }
-    .flow5 article:last-child i { background: linear-gradient(135deg, #3ec5f0, #ec3d8f); }
+    .flow5 article:last-child i { background: linear-gradient(135deg, #E9E3D8, #C6A66B); }
     .flow5 h3 { font-size: 17px; margin-bottom: 6px; }
     .flow5 p { font-size: 13.5px; color: var(--muted); margin: 0; }
 
@@ -545,7 +550,7 @@
     .intel-lead { color: #b3c1d0; margin: 0; }
     .intel-list { display: grid; gap: 16px; margin: 28px 0 30px; }
     .intel-list div { display: flex; gap: 13px; align-items: flex-start; }
-    .intel-list span { width: 26px; height: 26px; border-radius: 50%; background: rgba(22,184,166,.16); color: #65e4d5; display: grid; place-items: center; flex-shrink: 0; font-weight: 900; }
+    .intel-list span { width: 26px; height: 26px; border-radius: 50%; background: rgba(198,166,107,.16); color: #65e4d5; display: grid; place-items: center; flex-shrink: 0; font-weight: 900; }
     .intel-list p { margin: 0; color: #aebed0; font-size: 14.5px; }
     .intel-list strong { display: block; color: white; margin-bottom: 2px; }
     .intel-panel { padding: 22px; border-radius: 22px; background: #122238; border: 1px solid rgba(255,255,255,.1); box-shadow: 0 30px 80px rgba(0,0,0,.25); overflow-x: auto; }
@@ -555,11 +560,11 @@
     .intel-panel table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
     .intel-panel th { text-align: left; color: #93a9bd; font-weight: 600; padding: 12px 8px; border-bottom: 1px solid rgba(255,255,255,.1); }
     .intel-panel td { padding: 13px 8px; color: #e6edf4; border-bottom: 1px solid rgba(255,255,255,.06); }
-    .pill-t { display: inline-block; border-radius: 99px; padding: 4px 9px; background: rgba(22,184,166,.14); color: #76e4d7; font-size: 11.5px; white-space: nowrap; }
+    .pill-t { display: inline-block; border-radius: 99px; padding: 4px 9px; background: rgba(198,166,107,.14); color: #76e4d7; font-size: 11.5px; white-space: nowrap; }
     .intel-note { font-size: 12px; color: #8299ae; margin: 14px 0 0; }
 
-    .loc-band { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: center; padding: 36px; border-radius: 28px; margin-bottom: 34px; color: white; background: radial-gradient(700px 400px at 90% 20%, rgba(107,63,212,.32), transparent 65%), radial-gradient(500px 360px at 100% 100%, rgba(236,61,143,.16), transparent 70%), #080f1d; }
-    .loc-band .eyebrow { color: #62e0d1; }
+    .loc-band { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: center; padding: 36px; border-radius: 28px; margin-bottom: 34px; color: white; background: radial-gradient(700px 400px at 90% 20%, rgba(168,136,78,.32), transparent 65%), radial-gradient(500px 360px at 100% 100%, rgba(198,166,107,.16), transparent 70%), #080f1d; }
+    .loc-band .eyebrow { color: #D9C08F; }
     .loc-band h3 { font-size: clamp(24px, 2.4vw, 32px); margin: 10px 0 12px; color: white; }
     .loc-band p { color: #c2ccda; margin: 0; }
     .loc-band .loc-wrap { max-width: none; justify-self: stretch; }
@@ -568,7 +573,7 @@
     .audience-card h3 { font-size: 18px; margin-top: 16px; }
     .audience-card .icon-box { font-size: 20px; }
     .audience-extra { margin: 22px 0 6px; color: #c2ccda; font-size: 14.5px; }
-    .audience-extra a { color: #63dfd0; font-weight: 700; }
+    .audience-extra a { color: #D9C08F; font-weight: 700; }
 
     .contact-info { background: var(--navy); color: white; padding: 34px; border-radius: 24px; }
     .contact-info h3 { font-size: 24px; color: white; }
@@ -577,7 +582,7 @@
     .cpoint span { color: var(--teal); font-size: 18px; width: 20px; }
     .contact-links { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 28px; }
     .contact-links a { display: block; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,.12); color: #c2ccda; font-size: 12.5px; }
-    .contact-links a:hover { border-color: rgba(99,223,208,.6); }
+    .contact-links a:hover { border-color: rgba(217,192,143,.6); }
     .contact-links b { display: block; color: white; font-size: 13.5px; margin-bottom: 2px; }
     .consent { display: flex; align-items: flex-start; gap: 10px; font-size: 12.5px; color: var(--muted); margin: 18px 0; font-weight: 500; }
     .consent input { width: auto; margin-top: 3px; accent-color: var(--teal); }
@@ -605,48 +610,48 @@
     .hero-note::before { display: inline-block; margin-right: 10px; vertical-align: middle; }
     .nav-login { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; font-weight: 700; }
     .nav-login svg { width: 16px; height: 16px; }
-    .nav-login:hover { border-color: #63dfd0; color: #63dfd0; }
+    .nav-login:hover { border-color: #D9C08F; color: #D9C08F; }
     .hd-metric small em { font-style: normal; font-weight: 800; color: #9ff0e4; margin-left: 4px; }
 
     /* ---- Chat: atendimento por voz ---- */
     .dn-chat-vozbtn { margin-left: auto; width: 34px; height: 34px; border-radius: 10px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.08); color: #fff; cursor: pointer; display: grid; place-items: center; }
     .dn-chat-vozbtn svg { width: 18px; height: 18px; }
     .dn-chat-vozbtn + .dn-chat-x { margin-left: 6px; }
-    .dn-chat.modo-voz .dn-chat-vozbtn { background: linear-gradient(135deg, #3ec5f0, #ec3d8f); border-color: transparent; }
+    .dn-chat.modo-voz .dn-chat-vozbtn { background: linear-gradient(135deg, #E9E3D8, #C6A66B); border-color: transparent; }
     .dn-chat-form .dn-chat-mic { flex: 0 0 38px; width: 38px; height: 38px; border-radius: 12px; border: 1px solid #e2e8f0; background: #f6f8fb; color: #475569; cursor: pointer; display: grid; place-items: center; align-self: flex-end; }
     .dn-chat-form .dn-chat-mic svg { width: 18px; height: 18px; }
-    .dn-chat-form .dn-chat-mic.on { background: #ec3d8f; color: #fff; border-color: #ec3d8f; animation: dnMicPulso 1.2s infinite; }
-    @keyframes dnMicPulso { 0% { box-shadow: 0 0 0 0 rgba(236,61,143,.5); } 70% { box-shadow: 0 0 0 10px rgba(236,61,143,0); } 100% { box-shadow: 0 0 0 0 rgba(236,61,143,0); } }
+    .dn-chat-form .dn-chat-mic.on { background: #C6A66B; color: #fff; border-color: #C6A66B; animation: dnMicPulso 1.2s infinite; }
+    @keyframes dnMicPulso { 0% { box-shadow: 0 0 0 0 rgba(198,166,107,.5); } 70% { box-shadow: 0 0 0 10px rgba(198,166,107,0); } 100% { box-shadow: 0 0 0 0 rgba(198,166,107,0); } }
     .dn-ouvir { border: 0; background: none; cursor: pointer; font-size: 13px; opacity: .45; padding: 0 0 0 6px; vertical-align: middle; }
     .dn-ouvir:hover { opacity: 1; }
     .dn-chat.modo-voz .dn-chat-msgs, .dn-chat.modo-voz .dn-chat-chips, .dn-chat.modo-voz .dn-chat-form { display: none; }
-    .dn-voz { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 18px 14px; background: radial-gradient(420px 260px at 50% 40%, rgba(107,63,212,.35), transparent 70%), #0b1424; color: #e6eef7; overflow-y: auto; }
+    .dn-voz { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 18px 18px 14px; background: radial-gradient(420px 260px at 50% 40%, rgba(168,136,78,.35), transparent 70%), #142B3C; color: #e6eef7; overflow-y: auto; }
     .dn-voz[hidden] { display: none !important; }
     .dn-voz-pipe { width: 100%; display: grid; gap: 4px; justify-items: stretch; }
     .dn-voz-pipe > div { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); transition: all .25s; }
     .dn-voz-pipe > div b { font-size: 13px; } .dn-voz-pipe > div small { font-size: 11px; color: #8ea0b6; }
-    .dn-voz-pipe > div.on { border-color: rgba(99,223,208,.7); background: rgba(22,184,166,.16); box-shadow: 0 0 0 3px rgba(22,184,166,.12); }
+    .dn-voz-pipe > div.on { border-color: rgba(217,192,143,.7); background: rgba(198,166,107,.16); box-shadow: 0 0 0 3px rgba(198,166,107,.12); }
     .dn-voz-pipe > div.on small { color: #9ff0e4; }
     .dn-voz-pipe i { font-style: normal; text-align: center; color: #5b6b80; font-size: 12px; line-height: 1; }
-    .dn-voz-orb { --nivel: 0; position: relative; width: 116px; height: 116px; border-radius: 50%; border: 0; cursor: pointer; color: #fff; background: linear-gradient(135deg, #3ec5f0, #6b3fd4 50%, #ec3d8f); box-shadow: 0 18px 44px rgba(107,63,212,.45); display: grid; place-items: center; margin-top: 6px; transform: scale(calc(1 + var(--nivel) * .12)); transition: transform .08s; }
+    .dn-voz-orb { --nivel: 0; position: relative; width: 116px; height: 116px; border-radius: 50%; border: 0; cursor: pointer; color: #fff; background: linear-gradient(135deg, #E9E3D8, #A8884E 50%, #C6A66B); box-shadow: 0 18px 44px rgba(168,136,78,.45); display: grid; place-items: center; margin-top: 6px; transform: scale(calc(1 + var(--nivel) * .12)); transition: transform .08s; }
     .dn-voz-orb svg { width: 38px; height: 38px; position: relative; z-index: 1; }
     .dn-voz-orb span { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); opacity: 0; }
     .dn-voz[data-estado="ouvindo"] .dn-voz-orb span { animation: dnOnda 1.8s infinite; }
     .dn-voz[data-estado="ouvindo"] .dn-voz-orb span:nth-child(2) { animation-delay: .6s; } .dn-voz[data-estado="ouvindo"] .dn-voz-orb span:nth-child(3) { animation-delay: 1.2s; }
     @keyframes dnOnda { 0% { transform: scale(1); opacity: .7; } 100% { transform: scale(1.8); opacity: 0; } }
-    .dn-voz[data-estado="pensando"] .dn-voz-orb, .dn-voz[data-estado="transcrevendo"] .dn-voz-orb { animation: dnGira 1.4s linear infinite; background: conic-gradient(from 0deg, #3ec5f0, #6b3fd4, #ec3d8f, #f7a24a, #3ec5f0); }
+    .dn-voz[data-estado="pensando"] .dn-voz-orb, .dn-voz[data-estado="transcrevendo"] .dn-voz-orb { animation: dnGira 1.4s linear infinite; background: conic-gradient(from 0deg, #E9E3D8, #A8884E, #C6A66B, #D9C08F, #E9E3D8); }
     .dn-voz[data-estado="pensando"] .dn-voz-orb svg, .dn-voz[data-estado="transcrevendo"] .dn-voz-orb svg { animation: dnGira 1.4s linear infinite reverse; }
     @keyframes dnGira { to { transform: rotate(360deg); } }
-    .dn-voz[data-estado="falando"] .dn-voz-orb { background: linear-gradient(135deg, #16b8a6, #3ec5f0); animation: dnFala .9s ease-in-out infinite alternate; }
-    @keyframes dnFala { from { box-shadow: 0 0 0 0 rgba(62,197,240,.5), 0 18px 44px rgba(22,184,166,.4); } to { box-shadow: 0 0 0 16px rgba(62,197,240,0), 0 18px 44px rgba(22,184,166,.4); } }
+    .dn-voz[data-estado="falando"] .dn-voz-orb { background: linear-gradient(135deg, #C6A66B, #E9E3D8); animation: dnFala .9s ease-in-out infinite alternate; }
+    @keyframes dnFala { from { box-shadow: 0 0 0 0 rgba(233,227,216,.5), 0 18px 44px rgba(198,166,107,.4); } to { box-shadow: 0 0 0 16px rgba(233,227,216,0), 0 18px 44px rgba(198,166,107,.4); } }
     .dn-voz-status { margin: 0; font-weight: 700; font-size: 14px; text-align: center; }
     .dn-voz-txt { margin: 0; min-height: 40px; font-size: 13px; color: #a9b7c8; text-align: center; max-width: 320px; }
     .dn-voz-acts { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: auto; font-size: 12px; color: #a9b7c8; }
-    .dn-voz-acts label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; } .dn-voz-acts input { width: auto; accent-color: #16b8a6; }
+    .dn-voz-acts label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; } .dn-voz-acts input { width: auto; accent-color: #C6A66B; }
     .dn-voz-sair { background: none; border: 1px solid rgba(255,255,255,.2); color: #e6eef7; border-radius: 9px; padding: 6px 10px; font: inherit; font-size: 12px; cursor: pointer; }
     .footer-social { display: flex; gap: 10px; margin-top: 18px; }
     .footer-social a { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #dbe5f0; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.04); transition: transform .15s, color .15s, border-color .15s, background .15s; }
-    .footer-social a:hover { transform: translateY(-2px); color: #fff; border-color: transparent; background: linear-gradient(135deg, #3ec5f0, #6b3fd4 55%, #ec3d8f); }
+    .footer-social a:hover { transform: translateY(-2px); color: #fff; border-color: transparent; background: linear-gradient(135deg, #E9E3D8, #A8884E 55%, #C6A66B); }
     .footer-social svg { width: 19px; height: 19px; }
 
 /* ===== Banner de cookies (LGPD) ===== */
@@ -655,29 +660,29 @@
 .dn-cookies a { color: #5fe0d0; }
 .dn-cookies-acts { display: flex; gap: 8px; margin-left: auto; }
 .dn-cookies button { border: 0; border-radius: 999px; padding: 10px 16px; font: 700 13px inherit; cursor: pointer; }
-.dn-ck-a { background: #16b8a6; color: #04211e; }
+.dn-ck-a { background: #C6A66B; color: #04211e; }
 .dn-ck-e { background: rgba(255,255,255,.08); color: #e9eef5; border: 1px solid rgba(255,255,255,.16) !important; }
 
     /* ===== Eventos ===== */
     .event-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
     .event-card { position: relative; overflow: hidden; border-radius: var(--radius); padding: 28px; color: #fff; display: flex; flex-direction: column; gap: 14px; min-height: 260px;
-      background: radial-gradient(120% 90% at 100% 0%, rgba(107,63,212,.55), transparent 60%), radial-gradient(90% 80% at 0% 100%, rgba(22,184,166,.35), transparent 60%), linear-gradient(160deg, var(--navy-2), var(--navy)); box-shadow: var(--shadow); }
+      background: radial-gradient(120% 90% at 100% 0%, rgba(168,136,78,.55), transparent 60%), radial-gradient(90% 80% at 0% 100%, rgba(198,166,107,.35), transparent 60%), linear-gradient(160deg, var(--navy-2), var(--navy)); box-shadow: var(--shadow); }
     .event-card::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 32px 32px; pointer-events: none; mask-image: linear-gradient(180deg, #000, transparent 75%); }
     .event-card > * { position: relative; z-index: 1; }
     .event-top { display: flex; justify-content: space-between; align-items: center; }
-    .event-tag { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #62e0d1; border: 1px solid rgba(98,224,209,.35); border-radius: 999px; padding: 5px 11px; }
-    .event-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.08); color: #62e0d1; font-size: 18px; }
+    .event-tag { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #D9C08F; border: 1px solid rgba(98,224,209,.35); border-radius: 999px; padding: 5px 11px; }
+    .event-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: rgba(255,255,255,.08); color: #D9C08F; font-size: 18px; }
     .event-card h3 { font-size: 22px; line-height: 1.2; margin-top: auto; }
-    .event-link { color: #62e0d1; font-size: 13px; font-weight: 700; }
+    .event-link { color: #D9C08F; font-size: 13px; font-weight: 700; }
     .event-link:hover { text-decoration: underline; }
     .event-actions { display: flex; gap: 10px; }
     .event-btn { flex: 1; border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.06); color: #fff; border-radius: 999px; padding: 11px 16px; font: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: background .2s, border-color .2s; }
-    .event-btn:hover, .event-btn:focus-visible { background: var(--teal); border-color: var(--teal); color: #06211f; }
+    .event-btn:hover, .event-btn:focus-visible { background: var(--teal); border-color: var(--teal); color: #142B3C; }
     .event-modal { position: fixed; inset: 0; z-index: 90; background: rgba(6,13,24,.78); backdrop-filter: blur(6px); display: grid; place-items: center; padding: 16px; }
     .event-modal[hidden] { display: none; }
     .event-modal-box { width: min(980px, 100%); max-height: 90vh; overflow: auto; background: var(--navy); color: #fff; border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); padding: 22px; }
     .event-modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
-    .event-modal-head small { color: #62e0d1; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+    .event-modal-head small { color: #D9C08F; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
     .event-modal-head h3 { font-size: 20px; margin-top: 4px; }
     .event-modal-x { border: 1px solid rgba(255,255,255,.2); background: transparent; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 15px; }
     .event-galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
@@ -695,19 +700,19 @@
     .event-galeria.fotos img { aspect-ratio: 3/4; object-position: center 30%; transition: transform .25s; }
     .event-galeria.fotos a { overflow: hidden; border-radius: 12px; display: block; }
     .event-galeria.fotos a:hover img { transform: scale(1.04); }
-    .event-n { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--teal); color: #06211f; font-size: 11px; font-weight: 800; margin-left: 4px; }
+    .event-n { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--teal); color: #142B3C; font-size: 11px; font-weight: 800; margin-left: 4px; }
     .video-inst { margin: 44px auto 0; max-width: 980px; }
-    .video-inst video { width: 100%; aspect-ratio: 16/9; display: block; border-radius: 18px; background: #05060a; box-shadow: 0 24px 60px rgba(11,20,36,.22); }
+    .video-inst video { width: 100%; aspect-ratio: 16/9; display: block; border-radius: 18px; background: #05060a; box-shadow: 0 24px 60px rgba(20,43,60,.22); }
     .video-inst figcaption { margin-top: 12px; text-align: center; font-size: 14px; color: var(--muted); }
 
     /* Eventos, Marketing & PR */
     .evx-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin: -6px 0 34px; color: var(--muted); font-size: 16px; line-height: 1.7; }
     .evx-intro p { margin: 0; }
     .evx-mosaico { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: 260px 260px; gap: 14px; margin-bottom: 56px; }
-    .evx-tile { position: relative; margin: 0; border-radius: 22px; overflow: hidden; background: linear-gradient(135deg, #0b1424, #24364b); }
+    .evx-tile { position: relative; margin: 0; border-radius: 22px; overflow: hidden; background: linear-gradient(135deg, #142B3C, #24313A); }
     .evx-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 30%; transition: transform .6s ease; }
     .evx-tile:hover img { transform: scale(1.04); }
-    .evx-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,20,36,0) 35%, rgba(11,20,36,.88)); }
+    .evx-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20,43,60,0) 35%, rgba(20,43,60,.88)); }
     .evx-tile figcaption { position: absolute; left: 22px; right: 22px; bottom: 20px; z-index: 1; color: #fff; display: grid; gap: 4px; }
     .evx-tile figcaption b { font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
     .evx-tile figcaption span { font-size: 14px; color: rgba(255,255,255,.82); }
@@ -727,7 +732,7 @@
     .evx-tipos { margin-bottom: 40px; }
     .evx-tipos ul { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 10px; }
     .evx-tipos li { padding: 10px 16px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: 14px; font-weight: 600; color: var(--navy); }
-    .evx-cta { display: flex; justify-content: space-between; align-items: center; gap: 28px; flex-wrap: wrap; background: var(--navy); color: #fff; border-radius: 24px; padding: 34px 36px; margin-bottom: 64px; background-image: radial-gradient(ellipse at 90% 0%, rgba(22,184,166,.25), transparent 55%); }
+    .evx-cta { display: flex; justify-content: space-between; align-items: center; gap: 28px; flex-wrap: wrap; background: var(--navy); color: #fff; border-radius: 24px; padding: 34px 36px; margin-bottom: 64px; background-image: radial-gradient(ellipse at 90% 0%, rgba(198,166,107,.25), transparent 55%); }
     .evx-cta h3 { margin: 0 0 6px; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: -.02em; }
     .evx-cta p { margin: 0; color: rgba(255,255,255,.75); max-width: 560px; }
     .evx-cta-btns { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -753,8 +758,8 @@
     .evx-imp-txt p { color: var(--muted); font-size: 14.5px; line-height: 1.6; margin: 0 0 12px; }
     .evx-imp-link { font-weight: 700; color: var(--teal-dark); }
     .evx-imp-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    .evx-imp-thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; cursor: zoom-in; background: #f4f7fa; aspect-ratio: 2 / 3; transition: transform .25s, box-shadow .25s; }
-    .evx-imp-thumbs button:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(11,20,36,.16); }
+    .evx-imp-thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; cursor: zoom-in; background: #F7F7F5; aspect-ratio: 2 / 3; transition: transform .25s, box-shadow .25s; }
+    .evx-imp-thumbs button:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(20,43,60,.16); }
     .evx-imp-thumbs img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
     .event-galeria.fotos.imprensa { grid-template-columns: 1fr; max-width: 760px; margin: 0 auto; }
     .event-galeria.fotos.imprensa img { aspect-ratio: auto; height: auto; }
@@ -765,7 +770,7 @@
     .evx-cap { position: absolute; left: 22px; right: 22px; bottom: 20px; z-index: 1; color: #fff; display: grid; gap: 4px; }
     .evx-cap b { font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
     .evx-cap span { font-size: 14px; color: rgba(255,255,255,.82); }
-    .evx-qtd { position: absolute; top: 14px; right: 14px; z-index: 1; padding: 6px 12px; border-radius: 999px; background: rgba(11,20,36,.6); backdrop-filter: blur(6px); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+    .evx-qtd { position: absolute; top: 14px; right: 14px; z-index: 1; padding: 6px 12px; border-radius: 999px; background: rgba(20,43,60,.6); backdrop-filter: blur(6px); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .02em; }
     .evx-qtd::before { content: "📷 "; }
     .crs { position: fixed; inset: 0; z-index: 1000; background: rgba(5,8,14,.96); display: flex; flex-direction: column; color: #fff; }
     .crs[hidden] { display: none; }
@@ -779,13 +784,71 @@
     .crs-trilho::-webkit-scrollbar { display: none; }
     .crs-slide { flex: 0 0 100%; height: 100%; margin: 0; scroll-snap-align: center; display: flex; align-items: center; justify-content: center; padding: 0 64px 8px; }
     .crs-slide img, .crs-slide video { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 10px; user-select: none; }
-    .crs-seta { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(11,20,36,.6); color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+    .crs-seta { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 48px; height: 48px; border-radius: 50%; border: 1px solid rgba(255,255,255,.25); background: rgba(20,43,60,.6); color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
     .crs-prev { left: 12px; } .crs-next { right: 12px; }
     .crs-dica { text-align: center; font-size: 12px; color: rgba(255,255,255,.5); margin: 8px 0 14px; }
     @media (max-width: 640px) { .crs-slide { padding: 0 8px 8px; } .crs-seta { display: none; } }
-    @media (min-width: 721px) { .nav { gap: 16px; } .nav-links { gap: 15px; } .nav-links a:not(.btn) { font-size: 12.5px; } }
-    @media (max-width: 1200px) and (min-width: 721px) { .nav-links a[href="#como-funciona"], .nav-links a[href="#para-quem"] { display: none; } }
-    @media (max-width: 1060px) and (min-width: 721px) { .nav-links a[href="#video"], .nav-links a[href="#planos"] { display: none; } }
+
+    /* ===== DANOVA-AI 2.0 ===== */
+    .section-light { background: #F7F7F5; }
+    #solucoes, #eventos { background: var(--sand); }
+    .hero h1 span { color: var(--gold); }
+    .eyebrow::before { background: var(--gold) !important; }
+    .mods { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .mod { background: #fff; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; transition: transform .25s, box-shadow .25s; }
+    .mod:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .mod-tela { background: linear-gradient(160deg, #142B3C, #1B3547); padding: 18px; height: 150px; display: flex; flex-direction: column; justify-content: center; gap: 10px; color: #fff; font-size: 12px; }
+    .mod-txt { padding: 22px 22px 24px; display: flex; flex-direction: column; gap: 8px; }
+    .mod-txt small { color: var(--teal-dark); font-weight: 800; letter-spacing: .14em; font-size: 12px; }
+    .mod-txt h3 { font-size: 21px; }
+    .mod-txt p { margin: 0; color: var(--muted); font-size: 14.5px; }
+    .mod-txt ul { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 7px; }
+    .mod-txt li { position: relative; padding-left: 20px; font-size: 14px; }
+    .mod-txt li::before { content: ""; position: absolute; left: 0; top: 8px; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+    .mods-nota { font-size: 12px; color: var(--muted); margin: 14px 0 0; font-style: italic; }
+    .mk-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; } .mk-kpis i { height: 26px; border-radius: 6px; background: rgba(255,255,255,.1); border-top: 2px solid var(--gold); }
+    .mk-bars { display: flex; align-items: flex-end; gap: 8px; height: 60px; } .mk-bars i { flex: 1; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, #D9C08F, #A8884E); }
+    .mk-rows p { margin: 0; display: flex; justify-content: space-between; padding: 7px 10px; border-radius: 8px; background: rgba(255,255,255,.07); margin-bottom: 6px; } .mk-rows em { font-style: normal; color: #D9C08F; font-weight: 700; }
+    .mk-flow { display: flex; align-items: center; justify-content: space-between; gap: 4px; } .mk-flow span { padding: 9px 10px; border-radius: 8px; background: rgba(255,255,255,.08); font-weight: 600; } .mk-flow span.ok { background: var(--gold); color: #142B3C; } .mk-flow i { color: #D9C08F; font-style: normal; }
+    .mk-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; } .mk-cols div { background: rgba(255,255,255,.06); border-radius: 8px; padding: 7px; min-height: 96px; display: flex; flex-direction: column; gap: 5px; } .mk-cols b { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #D9C08F; } .mk-cols i { height: 18px; border-radius: 5px; background: rgba(255,255,255,.14); } .mk-cols i.ok { background: var(--gold); }
+    .mk-chat p { margin: 0 0 8px; padding: 9px 12px; border-radius: 12px; max-width: 85%; line-height: 1.35; } .mk-chat .c { background: rgba(255,255,255,.1); } .mk-chat .a { background: var(--gold); color: #142B3C; margin-left: auto; }
+    .mk-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; } .mk-grid i { height: 24px; border-radius: 5px; background: rgba(255,255,255,.12); } .mk-grid i.r { background: #D9C08F; } .mk-grid i.v { background: #6f8796; }
+    .seg-meta { margin-top: 40px; display: grid; grid-template-columns: 1fr 1.3fr; gap: 32px; align-items: center; background: var(--navy); color: #fff; border-radius: 24px; padding: 34px; }
+    .seg-meta .eyebrow { color: #D9C08F; }
+    .seg-meta h3 { font-size: clamp(22px, 2.4vw, 28px); margin: 12px 0 10px; }
+    .seg-meta p { color: rgba(255,255,255,.75); margin: 0; }
+    .seg-meta-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .seg-meta-lista li { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 16px; display: grid; gap: 4px; }
+    .seg-meta-lista b { color: #D9C08F; } .seg-meta-lista span { font-size: 13.5px; color: rgba(255,255,255,.78); }
+    .eco-head { margin: 48px 0 18px; }
+    .sol-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+    .sol-card { background: #fff; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 10px; border: 1px solid rgba(36,49,58,.08); }
+    .sol-card .icon-box { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; background: #F7F1E5; font-size: 20px; }
+    .sol-card h3 { font-size: 19px; } .sol-card p { margin: 0; color: var(--muted); font-size: 14px; }
+    .sol-card ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; flex: 1; } .sol-card li { font-size: 13.5px; padding-left: 18px; position: relative; } .sol-card li::before { content: "✓"; position: absolute; left: 0; color: var(--teal-dark); font-weight: 800; }
+    .sol-card > a { font-weight: 700; color: var(--teal-dark); margin-top: 6px; }
+    .sol-rede { margin-top: 48px; } .sol-rede-h { font-size: clamp(22px, 2.6vw, 30px); margin: 10px 0 6px; }
+    .sol-rede .network-grid { margin-top: 18px; }
+    .sol-rede .network-item { background: #fff; color: var(--text); border-color: rgba(36,49,58,.08); }
+    .sol-rede .network-item p { color: var(--muted); }
+    .par-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .par-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 22px; padding: 28px; display: flex; flex-direction: column; gap: 12px; }
+    .par-card small { color: #D9C08F; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; }
+    .par-card h3 { font-size: 22px; } .par-card ul { margin: 0; padding-left: 18px; color: rgba(255,255,255,.8); display: grid; gap: 6px; flex: 1; font-size: 14.5px; }
+    .par-card .btn { align-self: flex-start; margin-top: 8px; }
+    .par-passos { list-style: none; counter-reset: p; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 0; margin: 34px 0 0; }
+    .par-passos li { counter-increment: p; border-top: 1px solid rgba(255,255,255,.18); padding-top: 16px; color: rgba(255,255,255,.75); font-size: 14px; display: grid; gap: 4px; }
+    .par-passos li b { color: #fff; font-size: 17px; } .par-passos li b::before { content: "0" counter(p) "  "; color: #D9C08F; }
+    .jornadas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; background: #F7F1E5; padding: 5px; border-radius: 14px; margin-bottom: 18px; }
+    .jornadas button { border: 0; background: transparent; border-radius: 10px; padding: 10px 8px; font-weight: 700; font-size: 12.5px; color: var(--muted); cursor: pointer; line-height: 1.25; }
+    .jornadas button[aria-selected="true"] { background: #fff; color: var(--navy); box-shadow: 0 4px 14px rgba(20,43,60,.1); }
+    .form-ok { margin-top: 16px; background: #F7F1E5; border-radius: 14px; padding: 18px; display: grid; gap: 8px; }
+    .form-ok[hidden] { display: none; } .form-ok b { font-size: 16px; } .form-ok span { color: var(--muted); font-size: 14px; } .form-ok .btn { justify-self: start; }
+    #leadForm [data-js][hidden] { display: none; }
+    @media (max-width: 1100px) { .sol-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 980px) { .mods, .par-grid { grid-template-columns: 1fr 1fr; } .seg-meta { grid-template-columns: 1fr; } }
+    @media (max-width: 640px) { .mods, .par-grid, .sol-grid, .seg-meta-lista, .par-passos { grid-template-columns: 1fr; } .jornadas { grid-template-columns: 1fr 1fr; } .seg-meta { padding: 24px; } }
+    .audience-extra a { color: var(--teal-dark); font-weight: 700; }
   </style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://danova-ai.com/#org", "name": "danova AI", "url": "https://danova-ai.com/", "logo": "https://danova-ai.com/img/danova-logo-circulo.png", "email": "danielle@danova-ai.com", "telephone": "+1-786-382-6782", "areaServed": ["Miami", "Palm Beach", "Flórida", "Brasil"], "knowsAbout": ["Meta Ads", "Google Ads", "SEO", "tráfego pago imobiliário", "CRM imobiliário", "empreendimentos de alto padrão"], "knowsLanguage": ["pt", "en", "es"], "sameAs": ["https://www.instagram.com/danova_ia", "https://www.linkedin.com/in/danova-ai-4738103b9/", "https://www.facebook.com/profile.php?id=61577480279926", "https://wa.me/17863826782"]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://danova-ai.com/#site", "url": "https://danova-ai.com/", "name": "danova AI", "inLanguage": "pt-BR", "publisher": {"@id": "https://danova-ai.com/#org"}}</script>
@@ -798,8 +861,8 @@
 <body>
   <div class="topbar">
     <div class="container topbar-inner">
-      <span>REAL ESTATE INTELLIGENCE · META ADS · GOOGLE ADS · CRM · HÁ 10 ANOS</span>
-      <span>Novo: vídeo pronto do seu empreendimento para Meta e Google Ads <a href="#video">Saiba mais ↗</a></span>
+      <span>REAL ESTATE INTELLIGENCE · MARKETING · CRM · IA · GESTÃO COMERCIAL · HÁ 10 ANOS</span>
+      <span>Novo: Eventos, Marketing &amp; PR para lançamentos e encontros de investidores <a href="#eventos">Conheça ↗</a></span>
     </div>
   </div>
 
@@ -810,15 +873,15 @@
       </a>
       <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
       <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
+        <a href="#inicio">Início</a>
         <a href="#plataforma">Plataforma</a>
-        <a href="#como-funciona">Como funciona</a>
+        <a href="#solucoes">Soluções</a>
+        <a href="#marketing">Marketing</a>
         <a href="#empreendimentos">Empreendimentos</a>
-        <a href="#eventos">Eventos &amp; PR</a>
-        <a href="#video">Vídeo para anúncios</a>
+        <a href="#eventos">Eventos</a>
         <a href="#planos">Planos</a>
-        <a href="#para-quem">Para quem</a>
         <a href="crm/index.html" class="nav-login" title="Área de membros (CRM)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Entrar</a>
-        <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Solicitar diagnóstico <span>↗</span></a>
+        <a href="#parceiro" class="btn btn-primary">Seja parceiro <span>↗</span></a>
       </nav>
     </div>
   </header>
@@ -828,14 +891,14 @@
       <div class="hero-grid-bg" aria-hidden="true"></div>
       <div class="container hero-layout">
         <div class="hero-content">
-          <div class="eyebrow">Inteligência de performance imobiliária</div>
-          <h1>Do investimento em anúncios à <span>venda comprovada.</span></h1>
-          <p class="hero-copy">Conectamos campanhas de <strong>Meta Ads</strong> e <strong>Google Ads</strong>, leads, corretores e empreendimentos numa operação orientada por dados. Há 10 anos ajudamos o mercado imobiliário a entender o que gera oportunidades — e o que realmente avança até a venda.</p>
+          <div class="eyebrow">DANOVA-AI · Real Estate Intelligence</div>
+          <h1>A inteligência por trás das <span>vendas imobiliárias.</span></h1>
+          <p class="hero-copy">Conectamos tráfego pago, CRM, inteligência artificial e gestão comercial em uma única plataforma. Acompanhe seus investimentos, campanhas, leads, corretores e resultados em um só lugar.</p>
           <div class="hero-actions">
-            <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Solicitar diagnóstico <span>↗</span></a>
-            <a href="#plataforma" class="btn btn-outline">Conhecer a plataforma ↓</a>
+            <a href="#plataforma" class="btn btn-primary">Conhecer a plataforma <span>↓</span></a>
+            <a href="#parceiro" class="btn btn-outline">Seja nosso parceiro ↗</a>
           </div>
-          <div class="hero-note">Google Ads · Meta Ads · SEO + IA · Captação de leads · CRM · Inteligência comercial</div>
+          <div class="hero-note">Dashboard · Meta Ads · Google Ads · CRM · Inteligência Artificial · Gestão Comercial</div>
         </div>
         <div class="hd" aria-label="Exemplo ilustrativo do painel de performance">
           <div class="hd-top"><strong>Visão geral de performance · 30 dias</strong><span>DADOS FICTÍCIOS</span></div>
@@ -853,20 +916,63 @@
 
     <section class="trust-strip" aria-label="Áreas da plataforma">
       <div class="container trust-inner">
-        <div class="trust-item"><span class="trust-icon">⌁</span>Aquisição multicanal</div>
-        <div class="trust-item"><span class="trust-icon">◎</span>Qualificação de leads</div>
+        <div class="trust-item"><span class="trust-icon">⌁</span>Marketing e anúncios</div>
+        <div class="trust-item"><span class="trust-icon">◎</span>CRM nativo</div>
+        <div class="trust-item"><span class="trust-icon">✦</span>Inteligência artificial</div>
         <div class="trust-item"><span class="trust-icon">↗</span>Gestão comercial</div>
-        <div class="trust-item"><span class="trust-icon">▥</span>Métricas de resultado</div>
       </div>
     </section>
 
     <section class="section" id="plataforma">
       <div class="container">
         <div class="section-head">
-          <div class="eyebrow">Uma visão integrada</div>
-          <h2>Mais do que gerar contatos. Entenda o caminho até a venda.</h2>
-          <p>A operação de marketing imobiliário numa visão conectada: origem do lead, empreendimento de interesse, corretor responsável e evolução comercial — do anúncio ao resultado, num só lugar.</p>
+          <div class="eyebrow">Plataforma</div>
+          <h2>Seis módulos. Uma operação imobiliária conectada.</h2>
+          <p>Marketing, anúncios, CRM, inteligência artificial e gestão comercial trabalhando juntos — do primeiro clique à venda registrada.</p>
         </div>
+        <div class="mods">
+          <article class="mod mod-dash">
+            <div class="mod-tela" aria-hidden="true"><div class="mk-kpis"><i></i><i></i><i></i></div><div class="mk-bars"><i style="height:35%"></i><i style="height:55%"></i><i style="height:45%"></i><i style="height:70%"></i><i style="height:62%"></i><i style="height:88%"></i></div></div>
+            <div class="mod-txt"><small>01</small><h3>Dashboard</h3><p>Investimentos, campanhas, leads, visitas e vendas numa tela só.</p><ul><li>Investimento, custo por lead e retorno por canal</li><li>Filtros por período, empreendimento e corretor</li><li>Previsão de vendas por etapa do funil</li></ul></div>
+          </article>
+          <article class="mod mod-meta">
+            <div class="mod-tela" aria-hidden="true"><div class="mk-rows"><p><b>Campanha · Lançamento</b><em>R$ 440</em></p><p><b>Conjunto · Investidores BR</b><em>38 leads</em></p><p><b>Anúncio · Vídeo 9:16</b><em>CPL R$ 11</em></p></div></div>
+            <div class="mod-txt"><small>02</small><h3>Meta Ads</h3><p>Facebook e Instagram conectados ao CRM por autorização oficial.</p><ul><li>Campanhas, conjuntos e anúncios importados todo dia</li><li>Leads dos formulários instantâneos direto no CRM</li><li>Visitas e vendas devolvidas ao Meta pela API de Conversões</li></ul></div>
+          </article>
+          <article class="mod mod-google">
+            <div class="mod-tela" aria-hidden="true"><div class="mk-flow"><span>Clique</span><i>→</i><span>Lead</span><i>→</i><span>Visita</span><i>→</i><span class="ok">Venda</span></div></div>
+            <div class="mod-txt"><small>03</small><h3>Google Ads</h3><p>Do clique à venda, com o Google otimizando por comprador real.</p><ul><li>Identificador do clique (GCLID) guardado em cada lead</li><li>Lead qualificado, visita e venda enviados como conversão</li><li>Pesquisa, YouTube e Performance Max no mesmo funil</li></ul></div>
+          </article>
+          <article class="mod mod-crm">
+            <div class="mod-tela" aria-hidden="true"><div class="mk-cols"><div><b>Novo</b><i></i><i></i></div><div><b>Visita</b><i></i></div><div><b>Proposta</b><i></i></div><div><b>Fechado</b><i class="ok"></i></div></div></div>
+            <div class="mod-txt"><small>04</small><h3>CRM</h3><p>Cada oportunidade com origem, histórico e próximo passo.</p><ul><li>Funil por etapas e distribuição automática para corretores</li><li>Contato por WhatsApp, e-mail e telefone a partir do lead</li><li>Importação da sua base de clientes por planilha</li></ul></div>
+          </article>
+          <article class="mod mod-ia">
+            <div class="mod-tela" aria-hidden="true"><div class="mk-chat"><p class="c">Tem 2 quartos em Brickell até US$ 900 mil?</p><p class="a">Tenho 3 opções. Quer receber as plantas?</p></div></div>
+            <div class="mod-txt"><small>05</small><h3>Inteligência Artificial</h3><p>Atendimento 24h que qualifica e entrega o lead pronto.</p><ul><li>Responde em português, inglês e espanhol, por texto e voz</li><li>Usa a base de conhecimento dos empreendimentos</li><li>Passa a conversa para a equipe quando o cliente pede</li></ul></div>
+          </article>
+          <article class="mod mod-gestao">
+            <div class="mod-tela" aria-hidden="true"><div class="mk-grid"><i class="d"></i><i class="d"></i><i class="r"></i><i class="v"></i><i class="d"></i><i class="r"></i><i class="d"></i><i class="v"></i><i class="d"></i><i class="d"></i><i class="r"></i><i class="d"></i></div></div>
+            <div class="mod-txt"><small>06</small><h3>Gestão Comercial</h3><p>Unidades, propostas, contratos e comissões sob controle.</p><ul><li>Inventário com disponibilidade em tempo real</li><li>Propostas, contratos e documentos guardados no lead</li><li>Portal da construtora com números, sem dados pessoais</li></ul></div>
+          </article>
+        </div>
+        <p class="mods-nota">Telas ilustrativas com dados fictícios. As capturas reais do sistema serão publicadas aqui.</p>
+
+        <div class="seg-meta">
+          <div class="seg-meta-txt">
+            <div class="eyebrow">Conexão com o Meta</div>
+            <h3>Autorização oficial, permissões mínimas e dados isolados por cliente.</h3>
+            <p>A conta de anúncios só é lida depois que o titular autoriza o acesso no próprio Meta. Um ID de gerenciador ou de conta, sozinho, não dá acesso a nada.</p>
+          </div>
+          <ul class="seg-meta-lista">
+            <li><b>Autorização oficial</b><span>Conexão pela API do Meta (OAuth ou acesso de parceiro no Gerenciador de Negócios), aprovada pelo titular da conta.</span></li>
+            <li><b>Permissões mínimas</b><span>Pedimos só o necessário para ler métricas de anúncios e receber leads — nada de publicar ou alterar campanhas.</span></li>
+            <li><b>Tokens no servidor</b><span>As chaves de acesso ficam guardadas no servidor, nunca no navegador nem no código do site.</span></li>
+            <li><b>Dados isolados por cliente</b><span>Cada construtora ou imobiliária vê apenas as próprias contas, campanhas e leads.</span></li>
+          </ul>
+        </div>
+
+        <div class="section-head eco-head"><div class="eyebrow">Como tudo se conecta</div></div>
         <div class="eco" role="img" aria-label="Diagrama: construtoras, imobiliárias, corretores e investidores chegam por Google Ads, Meta Ads e SEO + IA ao núcleo danova AI (CRM, inventário, IA, leads, automações e analytics), que cuida de qualificação, visitas, propostas e vendas, gerando receita, ROI, comissões, retenção e novas oportunidades.">
           <div class="eco-col">
             <small>Quem usa</small>
@@ -888,18 +994,6 @@
             <small>Resultados</small>
             <span>Receita</span><span>ROI</span><span>Comissões</span><span>Retenção</span><span>Novas oportunidades</span>
           </div>
-        </div>
-        <div class="feat-grid">
-          <article><i>∞</i><h3>Integração com o Meta</h3><p>Leads dos formulários instantâneos do Facebook e do Instagram entram sozinhos no CRM. Visitas e vendas voltam ao Meta pela API de Conversões.</p></article>
-          <article><i>G</i><h3>Conversões offline no Google</h3><p>Guardamos o identificador do clique e exportamos lead qualificado, visita e venda para o Google Ads otimizar os lances.</p></article>
-          <article><i>▦</i><h3>Inventário e disponibilidade</h3><p>Unidade por unidade: disponível, reservada ou vendida. O status muda sozinho quando o contrato é assinado.</p></article>
-          <article><i>⇄</i><h3>Distribuição inteligente</h3><p>Cada lead vai para o corretor especialista no empreendimento, que fala o idioma do cliente e tem agenda livre.</p></article>
-          <article><i>◷</i><h3>Agenda de visitas</h3><p>Visitas presenciais e por vídeo, com confirmação e registro de quem compareceu.</p></article>
-          <article><i>▤</i><h3>Propostas e documentos</h3><p>Proposta, contrato e documentos do comprador guardados no lead, com acesso só para quem atende.</p></article>
-          <article><i>$</i><h3>Vendas e comissões</h3><p>Cada venda ligada ao canal e à campanha que a trouxe, com a comissão do corretor calculada.</p></article>
-          <article><i>↗</i><h3>Previsão e ROI</h3><p>Previsão de vendas por etapa, custo por lead, custo por lead qualificado e retorno por canal.</p></article>
-          <article><i>◆</i><h3>Portal da construtora</h3><p>A construtora acompanha unidades, funil, visitas e investimento — em números, sem dados pessoais dos clientes.</p></article>
-          <article><i>✦</i><h3>Atendimento com IA por texto e voz</h3><p>Responde 24h em português, inglês e espanhol — por escrito ou conversando por voz — qualifica e passa para a equipe quando o cliente pede.</p></article>
         </div>
       </div>
     </section>
@@ -925,10 +1019,38 @@
       </div>
     </section>
 
-    <section class="section section-light" id="estrategia">
+    <section class="section" id="solucoes">
       <div class="container">
         <div class="section-head">
-          <div class="eyebrow">A estratégia</div>
+          <div class="eyebrow">Soluções</div>
+          <h2>Uma estrutura para cada papel da operação imobiliária.</h2>
+          <p>Construtoras, imobiliárias, corretores e gestores de marketing usando os mesmos dados — cada um com a visão de que precisa.</p>
+        </div>
+        <div class="sol-grid">
+          <article class="sol-card"><div class="icon-box">🏢</div><h3>Construtoras e incorporadoras</h3><p>Visão do lançamento inteiro: campanhas, unidades, equipe e vendas.</p><ul><li>Portal da construtora com funil e investimento</li><li>Inventário de unidades em tempo real</li><li>Divulgação para investidores do Brasil e da América Latina</li></ul><a href="#contato" data-jornada="demo" data-interest="Construtora ou incorporadora">Conhecer a plataforma ↗</a></article>
+          <article class="sol-card"><div class="icon-box">⌂</div><h3>Imobiliárias</h3><p>Oportunidades centralizadas e distribuídas para o corretor certo.</p><ul><li>Distribuição automática por empreendimento e idioma</li><li>Acompanhamento do funil por corretor</li><li>Importação da base de clientes existente</li></ul><a href="#contato" data-jornada="demo" data-interest="Imobiliária">Ver uma demonstração ↗</a></article>
+          <article class="sol-card"><div class="icon-box">♙</div><h3>Corretores</h3><p>Leads organizados, agenda e próximos passos claros.</p><ul><li>Leads qualificados com origem e histórico</li><li>Agenda de visitas e lembretes de contato</li><li>Acesso a empreendimentos de Miami e da Flórida</li></ul><a href="#contato" data-jornada="parceiro" data-interest="Corretor de imóveis">Quero ser parceiro ↗</a></article>
+          <article class="sol-card"><div class="icon-box">▥</div><h3>Gestores de marketing</h3><p>Investimento e resultado por canal, campanha e anúncio.</p><ul><li>Meta Ads e Google Ads no mesmo dashboard</li><li>Custo por lead, por visita e por venda</li><li>Conversões devolvidas às plataformas de anúncio</li></ul><a href="#contato" data-jornada="diagnostico" data-interest="Gestor(a) de marketing">Pedir diagnóstico ↗</a></article>
+        </div>
+        <div class="sol-rede">
+          <div class="section-head"><div class="eyebrow">Para quem compra na Flórida</div><h3 class="sol-rede-h">Uma rede completa para investidores e compradores internacionais.</h3>
+          <p class="audience-extra">Procura um imóvel para morar ou investir? <a href="#localizador" data-focar-localizador>Use o localizador</a> ou <a href="#contato" data-jornada="empreendimento" data-interest="Investidor ou comprador">fale com a equipe</a>.</p></div>
+        <div class="network-grid">
+          <div class="network-item"><small>01 · Legal</small><h4>Advogada in-house</h4><p>Direito imobiliário, estruturação cross-border, FIRPTA e sucessão.</p></div>
+          <div class="network-item"><small>02 · Brokerage</small><h4>Broker in-house</h4><p>Residencial, pré-construção, branded residences e comercial.</p></div>
+          <div class="network-item"><small>03 · Accounting</small><h4>Contadores e tributaristas</h4><p>ITIN, EIN, residência fiscal, 1031 exchanges e restituições FIRPTA.</p></div>
+          <div class="network-item"><small>04 · Banking</small><h4>Private banking</h4><p>Hipotecas para não-residentes, contas fiduciárias e estruturas multimoeda.</p></div>
+          <div class="network-item"><small>05 · Interior design</small><h4>Designers selecionados</h4><p>De pacotes rental-ready a projetos completos para residências privadas.</p></div>
+          <div class="network-item"><small>06 · Corporate</small><h4>Realocação de empresas</h4><p>Leasing comercial, moradia para equipe, E-2, L-1, EB-5 e formação de LLC.</p></div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light" id="marketing">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Marketing · estratégia de canais</div>
           <h2>Três canais, um objetivo: compradores reais na frente do corretor.</h2>
           <p>Cada canal tem um papel no funil. O Meta Ads cria demanda e alcança o comprador antes de ele procurar; o Google Ads captura quem já está procurando; SEO e IA fazem o empreendimento aparecer quando o comprador pesquisa no Google ou pergunta ao ChatGPT. Todos são medidos pelo que importa: lead qualificado, visita e venda — não clique.</p>
         </div>
@@ -968,37 +1090,7 @@
       </div>
     </section>
 
-    <section class="section section-dark intel" id="inteligencia">
-      <div class="container intel-grid">
-        <div>
-          <div class="eyebrow">Inteligência comercial</div>
-          <h2>Uma visão clara para decidir onde investir e como vender.</h2>
-          <p class="intel-lead">Um ambiente compartilhado entre marketing, corretores e construtoras, com indicadores alinhados e o histórico de cada oportunidade.</p>
-          <div class="intel-list">
-            <div><span>✓</span><p><strong>Origem rastreável</strong>Canal, campanha e pontos de contato preservados em cada lead.</p></div>
-            <div><span>✓</span><p><strong>Funil comercial conectado</strong>Do contato à visita, proposta e venda registrada.</p></div>
-            <div><span>✓</span><p><strong>Visão por equipe e empreendimento</strong>Campanhas, corretores e projetos comparados com o mesmo critério.</p></div>
-          </div>
-          <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Planejar minha operação <span>↗</span></a>
-        </div>
-        <div class="intel-panel">
-          <div class="intel-head"><strong>Estrutura da visão comercial</strong><span>Exemplo do painel</span></div>
-          <table>
-            <thead><tr><th>Etapa</th><th>Indicador</th><th>Fonte</th></tr></thead>
-            <tbody>
-              <tr><td>Investimento</td><td>Por canal e campanha</td><td><span class="pill-t">Mídia no CRM</span></td></tr>
-              <tr><td>Leads válidos</td><td>Origem + interesse</td><td><span class="pill-t">Site · Meta · IA</span></td></tr>
-              <tr><td>Visitas</td><td>Agendadas e realizadas</td><td><span class="pill-t">Agenda</span></td></tr>
-              <tr><td>Propostas</td><td>Valor e etapa</td><td><span class="pill-t">Negociação</span></td></tr>
-              <tr><td>Vendas</td><td>Receita atribuída</td><td><span class="pill-t">CRM → Meta e Google</span></td></tr>
-            </tbody>
-          </table>
-          <p class="intel-note">Estrutura do painel Desempenho: custo por lead, custo por lead qualificado, ROAS por canal e previsão de vendas por etapa.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section-light" id="metodo">
+    <section class="section" id="metodo">
       <div class="container">
         <div class="section-head">
           <div class="eyebrow">Método danova · 10 anos de tráfego imobiliário</div>
@@ -1307,7 +1399,7 @@
         <div class="evx-cta">
           <div><h3>Sua presença merece continuar sendo notícia.</h3><p>Com a danova AI, cada evento pode se transformar em uma campanha de visibilidade, relacionamento e posicionamento profissional.</p></div>
           <div class="evx-cta-btns">
-            <a href="#contato" class="btn btn-primary" data-goal="Eventos, Marketing &amp; PR">Solicitar proposta para meu evento <span>↗</span></a>
+            <a href="#contato" class="btn btn-primary" data-jornada="diagnostico" data-goal="Eventos, Marketing &amp; PR">Solicitar proposta para meu evento <span>↗</span></a>
             <a href="#experiencias" class="btn btn-outline">Conhecer nossos eventos e experiências ↓</a>
           </div>
         </div>
@@ -1363,31 +1455,6 @@
       </div>
     </div>
 
-    <section class="section section-dark" id="para-quem">
-      <div class="container">
-        <div class="section-head">
-          <div class="eyebrow">Feita para a operação imobiliária</div>
-          <h2>Uma estrutura para quem precisa conectar marketing e vendas.</h2>
-          <p>A jornada organizada de acordo com o papel de cada participante do processo comercial — e uma rede completa para quem compra na Flórida.</p>
-        </div>
-        <div class="audience-grid audience-4">
-          <article class="audience-card"><div class="icon-box">🏢</div><h3>Construtoras e incorporadoras</h3><p>Campanhas, empreendimentos, unidades, equipes e desempenho comercial numa visão só — com portal próprio.</p><a href="#contato" data-interest="Construtora ou incorporadora">Solicitar diagnóstico ↗</a></article>
-          <article class="audience-card"><div class="icon-box">⌂</div><h3>Imobiliárias</h3><p>Oportunidades centralizadas, distribuição automática para os corretores e acompanhamento do funil.</p><a href="#contato" data-interest="Imobiliária">Quero organizar a operação ↗</a></article>
-          <article class="audience-card"><div class="icon-box">♙</div><h3>Corretores</h3><p>Leads organizados, histórico de atendimento, agenda de visitas e próximos passos claros.</p><a href="#contato" data-interest="Corretor de imóveis">Quero ser parceiro ↗</a></article>
-          <article class="audience-card"><div class="icon-box">▥</div><h3>Gestores de marketing</h3><p>Investimento, qualidade dos contatos e resultado por canal — com conversões voltando ao Meta e ao Google.</p><a href="#contato" data-interest="Gestor(a) de marketing">Ver os indicadores ↗</a></article>
-        </div>
-        <p class="audience-extra">Procura um imóvel para morar ou investir? <a href="#localizador" data-focar-localizador>Use o localizador</a> ou <a href="#contato" data-interest="Investidor ou comprador">fale com a equipe</a>: moradia, renda, EB-5, family office ou compra com cripto.</p>
-        <div class="network-grid">
-          <div class="network-item"><small>01 · Legal</small><h4>Advogada in-house</h4><p>Direito imobiliário, estruturação cross-border, FIRPTA e sucessão.</p></div>
-          <div class="network-item"><small>02 · Brokerage</small><h4>Broker in-house</h4><p>Residencial, pré-construção, branded residences e comercial.</p></div>
-          <div class="network-item"><small>03 · Accounting</small><h4>Contadores e tributaristas</h4><p>ITIN, EIN, residência fiscal, 1031 exchanges e restituições FIRPTA.</p></div>
-          <div class="network-item"><small>04 · Banking</small><h4>Private banking</h4><p>Hipotecas para não-residentes, contas fiduciárias e estruturas multimoeda.</p></div>
-          <div class="network-item"><small>05 · Interior design</small><h4>Designers selecionados</h4><p>De pacotes rental-ready a projetos completos para residências privadas.</p></div>
-          <div class="network-item"><small>06 · Corporate</small><h4>Realocação de empresas</h4><p>Leasing comercial, moradia para equipe, E-2, L-1, EB-5 e formação de LLC.</p></div>
-        </div>
-      </div>
-    </section>
-
     <section class="section" id="planos">
       <div class="container">
         <div class="section-head">
@@ -1408,7 +1475,7 @@
               <li>Propostas, contratos, documentos e comissões</li>
               <li>Portal da construtora e relatórios de ROI e previsão</li>
             </ul>
-            <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora" data-goal="Plataforma danova AI (CRM)">Quero a plataforma <span>↗</span></a>
+            <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora" data-jornada="demo" data-goal="Plataforma danova AI (CRM)">Quero a plataforma <span>↗</span></a>
             <p class="plan-note">A taxa de 1% é calculada sobre o valor da venda registrada como fechada na plataforma e faturada no fechamento.</p>
           </article>
           <article class="plan">
@@ -1420,7 +1487,7 @@
               <li>Otimização semanal por lead qualificado e visita</li>
               <li>Relatório com custo por lead, por visita e por venda</li>
             </ul>
-            <a href="#contato" class="btn btn-outline-dark" data-interest="Construtora ou incorporadora" data-goal="Campanhas de tráfego pago (Meta e Google Ads)">Pedir proposta</a>
+            <a href="#contato" class="btn btn-outline-dark" data-interest="Construtora ou incorporadora" data-jornada="diagnostico" data-goal="Campanhas de tráfego pago (Meta e Google Ads)">Pedir proposta</a>
           </article>
           <article class="plan">
             <small>Vídeo para anúncios</small>
@@ -1442,9 +1509,25 @@
               <li>PR e assessoria de imprensa</li>
               <li>Cobertura, conteúdo e campanha pós-evento no CRM</li>
             </ul>
-            <a href="#contato" class="btn btn-outline-dark" data-goal="Eventos, Marketing &amp; PR">Pedir proposta</a>
+            <a href="#contato" class="btn btn-outline-dark" data-jornada="diagnostico" data-goal="Eventos, Marketing &amp; PR">Pedir proposta</a>
           </article>
         </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="parceiro">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow">Seja parceiro</div>
+          <h2>Cresça com a DANOVA-AI no mercado americano.</h2>
+          <p>Uma rede de corretores, imobiliárias, construtoras e profissionais conectada por tecnologia, marketing e relacionamento — do Brasil aos Estados Unidos.</p>
+        </div>
+        <div class="par-grid">
+          <article class="par-card"><small>Corretores e imobiliárias</small><h3>Mais oportunidades, mais organização.</h3><ul><li>Acesso a empreendimentos de Miami e da Flórida</li><li>CRM para acompanhar cada cliente</li><li>Materiais e campanhas dos empreendimentos</li></ul><a href="#contato" class="btn btn-primary" data-jornada="parceiro" data-interest="Corretor de imóveis">Quero ser parceiro <span>↗</span></a></article>
+          <article class="par-card"><small>Construtoras e incorporadoras</small><h3>Seu empreendimento diante de compradores qualificados.</h3><ul><li>Campanhas para investidores do Brasil e da América Latina</li><li>Eventos, Marketing &amp; PR para o lançamento</li><li>Portal com funil, visitas e investimento</li></ul><a href="#contato" class="btn btn-primary" data-jornada="parceiro" data-interest="Construtora ou incorporadora">Cadastrar empreendimento <span>↗</span></a></article>
+          <article class="par-card"><small>Profissionais parceiros</small><h3>Advogados, contadores, bancos e designers.</h3><ul><li>Atendimento a investidores internacionais</li><li>Indicações dentro da rede</li><li>Presença nos eventos e conteúdos da DANOVA-AI</li></ul><a href="#contato" class="btn btn-primary" data-jornada="parceiro" data-interest="Outro">Fazer parte da rede <span>↗</span></a></article>
+        </div>
+        <ol class="par-passos"><li><b>Cadastro</b>Preencha o formulário de parceria.</li><li><b>Conversa</b>Alinhamos perfil, região e objetivos.</li><li><b>Início</b>Acesso ao CRM, aos materiais e às oportunidades.</li></ol>
       </div>
     </section>
 
@@ -1470,11 +1553,11 @@
       <div class="container">
         <div class="cta-band">
           <div class="cta-copy">
-            <div class="eyebrow">Próximo passo · diagnóstico gratuito</div>
+            <div class="eyebrow">Próximo passo</div>
             <h2>Transforme dados dispersos em decisões comerciais melhores.</h2>
             <p>Conte o projeto, o ticket e a verba atual. Mapeamos seus canais, o processo de atendimento e os indicadores prioritários — e mostramos onde o investimento está se perdendo.</p>
           </div>
-          <a href="#contato" class="btn btn-primary" data-interest="Construtora ou incorporadora">Pedir diagnóstico <span>↗</span></a>
+          <a href="#contato" class="btn btn-primary" data-jornada="diagnostico" data-interest="Construtora ou incorporadora">Pedir diagnóstico de marketing <span>↗</span></a>
         </div>
       </div>
     </section>
@@ -1483,16 +1566,17 @@
       <div class="container">
         <div class="section-head">
           <div class="eyebrow">Fale com a DANOVA-AI</div>
-          <h2>Vamos entender sua operação.</h2>
-          <p>Conte um pouco sobre sua empresa ou sobre o imóvel que procura. Respondemos pessoalmente, em português, inglês ou espanhol.</p>
+          <h2>Como podemos ajudar?</h2>
+          <p>Escolha o assunto. Respondemos pessoalmente, em português, inglês ou espanhol.</p>
         </div>
         <div class="contact-grid">
           <aside class="contact-info">
-            <h3>Marketing imobiliário com visão de ponta a ponta.</h3>
-            <p>Campanhas, captação, atendimento e resultados comerciais organizados numa mesma estratégia.</p>
-            <div class="cpoint"><span>↗</span>Diagnóstico de campanhas e funil comercial</div>
-            <div class="cpoint"><span>◎</span>Mapeamento de integrações e dados</div>
-            <div class="cpoint"><span>▥</span>Definição de indicadores de desempenho</div>
+            <h3>Um caminho para cada objetivo.</h3>
+            <p>Escolha o assunto no formulário e a solicitação chega direto à pessoa certa da equipe.</p>
+            <div class="cpoint"><span>▥</span>Demonstração da plataforma</div>
+            <div class="cpoint"><span>◎</span>Cadastro de parceiros</div>
+            <div class="cpoint"><span>⌂</span>Plantas, preços e disponibilidade</div>
+            <div class="cpoint"><span>↗</span>Diagnóstico de marketing</div>
             <div class="contact-links">
               <a href="https://wa.me/17863826782?text=Ol%C3%A1%20Danielle%2C%20gostaria%20de%20um%20contato" target="_blank" rel="noopener"><b>WhatsApp</b>+1 (786) 382-6782</a>
               <a href="mailto:danielle@danova-ai.com"><b>E-mail</b>danielle@danova-ai.com</a>
@@ -1501,17 +1585,24 @@
             </div>
           </aside>
 
-          <form class="form-card" id="leadForm" novalidate>
-            <h3>Solicite um diagnóstico</h3>
-            <p>Preencha os dados abaixo. A solicitação entra no nosso CRM e abre uma conversa no WhatsApp.</p>
+          <form class="form-card" id="leadForm" novalidate data-confirmacao>
+            <div class="jornadas" role="tablist" aria-label="Assunto do contato">
+              <button type="button" role="tab" data-j="demo" aria-selected="true">Conhecer a plataforma</button>
+              <button type="button" role="tab" data-j="parceiro" aria-selected="false">Seja parceiro</button>
+              <button type="button" role="tab" data-j="empreendimento" aria-selected="false">Empreendimento</button>
+              <button type="button" role="tab" data-j="diagnostico" aria-selected="false">Diagnóstico de marketing</button>
+            </div>
+            <h3 id="jTitulo">Agende uma demonstração da plataforma</h3>
+            <p id="jTexto">Mostramos o dashboard, a integração com Meta e Google Ads, o CRM e a IA com a sua operação em mente.</p>
+            <input type="hidden" name="jornada" id="jornada" value="demo">
             <div class="hp" aria-hidden="true"><label for="website">Não preencha</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
             <input type="hidden" name="message" id="fullMessage">
             <div class="form-grid">
               <div class="field"><label for="name">Nome completo *</label><input id="name" name="name" autocomplete="name" placeholder="Seu nome" required></div>
-              <div class="field"><label for="company">Empresa</label><input id="company" name="company" autocomplete="organization" placeholder="Nome da empresa (se houver)"></div>
+              <div data-js="demo parceiro diagnostico" class="field"><label for="company">Empresa</label><input id="company" name="company" autocomplete="organization" placeholder="Nome da empresa (se houver)"></div>
               <div class="field"><label for="email">E-mail *</label><input id="email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com" required></div>
               <div class="field"><label for="phone">WhatsApp com DDI *</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="+55 11 99999-9999" required></div>
-              <div class="field">
+              <div data-js="demo parceiro diagnostico" class="field">
                 <label for="profile">Seu perfil *</label>
                 <select id="profile" name="profile" required>
                   <option value="">Selecione</option>
@@ -1525,7 +1616,7 @@
                 </select>
               </div>
               <div class="field"><label for="region">Região de atuação</label><input id="region" name="country" placeholder="Ex.: Miami, Orlando, Brasil"></div>
-              <div class="field">
+              <div data-js="diagnostico" class="field">
                 <label for="budget">Investimento mensal em mídia</label>
                 <select id="budget" name="budget">
                   <option value="">Selecione</option>
@@ -1537,7 +1628,7 @@
                   <option>Não se aplica (sou comprador)</option>
                 </select>
               </div>
-              <div class="field">
+              <div data-js="diagnostico" class="field">
                 <label for="goal">Principal necessidade</label>
                 <select id="goal" name="goal">
                   <option value="">Selecione</option>
@@ -1558,7 +1649,7 @@
                   <option>Compra com cripto</option>
                 </select>
               </div>
-              <div class="field full">
+              <div data-js="empreendimento diagnostico" class="field full">
                 <label for="project">Empreendimento de interesse</label>
                 <select id="project" name="project">
                   <option value="">Ainda estou avaliando / não se aplica</option>
@@ -1580,7 +1671,8 @@
               <div class="field full"><label for="notes">Conte um pouco sobre seu objetivo</label><textarea id="notes" name="notes" placeholder="O que você deseja melhorar na operação — ou o imóvel que procura (orçamento, prazo, quartos)"></textarea></div>
             </div>
             <label class="consent"><input type="checkbox" id="consent" name="consent" value="sim" required><span>Autorizo a DANOVA-AI a entrar em contato por telefone, e-mail e WhatsApp sobre esta solicitação e declaro que li a <a href="politica-de-privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
-            <button type="submit" class="btn btn-primary" style="width:100%">Solicitar diagnóstico <span>↗</span></button>
+            <button type="submit" class="btn btn-primary" style="width:100%" id="jBotao">Agendar demonstração <span>↗</span></button>
+            <div class="form-ok" id="formOk" hidden><b>Recebemos sua solicitação.</b><span>Nossa equipe vai responder em breve. Se preferir, continue pelo WhatsApp:</span><a class="btn btn-primary" id="formOkWhats" href="#" target="_blank" rel="noopener">Abrir conversa no WhatsApp <span>↗</span></a></div>
             <p class="form-note">Seus dados são usados só para responder a esta solicitação. Veja os <a href="termos-de-uso.html" target="_blank" rel="noopener">Termos de Uso</a>.</p>
           </form>
         </div>
@@ -1593,13 +1685,13 @@
       <div class="footer-top">
         <div class="footer-brand">
           <a class="brand" href="#inicio" aria-label="danova AI — início"><img class="brand-logo" src="img/danova-logo.webp?v=2" alt="danova AI" width="195" height="52" loading="lazy"></a>
-          <p>Inteligência de performance para conectar marketing, oportunidades e resultados no mercado imobiliário — Meta Ads, Google Ads, CRM e IA há 10 anos.</p>
+          <p>Real Estate Intelligence: a plataforma que conecta marketing, anúncios, CRM, inteligência artificial e gestão comercial — há 10 anos no mercado imobiliário.</p>
           <div class="footer-social" aria-label="Redes sociais da DANOVA-AI"><a href="https://www.instagram.com/danova_ia" target="_blank" rel="noopener" aria-label="Instagram da DANOVA-AI" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a><a href="https://www.linkedin.com/in/danova-ai-4738103b9/" target="_blank" rel="noopener" aria-label="LinkedIn da DANOVA-AI" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.5h4V21H3V9.5Zm6.5 0h3.8v1.6h.06c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.77 2.65 4.77 6.1V21h-4v-5.1c0-1.22-.02-2.78-1.7-2.78-1.7 0-1.96 1.33-1.96 2.7V21h-4V9.5Z"/></svg></a><a href="https://www.facebook.com/profile.php?id=61577480279926" target="_blank" rel="noopener" aria-label="Facebook da DANOVA-AI" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.87.25-1.46 1.5-1.46h1.6V4.46A21 21 0 0 0 14.27 4.3c-2.3 0-3.87 1.4-3.87 3.98v2.22H7.8v3h2.6V21h3.1Z"/></svg></a><a href="https://wa.me/17863826782" target="_blank" rel="noopener" aria-label="WhatsApp da DANOVA-AI" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg></a></div>
         </div>
         <div class="footer-links">
-          <div class="footer-col"><strong>Explorar</strong><a href="#plataforma">Plataforma</a><a href="#como-funciona">Como funciona</a><a href="#estrategia">Estratégia</a><a href="#video">Vídeo para anúncios</a><a href="#planos">Planos</a><a href="#empreendimentos">Empreendimentos</a><a href="#eventos">Eventos, Marketing &amp; PR</a><a href="#faq">Perguntas frequentes</a><a href="livro.html">Livro</a></div>
-          <div class="footer-col"><strong>Para empresas</strong><a href="#contato" data-interest="Construtora ou incorporadora">Construtoras</a><a href="#contato" data-interest="Imobiliária">Imobiliárias</a><a href="#contato" data-interest="Corretor de imóveis">Corretores</a><a href="#contato" data-interest="Gestor(a) de marketing">Marketing</a><a href="crm/index.html">Área de membros</a></div>
-          <div class="footer-col"><strong>Contato e transparência</strong><a href="#contato">Solicitar diagnóstico</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://www.instagram.com/danova_ia" target="_blank" rel="noopener">Instagram</a><a href="https://www.linkedin.com/in/danova-ai-4738103b9/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.facebook.com/profile.php?id=61577480279926" target="_blank" rel="noopener">Facebook</a><a href="politica-de-privacidade.html">Política de Privacidade</a><a href="termos-de-uso.html">Termos de Uso</a><a href="#" data-cookies>Preferências de cookies</a></div>
+          <div class="footer-col"><strong>Explorar</strong><a href="#plataforma">Plataforma</a><a href="#solucoes">Soluções</a><a href="#marketing">Marketing</a><a href="#video">Vídeo para anúncios</a><a href="#empreendimentos">Empreendimentos</a><a href="#eventos">Eventos, Marketing &amp; PR</a><a href="#planos">Planos</a><a href="#parceiro">Seja parceiro</a><a href="#faq">Perguntas frequentes</a></div>
+          <div class="footer-col"><strong>Para empresas</strong><a href="#contato" data-jornada="demo" data-interest="Construtora ou incorporadora">Construtoras</a><a href="#contato" data-jornada="demo" data-interest="Imobiliária">Imobiliárias</a><a href="#contato" data-jornada="parceiro" data-interest="Corretor de imóveis">Corretores</a><a href="#contato" data-jornada="diagnostico" data-interest="Gestor(a) de marketing">Marketing</a><a href="crm/index.html">Área de membros</a></div>
+          <div class="footer-col"><strong>Contato e transparência</strong><a href="#contato" data-jornada="demo">Conhecer a plataforma</a><a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp</a><a href="mailto:danielle@danova-ai.com">E-mail</a><a href="https://www.instagram.com/danova_ia" target="_blank" rel="noopener">Instagram</a><a href="https://www.linkedin.com/in/danova-ai-4738103b9/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.facebook.com/profile.php?id=61577480279926" target="_blank" rel="noopener">Facebook</a><a href="politica-de-privacidade.html">Política de Privacidade</a><a href="termos-de-uso.html">Termos de Uso</a><a href="#" data-cookies>Preferências de cookies</a></div>
         </div>
       </div>
       <p class="legal-note">Danielle Lisboa Martins, Esq. · NY State Bar #10351218844 · FL Broker #3252283 · Executive Broker, Cervera Real Estate. We do business in accordance with the Federal Fair Housing Law.</p>
@@ -1657,6 +1749,36 @@
       const option = Array.from(select.options).find(o => o.text === text);
       if (option) select.value = option.value;
     }
+    // Jornadas do formulário de contato: demonstração, parceiro, empreendimento, diagnóstico
+    const JORNADAS = {
+      demo: { t: "Agende uma demonstração da plataforma", p: "Mostramos o dashboard, a integração com Meta e Google Ads, o CRM e a IA com a sua operação em mente.", b: "Agendar demonstração", goal: "Plataforma danova AI (CRM)", ph: "Quantos empreendimentos e corretores você tem hoje? O que quer acompanhar?", ev: "solicitar_demo" },
+      parceiro: { t: "Cadastro de parceiro", p: "Conte quem você é e onde atua. Retornamos para alinhar a parceria.", b: "Enviar cadastro de parceiro", goal: "Parceria comercial", ph: "Sua experiência, região e o tipo de parceria que procura", ev: "cadastro_parceiro" },
+      empreendimento: { t: "Receba plantas, preços e disponibilidade", p: "Diga o empreendimento e o que procura. Enviamos as informações atualizadas.", b: "Quero receber as informações", goal: "Investimento / renda", perfil: "Investidor ou comprador", ph: "Orçamento, prazo, número de quartos, objetivo (morar, investir, EB-5)", ev: "lead_empreendimento" },
+      diagnostico: { t: "Solicite um diagnóstico de marketing", p: "Mapeamos seus canais, o atendimento e os indicadores — e mostramos onde o investimento está se perdendo.", b: "Solicitar diagnóstico", goal: "", ph: "O que você deseja melhorar na operação: campanhas, leads, atendimento, vendas", ev: "diagnostico_marketing" }
+    };
+    const jInput = document.getElementById("jornada");
+    function definirJornada(j) {
+      const cfg = JORNADAS[j]; if (!cfg || !jInput) return;
+      jInput.value = j;
+      document.querySelectorAll(".jornadas [data-j]").forEach(b => b.setAttribute("aria-selected", b.dataset.j === j ? "true" : "false"));
+      document.getElementById("jTitulo").textContent = cfg.t;
+      document.getElementById("jTexto").textContent = cfg.p;
+      document.getElementById("jBotao").innerHTML = cfg.b + " <span>↗</span>";
+      document.getElementById("notes").placeholder = cfg.ph;
+      document.querySelectorAll("#leadForm [data-js]").forEach(w => {
+        const on = w.dataset.js.split(" ").includes(j); w.hidden = !on;
+        w.querySelectorAll("[required], [data-req]").forEach(el => { if (on) { if (el.dataset.req) el.required = true; } else if (el.required) { el.dataset.req = "1"; el.required = false; } });
+      });
+      const goal = document.getElementById("goal"), prof = document.getElementById("profile");
+      if (cfg.goal) { const o = Array.from(goal.options).find(x => x.text === cfg.goal); if (o) goal.value = o.value; } else if (goal.dataset.auto) goal.value = "";
+      goal.dataset.auto = cfg.goal ? j : "";
+      if (cfg.perfil) { const o = Array.from(prof.options).find(x => x.text === cfg.perfil); if (o) prof.value = o.value; }
+      const ok = document.getElementById("formOk"); if (ok) ok.hidden = true;
+    }
+    document.querySelectorAll(".jornadas [data-j]").forEach(b => b.addEventListener("click", () => definirJornada(b.dataset.j)));
+    document.querySelectorAll("[data-jornada]").forEach(a => a.addEventListener("click", () => definirJornada(a.dataset.jornada)));
+    definirJornada((location.hash.match(/jornada=(\w+)/) || [])[1] || "demo");
+
     document.querySelectorAll("[data-project]").forEach(link =>
       link.addEventListener("click", () => selectByText(projectSelect, link.dataset.project)));
     document.querySelectorAll("[data-interest]").forEach(link =>
@@ -1703,35 +1825,48 @@
       document.getElementById("fullMessage").value = buildMessage();
     }, true);
 
-    form.addEventListener("submit", event => {
+    // Envio com confirmação: a conversão (generate_lead) só é registrada depois que o CRM confirma o recebimento.
+    form.addEventListener("submit", async event => {
       event.preventDefault();
       if (!form.checkValidity()) return;
-      // Envia o lead estruturado direto para o CRM (Supabase). O e-mail de aviso segue pelo /api/lead.php.
+      const btn = document.getElementById("jBotao"), ok = document.getElementById("formOk"), j = (jInput && jInput.value) || "diagnostico";
+      const msg = buildMessage(), whats = "https://wa.me/" + DANOVA_WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+      const txtBtn = btn.innerHTML; btn.disabled = true; btn.textContent = "Enviando…";
+      let confirmado = false;
       try {
         const crm = window.DANOVA_CRM;
         if (crm && crm.url) {
           const dados = Object.fromEntries(new FormData(form).entries());
-          dados.lead_page = "home"; dados.source = "leadForm";
-          dados.notes = [dados.company ? "Empresa: " + dados.company : "", dados.notes || "",
+          dados.lead_page = "home"; dados.source = "leadForm-" + j;
+          dados.notes = ["Assunto: " + (JORNADAS[j] ? JORNADAS[j].t : j), dados.company ? "Empresa: " + dados.company : "", dados.notes || "",
             "Consentimento de contato e Política de Privacidade: aceito em " + new Date().toLocaleString("pt-BR")].filter(Boolean).join("\n");
           dados.language = (document.documentElement.lang || "pt").slice(0, 2);
-          fetch(crm.url + "/rest/v1/rpc/enviar_lead", {
-            method: "POST", keepalive: true,
+          const r = await fetch(crm.url + "/rest/v1/rpc/enviar_lead", {
+            method: "POST",
             headers: { "Content-Type": "application/json", apikey: crm.anonKey, Authorization: "Bearer " + crm.anonKey },
             body: JSON.stringify({ dados: dados })
-          }).catch(() => {});
+          });
+          confirmado = r.ok;
         }
-      } catch (e) {}
+      } catch (e) { confirmado = false; }
       if (!window.__danovaTracking) {
-        // Fallback se o script de medição não carregar: envia direto ao receptor de leads.
         const payload = Object.fromEntries(new FormData(form).entries());
-        payload.source = "leadForm"; payload.page = "home";
+        payload.source = "leadForm-" + j; payload.page = "home";
         fetch("/api/lead.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), keepalive: true }).catch(() => {});
       }
-      const url = "https://wa.me/" + DANOVA_WHATSAPP_NUMBER + "?text=" + encodeURIComponent(buildMessage());
-      window.open(url, "_blank", "noopener,noreferrer");
-      showToast("Obrigado! Recebemos sua solicitação — a conversa no WhatsApp foi aberta em uma nova aba.");
-      form.reset();
+      btn.disabled = false; btn.innerHTML = txtBtn;
+      document.getElementById("formOkWhats").href = whats;
+      if (confirmado) {
+        if (window.danovaConfirmarLead) window.danovaConfirmarLead(form, { jornada: j, lead_type: j });
+        if (window.dataLayer && JORNADAS[j]) window.dataLayer.push({ event: JORNADAS[j].ev, jornada: j });
+        ok.querySelector("b").textContent = "Recebemos sua solicitação.";
+        ok.hidden = false; form.reset(); definirJornada(j);
+        ok.hidden = false; ok.scrollIntoView({ block: "center", behavior: "smooth" });
+      } else {
+        ok.querySelector("b").textContent = "Não conseguimos confirmar o envio.";
+        ok.hidden = false;
+        showToast("Não conseguimos confirmar o envio agora. Use o WhatsApp para falar com a equipe.");
+      }
     });
 
     // Pedido de vídeo pronto para anúncios → CRM (lead + pedido). O e-mail de aviso segue pelo script de medição.

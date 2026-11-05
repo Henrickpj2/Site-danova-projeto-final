@@ -83,18 +83,20 @@ head=f'''<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1424">
-  <title>DANOVA-AI | Real Estate Intelligence · tráfego pago, CRM e vendas imobiliárias</title>
-  <meta name="description" content="DANOVA-AI conecta campanhas de Meta Ads e Google Ads, leads, corretores e vendas para transformar marketing imobiliário em performance mensurável. CRM, IA e vídeo para anúncios.">
+  <meta name="theme-color" content="#142B3C">
+  <title>DANOVA-AI | Real Estate Intelligence — a inteligência por trás das vendas imobiliárias</title>
+  <meta name="description" content="Plataforma que conecta tráfego pago, CRM, inteligência artificial e gestão comercial para construtoras, imobiliárias e corretores: dashboard, Meta Ads, Google Ads, CRM, IA e eventos.">
   <link rel="canonical" href="https://danova-ai.com/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="danova AI | Tráfego pago que vende empreendimentos">
-  <meta property="og:description" content="Meta Ads e Google Ads para lançamentos imobiliários, há 10 anos. Do anúncio à venda, com CRM e IA.">
+  <meta property="og:title" content="DANOVA-AI | A inteligência por trás das vendas imobiliárias">
+  <meta property="og:description" content="Tráfego pago, CRM, inteligência artificial e gestão comercial em uma única plataforma — investimentos, campanhas, leads, corretores e resultados em um só lugar.">
   <meta property="og:image" content="https://danova-ai.com/img/og-danova.jpg">
   <meta property="og:url" content="https://danova-ai.com/">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
@@ -108,4 +110,16 @@ head=f'''<!doctype html>
 </head>
 '''
 js=open('page.js').read()
-open('../public_html/index.html','w').write(head+body+"\n  <script src=\"js/danova-localizador.js?v=20261021\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261026\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
+PAGINA=(head+body+"\n  <script src=\"js/danova-localizador.js?v=20261021\" defer></script>\n  <script src=\"js/danova-chat.js?v=20261026\" defer></script>\n  <script>\n"+js+"\n  </script>\n</body>\n</html>\n")
+import os as _os, re as _re2
+if _os.environ.get("PREVIA"):
+  out=PAGINA.replace('<link rel="canonical"','<meta name="robots" content="noindex, nofollow">\n  <link rel="canonical"',1)
+  for a in ['src="','href="','poster="','url(','"','\'']:
+    for d in ['img/','js/','video/','crm/','politica-de-privacidade.html','termos-de-uso.html','api/']:
+      out=out.replace(a+d,a+'../'+d)
+  out=out.replace('fetch("/api/','fetch("../api/')
+  _os.makedirs('../public_html/novo',exist_ok=True)
+  open('../public_html/novo/index.html','w').write(out)
+  print('previa -> public_html/novo/index.html')
+else:
+  open('../public_html/index.html','w').write(PAGINA)
