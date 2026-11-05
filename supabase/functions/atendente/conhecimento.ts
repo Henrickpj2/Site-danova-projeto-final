@@ -8,7 +8,7 @@ export const CONHECIMENTO = `
 - Consultoria imobiliária de luxo no Sul da Flórida (de Brickell a Palm Beach) para investidores internacionais, em especial do Brasil e da América Latina.
 - Liderada por Danielle Lisboa Martins, Esq. — advogada (NY State Bar e OAB) e corretora licenciada na Flórida (FL Broker #3252283), Executive Broker da Cervera Real Estate. J.D. + LL.M. Temple University, Harvard Leadership 2024. Atende em português, inglês e espanhol.
 - Diferencial: advogada e corretora no mesmo processo — compra, venda, estruturação jurídica (LLC, trust), FIRPTA, 1031, EB-5 e compra com cripto, com uma rede de contadores, private banks e designers.
-- Contato: WhatsApp +1 (786) 382-6782 · danielle@danova-ai.com.
+- Contato: WhatsApp +1 (786) 382-6782 · danova-ai@danova-ai.com.
 - Processo: 1) chamada privada de 30 min (WhatsApp ou Zoom); 2) estratégia escrita em até 1 semana; 3) estruturação e execução (2 a 12 semanas); 4) fechamento em Miami, Nova York ou Brasil e acompanhamento pós-fechamento.
 
 # Empreendimentos (preços "a partir de", informados pelas incorporadoras; podem mudar sem aviso)
