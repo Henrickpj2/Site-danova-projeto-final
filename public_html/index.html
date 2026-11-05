@@ -740,6 +740,20 @@
       .evx-a, .evx-d { grid-column: auto; }
       .evx-cta { padding: 26px 22px; }
     }
+
+    .evx-imprensa { display: grid; grid-template-columns: 1fr 1.25fr; gap: 32px; align-items: center; background: #fff; border: 1px solid var(--line); border-radius: 24px; padding: 32px; margin: -14px 0 44px; }
+    .evx-imp-txt h3 { margin: 10px 0 4px; font-size: clamp(24px, 2.8vw, 32px); letter-spacing: -.02em; }
+    .evx-imp-veiculo { margin: 0 0 14px; font-size: 13px; font-weight: 700; color: var(--teal-dark); letter-spacing: .02em; }
+    .evx-imp-txt h4 { margin: 0 0 10px; font-size: 19px; line-height: 1.3; }
+    .evx-imp-txt p { color: var(--muted); font-size: 14.5px; line-height: 1.6; margin: 0 0 12px; }
+    .evx-imp-link { font-weight: 700; color: var(--teal-dark); }
+    .evx-imp-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .evx-imp-thumbs button { padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; cursor: zoom-in; background: #f4f7fa; aspect-ratio: 2 / 3; transition: transform .25s, box-shadow .25s; }
+    .evx-imp-thumbs button:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(11,20,36,.16); }
+    .evx-imp-thumbs img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+    .event-galeria.fotos.imprensa { grid-template-columns: 1fr; max-width: 760px; margin: 0 auto; }
+    .event-galeria.fotos.imprensa img { aspect-ratio: auto; height: auto; }
+    @media (max-width: 980px) { .evx-imprensa { grid-template-columns: 1fr; padding: 24px; } }
   </style>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "@id": "https://danova-ai.com/#org", "name": "danova AI", "url": "https://danova-ai.com/", "logo": "https://danova-ai.com/img/danova-logo.webp", "email": "danielle@danova-ai.com", "telephone": "+1-786-382-6782", "areaServed": ["Miami", "Palm Beach", "Flórida", "Brasil"], "knowsAbout": ["Meta Ads", "Google Ads", "SEO", "tráfego pago imobiliário", "CRM imobiliário", "empreendimentos de alto padrão"], "knowsLanguage": ["pt", "en", "es"], "sameAs": ["https://www.instagram.com/danova_ia", "https://www.linkedin.com/in/danova-ai-4738103b9/", "https://www.facebook.com/profile.php?id=61577480279926", "https://wa.me/17863826782"]}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "@id": "https://danova-ai.com/#site", "url": "https://danova-ai.com/", "name": "danova AI", "inLanguage": "pt-BR", "publisher": {"@id": "https://danova-ai.com/#org"}}</script>
@@ -1234,6 +1248,22 @@
           <article class="evx-serv"><i>06</i><h3>CRM, relacionamento e pós-evento</h3><p><strong>Um evento não termina quando os convidados vão embora.</strong></p><p>Organizamos os contatos captados, segmentamos oportunidades e desenvolvemos campanhas de acompanhamento para transformar o relacionamento iniciado no evento em reuniões, parcerias e negócios.</p></article>
         </div>
 
+        <div class="evx-imprensa" id="imprensa">
+          <div class="evx-imp-txt">
+            <div class="eyebrow">03 | Relações públicas e assessoria de imprensa (PR)</div>
+            <h3>Na imprensa</h3>
+            <p class="evx-imp-veiculo">Painel Político · Painel Econômico · 14 de setembro de 2026</p>
+            <h4>“Investimentos imobiliários entre Brasil e EUA ganham força”</h4>
+            <p>Reportagem sobre a iniciativa liderada por Danielle Lisboa Martins e Juscileia Ramos para conectar ativos entre Brasil e Estados Unidos, com a apresentação da incorporadora Domus, de Miami, a investidores brasileiros no CIMI 360, no Rio de Janeiro.</p>
+            <a class="evx-imp-link" href="#" data-link-materia target="_blank" rel="noopener" hidden>Ler a matéria no site do veículo ↗</a>
+          </div>
+          <div class="evx-imp-thumbs">
+            <button type="button" data-imprensa="painel-politico" data-i="0" aria-label="Ver página 1 da reportagem"><img src="img/imprensa/painel-politico-1.webp" alt="Reportagem do Painel Político, página 1" loading="lazy"></button>
+            <button type="button" data-imprensa="painel-politico" data-i="1" aria-label="Ver página 2 da reportagem"><img src="img/imprensa/painel-politico-2.webp" alt="Reportagem do Painel Político, página 2" loading="lazy"></button>
+            <button type="button" data-imprensa="painel-politico" data-i="2" aria-label="Ver página 3 da reportagem"><img src="img/imprensa/painel-politico-3.webp" alt="Reportagem do Painel Político, página 3" loading="lazy"></button>
+          </div>
+        </div>
+
         <div class="evx-tipos">
           <div class="eyebrow">Eventos que podemos impulsionar</div>
           <ul>
@@ -1721,6 +1751,7 @@
     const DANOVA_EVENTOS = {
       "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: ["img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp", "img/eventos/sinal-junho-fifa-2026/06.webp", "img/eventos/sinal-junho-fifa-2026/07.webp", "img/eventos/sinal-junho-fifa-2026/08.webp", "img/eventos/sinal-junho-fifa-2026/09.webp", "img/eventos/sinal-junho-fifa-2026/10.webp", "img/eventos/sinal-junho-fifa-2026/11.webp", "img/eventos/sinal-junho-fifa-2026/12.webp"], videos: ["img/eventos/sinal-junho-fifa-2026/video-01.mp4#t=0.1"] },
       "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: ["img/eventos/cmi-rio-2026/01.webp", "img/eventos/cmi-rio-2026/02.webp", "img/eventos/cmi-rio-2026/03.webp", "img/eventos/cmi-rio-2026/04.webp", "img/eventos/cmi-rio-2026/05.webp", "img/eventos/cmi-rio-2026/06.webp"], videos: [] },
+      "painel-politico": { nome: "Painel Político · 14/09/2026", tipoTitulo: "Na imprensa", imprensa: true, fotos: ["img/imprensa/painel-politico-1.webp", "img/imprensa/painel-politico-2.webp", "img/imprensa/painel-politico-3.webp"], videos: [] },
       "global-family-office-2026": { nome: "Global Family Office 2026", fotos: ["img/eventos/global-family-office-2026/01.webp", "img/eventos/global-family-office-2026/02.webp", "img/eventos/global-family-office-2026/03.webp", "img/eventos/global-family-office-2026/04.webp", "img/eventos/global-family-office-2026/05.webp"], videos: [] }
     };
     (function () {
@@ -1738,9 +1769,9 @@
       const abrir = (id, tipo, botao) => {
         const ev = DANOVA_EVENTOS[id]; if (!ev) return;
         const itens = ev[tipo] || [];
-        tipoEl.textContent = tipo === "fotos" ? "Fotos" : "Vídeos"; titulo.textContent = ev.nome;
+        tipoEl.textContent = ev.tipoTitulo || (tipo === "fotos" ? "Fotos" : "Vídeos"); titulo.textContent = ev.nome;
         corpo.innerHTML = itens.length
-          ? '<div class="event-galeria ' + tipo + '">' + itens.map((u, i) => tipo === "fotos"
+          ? '<div class="event-galeria ' + tipo + (ev.imprensa ? " imprensa" : "") + '">' + itens.map((u, i) => tipo === "fotos"
               ? '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="' + esc(ev.nome) + " — foto " + (i + 1) + '" loading="lazy"></a>'
               : embed(u)).join("") + "</div>"
           : '<div class="event-vazio"><b>' + (tipo === "fotos" ? "Fotos em breve" : "Vídeos em breve") + '</b>Assim que o material do evento estiver pronto, ele aparece aqui.</div>';
@@ -1750,6 +1781,7 @@
       };
       const fechar = () => { modal.hidden = true; document.body.style.overflow = ""; corpo.innerHTML = ""; if (voltarPara) voltarPara.focus(); };
       document.querySelectorAll(".event-card [data-galeria]").forEach(b => b.addEventListener("click", () => abrir(b.closest(".event-card").dataset.evento, b.dataset.galeria, b)));
+      document.querySelectorAll("[data-imprensa]").forEach(b => b.addEventListener("click", () => { abrir(b.dataset.imprensa, "fotos", b); const alvo = corpo.querySelectorAll("img")[+b.dataset.i || 0]; if (alvo) setTimeout(() => alvo.scrollIntoView({ block: "start" }), 60); }));
       document.querySelectorAll(".event-card [data-galeria]").forEach(b => { const ev = DANOVA_EVENTOS[b.closest(".event-card").dataset.evento]; const n = ev && (ev[b.dataset.galeria] || []).length; if (n) b.innerHTML = b.textContent + ' <span class="event-n">' + n + "</span>"; });
       modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-fechar-evento]")) fechar(); });
       document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) fechar(); });

@@ -172,6 +172,7 @@
     const DANOVA_EVENTOS = {
       "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: ["img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp", "img/eventos/sinal-junho-fifa-2026/06.webp", "img/eventos/sinal-junho-fifa-2026/07.webp", "img/eventos/sinal-junho-fifa-2026/08.webp", "img/eventos/sinal-junho-fifa-2026/09.webp", "img/eventos/sinal-junho-fifa-2026/10.webp", "img/eventos/sinal-junho-fifa-2026/11.webp", "img/eventos/sinal-junho-fifa-2026/12.webp"], videos: ["img/eventos/sinal-junho-fifa-2026/video-01.mp4#t=0.1"] },
       "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: ["img/eventos/cmi-rio-2026/01.webp", "img/eventos/cmi-rio-2026/02.webp", "img/eventos/cmi-rio-2026/03.webp", "img/eventos/cmi-rio-2026/04.webp", "img/eventos/cmi-rio-2026/05.webp", "img/eventos/cmi-rio-2026/06.webp"], videos: [] },
+      "painel-politico": { nome: "Painel Político · 14/09/2026", tipoTitulo: "Na imprensa", imprensa: true, fotos: ["img/imprensa/painel-politico-1.webp", "img/imprensa/painel-politico-2.webp", "img/imprensa/painel-politico-3.webp"], videos: [] },
       "global-family-office-2026": { nome: "Global Family Office 2026", fotos: ["img/eventos/global-family-office-2026/01.webp", "img/eventos/global-family-office-2026/02.webp", "img/eventos/global-family-office-2026/03.webp", "img/eventos/global-family-office-2026/04.webp", "img/eventos/global-family-office-2026/05.webp"], videos: [] }
     };
     (function () {
@@ -189,9 +190,9 @@
       const abrir = (id, tipo, botao) => {
         const ev = DANOVA_EVENTOS[id]; if (!ev) return;
         const itens = ev[tipo] || [];
-        tipoEl.textContent = tipo === "fotos" ? "Fotos" : "Vídeos"; titulo.textContent = ev.nome;
+        tipoEl.textContent = ev.tipoTitulo || (tipo === "fotos" ? "Fotos" : "Vídeos"); titulo.textContent = ev.nome;
         corpo.innerHTML = itens.length
-          ? '<div class="event-galeria ' + tipo + '">' + itens.map((u, i) => tipo === "fotos"
+          ? '<div class="event-galeria ' + tipo + (ev.imprensa ? " imprensa" : "") + '">' + itens.map((u, i) => tipo === "fotos"
               ? '<a href="' + esc(u) + '" target="_blank" rel="noopener"><img src="' + esc(u) + '" alt="' + esc(ev.nome) + " — foto " + (i + 1) + '" loading="lazy"></a>'
               : embed(u)).join("") + "</div>"
           : '<div class="event-vazio"><b>' + (tipo === "fotos" ? "Fotos em breve" : "Vídeos em breve") + '</b>Assim que o material do evento estiver pronto, ele aparece aqui.</div>';
@@ -201,6 +202,7 @@
       };
       const fechar = () => { modal.hidden = true; document.body.style.overflow = ""; corpo.innerHTML = ""; if (voltarPara) voltarPara.focus(); };
       document.querySelectorAll(".event-card [data-galeria]").forEach(b => b.addEventListener("click", () => abrir(b.closest(".event-card").dataset.evento, b.dataset.galeria, b)));
+      document.querySelectorAll("[data-imprensa]").forEach(b => b.addEventListener("click", () => { abrir(b.dataset.imprensa, "fotos", b); const alvo = corpo.querySelectorAll("img")[+b.dataset.i || 0]; if (alvo) setTimeout(() => alvo.scrollIntoView({ block: "start" }), 60); }));
       document.querySelectorAll(".event-card [data-galeria]").forEach(b => { const ev = DANOVA_EVENTOS[b.closest(".event-card").dataset.evento]; const n = ev && (ev[b.dataset.galeria] || []).length; if (n) b.innerHTML = b.textContent + ' <span class="event-n">' + n + "</span>"; });
       modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-fechar-evento]")) fechar(); });
       document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) fechar(); });
