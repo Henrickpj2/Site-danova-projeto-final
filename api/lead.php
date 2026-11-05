@@ -11,7 +11,7 @@
  */
 
 // ===================== CONFIGURAÇÃO =====================
-const LEAD_TO   = 'danielle@danova-ai.com';      // quem recebe os leads
+const LEAD_TO   = 'danova-ai@danova-ai.com';     // quem recebe os avisos de lead
 const LEAD_FROM = 'site@danova-ai.com';          // precisa ser um e-mail do domínio (crie na Hostinger > E-mails)
 const ALLOWED_ORIGINS = ['https://danova-ai.com', 'https://www.danova-ai.com'];
 // CRM (Supabase · projeto danova-crm) — chave pública "anon"; só consegue chamar enviar_lead
