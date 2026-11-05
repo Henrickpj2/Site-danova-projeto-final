@@ -156,7 +156,7 @@
     bip();
     try {
       if ("Notification" in window && Notification.permission === "granted") {
-        var n = new Notification(motivo + ": " + nome, { body: corpo, tag: "lead-" + l.id, icon: "../img/danova-logo.webp" });
+        var n = new Notification(motivo + ": " + nome, { body: corpo, tag: "lead-" + l.id, icon: "../img/favicon-192.png" });
         n.onclick = function () { window.focus(); abrirLead(l.id); n.close(); };
       }
     } catch (e) { /* navegador sem notificação */ }

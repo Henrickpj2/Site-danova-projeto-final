@@ -31,7 +31,9 @@
     @media (max-width: 980px) { .stats { grid-template-columns: repeat(2, 1fr); row-gap: 26px; } .network-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 720px) { .network-grid { grid-template-columns: 1fr; } .about-photo, .about-photo img { min-height: 420px; } .stat strong { font-size: 28px; } }
     /* ---- Logo ---- */
-    .brand-logo { height: 44px; width: auto; display: block; }
+    .brand-logo { height: 44px; width: auto; max-width: none; display: block; object-fit: contain; }
+    header .brand { flex-shrink: 0; }
+    @media (max-width: 1180px) { header .brand-logo { height: 36px; } }
     footer .brand-logo { height: 48px; }
     /* ---- Hero + Localizador ---- */
     :root { --hot: #ec3d8f; --violet: #6b3fd4; --sky: #3ec5f0; --amber: #f7a24a; }
@@ -571,3 +573,6 @@
     .crs-prev { left: 12px; } .crs-next { right: 12px; }
     .crs-dica { text-align: center; font-size: 12px; color: rgba(255,255,255,.5); margin: 8px 0 14px; }
     @media (max-width: 640px) { .crs-slide { padding: 0 8px 8px; } .crs-seta { display: none; } }
+    @media (min-width: 721px) { .nav { gap: 16px; } .nav-links { gap: 15px; } .nav-links a:not(.btn) { font-size: 12.5px; } }
+    @media (max-width: 1200px) and (min-width: 721px) { .nav-links a[href="#como-funciona"], .nav-links a[href="#para-quem"] { display: none; } }
+    @media (max-width: 1060px) and (min-width: 721px) { .nav-links a[href="#video"], .nav-links a[href="#planos"] { display: none; } }

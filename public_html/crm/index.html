@@ -11,12 +11,15 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="crm.css?v=20261103e">
   <script>try{var q=location.search.match(/tema=(novo|atual)/);if(q)localStorage.setItem("danova_tema",q[1]);if(localStorage.getItem("danova_tema")==="novo")document.write('<link rel="stylesheet" href="crm-v2.css?v=20261105">');}catch(e){}</script>
+  <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="../img/favicon-192.png">
+  <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
 </head>
 <body>
   <!-- ===== Acesso ===== -->
   <section class="auth" id="authScreen" hidden>
     <div class="auth-card">
-      <img class="auth-logo" src="../img/danova-logo.webp" alt="danova AI">
+      <img class="auth-logo" src="../img/danova-logo.webp?v=2" alt="danova AI">
       <h1 id="authTitle">Área de membros</h1>
       <p class="muted" id="authSub">Entre para acompanhar leads, corretores e o andamento de cada negociação.</p>
 
@@ -65,7 +68,7 @@
   <!-- ===== Aguardando aprovação ===== -->
   <section class="auth" id="pendingScreen" hidden>
     <div class="auth-card">
-      <img class="auth-logo" src="../img/danova-logo.webp" alt="danova AI">
+      <img class="auth-logo" src="../img/danova-logo.webp?v=2" alt="danova AI">
       <h1>Acesso em análise</h1>
       <p class="muted">Recebemos seu cadastro, <strong id="pendingName"></strong>. Um administrador da danova AI vai liberar seu acesso em breve.</p>
       <button class="btn ghost" data-action="sair">Sair</button>
@@ -75,7 +78,7 @@
   <!-- ===== Aplicativo ===== -->
   <div class="app" id="app" hidden>
     <aside class="side" id="side">
-      <a class="side-logo" href="../index.html"><img src="../img/danova-logo.webp" alt="danova AI"></a>
+      <a class="side-logo" href="../index.html"><img src="../img/danova-logo.webp?v=2" alt="danova AI"></a>
       <nav class="side-nav">
         <button data-view="painel" class="active"><span>◧</span>Painel</button>
         <button data-view="funil"><span>▤</span>Funil</button>

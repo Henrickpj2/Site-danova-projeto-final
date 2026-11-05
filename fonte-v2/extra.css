@@ -31,7 +31,9 @@
     @media (max-width: 980px) { .stats { grid-template-columns: repeat(2, 1fr); row-gap: 26px; } .network-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 720px) { .network-grid { grid-template-columns: 1fr; } .about-photo, .about-photo img { min-height: 420px; } .stat strong { font-size: 28px; } }
     /* ---- Logo ---- */
-    .brand-logo { height: 44px; width: auto; display: block; }
+    .brand-logo { height: 44px; width: auto; max-width: none; display: block; object-fit: contain; }
+    header .brand { flex-shrink: 0; }
+    @media (max-width: 1180px) { header .brand-logo { height: 36px; } }
     footer .brand-logo { height: 48px; }
     /* ---- Hero + Localizador ---- */
     :root { --hot: #C6A66B; --violet: #A8884E; --sky: #E9E3D8; --amber: #D9C08F; }
