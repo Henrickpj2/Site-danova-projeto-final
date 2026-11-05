@@ -226,9 +226,15 @@
         .catch(function () {});
     } catch (e) {}
 
-    contactEvent('generate_lead', form, { form_id: formName || form.id || '', lead_source: payload.source, value: 1, currency: 'USD' });
+    // Formulários com data-confirmacao só registram a conversão depois que o envio é confirmado (window.danovaConfirmarLead)
+    if (!form.hasAttribute('data-confirmacao')) contactEvent('generate_lead', form, { form_id: formName || form.id || '', lead_source: payload.source, value: 1, currency: 'USD' });
   }
   window.danovaSendLead = sendLead;
+  window.danovaConfirmarLead = function (form, extra) {
+    var o = { form_id: (form && form.id) || '', lead_source: (form && form.id) || 'website', value: 1, currency: 'USD' };
+    if (extra) for (var k in extra) o[k] = extra[k];
+    contactEvent('generate_lead', form, o);
+  };
 
   document.addEventListener('submit', function (ev) {
     var f = ev.target;
