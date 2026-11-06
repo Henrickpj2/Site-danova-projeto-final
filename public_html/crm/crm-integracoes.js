@@ -81,14 +81,14 @@
         '<div class="ig-acts"><button class="c-btn" data-seletor-meta>Escolher contas e campanhas</button><button class="c-btn ghost" data-sync-meta>Atualizar métricas</button><button class="c-btn ghost" data-ir="anuncios">Ver painel</button><button class="c-btn ghost" data-conectar-meta>Reconectar</button><button class="c-btn ghost danger" data-desconectar-meta>Desconectar</button></div>' +
         '<div class="ig-sel" data-sel hidden></div>';
     } else {
-      corpo = '<div class="ig-meta-imp"><b>Conecte em 1 clique</b><span>Entre com o Facebook que administra o seu Gerenciador de Negócios e autorize. O CRM passa a puxar sozinho todas as contas de anúncio, as métricas de todas as campanhas e os leads dos formulários instantâneos.</span></div>' +
+      corpo = '<div class="ig-meta-imp"><b>Conecte em 1 clique</b><span>Entre com o Facebook que administra o seu Gerenciador de Negócios e autorize. O CRM passa a puxar sozinho todas as contas de anúncio, e as métricas de todas as campanhas. (Leads dos formulários instantâneos: liberar depois o caso de uso de Páginas no app.)</span></div>' +
         '<div class="ig-acts"><button class="c-btn fb" data-conectar-meta>Conectar com Facebook</button></div>';
     }
     return '<section class="c-box ig-card m">' + topo + aviso + corpo + '<div class="ig-imp-res" data-imp-res></div>' +
       '<details class="ig-avancado"><summary>Configuração do app do Meta (feita uma única vez)</summary>' +
       "<ol><li>Em <b>developers.facebook.com → Meus apps</b>, abra o app do seu negócio (ou crie um, tipo <b>Empresa</b>).</li>" +
       "<li>Adicione o produto <b>Login do Facebook para Empresas</b> e, em <b>URIs de redirecionamento do OAuth válidos</b>, cole:<div class=\"ig-code\"><code>" + SUPA + "/functions/v1/meta-conectar</code><button type=\"button\" class=\"c-btn ghost\" data-copiar=\"" + SUPA + "/functions/v1/meta-conectar\">Copiar</button></div></li>" +
-      "<li>Em <b>Configurações → Básico</b>: domínio do app <b>danova-ai.com</b>, política de privacidade <b>https://danova-ai.com/politica-de-privacidade.html</b>.</li>" +
+      "<li>Ainda no Login para Empresas → Configurações, deixe <b>Login no OAuth do cliente</b> e <b>Login do OAuth na Web</b> em <b>Sim</b>.</li><li>Em <b>Configurações → Básico</b>: domínios do app <b>danova-ai.com</b> e <b>oeylfwasqvbnybzrwtgf.supabase.co</b>, política de privacidade <b>https://danova-ai.com/politica-de-privacidade.html</b>. Mantenha o app <b>Não publicado</b> (desenvolvimento) até a Análise da Meta.</li>" +
       "<li>No Supabase (Edge Functions → Secrets), salve <b>META_APP_ID</b> (ID do app) e <b>META_APP_SECRET</b> (Chave secreta do app).</li></ol>" +
       '<small class="ig-lbl">Webhook de leads (o CRM configura sozinho ao conectar):</small><div class="ig-code"><code>' + META_WEBHOOK + '</code><button type="button" class="c-btn ghost" data-copiar="' + META_WEBHOOK + '">Copiar</button></div></details></section>';
   }
