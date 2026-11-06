@@ -912,3 +912,47 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 .ez-acts { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
 .ez iframe { width: 100%; min-height: 520px; border: 1px solid var(--line); border-radius: 10px; background: #F2EFEA; }
 @media (max-width: 560px) { .ez { padding: 0; } .ez-box { border-radius: 0; max-height: 100vh; height: 100%; } .ez-acts .btn { flex: 1; } }
+
+.ez-agendar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; background: var(--bg); border-radius: 12px; padding: 10px; }
+.ez-agendar label { flex: 1; min-width: 200px; }
+/* agente de e-mails */
+.ag { display: flex; flex-direction: column; gap: 14px; }
+.ag-topo { display: flex; justify-content: space-between; gap: 14px; align-items: center; flex-wrap: wrap; }
+.ag-topo h3 { margin: 0 0 4px; }
+.ag-abas { display: flex; gap: 6px; flex-wrap: wrap; }
+.ag-abas button { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 600; color: var(--navy); cursor: pointer; }
+.ag-abas button span { background: var(--bg); border-radius: 999px; padding: 1px 7px; margin-left: 4px; font-size: 11px; }
+.ag-abas button.sel { background: var(--navy); color: #fff; border-color: var(--navy); } .ag-abas button.sel span { background: rgba(255,255,255,.2); }
+.ag-vazio { text-align: center; padding: 30px 16px; }
+.ag-barra { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 13px; }
+.ag-item { display: flex; flex-direction: column; gap: 10px; }
+.ag-item header { display: flex; gap: 10px; align-items: center; } .ag-item header > div { flex: 1; min-width: 0; }
+.ag-item header b { display: block; color: var(--navy); } .ag-item header small { color: var(--muted); font-size: 12px; }
+.ag-item label, .ag-camp label, .ag-regras label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.ag input:not([type=checkbox]):not([type=radio]), .ag select, .ag textarea { font: inherit; font-size: 14px; border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; background: #fff; color: var(--ink, #142B3C); }
+.ag textarea { resize: vertical; line-height: 1.55; }
+.ag-item footer { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; justify-content: flex-end; } .ag-item footer .ag-q { margin-right: auto; }
+.ag-motivo { margin: 0; font-size: 13px; color: #7a5c27; background: rgba(198,166,107,.14); border-radius: 10px; padding: 8px 10px; }
+.ag-pill { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--bg); color: var(--muted); white-space: nowrap; }
+.ag-o1 { background: #eef0ff; color: #4b3fd4; } .ag-o2 { background: #e3f6ec; color: #1f7a4d; } .ag-o3 { background: #fff4d6; color: #8a6200; } .ag-o4 { background: #fdeaf3; color: #b0246a; } .ag-o5 { background: #e8f4f8; color: #1d6b85; }
+.ag-tab { display: flex; flex-direction: column; }
+.ag-row { display: grid; grid-template-columns: 190px 1fr auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.ag-row:last-child { border-bottom: 0; } .ag-row > div:first-child { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.ag-row small { display: block; color: var(--muted); font-size: 12px; }
+.ag-regras { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.ag-regras section { display: flex; flex-direction: column; gap: 10px; }
+.ag-regras header { display: flex; justify-content: space-between; gap: 10px; align-items: center; } .ag-regras h4 { margin: 0; color: var(--navy); }
+.ag-tog { flex-direction: row !important; align-items: center; gap: 6px !important; cursor: pointer; }
+.ag-etapas { display: flex; flex-wrap: wrap; gap: 6px 14px; } .ag-etapas label { flex-direction: row !important; align-items: center; gap: 6px !important; font-weight: 500 !important; color: var(--navy) !important; }
+.ag-passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.ag-acts { display: flex; justify-content: flex-end; gap: 10px; }
+.ag-camp { display: flex; flex-direction: column; gap: 12px; }
+.ag-sub { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--navy); margin-top: 6px; }
+.ag-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
+.ag-modo { display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 14px; } .ag-modo label { flex-direction: row !important; align-items: center; gap: 6px !important; color: var(--navy) !important; font-weight: 500 !important; }
+@media (max-width: 640px) { .ag-row { grid-template-columns: 1fr; } .ag-item footer .ag-q { width: 100%; } .ag-passos { grid-template-columns: 1fr 1fr 1fr; } }
+.ag input[type=checkbox], .ag input[type=radio] { width: auto !important; flex: none; margin: 0; }
+.ag-barra label, .ag-chk { flex-direction: row !important; display: flex; align-items: center; gap: 6px; }
+.ag-camp > .btn, .ag-camp [data-contar] { align-self: flex-start; }
+.ag-camp .ag-q { max-width: 280px; }
+.ag-etapas label, .ag-modo label { white-space: nowrap; }

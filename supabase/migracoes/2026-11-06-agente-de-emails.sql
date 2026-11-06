@@ -1,4 +1,3 @@
--- PENDENTE: ainda não aplicada no banco (aguardando confirmação do usuário).
 -- Agente de IA de e-mails programados: rascunhos que pedem aprovação, envios agendados, regras e campanhas.
 -- Fluxo: regra/campanha → rascunho (IA escreve) → corretor/admin aprova → agendado → no horário, a função
 -- email-agente entrega ao servidor do site (api/email-fila.php) com um ticket de uso único → Hostinger envia.
