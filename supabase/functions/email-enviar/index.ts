@@ -1,5 +1,6 @@
 // danova AI — Central de E-mails: prévia e envio pelo provedor transacional (Resend).
 // A chave fica só no servidor: Supabase → Edge Functions → Secrets → RESEND_API_KEY.
+// Sem RESEND_API_KEY, o envio sai pelo e-mail da Hostinger (public_html/api/email-enviar.php).
 // Opcional: EMAIL_REMETENTE (padrão "DANOVA-AI <contato@danova-ai.com>"), EMAIL_RESPONDER_PARA (padrão danova-ai@danova-ai.com).
 // Ações (com login de admin ou do corretor responsável pelo lead):
 //   { acao: "previa", lead_id, assunto, corpo_html, vars }  → { assunto, html }
@@ -29,6 +30,32 @@ Deno.serve(async (req) => {
   if (!u?.user) return json({ erro: "nao_autenticado" }, 401);
   const { data: me } = await db.from("membros").select("id, nome, email, telefone, papel, ativo").eq("id", u.user.id).maybeSingle();
   if (!me?.ativo || !["admin", "corretor"].includes(me.papel)) return json({ erro: "sem_acesso" }, 403);
+
+  // ---- envio pelo e-mail da Hostinger: o servidor do site (api/email-enviar.php) reserva e depois informa o resultado ----
+  if (corpo.acao === "hostinger_reservar" || corpo.acao === "hostinger_resultado") {
+    const id = String(corpo.envio_id || "");
+    if (!/^[0-9a-f-]{36}$/i.test(id)) return json({ erro: "envio_invalido" }, 400);
+    if (corpo.acao === "hostinger_reservar") {
+      const dezMinAtras = new Date(Date.now() - 10 * 60e3).toISOString();
+      const { data: r } = await db.from("email_sends").update({ status: "enviando", atualizado_em: new Date().toISOString() })
+        .eq("id", id).eq("status", "pendente").eq("provedor", "hostinger").eq("enviado_por", me.id).gte("criado_em", dezMinAtras)
+        .select("id, lead_id, destinatario_email, destinatario_nome, assunto, corpo_html").maybeSingle();
+      if (!r) return json({ erro: "envio_indisponivel" }, 409);
+      const { data: ld } = await db.from("leads").select("corretor_id").eq("id", r.lead_id).maybeSingle();
+      const { data: cor } = ld?.corretor_id ? await db.from("membros").select("email").eq("id", ld.corretor_id).maybeSingle() : { data: null };
+      const sair = env("SUPABASE_URL") + "/functions/v1/email-descadastro?s=" + r.id + "&t=" + await hmac(r.id);
+      return json({ ok: true, para: r.destinatario_email, nome: r.destinatario_nome, assunto: r.assunto, html: r.corpo_html,
+        responder: cor?.email && emailValido(cor.email) ? cor.email : "danova-ai@danova-ai.com", descadastro: sair });
+    }
+    const sucesso = corpo.ok === true;
+    const erroTxt = String(corpo.erro || "O servidor de e-mail da Hostinger recusou o envio").slice(0, 300);
+    const { data: r } = await db.from("email_sends").update({ status: sucesso ? "enviado" : "falhou", erro: sucesso ? null : erroTxt, atualizado_em: new Date().toISOString() })
+      .eq("id", id).eq("status", "enviando").eq("enviado_por", me.id).select("id, lead_id, assunto, modelo").maybeSingle();
+    if (!r) return json({ erro: "envio_indisponivel" }, 409);
+    await db.from("email_events").insert({ send_id: r.id, tipo: sucesso ? "enviado" : "falha", dados: sucesso ? { via: "hostinger" } : { via: "hostinger", erro: erroTxt } });
+    if (sucesso) await db.from("lead_eventos").insert({ lead_id: r.lead_id, autor_id: me.id, tipo: "nota", texto: "E-mail enviado: “" + r.assunto + "” (" + (r.modelo || "personalizado") + ") por " + me.nome });
+    return json({ ok: true });
+  }
 
   const leadId = String(corpo.lead_id || "");
   const { data: lead } = await db.from("leads").select("id, nome, email, corretor_id").eq("id", leadId).maybeSingle();
@@ -66,7 +93,7 @@ Deno.serve(async (req) => {
   const { data: jaExiste } = await db.from("email_sends").select("id, status").eq("chave_idempotencia", chave).maybeSingle();
   if (jaExiste) return json({ erro: "duplicado", detalhe: "Este e-mail já foi enviado.", envio: jaExiste }, 409);
   const dezMin = new Date(Date.now() - 10 * 60e3).toISOString();
-  const { data: recente } = await db.from("email_sends").select("id").eq("lead_id", lead.id).eq("assunto", assunto).in("status", ["enviado", "entregue", "aberto", "clicado", "pendente"]).gte("criado_em", dezMin).limit(1);
+  const { data: recente } = await db.from("email_sends").select("id").eq("lead_id", lead.id).eq("assunto", assunto).in("status", ["enviado", "entregue", "aberto", "clicado", "pendente", "enviando"]).gte("criado_em", dezMin).limit(1);
   if (recente?.length && !corpo.forcar) return json({ erro: "repetido", detalhe: "Um e-mail com o mesmo assunto foi enviado para este cliente há menos de 10 minutos." }, 409);
 
   let modelo = "", templateId: string | null = null;
@@ -76,7 +103,7 @@ Deno.serve(async (req) => {
   }
   const { data: envio, error: eIns } = await db.from("email_sends").insert({
     lead_id: lead.id, template_id: templateId, modelo: modelo || "Personalizado", destinatario_nome: lead.nome, destinatario_email: para,
-    assunto, enviado_por: me.id, enviado_por_nome: me.nome, status: "pendente", chave_idempotencia: chave,
+    assunto, enviado_por: me.id, enviado_por_nome: me.nome, status: "pendente", chave_idempotencia: chave, provedor: env("RESEND_API_KEY") ? "resend" : "hostinger",
   }).select("id").single();
   if (eIns) return json({ erro: /duplicate/.test(eIns.message) ? "duplicado" : "banco", detalhe: eIns.message }, 409);
 
@@ -87,9 +114,8 @@ Deno.serve(async (req) => {
 
   const chaveApi = env("RESEND_API_KEY");
   if (!chaveApi) {
-    await db.from("email_sends").update({ status: "falhou", erro: "Provedor de e-mail não configurado (RESEND_API_KEY)", atualizado_em: new Date().toISOString() }).eq("id", envio.id);
-    await db.from("email_events").insert({ send_id: envio.id, tipo: "falha", dados: { motivo: "provedor_nao_configurado" } });
-    return json({ erro: "provedor_nao_configurado", detalhe: "O envio ainda não está ativo: falta configurar a chave do provedor de e-mail.", envio: { id: envio.id } }, 503);
+    // sem provedor externo: o navegador entrega o envio ao servidor do site (Hostinger), que dispara pelo e-mail do domínio
+    return json({ ok: true, via: "hostinger", envio: { id: envio.id, status: "pendente" } });
   }
   const remetente = env("EMAIL_REMETENTE") || "DANOVA-AI <contato@danova-ai.com>";
   const responder = env("EMAIL_RESPONDER_PARA") || (corretor?.email && emailValido(corretor.email) ? corretor.email : "danova-ai@danova-ai.com");

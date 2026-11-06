@@ -6,10 +6,11 @@
   var D = window.DanovaCRM = window.DanovaCRM || {}; D.modulos = D.modulos || []; D.ganchosLead = D.ganchosLead || [];
   var LOGO = "https://danova-ai.com/img/danova-logo-email.png";
   var VARS = [["nome_cliente", "Nome do cliente"], ["email_cliente", "E-mail do cliente"], ["nome_corretor", "Nome do corretor"], ["empreendimento", "Empreendimento"], ["localizacao", "Localização"], ["valor", "Valor"], ["condicoes", "Condições"], ["link_empreendimento", "Link do empreendimento"]];
-  var STATUS = { pendente: ["Enviando", "st-pend"], enviado: ["Enviado", "st-ok"], entregue: ["Entregue", "st-ok"], aberto: ["Aberto", "st-top"], clicado: ["Clicado", "st-top"], atrasado: ["Atrasado", "st-pend"], rejeitado: ["Rejeitado", "st-erro"], reclamacao: ["Marcado como spam", "st-erro"], falhou: ["Falhou", "st-erro"] };
+  var STATUS = { pendente: ["Enviando", "st-pend"], enviando: ["Enviando", "st-pend"], enviado: ["Enviado", "st-ok"], entregue: ["Entregue", "st-ok"], aberto: ["Aberto", "st-top"], clicado: ["Clicado", "st-top"], atrasado: ["Atrasado", "st-pend"], rejeitado: ["Rejeitado", "st-erro"], reclamacao: ["Marcado como spam", "st-erro"], falhou: ["Falhou", "st-erro"] };
   var ERROS = {
     provedor_nao_configurado: "O envio ainda não está ativo: falta configurar a chave do provedor de e-mail (RESEND_API_KEY) no Supabase.",
     descadastrado: "Este contato pediu para não receber mais e-mails comerciais.", email_invalido: "O cliente não tem um e-mail válido cadastrado.",
+    envio_indisponivel: "Este envio já foi processado ou expirou. Clique em Enviar de novo.", falha_envio: "O servidor de e-mail da Hostinger recusou o envio. Tente de novo em instantes.",
     duplicado: "Este e-mail já foi enviado.", repetido: "Um e-mail com o mesmo assunto foi enviado para este cliente há menos de 10 minutos.",
     sem_acesso: "Você só pode enviar e-mails para os seus clientes.", nao_autenticado: "Sua sessão expirou. Entre de novo.", conteudo_vazio: "Preencha o assunto e o texto."
   };
@@ -25,6 +26,17 @@
     if (r.error && !e) e = r.error.message || "falha";
     if (e) { var err = new Error(ERROS[e] || det || e); err.codigo = e; err.extra = extra; throw err; }
     return r.data;
+  }
+  // envia: a função valida e guarda o e-mail; sem provedor externo, o servidor do site (Hostinger) dispara pelo e-mail do domínio
+  async function enviarDeFato(A, corpo) {
+    var d = await chamar(A, corpo);
+    if (!d || d.via !== "hostinger") return d;
+    var sess = (await A.sb.auth.getSession()).data.session;
+    if (!sess) { var e0 = new Error(ERROS.nao_autenticado); e0.codigo = "nao_autenticado"; throw e0; }
+    var r = await fetch("/api/email-enviar.php", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ envio_id: d.envio.id, token: sess.access_token }) });
+    var j = {}; try { j = await r.json(); } catch (x) {}
+    if (!r.ok || !j.ok) { var e = new Error(ERROS[j.erro] || "O servidor de e-mail não conseguiu enviar agora. Tente de novo em instantes."); e.codigo = j.erro || "falha_envio"; throw e; }
+    return j;
   }
   function selo(s) { var x = STATUS[s] || [s, ""]; return '<span class="em-st ' + x[1] + '">' + x[0] + "</span>"; }
 
@@ -150,7 +162,7 @@
       if (!confirm("Enviar este e-mail para " + l.nome + " <" + l.email + ">?")) return;
       $$("[data-enviar]").forEach(function (b) { b.disabled = true; b.textContent = "Enviando…"; });
       try {
-        await chamar(A, Object.assign({ acao: "enviar", chave: st.chave }, coletar()));
+        await enviarDeFato(A, Object.assign({ acao: "enviar", chave: st.chave }, coletar()));
         A.toast("E-mail enviado para " + l.email + ".");
         $("[data-modal]").hidden = true; st.chave = uuid();
       } catch (x) {
@@ -283,7 +295,7 @@
     });
     q("[data-env]").addEventListener("click", async function () {
       if (!ok()) return; var b = this; b.disabled = true; b.textContent = "Enviando…";
-      try { await chamar(A, corpo("enviar")); A.toast("E-mail enviado para " + lead.email + "."); fechar(); if (aoEnviar) aoEnviar(); }
+      try { await enviarDeFato(A, corpo("enviar")); A.toast("E-mail enviado para " + lead.email + "."); fechar(); if (aoEnviar) aoEnviar(); }
       catch (x) { A.toast(x.message, true); if (x.codigo !== "repetido") chave = uuid(); b.disabled = false; b.textContent = "Enviar e-mail"; if (aoEnviar) aoEnviar(); }
     });
     if (modelos[0]) aplicar(modelos[0].id); else aplicar("");
