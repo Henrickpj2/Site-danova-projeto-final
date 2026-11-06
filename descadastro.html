@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Descadastro · DANOVA-AI</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <script src="js/crm-config.js?v=20261104"></script>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #142B3C; font-family: Arial, Helvetica, sans-serif; color: #24313A; padding: 16px; }
+    .box { background: #fff; border-radius: 18px; max-width: 460px; width: 100%; padding: 32px 28px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+    .box img { width: 180px; background: #142B3C; padding: 12px 16px; border-radius: 12px; }
+    h1 { font-family: Georgia, serif; font-weight: 500; color: #142B3C; font-size: 26px; margin: 22px 0 10px; }
+    p { line-height: 1.6; color: #5E6A72; margin: 0 0 18px; }
+    button { border: 0; border-radius: 999px; padding: 13px 22px; font-weight: 700; background: #C6A66B; color: #142B3C; cursor: pointer; font-size: 14px; }
+    button:disabled { opacity: .6; } a { color: #8C6D35; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <img src="img/danova-logo-email.png" alt="DANOVA-AI">
+    <h1 id="t">Deixar de receber e-mails</h1>
+    <p id="m">Confirme para não receber mais comunicações comerciais da DANOVA-AI neste endereço de e-mail.</p>
+    <button id="b" type="button">Confirmar descadastro</button>
+  </div>
+  <script>
+    (function () {
+      var q = new URLSearchParams(location.search), s = q.get("s") || "", t = q.get("t") || "";
+      var b = document.getElementById("b"), m = document.getElementById("m"), h = document.getElementById("t");
+      if (!s || !t) { h.textContent = "Link incompleto"; m.innerHTML = 'Use o link do rodapé do e-mail que você recebeu ou escreva para <a href="mailto:danova-ai@danova-ai.com">danova-ai@danova-ai.com</a>.'; b.hidden = true; return; }
+      b.addEventListener("click", function () {
+        b.disabled = true; b.textContent = "Enviando…";
+        var c = window.DANOVA_CRM || {};
+        fetch(c.url + "/functions/v1/email-descadastro", { method: "POST", headers: { "Content-Type": "application/json", apikey: c.anonKey }, body: JSON.stringify({ s: s, t: t }) })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+          .then(function (x) {
+            if (x.ok) { h.textContent = "Pronto, descadastro feito"; m.textContent = "Você não receberá mais comunicações comerciais da DANOVA-AI neste e-mail."; b.hidden = true; }
+            else { h.textContent = "Não foi possível confirmar"; m.innerHTML = 'O link parece inválido ou expirado. Escreva para <a href="mailto:danova-ai@danova-ai.com">danova-ai@danova-ai.com</a> que fazemos o descadastro.'; b.hidden = true; }
+          })
+          .catch(function () { b.disabled = false; b.textContent = "Tentar de novo"; m.textContent = "Sem conexão no momento. Tente de novo."; });
+      });
+    })();
+  </script>
+</body>
+</html>
