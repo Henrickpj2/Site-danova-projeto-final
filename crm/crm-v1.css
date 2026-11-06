@@ -895,3 +895,20 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 .em-modal-top small { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--teal-d); font-weight: 700; }
 .em-modal-box iframe { width: 100%; flex: 1; min-height: 60vh; border: 1px solid var(--line); border-radius: 10px; background: #F2EFEA; }
 @media (max-width: 860px) { .em-mlist, .em-grid { grid-template-columns: 1fr; } .em-row { grid-template-columns: 1fr; } }
+
+/* envio rápido de e-mail (ficha do lead) */
+.ez { position: fixed; inset: 0; z-index: 35; background: rgba(20,43,60,.55); display: grid; place-items: center; padding: 16px; }
+.ez-box { background: var(--panel); border-radius: 16px; width: min(620px, 100%); max-height: 94vh; overflow: auto; display: flex; flex-direction: column; gap: 10px; padding: 18px; box-shadow: 0 30px 80px rgba(8,15,29,.35); }
+.ez-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.ez-top small { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; }
+.ez-top b { display: block; font-size: 18px; color: var(--navy); } .ez-top span { font-size: 13px; color: var(--muted); }
+.ez-lbl { font-size: 12px; font-weight: 700; color: var(--navy); margin-top: 4px; }
+.ez-mods { display: flex; flex-wrap: wrap; gap: 8px; }
+.ez-mods button { border: 1px solid var(--line); background: var(--bg); color: var(--navy); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.ez-mods button.sel { background: var(--navy); border-color: var(--navy); color: #fff; }
+.ez label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.ez input, .ez select, .ez textarea { font: inherit; font-size: 14px; color: var(--ink, #142B3C); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: #fff; }
+.ez textarea { resize: vertical; line-height: 1.55; min-height: 220px; }
+.ez-acts { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+.ez iframe { width: 100%; min-height: 520px; border: 1px solid var(--line); border-radius: 10px; background: #F2EFEA; }
+@media (max-width: 560px) { .ez { padding: 0; } .ez-box { border-radius: 0; max-height: 100vh; height: 100%; } .ez-acts .btn { flex: 1; } }
