@@ -15,7 +15,8 @@ const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: 
 const env = (k: string) => Deno.env.get(k) || "";
 const CRM = "https://danova-ai.com/crm/";
 const ESCOPOS_CLIENTE = ["ads_read", "business_management"];
-const ESCOPOS_ADMIN = ["ads_read", "business_management", "leads_retrieval", "pages_show_list", "pages_read_engagement", "pages_manage_metadata", "pages_manage_ads"];
+// leads_retrieval, pages_manage_metadata e pages_manage_ads exigem casos de uso extras no app Meta; adicione-os aqui quando forem liberados.
+const ESCOPOS_ADMIN = ["ads_read", "business_management", "pages_show_list", "pages_read_engagement"];
 const voltar = (tela: string, q: string) => new Response(null, { status: 302, headers: { Location: CRM + "#" + tela + "?" + q } });
 const statusMeta = (s: number) => s === 1 ? "ativa" : (s === 2 || s === 101) ? "encerrada" : "pausada";
 
