@@ -6,7 +6,7 @@
   var D = window.DanovaCRM = window.DanovaCRM || {}; D.modulos = D.modulos || []; D.ganchosLead = D.ganchosLead || [];
   var LOGO = "https://danova-ai.com/img/danova-logo-email.png";
   var VARS = [["nome_cliente", "Nome do cliente"], ["email_cliente", "E-mail do cliente"], ["nome_corretor", "Nome do corretor"], ["empreendimento", "Empreendimento"], ["localizacao", "Localização"], ["valor", "Valor"], ["condicoes", "Condições"], ["link_empreendimento", "Link do empreendimento"]];
-  var STATUS = { pendente: ["Enviando", "st-pend"], enviando: ["Enviando", "st-pend"], enviado: ["Enviado", "st-ok"], entregue: ["Entregue", "st-ok"], aberto: ["Aberto", "st-top"], clicado: ["Clicado", "st-top"], atrasado: ["Atrasado", "st-pend"], rejeitado: ["Rejeitado", "st-erro"], reclamacao: ["Marcado como spam", "st-erro"], falhou: ["Falhou", "st-erro"] };
+  var STATUS = { pendente: ["Enviando", "st-pend"], enviando: ["Enviando", "st-pend"], rascunho: ["Aguardando aprovação", "st-pend"], agendado: ["Agendado", "st-top"], cancelado: ["Cancelado", ""], enviado: ["Enviado", "st-ok"], entregue: ["Entregue", "st-ok"], aberto: ["Aberto", "st-top"], clicado: ["Clicado", "st-top"], atrasado: ["Atrasado", "st-pend"], rejeitado: ["Rejeitado", "st-erro"], reclamacao: ["Marcado como spam", "st-erro"], falhou: ["Falhou", "st-erro"] };
   var ERROS = {
     provedor_nao_configurado: "O envio ainda não está ativo: falta configurar a chave do provedor de e-mail (RESEND_API_KEY) no Supabase.",
     descadastrado: "Este contato pediu para não receber mais e-mails comerciais.", email_invalido: "O cliente não tem um e-mail válido cadastrado.",
@@ -262,7 +262,8 @@
       '<label>Assunto<input data-assunto maxlength="200"></label>' +
       '<label>Mensagem<textarea data-texto rows="12" placeholder="Escreva aqui…"></textarea></label>' +
       '<p class="note">A logo, a sua assinatura e o link de descadastro entram automaticamente.</p>' +
-      '<div class="ez-acts"><button type="button" class="btn ghost" data-pv>Ver como vai chegar</button><button type="button" class="btn primary" data-env' + (bloq ? " disabled" : "") + ">Enviar e-mail</button></div>" +
+      '<div class="ez-agendar" hidden><label>Enviar em<input type="datetime-local" data-quando></label><button type="button" class="btn primary" data-agendar' + (bloq ? " disabled" : "") + '>Confirmar agendamento</button></div>' +
+      '<div class="ez-acts"><button type="button" class="btn ghost" data-pv>Ver como vai chegar</button><button type="button" class="btn ghost" data-abrir-agenda' + (bloq ? " disabled" : "") + '>⏱ Agendar</button><button type="button" class="btn primary" data-env' + (bloq ? " disabled" : "") + ">Enviar agora</button></div>" +
       '<iframe data-frame sandbox title="Prévia do e-mail" hidden></iframe></div>';
     document.body.appendChild(box);
     var q = function (s) { return box.querySelector(s); };
@@ -297,6 +298,22 @@
       if (!ok()) return; var b = this; b.disabled = true; b.textContent = "Enviando…";
       try { await enviarDeFato(A, corpo("enviar")); A.toast("E-mail enviado para " + lead.email + "."); fechar(); if (aoEnviar) aoEnviar(); }
       catch (x) { A.toast(x.message, true); if (x.codigo !== "repetido") chave = uuid(); b.disabled = false; b.textContent = "Enviar e-mail"; if (aoEnviar) aoEnviar(); }
+    });
+    q("[data-abrir-agenda]").addEventListener("click", function () {
+      var box2 = q(".ez-agendar"); box2.hidden = !box2.hidden; if (box2.hidden) return;
+      var d = new Date(Date.now() + 864e5); d.setHours(10, 0, 0, 0);
+      var p2 = function (n) { return (n < 10 ? "0" : "") + n; };
+      q("[data-quando]").value = d.getFullYear() + "-" + p2(d.getMonth() + 1) + "-" + p2(d.getDate()) + "T10:00"; q("[data-quando]").focus();
+    });
+    q("[data-agendar]").addEventListener("click", async function () {
+      if (!ok()) return; var v = q("[data-quando]").value; if (!v) return A.toast("Escolha a data e o horário.", true);
+      var b = this; b.disabled = true;
+      try {
+        var r = await A.sb.functions.invoke("email-agente", { body: { acao: "agendar", lead_id: lead.id, template_id: modeloId || null, assunto: assunto.value, texto: texto.value, agendado_para: new Date(v).toISOString(), chave: chave } });
+        var e = r.data && r.data.erro; try { var j = r.error && r.error.context && await r.error.context.json(); if (j && j.erro) e = j.erro; } catch (x) {}
+        if (r.error || e) throw new Error(e === "data_invalida" ? "Escolha um horário no futuro (até 120 dias)." : ERROS[e] || e || "falha");
+        A.toast("E-mail agendado para " + new Date(v).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) + "."); fechar(); if (aoEnviar) aoEnviar();
+      } catch (x) { A.toast(x.message, true); b.disabled = false; }
     });
     if (modelos[0]) aplicar(modelos[0].id); else aplicar("");
   }
