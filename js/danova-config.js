@@ -6,5 +6,5 @@
 window.DANOVA_CONFIG = {
   GTM_ID: '',          // ex.: 'GTM-ABC1234'
   GA4_ID: '',          // ex.: 'G-ABC123XYZ9'
-  META_PIXEL_ID: ''    // ex.: '123456789012345'
+  META_PIXEL_ID: '4152384645063468'    // Pixel da DANOVA-AI (06/11/2026)
 };
