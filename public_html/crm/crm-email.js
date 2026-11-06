@@ -214,21 +214,106 @@
   }
   function atualizarHistorico(el, A) { recarregarHistorico(el, A); }
 
-  // ---------- ficha do lead: Histórico de E-mails ----------
+  // ---------- ficha do lead: envio simples (botão "E-mail" no topo) + histórico ----------
+  function htmlParaTexto(h) {
+    var d = document.createElement("div");
+    d.innerHTML = String(h || "")
+      .replace(/<a [^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/gi, function (_m, u, t) { var tt = t.replace(/<[^>]+>/g, ""); return /^https?:/.test(u) && u.indexOf(tt) < 0 && tt.indexOf(u.replace(/^https?:\/\//, "")) < 0 ? tt + " (" + u + ")" : u; })
+      .replace(/<li[^>]*>/gi, "\n• ").replace(/<\/(p|ul|ol)>/gi, "\n\n").replace(/<br\s*\/?>/gi, "\n");
+    return (d.textContent || "").replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+  }
+  function textoParaHtml(t, A) {
+    return String(t || "").replace(/\r/g, "").split(/\n\s*\n/).map(function (bloco) {
+      var linhas = bloco.split("\n").filter(function (x) { return x.trim(); }); if (!linhas.length) return "";
+      var lnk = function (x) { return A.esc(x).replace(/(https?:\/\/[^\s<)]*[^\s<).,;:!?])/g, '<a href="$1">$1</a>'); };
+      if (linhas.every(function (x) { return /^\s*[•\-*]\s+/.test(x); })) return "<ul>" + linhas.map(function (x) { return "<li>" + lnk(x.replace(/^\s*[•\-*]\s+/, "")) + "</li>"; }).join("") + "</ul>";
+      return "<p>" + linhas.map(lnk).join("<br>") + "</p>";
+    }).join("");
+  }
+  function trocar(t, v) { return String(t || "").replace(/\{\{\s*([a-z_]+)\s*\}\}/gi, function (_m, k) { return v[k.toLowerCase()] != null ? v[k.toLowerCase()] : ""; }); }
+
+  async function abrirEnvioRapido(lead, A, aoEnviar) {
+    if (!st.modelos.length) { try { await carregarBase(A); } catch (x) { return A.toast("Não foi possível carregar os modelos: " + (x.message || x), true); } }
+    st.leadId = lead.id; st.empId = lead.empreendimento_id || ((st.emps.find(function (e) { return e.nome === lead.empreendimento; }) || {}).id) || "";
+    var modelos = st.modelos.filter(function (m) { return m.ativo; });
+    var bloq = st.descad[(lead.email || "").toLowerCase()];
+    var chave = uuid(), modeloId = "";
+    var box = document.createElement("div"); box.className = "ez";
+    box.innerHTML = '<div class="ez-box" role="dialog" aria-modal="true" aria-label="Enviar e-mail">' +
+      '<div class="ez-top"><div><small>Enviar e-mail para</small><b>' + A.esc(lead.nome || "") + "</b><span>" + A.esc(lead.email || "") + '</span></div><button type="button" class="icon-btn" data-x aria-label="Fechar">✕</button></div>' +
+      (bloq ? '<div class="em-aviso">Este contato pediu para não receber e-mails comerciais. O envio está bloqueado.</div>' : "") +
+      '<div class="ez-lbl">1. Escolha um modelo</div><div class="ez-mods">' +
+      modelos.map(function (m) { return '<button type="button" data-m="' + m.id + '">' + A.esc(m.nome.replace(/^Modelo \d+ · /, "")) + "</button>"; }).join("") +
+      '<button type="button" data-m="">Em branco</button></div>' +
+      '<label class="ez-emp" hidden>Empreendimento<select data-emp><option value="">Escolha…</option>' + st.emps.map(function (e) { return '<option value="' + e.id + '">' + A.esc(e.nome) + "</option>"; }).join("") + "</select></label>" +
+      '<div class="ez-lbl">2. Revise o texto</div>' +
+      '<label>Assunto<input data-assunto maxlength="200"></label>' +
+      '<label>Mensagem<textarea data-texto rows="12" placeholder="Escreva aqui…"></textarea></label>' +
+      '<p class="note">A logo, a sua assinatura e o link de descadastro entram automaticamente.</p>' +
+      '<div class="ez-acts"><button type="button" class="btn ghost" data-pv>Ver como vai chegar</button><button type="button" class="btn primary" data-env' + (bloq ? " disabled" : "") + ">Enviar e-mail</button></div>" +
+      '<iframe data-frame sandbox title="Prévia do e-mail" hidden></iframe></div>';
+    document.body.appendChild(box);
+    var q = function (s) { return box.querySelector(s); };
+    var assunto = q("[data-assunto]"), texto = q("[data-texto]"), frame = q("[data-frame]");
+    function fechar() { box.remove(); document.removeEventListener("keydown", esc); }
+    function esc(e) { if (e.key === "Escape") fechar(); }
+    document.addEventListener("keydown", esc);
+    q("[data-x]").addEventListener("click", fechar);
+    box.addEventListener("click", function (e) { if (e.target === box) fechar(); });
+    function aplicar(id) {
+      modeloId = id; chave = uuid(); frame.hidden = true;
+      box.querySelectorAll("[data-m]").forEach(function (b) { b.classList.toggle("sel", b.dataset.m === id); });
+      var m = st.modelos.find(function (x) { return x.id === id; });
+      q(".ez-emp").hidden = !(m && m.codigo === "empreendimento");
+      q("[data-emp]").value = st.empId || "";
+      var v = varsDoLead(A);
+      assunto.value = m ? trocar(m.assunto, v) : "";
+      texto.value = m ? trocar(htmlParaTexto(m.corpo_html), v) : "Olá, " + (v.nome_cliente || "") + "!\n\n";
+      if (!m) texto.focus();
+    }
+    box.querySelectorAll("[data-m]").forEach(function (b) { b.addEventListener("click", function () { aplicar(b.dataset.m); }); });
+    q("[data-emp]").addEventListener("change", function (e) { st.empId = e.target.value; aplicar(modeloId); });
+    [assunto, texto].forEach(function (i) { i.addEventListener("input", function () { frame.hidden = true; }); });
+    function corpo(acao) { return { acao: acao, lead_id: lead.id, template_id: modeloId || null, assunto: assunto.value, corpo_html: textoParaHtml(texto.value, A), vars: {}, chave: chave }; }
+    function ok() { if (!assunto.value.trim() || !texto.value.trim()) { A.toast(ERROS.conteudo_vazio, true); return false; } return true; }
+    q("[data-pv]").addEventListener("click", async function () {
+      if (!ok()) return; var b = this; b.disabled = true;
+      try { var d = await chamar(A, corpo("previa")); frame.srcdoc = d.html; frame.hidden = false; frame.scrollIntoView({ behavior: "smooth", block: "nearest" }); }
+      catch (x) { A.toast(x.message, true); } finally { b.disabled = false; }
+    });
+    q("[data-env]").addEventListener("click", async function () {
+      if (!ok()) return; var b = this; b.disabled = true; b.textContent = "Enviando…";
+      try { await chamar(A, corpo("enviar")); A.toast("E-mail enviado para " + lead.email + "."); fechar(); if (aoEnviar) aoEnviar(); }
+      catch (x) { A.toast(x.message, true); if (x.codigo !== "repetido") chave = uuid(); b.disabled = false; b.textContent = "Enviar e-mail"; if (aoEnviar) aoEnviar(); }
+    });
+    if (modelos[0]) aplicar(modelos[0].id); else aplicar("");
+  }
+  D.abrirEnvioRapido = abrirEnvioRapido;
+
   D.ganchosLead.push(function (box, lead, A) {
+    var gaveta = box.closest("#drawer") || document;
     var sec = document.createElement("div");
     sec.innerHTML = '<div class="section-title">Histórico de E-mails</div><div class="em-lead"><p class="note">Carregando…</p></div>';
     box.appendChild(sec);
     var alvo = sec.querySelector(".em-lead");
-    A.sb.from("email_sends").select("id, assunto, modelo, status, erro, enviado_por_nome, criado_em").eq("lead_id", lead.id).order("criado_em", { ascending: false }).limit(30).then(function (r) {
-      var lista = r.data || [];
-      alvo.innerHTML = (lista.length ? lista.map(function (s) {
-        return '<div class="em-lrow"><div><b>' + A.esc(s.assunto) + "</b><small>" + A.esc(s.modelo || "") + " · " + A.esc(s.enviado_por_nome || "") + " · " + A.dt(s.criado_em, true) + "</small>" + (s.erro ? '<small class="em-err">' + A.esc(s.erro) + "</small>" : "") + "</div>" + selo(s.status) + "</div>";
-      }).join("") : '<p class="note">Nenhum e-mail enviado para este cliente.</p>') +
-        (lead.email ? '<button type="button" class="btn small ghost" data-escrever>✉ Escrever e-mail</button>' : '<p class="note">Cadastre um e-mail para poder enviar.</p>');
-      var b = alvo.querySelector("[data-escrever]");
-      if (b) b.addEventListener("click", function () { D.emailLead = lead.id; var f = document.querySelector("[data-close]"); if (f) f.click(); A.irPara("emails"); });
-    });
+    function carregarHist() {
+      A.sb.from("email_sends").select("id, assunto, modelo, status, erro, enviado_por_nome, criado_em").eq("lead_id", lead.id).order("criado_em", { ascending: false }).limit(30).then(function (r) {
+        var lista = r.data || [];
+        alvo.innerHTML = (lista.length ? lista.map(function (s) {
+          return '<div class="em-lrow"><div><b>' + A.esc(s.assunto) + "</b><small>" + A.esc(s.modelo || "") + " · " + A.esc(s.enviado_por_nome || "") + " · " + A.dt(s.criado_em, true) + "</small>" + (s.erro ? '<small class="em-err">' + A.esc(s.erro) + "</small>" : "") + "</div>" + selo(s.status) + "</div>";
+        }).join("") : '<p class="note">Nenhum e-mail enviado para este cliente.</p>') +
+          (lead.email ? '<button type="button" class="btn small ghost" data-escrever>✉ Enviar e-mail</button>' : '<p class="note">Cadastre um e-mail para poder enviar.</p>');
+        var b = alvo.querySelector("[data-escrever]");
+        if (b) b.addEventListener("click", function () { abrirEnvioRapido(lead, A, carregarHist); });
+      });
+    }
+    carregarHist();
+    // o botão "E-mail" do topo da ficha passa a abrir o envio com modelos (em vez do programa de e-mail do computador)
+    var topo = gaveta.querySelector('[data-contato="E-mail"]');
+    if (topo && lead.email) {
+      topo.textContent = "✉ E-mail"; topo.removeAttribute("href"); topo.setAttribute("role", "button"); topo.style.cursor = "pointer";
+      topo.addEventListener("click", function (e) { e.preventDefault(); e.stopImmediatePropagation(); abrirEnvioRapido(lead, A, carregarHist); }, true);
+    }
   });
 
   D.modulos.push({ id: "emails", titulo: "Central de E-mails", tituloLongo: "Central de E-mails", icone: "✉", papeis: ["admin", "corretor"], render: render });
