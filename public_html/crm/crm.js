@@ -44,8 +44,21 @@
     var r; try { r = await sb.auth.signInWithPassword({ email: f.get("email").trim(), password: f.get("senha") }); } catch (err) { r = { error: { message: "Failed to fetch" } }; }
     if (r.error && erroRede(r.error.message)) r.error.message = "Não conseguimos falar com o servidor agora. Tente de novo em alguns instantes.";
     b.disabled = false;
-    if (r.error) return mostrarAuth("login", r.error.message === "Invalid login credentials" ? "E-mail ou senha incorretos." : r.error.message === "Email not confirmed" ? "Confirme seu e-mail pelo link que enviamos antes de entrar." : r.error.message, "err");
+    if (r.error && r.error.message === "Email not confirmed") return pedirConfirmacao(f.get("email").trim());
+    if (r.error) return mostrarAuth("login", r.error.message === "Invalid login credentials" ? "E-mail ou senha incorretos." : r.error.message, "err");
   });
+  // e-mail ainda não confirmado: o link expira, então oferece reenviar
+  function pedirConfirmacao(email) {
+    mostrarAuth("login", "Confirme seu e-mail pelo link que enviamos antes de entrar (veja também o spam). ", "err");
+    var box = $("#authMsg"), a = document.createElement("a");
+    a.href = "#"; a.textContent = "Reenviar e-mail de confirmação"; box.appendChild(a);
+    a.addEventListener("click", async function (e) {
+      e.preventDefault(); a.textContent = "Enviando…";
+      var r; try { r = await sb.auth.resend({ type: "signup", email: email, options: { emailRedirectTo: location.origin + location.pathname } }); } catch (err) { r = { error: { message: "Failed to fetch" } }; }
+      if (r.error) return mostrarAuth("login", /rate|seconds|security/i.test(r.error.message) ? "Aguarde um minuto e tente reenviar de novo." : erroRede(r.error.message) ? "Não conseguimos falar com o servidor agora. Tente de novo em alguns instantes." : r.error.message, "err");
+      mostrarAuth("login", "Enviamos um novo link para " + email + ". Abra o e-mail (veja o spam), clique no link e depois entre aqui.", "ok");
+    });
+  }
   function erroRede(m) { return /failed to fetch|networkerror|load failed|fetch/i.test(m || ""); }
   $("#cadastroForm").addEventListener("submit", async function (e) {
     e.preventDefault(); var form = e.target, f = new FormData(form), b = form.querySelector("button[type=submit]");
