@@ -11,6 +11,52 @@ const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: 
 const env = (k: string) => Deno.env.get(k) || "";
 const soDigitos = (v: unknown) => String(v ?? "").replace(/\D/g, "");
 
+// Google Ads (Make · Google Ads Reports → "Run a Campaign Report"): uma linha por campanha e dia.
+const num = (v: unknown) => { const n = Number(String(v ?? "").replace(",", ".")); return isFinite(n) ? n : 0; };
+// deno-lint-ignore no-explicit-any
+async function receberGoogle(db: any, corpo: Record<string, unknown>) {
+  const dig = soDigitos(corpo.conta);
+  const { data: conta } = await db.from("contas_anuncio").select("id, conta_externa, moeda, campanhas_sel").eq("plataforma", "google").eq("ativo", true);
+  const c = (conta || []).find((x: { conta_externa: string }) => soDigitos(x.conta_externa) === dig);
+  if (!c) return json({ erro: "conta_nao_cadastrada" }, 404);
+  const agora = new Date().toISOString();
+  if (corpo.acao === "erro") {
+    await db.from("contas_anuncio").update({ situacao: "erro", ultimo_erro: String(corpo.mensagem || "O Google Ads negou o acesso a esta conta").slice(0, 400) }).eq("id", c.id);
+    return json({ ok: true });
+  }
+  if (corpo.acao !== "dados") return json({ erro: "acao_invalida" }, 400);
+  let linhas = corpo.linhas as unknown;
+  if (typeof linhas === "string") { try { linhas = JSON.parse(linhas); } catch { linhas = []; } }
+  if (!Array.isArray(linhas)) return json({ erro: "linhas_invalidas" }, 400);
+  const sel = new Set((Array.isArray(c.campanhas_sel) ? c.campanhas_sel : []).map((x: { id: string }) => String(x.id)));
+  const moeda = String(corpo.moeda || c.moeda || "BRL").toUpperCase() === "USD" ? "USD" : "BRL";
+  if (linhas.length) console.log("google-integrador amostra", dig, linhas.length, JSON.stringify(linhas[0]).slice(0, 500));
+  const porChave = new Map<string, Record<string, unknown>>();
+  for (const r of (linhas as Record<string, unknown>[]).slice(0, 20000)) {
+    const data = String(r.data ?? "").slice(0, 10), campanha = String(r.campanha || "Sem nome").slice(0, 300);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) continue;
+    if (sel.size && !sel.has(String(r.campanha_id || ""))) continue;
+    const custo = r.custo_micros != null && String(r.custo_micros) !== "" ? num(r.custo_micros) / 1e6 : num(r.custo);
+    const k = data + "|" + campanha;
+    const a = porChave.get(k) || { data, plataforma: "google", conta_anuncio: c.conta_externa, campanha, conjunto: "", impressoes: 0, cliques: 0, custo: 0, moeda, conversoes: 0, valor_conversoes: 0, visualizacoes: 0, alcance: null, origem: "api" };
+    a.impressoes = (a.impressoes as number) + num(r.impressoes); a.cliques = (a.cliques as number) + num(r.cliques);
+    a.custo = Math.round(((a.custo as number) + custo) * 100) / 100;
+    a.conversoes = Math.round(((a.conversoes as number) + num(r.conversoes)) * 100) / 100;
+    a.valor_conversoes = Math.round(((a.valor_conversoes as number) + num(r.valor_conversoes)) * 100) / 100;
+    a.visualizacoes = (a.visualizacoes as number) + num(r.visualizacoes);
+    porChave.set(k, a);
+  }
+  const camps = [...porChave.values()];
+  for (let i = 0; i < camps.length; i += 500) {
+    const { error } = await db.from("campanhas_metricas").upsert(camps.slice(i, i + 500), { onConflict: "data,plataforma,conta_anuncio,campanha,conjunto" });
+    if (error) return json({ erro: "banco: " + error.message }, 500);
+  }
+  const extra: Record<string, unknown> = { situacao: "conectada", ultimo_erro: null, ultima_sync: agora, moeda };
+  if (corpo.nome && String(corpo.nome).trim()) extra.nome = String(corpo.nome).slice(0, 120);
+  await db.from("contas_anuncio").update(extra).eq("id", c.id);
+  return json({ ok: true, recebidas: linhas.length, campanhas_dia: camps.length });
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   if (req.method !== "POST") return json({ erro: "metodo" }, 405);
@@ -23,6 +69,7 @@ Deno.serve(async (req) => {
   if (tokenInterno) {
     const { data: ok } = await db.rpc("validar_token_interno", { nome: "meta-integrador", token: tokenInterno });
     if (!ok) return json({ erro: "token_invalido" }, 401);
+    if (corpo.plataforma === "google") return await receberGoogle(db, corpo);
     const act = soDigitos(corpo.act);
     const { data: conta } = await db.from("contas_anuncio").select("id, conta_externa, moeda, campanhas_sel").eq("plataforma", "meta").eq("ativo", true).eq("conta_externa", act).maybeSingle();
     if (!conta) return json({ erro: "conta_nao_cadastrada" }, 404);
@@ -77,14 +124,16 @@ Deno.serve(async (req) => {
   const admin = me?.ativo && me.papel === "admin";
   if (!admin && !(me?.ativo && me.papel === "construtora" && me.conta_id)) return json({ erro: "sem_acesso" }, 403);
   if (corpo.acao !== "disparar") return json({ erro: "acao_invalida" }, 400);
-  let q = db.from("contas_anuncio").select("id, conta_externa, conta_id, ultima_sync").eq("plataforma", "meta").eq("ativo", true).neq("fonte_dados", "oauth");
+  const google = corpo.plataforma === "google";
+  let q = db.from("contas_anuncio").select("id, conta_externa, conta_id, ultima_sync").eq("plataforma", google ? "google" : "meta").eq("ativo", true).neq("fonte_dados", "oauth");
+  if (google) q = q.eq("fonte_dados", "integrador").not("conta_externa", "like", "000-000-%");
   if (corpo.conta) q = q.eq("id", String(corpo.conta));
   if (!admin) q = q.eq("conta_id", me!.conta_id);
   const { data: contas } = await q;
   if (!contas?.length) return json({ erro: "sem_contas" }, 400);
   if (!admin && contas.some((c) => c.ultima_sync && Date.now() - new Date(c.ultima_sync).getTime() < 10 * 60e3)) return json({ erro: "aguarde", detalhe: "Os dados foram atualizados há menos de 10 minutos." }, 429);
   const dias = Math.min(Math.max(Number(corpo.dias) || 30, 1), 90);
-  const { data: pedido, error } = await db.rpc("disparar_meta_integrador", { p_contas: contas.map((c) => c.id), p_dias: dias });
+  const { data: pedido, error } = await db.rpc(google ? "disparar_google_integrador" : "disparar_meta_integrador", { p_contas: contas.map((c) => c.id), p_dias: dias });
   if (error) return json({ erro: /integrador_nao_configurado/.test(error.message) ? "integrador_nao_configurado" : error.message }, 503);
   return json({ ok: true, pedido, contas: contas.length });
 });

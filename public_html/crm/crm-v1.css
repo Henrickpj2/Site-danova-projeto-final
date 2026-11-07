@@ -956,3 +956,25 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 .ag-camp > .btn, .ag-camp [data-contar] { align-self: flex-start; }
 .ag-camp .ag-q { max-width: 280px; }
 .ag-etapas label, .ag-modo label { white-space: nowrap; }
+/* Google Ads por ID */
+.gad { display: flex; flex-direction: column; gap: 14px; }
+.gad h3 { margin: 0 0 4px; } .gad h3 small { font-size: 12px; color: var(--muted); font-weight: 600; }
+.gad-add form { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-top: 10px; }
+.gad-add label { display: flex; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 600; color: var(--muted); }
+.gad input, .gad select { font: inherit; font-size: 14px; border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; background: #fff; color: var(--ink, #142B3C); }
+.gad-add input { width: 170px; letter-spacing: .04em; }
+.gad-dica { font-size: 12px; color: var(--muted); margin: 8px 0 0; }
+.gad-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.gad-f { display: flex; gap: 8px; flex-wrap: wrap; }
+.gad-conta { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.gad-conta:last-child { border-bottom: 0; } .gad-conta > div { flex: 1; min-width: 0; }
+.gad-conta b { display: block; color: var(--navy); } .gad-conta small { display: block; color: var(--muted); font-size: 12px; }
+.gad-err { color: #b42318 !important; }
+.gad-st { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--bg); color: var(--muted); white-space: nowrap; }
+.gad-st.ok { background: #e3f6ec; color: #1f7a4d; } .gad-st.esp { background: #fff4d6; color: #8a6200; } .gad-st.err { background: #fde8e8; color: #b42318; }
+.gad-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.gad-kpis > div { background: var(--bg); border-radius: 12px; padding: 10px 12px; }
+.gad-kpis small { display: block; font-size: 11px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.gad-kpis b { font-size: 18px; color: var(--navy); }
+.gad-vazio { padding: 14px 0; }
+@media (max-width: 560px) { .gad-add form > * { width: 100%; } .gad-add input { width: 100%; } }
