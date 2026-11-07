@@ -7,10 +7,46 @@
   D.modulos = D.modulos || [];
 
   var STATUS = { novo: ["Novo", ""], em_contato: ["Em contato", "warn"], parceiro: ["Parceiro ativo", "ok"], sem_interesse: ["Sem interesse", "bad"] };
-  var st = { q: "", status: "", origem: "", editando: null, novo: false };
+  var st = { q: "", status: "", origem: "", editando: null, novo: false, msg: null };
+  var OBJ_PADRAO = "Apresentar a danova AI e convidar para uma parceria em vendas internacionais (clientes que querem comprar imóvel na Flórida).";
+  var LS = { get: function (k, d) { try { return localStorage.getItem(k) || d; } catch (e) { return d; } }, set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) { } } };
 
   function soDig(s) { return String(s || "").replace(/\D/g, ""); }
   function zap(tel) { var d = soDig(tel); if (d.length === 10 || d.length === 11) d = "55" + d; return d.length >= 12 ? "https://wa.me/" + d : ""; }
+  function primeiroNome(n) {
+    n = String(n || "").trim();
+    if (!n || /@|imobili|imóveis|imoveis|negócios|negocios|corretor|consult|realiza|express|&/i.test(n) || n === n.toUpperCase() && n.length > 12) return "";
+    var p = n.split(/\s+/)[0]; return p.length > 1 ? p.charAt(0).toUpperCase() + p.slice(1).toLowerCase() : "";
+  }
+  function modelo(p, assinatura) {
+    var nome = primeiroNome(p.nome);
+    return "Olá" + (nome ? ", " + nome : "") + "! Tudo bem? Aqui é " + (assinatura || "a equipe") + ", da danova AI. " +
+      "Trabalhamos com corretores do Brasil em vendas internacionais de imóveis de alto padrão na Flórida (Miami e Orlando), com marketing, CRM e atendimento por IA. " +
+      "Você atende clientes que pensam em investir nos EUA? Posso te explicar como funciona a parceria?";
+  }
+  function erroIA(m) {
+    m = String(m || "");
+    if (/ia_nao_configurada/.test(m)) return "A IA não está configurada (falta ANTHROPIC_API_KEY no Supabase). Usei uma mensagem-modelo.";
+    if (/sem_acesso/.test(m)) return "Só administradores podem gerar mensagens.";
+    if (/Failed to send|FunctionsFetchError|404/.test(m)) return "A função de IA não respondeu. Usei uma mensagem-modelo.";
+    return "A IA não respondeu agora. Usei uma mensagem-modelo.";
+  }
+  function assinatura(A) { return LS.get("danova_parc_ass", "") || (A.S && A.S.me && A.S.me.nome) || ""; }
+  async function gerar(A, p) {
+    var r = await A.sb.functions.invoke("parceiro-mensagem", { body: { parceiro_id: p.id, objetivo: LS.get("danova_parc_obj", OBJ_PADRAO), assinatura: assinatura(A) } });
+    if (!r.error && r.data && r.data.mensagem) return { texto: r.data.mensagem, ia: true };
+    var det = ""; try { det = (await r.error.context.json()).erro || ""; } catch (x) { det = r.error && r.error.message; }
+    return { texto: modelo(p, assinatura(A)), ia: false, aviso: erroIA(det) };
+  }
+  function msgHTML(A, p, m) {
+    return '<div class="card kb-form" data-pmsg><h3>WhatsApp para ' + A.esc(p.nome || p.telefone) + "</h3>" +
+      (m.carregando ? '<p class="muted">A IA está escrevendo a mensagem…</p>' :
+        (m.aviso ? '<p class="note">' + A.esc(m.aviso) + "</p>" : '<p class="muted" style="margin-top:0">Mensagem escrita pela IA. Confira e ajuste antes de enviar.</p>') +
+        '<label>Mensagem<textarea name="texto" rows="6" style="min-height:120px" maxlength="1500">' + A.esc(m.texto) + "</textarea></label>" +
+        '<div class="kb-acts"><button type="button" class="btn ghost" data-mfechar>Fechar</button><span class="spacer"></span>' +
+        '<button type="button" class="btn" data-mnova>Gerar outra</button><button type="button" class="btn" data-mcopiar>Copiar</button>' +
+        '<button type="button" class="btn primary" data-mabrir>Abrir no WhatsApp</button></div>') + "</div>";
+  }
 
   function formHTML(A, p) {
     p = p || {};
@@ -60,6 +96,11 @@
       '<div class="kpis">' + A.kpi("Corretores parceiros", todos.length, origens.length + (origens.length === 1 ? " origem" : " origens")) +
       A.kpi("Novos", n("novo"), "ainda sem contato") + A.kpi("Em contato", n("em_contato"), "conversa iniciada") + A.kpi("Parceiros ativos", n("parceiro"), "parceria fechada") + A.kpi("Sem interesse", n("sem_interesse"), "não seguir") + "</div>" +
       '<div class="card kb-como"><p class="muted" style="margin:0">Rede de corretores para parcerias e indicações. Eles <b>não</b> têm acesso ao CRM e <b>não</b> recebem leads — para isso, o corretor se cadastra em “Sou corretor · solicitar acesso” e aparece em <b>Corretores</b>.</p></div>' +
+      '<details class="card" style="padding:14px 18px"' + (LS.get("danova_parc_obj", "") ? "" : " open") + '><summary style="cursor:pointer;font-weight:700">WhatsApp com IA · objetivo das mensagens</summary>' +
+      '<div class="kb-form" style="margin-top:12px"><label>Objetivo (a IA escreve cada mensagem com base nisso)<textarea data-pobj rows="2" style="min-height:60px" maxlength="400">' + A.esc(LS.get("danova_parc_obj", OBJ_PADRAO)) + "</textarea></label>" +
+      '<label>Assinar como<input data-pass maxlength="80" placeholder="Ex.: Danielle Martins" value="' + A.esc(LS.get("danova_parc_ass", (A.S && A.S.me && A.S.me.nome) || "")) + '"></label>' +
+      '<p class="muted" style="margin:0">Clique em <b>WhatsApp IA</b> no corretor: a IA escreve, você confere e abre no seu WhatsApp. Nada é enviado sozinho. Ao abrir, o status vira “Em contato”.</p></div></details>' +
+      (st.msg ? msgHTML(A, todos.find(function (p) { return p.id === st.msg.id; }) || {}, st.msg) : "") +
       (st.novo || editando ? formHTML(A, editando) : "") +
       '<div class="filters"><input data-pq type="search" placeholder="Buscar nome, telefone, CRECI…" value="' + A.esc(st.q) + '" style="flex:1;min-width:200px">' +
       '<select data-pstatus><option value="">Todos os status</option>' + Object.keys(STATUS).map(function (k) { return '<option value="' + k + '"' + (k === st.status ? " selected" : "") + ">" + STATUS[k][0] + "</option>"; }).join("") + "</select>" +
@@ -71,11 +112,12 @@
         var w = zap(p.telefone);
         return "<tr><td><strong>" + A.esc(p.nome || "(sem nome)") + "</strong>" +
           (p.imobiliaria || p.cidade ? '<span class="sub">' + A.esc([p.imobiliaria, p.cidade].filter(Boolean).join(" · ")) + "</span>" : "") +
-          (p.observacoes ? '<span class="sub">' + A.esc(p.observacoes.slice(0, 120)) + "</span>" : "") + "</td>" +
+          (p.observacoes ? '<span class="sub">' + A.esc(p.observacoes.slice(0, 120)) + "</span>" : "") +
+          (p.ultimo_contato_em ? '<span class="sub">Último WhatsApp: ' + A.esc(new Date(p.ultimo_contato_em).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })) + "</span>" : "") + "</td>" +
           "<td>" + (w ? '<a href="' + w + '" target="_blank" rel="noopener">' + A.esc(p.telefone) + "</a>" : A.esc(p.telefone || p.email || "")) + "</td>" +
           '<td class="hide-sm">' + A.esc(p.creci || "—") + '</td><td class="hide-sm">' + A.esc(p.origem || "—") + "</td>" +
           '<td><select data-st="' + p.id + '">' + Object.keys(STATUS).map(function (k) { return '<option value="' + k + '"' + (k === p.status ? " selected" : "") + ">" + STATUS[k][0] + "</option>"; }).join("") + "</select></td>" +
-          '<td class="kb-row-acts"><button class="btn small ghost" data-editar="' + p.id + '">Editar</button><button class="btn small ghost" data-excluir="' + p.id + '" title="Excluir">✕</button></td></tr>';
+          '<td class="kb-row-acts">' + (w ? '<button class="btn small primary" data-wia="' + p.id + '" title="A IA escreve a mensagem e você envia pelo WhatsApp">WhatsApp IA</button>' : "") + '<button class="btn small ghost" data-editar="' + p.id + '">Editar</button><button class="btn small ghost" data-excluir="' + p.id + '" title="Excluir">✕</button></td></tr>';
       }).join("") || '<tr><td colspan="6"><div class="empty">' + (todos.length ? "Nenhum corretor com esses filtros." : "Nenhum corretor parceiro ainda.") + "</div></td></tr>") + "</tbody></table></div>";
 
     var qi = el.querySelector("[data-pq]"), t;
@@ -84,6 +126,38 @@
     el.querySelector("[data-porigem]").addEventListener("change", function (e) { st.origem = e.target.value; render(el, A); });
     el.querySelector("[data-pcsv]").addEventListener("click", function () { csv(lista); });
     el.querySelector("[data-pnovo]").addEventListener("click", function () { st.novo = true; st.editando = null; render(el, A).then(function () { el.querySelector("[data-pform]").scrollIntoView({ behavior: "smooth", block: "start" }); }); });
+
+    var ob = el.querySelector("[data-pobj]"), as = el.querySelector("[data-pass]");
+    ob.addEventListener("change", function () { LS.set("danova_parc_obj", ob.value.trim() || OBJ_PADRAO); A.toast("Objetivo salvo."); });
+    as.addEventListener("change", function () { LS.set("danova_parc_ass", as.value.trim()); });
+    if (!LS.get("danova_parc_ass", "") && as.value) LS.set("danova_parc_ass", as.value);
+
+    async function abrirMsg(p) {
+      st.msg = { id: p.id, carregando: true }; st.novo = false; st.editando = null;
+      await render(el, A); el.querySelector("[data-pmsg]").scrollIntoView({ behavior: "smooth", block: "start" });
+      var g = await gerar(A, p);
+      st.msg = { id: p.id, texto: g.texto, aviso: g.aviso }; render(el, A);
+    }
+    el.querySelectorAll("[data-wia]").forEach(function (b) { b.addEventListener("click", function () { abrirMsg(todos.find(function (x) { return x.id === b.dataset.wia; })); }); });
+    var pm = el.querySelector("[data-pmsg]");
+    if (pm && !st.msg.carregando) {
+      var pp = todos.find(function (x) { return x.id === st.msg.id; }), ta = pm.querySelector("textarea");
+      ta.addEventListener("input", function () { st.msg.texto = ta.value; });
+      pm.querySelector("[data-mfechar]").addEventListener("click", function () { st.msg = null; render(el, A); });
+      pm.querySelector("[data-mnova]").addEventListener("click", function () { abrirMsg(pp); });
+      pm.querySelector("[data-mcopiar]").addEventListener("click", function () {
+        (navigator.clipboard ? navigator.clipboard.writeText(ta.value) : Promise.reject()).then(function () { A.toast("Mensagem copiada."); }, function () { ta.select(); document.execCommand("copy"); A.toast("Mensagem copiada."); });
+      });
+      pm.querySelector("[data-mabrir]").addEventListener("click", async function () {
+        var link = zap(pp.telefone); if (!link) { A.toast("Telefone inválido para WhatsApp."); return; }
+        window.open(link + "?text=" + encodeURIComponent(ta.value), "_blank", "noopener");
+        var upd = { ultimo_contato_em: new Date().toISOString() }; if (pp.status === "novo") upd.status = "em_contato";
+        var rr = await A.sb.from("parceiros").update(upd).eq("id", pp.id);
+        if (rr.error) return A.falha(rr.error);
+        A.toast(upd.status ? "WhatsApp aberto · status: Em contato." : "WhatsApp aberto.");
+        st.msg = null; render(el, A);
+      });
+    }
 
     var form = el.querySelector("[data-pform]");
     if (form) {
