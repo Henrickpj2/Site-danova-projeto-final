@@ -83,7 +83,7 @@ head=f'''<!doctype html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#142B3C">
+  <meta name="theme-color" content="#0b1424">
   <title>DANOVA-AI | Real Estate Intelligence — a inteligência por trás das vendas imobiliárias</title>
   <meta name="description" content="Plataforma que conecta tráfego pago, CRM, inteligência artificial e gestão comercial para construtoras, imobiliárias e corretores: dashboard, Meta Ads, Google Ads, CRM, IA e eventos.">
   <link rel="canonical" href="https://danova-ai.com/">
@@ -96,7 +96,7 @@ head=f'''<!doctype html>
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
   <link rel="icon" type="image/png" sizes="192x192" href="img/favicon-192.png">
   <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
