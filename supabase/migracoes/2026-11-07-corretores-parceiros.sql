@@ -34,3 +34,6 @@ alter table public.parceiros enable row level security;
 drop policy if exists "admin gerencia parceiros" on public.parceiros;
 create policy "admin gerencia parceiros" on public.parceiros for all to authenticated
   using ((select privado.eh_admin())) with check ((select privado.eh_admin()));
+
+-- data do último WhatsApp aberto pelo botão "WhatsApp com IA" (função parceiro-mensagem)
+alter table public.parceiros add column if not exists ultimo_contato_em timestamptz;
