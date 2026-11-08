@@ -212,7 +212,7 @@
 
   // =============== NAVEGAÇÃO ===============
   var TITULOS_NUCLEO = ["painel", "funil", "leads", "corretores", "conta"];
-  var TITULOS = { painel: "Painel", funil: "Funil de vendas", leads: "Leads", corretores: "Corretores", conta: "Minha conta" };
+  var TITULOS = { painel: "Painel", funil: "CRM", leads: "Leads", corretores: "Corretores", conta: "Minha conta" };
   // ---------- módulos extras (crm-modulos.js) ----------
   function modulosDoPapel() {
     return ((window.DanovaCRM && window.DanovaCRM.modulos) || []).filter(function (m) { return S.me && m.papeis.indexOf(S.me.papel) >= 0; });
