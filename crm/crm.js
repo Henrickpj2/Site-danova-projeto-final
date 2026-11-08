@@ -329,7 +329,8 @@
     var tel = String(l.telefone || "").replace(/\D/g, "");
     return '<article class="kk' + (dias >= 7 && aberto ? " parado" : "") + '" data-id="' + l.id + '" tabindex="0">' +
       '<div class="kk-top"><i class="kk-temp ' + esc(l.temperatura || "") + '" title="' + esc(l.temperatura || "sem temperatura") + '"></i><strong>' + esc(l.nome || l.email || l.telefone || "Lead") + "</strong>" + (l.valor_estimado ? '<span class="kk-val">' + money(l.valor_estimado).replace("US$ ", "$") + "</span>" : "") + "</div>" +
-      (KB.compacto ? "" : '<div class="kk-meta">' + esc(l.empreendimento || "Empreendimento não informado") + "</div>" +
+      (KB.compacto ? "" : (l.empreendimento || !l.origem ? '<div class="kk-meta">' + esc(l.empreendimento || "Empreendimento não informado") + "</div>" : "") +
+      (l.origem ? '<div class="kk-meta" title="Origem do lead">Origem: <b>' + esc(l.origem) + "</b></div>" : "") +
       '<div class="kk-tags">' + canalChip(l) + prox + (l.proximo_passo ? '<span class="kk-step" title="' + esc(l.proximo_passo) + '">' + esc(l.proximo_passo.slice(0, 26)) + "</span>" : "") + "</div>") +
       '<div class="kk-foot"><span class="kk-av" title="' + esc(l.corretor_nome || "Sem corretor") + '">' + (l.corretor_nome ? iniciais(l.corretor_nome) : "—") + "</span><small>" + esc(l.corretor_nome ? l.corretor_nome.split(" ")[0] : "Sem corretor") + '</small><span class="kk-age" title="tempo desde a última atualização">' + (dias <= 0 ? "hoje" : dias + "d") + "</span>" +
       (tel ? '<a class="kk-wa" href="https://wa.me/' + tel + '" target="_blank" rel="noopener" title="WhatsApp" data-nao-arrasta>✆</a>' : "") + "</div></article>";
