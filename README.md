@@ -46,6 +46,10 @@ Tela inicial de quem é admin (só admins veem). Atualiza sozinho: a cada lead n
 - Origem dos leads com custo por lead (quando o investimento está lançado em Mídia), funil com a conversão entre etapas, ranking de corretores, empreendimentos mais procurados com unidades disponíveis.
 - Alertas clicáveis (leads novos há 24h sem contato, sem corretor, follow-ups atrasados, quentes parados, visitas do dia, faturas vencidas), feed ao vivo das movimentações e mapa de calor de dia × hora de chegada dos leads.
 
+### Eventos do site (só admin)
+
+Menu **Eventos** no CRM: crie eventos (nome, local, ano, site oficial, ícone, posição) e envie fotos e vídeos (arraste os arquivos ou cole um link do YouTube/Vimeo). Tudo aparece no site em *Onde a danova AI esteve presente* logo depois de salvar, sem publicar pelo GitHub. Fotos grandes são convertidas para WebP; vídeos até 50 MB. Dá para ocultar um evento, reordenar e remover mídias. Banco: `site_eventos`, `site_evento_midias` e bucket público `eventos` (migração `supabase/migracoes/2026-11-08-eventos-site.sql`). Se o banco não responder, o site mostra os eventos fixos de `fonte/page.js`.
+
 ### Campanhas · Google Ads e Meta Ads (só admin)
 
 Dashboard escuro com os números das duas plataformas lado a lado e cruzados com o CRM:

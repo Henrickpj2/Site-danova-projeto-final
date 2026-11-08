@@ -251,8 +251,8 @@
       window.addEventListener("pointerup", e => { if (x0 === null) return; const dx = e.clientX - x0; x0 = null; arrastou = Math.abs(dx) > 5; trilho.style.scrollSnapType = ""; const base = Math.round(s0 / trilho.clientWidth); const alvo = Math.abs(dx) > 50 ? base + (dx < 0 ? 1 : -1) : base; trilho.scrollTo({ left: alvo * trilho.clientWidth, behavior: "smooth" }); });
     })();
     const DANOVA_EVENTOS = {
-      "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: ["img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp", "img/eventos/sinal-junho-fifa-2026/06.webp", "img/eventos/sinal-junho-fifa-2026/07.webp", "img/eventos/sinal-junho-fifa-2026/08.webp", "img/eventos/sinal-junho-fifa-2026/09.webp", "img/eventos/sinal-junho-fifa-2026/10.webp", "img/eventos/sinal-junho-fifa-2026/11.webp", "img/eventos/sinal-junho-fifa-2026/12.webp"], videos: ["img/eventos/sinal-junho-fifa-2026/video-01.mp4#t=0.1"] },
-      "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: ["img/eventos/cmi-rio-2026/01.webp", "img/eventos/cmi-rio-2026/02.webp", "img/eventos/cmi-rio-2026/03.webp", "img/eventos/cmi-rio-2026/04.webp", "img/eventos/cmi-rio-2026/05.webp", "img/eventos/cmi-rio-2026/06.webp"], videos: [] },
+      "sinal-junho-fifa-2026": { nome: "Sinal Junho FIFA 2026", fotos: ["img/eventos/sinal-junho-fifa-2026/01.webp", "img/eventos/sinal-junho-fifa-2026/02.webp", "img/eventos/sinal-junho-fifa-2026/03.webp", "img/eventos/sinal-junho-fifa-2026/04.webp", "img/eventos/sinal-junho-fifa-2026/05.webp", "img/eventos/sinal-junho-fifa-2026/06.webp", "img/eventos/sinal-junho-fifa-2026/07.webp", "img/eventos/sinal-junho-fifa-2026/08.webp", "img/eventos/sinal-junho-fifa-2026/09.webp", "img/eventos/sinal-junho-fifa-2026/10.webp", "img/eventos/sinal-junho-fifa-2026/11.webp", "img/eventos/sinal-junho-fifa-2026/12.webp"], videos: [] },
+      "cmi-rio-2026": { nome: "CMI Rio 2026", fotos: ["img/eventos/cmi-rio-2026/01.webp", "img/eventos/cmi-rio-2026/02.webp", "img/eventos/cmi-rio-2026/03.webp", "img/eventos/cmi-rio-2026/04.webp", "img/eventos/cmi-rio-2026/05.webp", "img/eventos/cmi-rio-2026/06.webp"], videos: ["img/eventos/cmi-rio-2026/video-01.mp4#t=0.1"] },
       "painel-politico": { nome: "Painel Político · 14/09/2026", tipoTitulo: "Na imprensa", imprensa: true, fotos: ["img/imprensa/painel-politico-1.webp", "img/imprensa/painel-politico-2.webp", "img/imprensa/painel-politico-3.webp"], videos: [] },
       "global-family-office-2026": { nome: "Global Family Office 2026", fotos: ["img/eventos/global-family-office-2026/01.webp", "img/eventos/global-family-office-2026/02.webp", "img/eventos/global-family-office-2026/03.webp", "img/eventos/global-family-office-2026/04.webp", "img/eventos/global-family-office-2026/05.webp"], videos: [] }
     };
@@ -282,9 +282,31 @@
         if (window.dataLayer) window.dataLayer.push({ event: "evento_galeria", evento: id, tipo: tipo });
       };
       const fechar = () => { modal.hidden = true; document.body.style.overflow = ""; corpo.innerHTML = ""; if (voltarPara) voltarPara.focus(); };
-      document.querySelectorAll(".event-card [data-galeria]").forEach(b => b.addEventListener("click", () => abrir(b.closest(".event-card").dataset.evento, b.dataset.galeria, b)));
+      const grade = document.querySelector(".event-grid");
+      if (grade) grade.addEventListener("click", e => { const b = e.target.closest(".event-card [data-galeria]"); if (b) abrir(b.closest(".event-card").dataset.evento, b.dataset.galeria, b); });
       document.querySelectorAll("[data-imprensa]").forEach(b => b.addEventListener("click", () => { abrir(b.dataset.imprensa, "fotos", b); const alvo = corpo.querySelectorAll("img")[+b.dataset.i || 0]; if (alvo) setTimeout(() => alvo.scrollIntoView({ block: "start" }), 60); }));
-      document.querySelectorAll(".event-card [data-galeria]").forEach(b => { const ev = DANOVA_EVENTOS[b.closest(".event-card").dataset.evento]; const n = ev && (ev[b.dataset.galeria] || []).length; if (n) b.innerHTML = b.textContent + ' <span class="event-n">' + n + "</span>"; });
+      const contar = () => document.querySelectorAll(".event-card [data-galeria]").forEach(b => { const ev = DANOVA_EVENTOS[b.closest(".event-card").dataset.evento]; const n = ev && (ev[b.dataset.galeria] || []).length; b.innerHTML = (b.dataset.galeria === "fotos" ? "Fotos" : "Vídeos") + (n ? ' <span class="event-n">' + n + "</span>" : ""); });
+      contar();
+      // Eventos cadastrados no CRM (módulo Eventos). Se o banco não responder, ficam os eventos acima.
+      const cfg = window.DANOVA_CRM;
+      if (grade && cfg && cfg.url && cfg.anonKey && window.fetch) {
+        fetch(cfg.url + "/rest/v1/site_eventos?select=slug,nome,local,tag,link,icone,ordem,site_evento_midias(tipo,url,ordem)&publicado=eq.true&order=ordem.asc,criado_em.asc", { headers: { apikey: cfg.anonKey, Authorization: "Bearer " + cfg.anonKey } })
+          .then(r => r.ok ? r.json() : Promise.reject(r.status))
+          .then(lista => {
+            if (!Array.isArray(lista) || !lista.length) return;
+            const seguro = u => /^(https:\/\/|img\/|video\/)/.test(u) ? u : "";
+            const midias = (e, t) => (e.site_evento_midias || []).filter(m => m.tipo === t).sort((a, b) => a.ordem - b.ordem).map(m => seguro(m.url)).filter(Boolean);
+            grade.innerHTML = lista.map(e => {
+              DANOVA_EVENTOS[e.slug] = { nome: e.nome, fotos: midias(e, "foto"), videos: midias(e, "video") };
+              const link = e.link && /^https?:\/\//.test(e.link) ? '<a class="event-link" href="' + esc(e.link) + '" target="_blank" rel="noopener">Site oficial do evento ↗</a>' : "";
+              return '<article class="event-card" data-evento="' + esc(e.slug) + '"><div class="event-top">' + (e.tag ? '<span class="event-tag">' + esc(e.tag) + "</span>" : "<span></span>") + '<span class="event-ico" aria-hidden="true">' + esc(e.icone || "◆") + "</span></div>" +
+                "<h3>" + esc(e.nome) + "</h3>" + (e.local ? '<p class="event-desc" data-atuacao>' + esc(e.local) + "</p>" : "") + link +
+                '<div class="event-actions"><button type="button" class="event-btn" data-galeria="fotos">Fotos</button><button type="button" class="event-btn" data-galeria="videos">Vídeos</button></div></article>';
+            }).join("");
+            contar();
+          })
+          .catch(() => {});
+      }
       modal.addEventListener("click", e => { if (e.target === modal || e.target.closest("[data-fechar-evento]")) fechar(); });
       document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) fechar(); });
     })();
