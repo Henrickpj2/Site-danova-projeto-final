@@ -13,7 +13,7 @@
   var ABERTAS = ["novo", "contato", "qualificado", "visita", "proposta", "contrato"];
   var EMPREENDIMENTOS = ["Domus Brickell Park", "Meliá Brickell", "The Residences at 1428 Brickell", "Casa Bella Residences by B&B Italia", "Nobu Residences Brickell", "Faena Residences Miami", "Continuum Club & Residences", "The Residences at Mandarin Oriental, Miami", "Mandarin Oriental Residences West Palm Beach", "Estates by Turnberry", "Quero vender meu imóvel", "Quero cadastrar um empreendimento", "Outro"];
 
-  var S = { user: null, me: null, leads: [], membros: [], view: "painel", busca: "", f: { etapa: "", corretor: "", emp: "", periodo: "" }, aberto: null, canal: null };
+  var S = { user: null, me: null, leads: [], membros: [], view: "painel", busca: "", f: { etapa: "", corretor: "", emp: "", origem: "", periodo: "" }, aberto: null, canal: null };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   function esc(v) { return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -249,6 +249,7 @@
       if (f.corretor === "_sem" && l.corretor_id) return false;
       if (f.corretor && f.corretor !== "_sem" && l.corretor_id !== f.corretor) return false;
       if (f.emp && l.empreendimento !== f.emp) return false;
+      if (f.origem === "_sem" ? !!(l.origem || "").trim() : f.origem && (l.origem || "").trim() !== f.origem) return false;
       if (lim && new Date(l.criado_em) < lim) return false;
       return true;
     });
@@ -472,6 +473,13 @@
       '<select data-f="etapa"><option value="">Todas as etapas</option>' + ETAPAS.map(function (e) { return '<option value="' + e.id + '"' + (f.etapa === e.id ? " selected" : "") + ">" + e.nome + "</option>"; }).join("") + "</select>" +
       (isAdmin() ? '<select data-f="corretor"><option value="">Todos os corretores</option><option value="_sem"' + (f.corretor === "_sem" ? " selected" : "") + ">Sem corretor</option>" + S.membros.filter(function (m) { return m.ativo; }).map(function (m) { return '<option value="' + m.id + '"' + (f.corretor === m.id ? " selected" : "") + ">" + esc(m.nome) + "</option>"; }).join("") + "</select>" : "") +
       '<select data-f="emp"><option value="">Todos os empreendimentos</option>' + EMPREENDIMENTOS.map(function (n) { return '<option' + (f.emp === n ? " selected" : "") + ">" + esc(n) + "</option>"; }).join("") + "</select>" +
+      (function () {
+        var origens = contar(S.leads.filter(function (l) { return (l.origem || "").trim(); }), function (l) { return l.origem.trim(); }).sort(function (a, b) { return a[0].localeCompare(b[0], "pt-BR"); });
+        var semOrigem = S.leads.filter(function (l) { return !(l.origem || "").trim(); }).length;
+        if (f.origem && f.origem !== "_sem" && !origens.some(function (o) { return o[0] === f.origem; })) origens.push([f.origem, 0]);
+        return '<select data-f="origem" title="Filtrar pela origem do lead"><option value="">Todas as origens</option>' + origens.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (f.origem === o[0] ? " selected" : "") + ">" + esc(o[0]) + " (" + o[1] + ")</option>"; }).join("") +
+          (semOrigem ? '<option value="_sem"' + (f.origem === "_sem" ? " selected" : "") + ">Sem origem (" + semOrigem + ")</option>" : "") + "</select>";
+      })() +
       '<select data-f="periodo"><option value="">Todo o período</option>' + [[7, "Últimos 7 dias"], [30, "Últimos 30 dias"], [90, "Últimos 90 dias"]].map(function (p) { return '<option value="' + p[0] + '"' + (String(f.periodo) === String(p[0]) ? " selected" : "") + ">" + p[1] + "</option>"; }).join("") + "</select>" +
       '<span class="spacer"></span>' + (comExport ? '<button class="btn ghost small" data-action="importar">⬆ Importar planilha</button><button class="btn ghost small" data-action="csv">Exportar CSV</button>' : "") + "</div>";
   }
@@ -613,6 +621,7 @@
       '<label>País<input name="pais" value="' + esc(l.pais || "") + '"></label>' +
       '<label>Perfil<select name="perfil"><option value="">—</option>' + ["Investidor ou comprador", "Corretor de imóveis", "Imobiliária", "Construtora ou incorporadora", "Family office", "Outro"].map(function (p) { return "<option" + (l.perfil === p ? " selected" : "") + ">" + p + "</option>"; }).join("") + "</select></label>" +
       '<label>Empreendimento<select name="empreendimento"><option value="">—</option>' + EMPREENDIMENTOS.concat(l.empreendimento && EMPREENDIMENTOS.indexOf(l.empreendimento) < 0 ? [l.empreendimento] : []).map(function (p) { return "<option" + (l.empreendimento === p ? " selected" : "") + ">" + esc(p) + "</option>"; }).join("") + "</select></label>" +
+      '<label>Origem do lead<input name="origem" list="listaOrigens" maxlength="200" value="' + esc(novo ? "Cadastro manual" : (l.origem || "")) + '" placeholder="Ex.: SINAL FIFA 2026"></label><datalist id="listaOrigens">' + contar(S.leads.filter(function (x) { return (x.origem || "").trim(); }), function (x) { return x.origem.trim(); }).map(function (o) { return '<option value="' + esc(o[0]) + '">'; }).join("") + "</datalist>" +
       '<label>Objetivo<input name="objetivo" value="' + esc(l.objetivo || "") + '"></label>' +
       '<label>Orçamento<input name="orcamento" value="' + esc(l.orcamento || "") + '"></label>' +
       '<label class="full">Mensagem / observações<textarea name="mensagem">' + esc(l.mensagem || "") + "</textarea></label></div>" +
@@ -630,7 +639,7 @@
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
       var f = new FormData(form), dados = {};
-      ["etapa", "temperatura", "proximo_passo", "proximo_contato", "motivo_perda", "nome", "email", "telefone", "pais", "perfil", "empreendimento", "objetivo", "orcamento", "mensagem", "valor_estimado"].forEach(function (k) {
+      ["etapa", "temperatura", "proximo_passo", "proximo_contato", "motivo_perda", "nome", "email", "telefone", "pais", "perfil", "empreendimento", "origem", "objetivo", "orcamento", "mensagem", "valor_estimado"].forEach(function (k) {
         if (!f.has(k)) return; var v = String(f.get(k)).trim(); dados[k] = v === "" ? null : v;
       });
       if (dados.nome == null) dados.nome = "";
@@ -638,7 +647,7 @@
       if (!dados.email && !dados.telefone) return toast("Informe e-mail ou telefone.", true);
       var r;
       if (novo) {
-        dados.origem = "Cadastro manual"; dados.canal = "manual";
+        dados.origem = dados.origem || "Cadastro manual"; dados.canal = "manual";
         if (!isAdmin()) dados.corretor_id = S.me.id;
         r = await sb.from("leads").insert(dados).select().single();
         if (!r.error) await sb.from("lead_eventos").insert({ lead_id: r.data.id, autor_id: S.me.id, tipo: "nota", texto: "Lead cadastrado manualmente por " + S.me.nome });
