@@ -94,7 +94,7 @@
   // AGENDA DE VISITAS
   // =====================================================================
   D.modulos.push({
-    id: "agenda", titulo: "Visitas", tituloLongo: "Agenda de visitas", icone: "◷", papeis: ["admin", "corretor"],
+    id: "agenda", titulo: "Visitas", tituloLongo: "Agenda de visitas", icone: "◷", papeis: [], /* fora do menu; visitas continuam na ficha do lead */
     render: async function (el, A) {
       var desde = new Date(); desde.setHours(0, 0, 0, 0); desde.setDate(desde.getDate() - 7);
       var r = await A.sb.from("visitas").select("*").gte("inicio", desde.toISOString()).order("inicio");
@@ -406,7 +406,7 @@
   // PORTAL DA CONSTRUTORA (só números, sem contatos de clientes)
   // =====================================================================
   D.modulos.push({
-    id: "portal", titulo: "Portal", tituloLongo: "Portal da construtora", icone: "◆", papeis: ["construtora", "admin"],
+    id: "portal", titulo: "Portal", tituloLongo: "Portal da construtora", icone: "◆", papeis: ["construtora"], /* fora do menu do admin */
     render: async function (el, A) {
       var contaSel = el.dataset.conta || null, contas = [];
       if (A.isAdmin()) {

@@ -257,7 +257,7 @@
     el.querySelectorAll("[data-alerta]").forEach(function (b) {
       b.addEventListener("click", function () {
         var t = b.dataset.alerta;
-        if (t === "agenda" || t === "cobranca") return A.irPara(t);
+        if (t === "cobranca") return A.irPara(t);
         A.S.f = A.S.f || {}; A.S.f.etapa = t === "novo" ? "novo" : ""; A.S.f.corretor = t === "semcor" ? "_sem" : ""; A.S.f.periodo = "";
         A.irPara("leads");
       });
