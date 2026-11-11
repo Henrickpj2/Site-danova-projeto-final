@@ -7,5 +7,6 @@ window.DANOVA_CRM = {
   // Agente de voz ElevenLabs (público; o ID não é segredo). Deixe "" para usar o modo de voz antigo (Whisper/navegador).
   // ID do Gerenciador de Negócios (Business Manager) da danova no Meta — aparece para o cliente na instrução de autorização.
   metaBusinessId: "644973195362586",   // Gerenciador "Rei da Platina" (o mesmo da conexão Facebook usada pelo integrador Make)
+  metaBusinessNome: "Rei da Platina (Gerenciador técnico da DANOVA-AI)",
   elevenAgentId: "agent_9101m5t5g6gfe0ns594fy3v2b3dn"
 };

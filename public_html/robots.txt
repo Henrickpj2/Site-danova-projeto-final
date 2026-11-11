@@ -8,6 +8,7 @@ Disallow: /api/
 Disallow: /crm/
 Disallow: /novo/
 Disallow: /descadastro.html
+Disallow: /autorizar-meta.html
 # URLs com ?utm_ / ?gclid / ?fbclid NÃO são bloqueadas de propósito:
 # o canonical de cada página já consolida essas variações.
 

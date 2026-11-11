@@ -156,7 +156,7 @@
         '<p class="an-dica">O ID fica no Gerenciador de Anúncios, no seletor de contas (o número depois de <b>act_</b>).</p>'
         : '<p class="an-erro">Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.</p>') +
       listaContas +
-      (aguardando ? '<div class="an-autoriza"><b>Falta autorizar o acesso</b><p>Só o número da conta não libera os dados: o dono da conta precisa dar acesso de leitura à danova AI.</p><ol>' +
+      (aguardando ? '<div class="an-autoriza"><b>Falta autorizar o acesso</b><p>Só o número da conta não libera os dados: o dono da conta precisa dar acesso de leitura à danova AI. Mande para ele o link guiado: <a href="https://danova-ai.com/autorizar-meta.html" target="_blank" rel="noopener">danova-ai.com/autorizar-meta.html</a> <button type="button" class="btn ghost small" data-copiar-link>Copiar link</button></p><ol>' +
         '<li>Abra <b>business.facebook.com → Configurações do negócio → Contas → Contas de anúncios</b> e selecione a conta.</li>' +
         '<li>Clique em <b>Atribuir parceiros</b> (ou “Adicionar pessoas/parceiros”) e informe o ID do negócio da danova AI: <b>' + (BM ? A.esc(BM) : "peça à equipe danova AI") + "</b>.</li>" +
         "<li>Marque a permissão <b>Ver desempenho</b> (somente leitura) e confirme.</li><li>Volte aqui e clique em <b>Buscar agora</b>.</li></ol></div>" : "") +
@@ -243,6 +243,7 @@
       catch (x) { A.toast(x.codigo === "integrador_nao_configurado" ? "Conta registrada. A busca automática começa assim que a integração da danova for ativada." : "Conta registrada. " + msgErro(x)); }
       st.conta = ""; render(el, A);
     });
+    el.querySelectorAll("[data-copiar-link]").forEach(function (b) { b.addEventListener("click", function () { var u = "https://danova-ai.com/autorizar-meta.html"; try { navigator.clipboard.writeText(u); A.toast("Link copiado. Envie ao dono da conta."); } catch (e) { prompt("Copie o link:", u); } }); });
     el.querySelectorAll("[data-buscar]").forEach(function (b) { b.addEventListener("click", async function () {
       b.disabled = true; var t = b.textContent; b.textContent = "Buscando…";
       try { await chamar(A, "meta-integrador", { acao: "disparar", conta: b.dataset.buscar, dias: 30 }); A.toast("Pedido enviado. Os dados aparecem em alguns instantes."); setTimeout(function () { render(el, A); }, 15000); }

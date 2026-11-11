@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Autorizar acesso aos anúncios · DANOVA-AI</title>
+  <meta name="description" content="Autorize a DANOVA-AI a ler o desempenho das suas campanhas no Meta Ads (somente leitura).">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+  <script src="js/crm-config.js?v=20261111b"></script>
+  <style>
+    :root { --navy: #142B3C; --gold: #C6A66B; --gold-d: #8C6D35; --ink: #24313A; --muted: #5E6A72; --line: #E6E1D7; --bg: #F5F2EC; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: var(--navy); font-family: Arial, Helvetica, sans-serif; color: var(--ink); padding: 24px 16px 40px; }
+    .box { background: #fff; border-radius: 20px; max-width: 620px; margin: 0 auto; padding: 30px 28px; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+    .logo { display: block; width: 170px; background: var(--navy); padding: 12px 16px; border-radius: 12px; }
+    h1 { font-family: Georgia, serif; font-weight: 500; color: var(--navy); font-size: 27px; line-height: 1.2; margin: 22px 0 8px; }
+    p { line-height: 1.6; color: var(--muted); margin: 0 0 14px; }
+    .selo { display: inline-flex; gap: 6px; align-items: center; background: #e9f6ef; color: #1f7a4d; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    ol { list-style: none; padding: 0; margin: 22px 0 0; counter-reset: p; }
+    ol > li { counter-increment: p; position: relative; padding: 0 0 22px 48px; border-left: 2px solid var(--line); margin-left: 16px; }
+    ol > li:last-child { border-left-color: transparent; padding-bottom: 0; }
+    ol > li::before { content: counter(p); position: absolute; left: -17px; top: -2px; width: 32px; height: 32px; border-radius: 50%; background: var(--navy); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+    h2 { font-size: 16px; color: var(--navy); margin: 2px 0 6px; }
+    li p { margin-bottom: 10px; font-size: 14.5px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 12px 20px; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; }
+    .btn.ouro { background: var(--gold); color: var(--navy); } .btn.fb { background: #1877F2; color: #fff; } .btn.claro { background: var(--bg); color: var(--navy); }
+    .btn:disabled { opacity: .6; cursor: default; }
+    .copiar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; background: var(--bg); border-radius: 12px; padding: 10px 12px; }
+    .copiar code { font-size: 20px; font-weight: 700; letter-spacing: .04em; color: var(--navy); flex: 1; min-width: 180px; }
+    .nota { font-size: 12.5px; color: var(--muted); }
+    form { display: grid; gap: 10px; }
+    label { display: grid; gap: 5px; font-size: 13px; font-weight: 700; color: var(--navy); }
+    input { font: inherit; font-size: 15px; border: 1px solid var(--line); border-radius: 10px; padding: 11px 12px; }
+    input:focus { outline: 2px solid var(--gold); border-color: var(--gold); }
+    .msg { border-radius: 12px; padding: 12px 14px; font-size: 14px; line-height: 1.5; margin-top: 10px; }
+    .msg.ok { background: #e9f6ef; color: #1f5f40; } .msg.esp { background: #fff6dd; color: #6b4f00; } .msg.err { background: #fdecec; color: #8a1c1c; }
+    .rodape { text-align: center; color: rgba(255,255,255,.65); font-size: 12.5px; margin-top: 18px; } .rodape a { color: var(--gold); }
+    @media (max-width: 480px) { .box { padding: 24px 18px; } h1 { font-size: 23px; } ol > li { padding-left: 38px; } }
+  </style>
+</head>
+<body>
+  <main class="box">
+    <img class="logo" src="img/danova-logo-email.png" alt="DANOVA-AI">
+    <h1>Autorize a DANOVA-AI a acompanhar suas campanhas</h1>
+    <div class="selo">🔒 Somente leitura</div>
+    <p>Com essa autorização, a DANOVA-AI passa a ver no painel o <b>desempenho</b> das campanhas da sua conta no Meta Ads (Facebook e Instagram): investimento, alcance, cliques e leads. <b>Não conseguimos criar, editar ou pausar anúncios, nem ver dados de pagamento.</b> Você pode remover o acesso quando quiser.</p>
+
+    <ol>
+      <li>
+        <h2>Abra as contas de anúncios do seu Gerenciador</h2>
+        <p>Entre com o Facebook que administra o Gerenciador de Negócios da sua empresa.</p>
+        <a class="btn fb" href="https://business.facebook.com/settings/ad-accounts" target="_blank" rel="noopener">Abrir Configurações do negócio ↗</a>
+      </li>
+      <li>
+        <h2>Atribua a conta à DANOVA-AI como parceira</h2>
+        <p>Selecione a conta de anúncios, clique em <b>Atribuir parceiro</b> (ou “Parceiros” → “Atribuir parceiro”), escolha <b>ID do negócio</b> e cole este número:</p>
+        <div class="copiar"><code id="bm">—</code><button class="btn claro" type="button" id="copiar">Copiar</button></div>
+        <p class="nota" style="margin-top:8px">Marque a permissão <b>Ver desempenho</b> (às vezes aparece como “Visualizar desempenho”) e confirme. O nome do parceiro pode aparecer como <b id="bmnome">o Gerenciador da DANOVA-AI</b>.</p>
+      </li>
+      <li>
+        <h2>Confirme aqui</h2>
+        <p>Informe o ID da conta de anúncios que você atribuiu. Ele aparece no Gerenciador de Anúncios, no seletor de contas (o número depois de <b>act_</b>).</p>
+        <form id="f" novalidate>
+          <label>ID da conta de anúncios<input name="act" inputmode="numeric" autocomplete="off" placeholder="ex.: 123456789012345" required></label>
+          <label>Nome da empresa<input name="empresa" autocomplete="organization" maxlength="80" required></label>
+          <label>Seu e-mail (para avisarmos quando conectar)<input name="email" type="email" autocomplete="email" maxlength="120"></label>
+          <button class="btn ouro" type="submit" id="enviar">Já autorizei — conectar</button>
+        </form>
+        <div id="res" aria-live="polite"></div>
+      </li>
+    </ol>
+  </main>
+  <p class="rodape">Dúvidas? <a href="https://wa.me/17863826782" target="_blank" rel="noopener">WhatsApp +1 (786) 382-6782</a> · <a href="mailto:danova-ai@danova-ai.com">danova-ai@danova-ai.com</a> · <a href="politica-de-privacidade.html">Privacidade</a></p>
+  <script>
+    (function () {
+      var C = window.DANOVA_CRM || {}, BM = C.metaBusinessId || "";
+      var q = new URLSearchParams(location.search), f = document.getElementById("f"), res = document.getElementById("res"), btn = document.getElementById("enviar");
+      document.getElementById("bm").textContent = BM || "peça o número à equipe DANOVA-AI";
+      if (C.metaBusinessNome) document.getElementById("bmnome").textContent = C.metaBusinessNome;
+      if (q.get("conta")) f.act.value = q.get("conta").replace(/\D/g, "");
+      if (q.get("empresa")) f.empresa.value = q.get("empresa").slice(0, 80);
+      document.getElementById("copiar").addEventListener("click", function () {
+        var b = this; try { navigator.clipboard.writeText(BM).then(function () { b.textContent = "Copiado ✓"; setTimeout(function () { b.textContent = "Copiar"; }, 2000); }); } catch (e) { prompt("Copie o número:", BM); }
+      });
+      function msg(cls, html) { res.innerHTML = '<div class="msg ' + cls + '">' + html + "</div>"; }
+      function chamar(corpo) {
+        return fetch(C.url + "/functions/v1/meta-autorizar", { method: "POST", headers: { "Content-Type": "application/json", apikey: C.anonKey }, body: JSON.stringify(corpo) })
+          .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); });
+      }
+      function acompanhar(act, n) {
+        chamar({ acao: "status", act: act }).then(function (x) {
+          var s = x.j && x.j.situacao;
+          if (s === "conectada") return msg("ok", "<b>Conectado! ✓</b> Já estamos recebendo o desempenho das suas campanhas. Obrigado — a equipe DANOVA-AI vai entrar em contato com a análise.");
+          if (s === "erro" && n > 2) return msg("err", "<b>Ainda não recebemos o acesso.</b> Confira no Gerenciador se a conta <b>" + act + "</b> foi atribuída ao parceiro <b>" + BM + "</b> com <b>Ver desempenho</b> e clique de novo em “Já autorizei”. Se preferir, fale com a gente pelo WhatsApp.");
+          if (n >= 10) return msg("esp", "<b>Recebemos sua confirmação.</b> O Meta pode levar alguns minutos para liberar o acesso; a equipe DANOVA-AI acompanha e avisa você.");
+          setTimeout(function () { acompanhar(act, n + 1); }, 12000);
+        }).catch(function () { if (n < 10) setTimeout(function () { acompanhar(act, n + 1); }, 12000); });
+      }
+      f.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var act = f.act.value.replace(/\D/g, ""), emp = f.empresa.value.trim(), em = f.email.value.trim();
+        if (act.length < 6 || act.length > 20) return msg("err", "Confira o ID da conta: são só números, como 123456789012345.");
+        if (!emp) return msg("err", "Informe o nome da empresa.");
+        btn.disabled = true; btn.textContent = "Conectando…";
+        chamar({ acao: "confirmar", act: act, empresa: emp, email: em }).then(function (x) {
+          btn.disabled = false; btn.textContent = "Já autorizei — conectar";
+          if (!x.ok) return msg("err", x.j && x.j.erro === "limite" ? "Muitas solicitações hoje. Fale com a equipe pelo WhatsApp." : "Não foi possível registrar agora. Confira os dados e tente de novo.");
+          msg("esp", "<b>Verificando o acesso no Meta…</b> Isso leva cerca de 1 minuto. Pode deixar esta página aberta.");
+          setTimeout(function () { acompanhar(act, 0); }, 15000);
+        }).catch(function () { btn.disabled = false; btn.textContent = "Já autorizei — conectar"; msg("err", "Sem conexão no momento. Tente de novo."); });
+      });
+    })();
+  </script>
+</body>
+</html>
