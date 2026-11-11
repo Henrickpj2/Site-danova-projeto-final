@@ -1,6 +1,7 @@
 # Publica a pasta public_html no ramo "hostinger" sempre que o site muda no ramo main.
 # A Hostinger (hPanel → Avançado → Git) puxa esse ramo direto para o public_html do domínio danova-ai.com.
-# O ramo "hostinger" contém SÓ os arquivos do site (sem fonte/, supabase/ etc.) e mantém o histórico (avança sem reescrever).
+# O ramo "hostinger" contém SÓ os arquivos do site (sem fonte/, supabase/ etc.) e sempre avança (sem reescrever histórico).
+# O envio por FTP (enviar-ftp-hostinger.yml) continua sendo o caminho principal; este ramo é o espelho para o Git da Hostinger.
 name: Publicar na Hostinger
 on:
   push:
@@ -19,11 +20,22 @@ jobs:
         with:
           fetch-depth: 0
       - name: Separar a pasta do site e enviar para o ramo hostinger
+        # Monta um commit com o conteúdo atual de public_html SOBRE a ponta atual do ramo hostinger.
+        # Assim o ramo sempre avança (sem reescrever histórico), mesmo que o main tenha sido rebaseado
+        # ou que alguém tenha publicado no ramo por outro caminho — e o "git pull" da Hostinger nunca quebra.
         run: |
           git config user.name "danova-deploy"
           git config user.email "deploy@users.noreply.github.com"
-          git subtree split --prefix=public_html -b hostinger
-          git push origin hostinger:hostinger
+          ARVORE=$(git rev-parse "HEAD:public_html")
+          PAI=""
+          if git fetch -q origin "+refs/heads/hostinger:refs/remotes/origin/hostinger"; then
+            PAI=$(git rev-parse refs/remotes/origin/hostinger)
+            if [ "$(git rev-parse "$PAI^{tree}")" = "$ARVORE" ]; then echo "Ramo hostinger já está atualizado."; exit 0; fi
+          fi
+          MSG="Site $(git rev-parse --short HEAD): $(git log -1 --format=%s)"
+          if [ -n "$PAI" ]; then NOVO=$(git commit-tree "$ARVORE" -p "$PAI" -m "$MSG"); else NOVO=$(git commit-tree "$ARVORE" -m "$MSG"); fi
+          git push origin "$NOVO:refs/heads/hostinger"
+          echo "Ramo hostinger -> $NOVO"
       - name: Avisar a Hostinger (se o webhook estiver configurado)
         env:
           HOOK: ${{ secrets.HOSTINGER_WEBHOOK }}
