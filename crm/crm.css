@@ -984,3 +984,43 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 .an-convite-f { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .an-convite-f input { font: inherit; font-size: 13.5px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: #fff; min-width: 170px; flex: 1; }
 .an-wa { background: #25D366; color: #fff; border: 0; }
+/* DANOVA Marketing Intelligence */
+.mi { display: flex; flex-direction: column; gap: 14px; }
+.mi-topo { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; background: linear-gradient(120deg, #142B3C, #1d3d55); color: #fff; border-radius: 16px; padding: 18px 20px; }
+.mi-topo small { color: #C6A66B; font-weight: 800; letter-spacing: .18em; font-size: 11px; } .mi-topo h2 { margin: 2px 0 0; font-family: Georgia, serif; font-weight: 500; color: #fff; }
+.mi-abas { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+.mi-abas button { white-space: nowrap; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 8px 14px; font: inherit; font-size: 13px; font-weight: 600; color: var(--navy); cursor: pointer; }
+.mi-abas button.sel { background: var(--navy); border-color: var(--navy); color: #fff; }
+.mi-filtros { display: flex; gap: 8px; flex-wrap: wrap; }
+.mi select { font: inherit; font-size: 13.5px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: #fff; color: var(--ink, #142B3C); max-width: 100%; }
+.mi-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.mi-kpis > div { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.mi-kpis small { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.mi-kpis b { font-size: 21px; color: var(--navy); }
+.mi-graf svg { width: 100%; height: 160px; display: block; } .mi-graf rect { fill: #C6A66B; } .mi-graf rect:hover { fill: #142B3C; }
+.mi-graf-l { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+.mi-dupla { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+.mi h3 { margin: 0 0 10px; color: var(--navy); } .mi h3 small { font-size: 12px; color: var(--muted); }
+.mi-st { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--bg); color: var(--muted); white-space: nowrap; }
+.mi-st.ok { background: #e3f6ec; color: #1f7a4d; } .mi-st.pa { background: #fff4d6; color: #8a6200; } .mi-st.er { background: #fde8e8; color: #b42318; } .mi-st.ar { background: #eef0f3; color: #5e6a72; }
+.mi-cx, .mi-conta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.mi-cx:last-child, .mi-conta:last-child { border-bottom: 0; }
+.mi-cx > div, .mi-conta > div { flex: 1; min-width: 200px; } .mi-cx b, .mi-conta b { display: block; color: var(--navy); }
+.mi-cx small, .mi-conta small { display: block; font-size: 12px; color: var(--muted); }
+.mi-err { color: #b42318 !important; } .mi-perigo { color: #b42318 !important; }
+.mi-aviso { margin: 0; padding: 10px 14px; border-radius: 12px; background: #fff6dd; color: #6b4f00; font-size: 14px; }
+.mi-aviso.ok { background: #e9f6ef; color: #1f5f40; } .mi-aviso.er { background: #fdecec; color: #8a1c1c; }
+.mi-vazio { text-align: center; padding: 30px 16px; }
+.mi-sel { display: flex; flex-direction: column; gap: 6px; max-height: 50vh; overflow: auto; }
+.mi-sel label { display: flex; gap: 10px; align-items: flex-start; padding: 10px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+.mi-sel label.off { opacity: .55; cursor: default; } .mi-sel input { margin-top: 3px; width: auto !important; }
+.mi-sel b { display: block; color: var(--navy); } .mi-sel small { color: var(--muted); font-size: 12px; }
+.mi-cli { display: flex; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.mi-rel, .mi-gest { display: flex; gap: 8px; flex-wrap: wrap; }
+.mi-check { list-style: none; padding: 0; margin: 0 0 12px; display: flex; flex-direction: column; gap: 8px; }
+.mi-check li { display: flex; gap: 10px; align-items: flex-start; } .mi-check li b { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; flex: none; }
+.mi-check li.ok b { background: #e3f6ec; color: #1f7a4d; } .mi-check li.no b { background: #fde8e8; color: #b42318; }
+.mi-check small { display: block; color: var(--muted); font-size: 12px; } .mi-check code { font-size: 11.5px; word-break: break-all; }
+@media (max-width: 560px) { .mi-filtros select { flex: 1 1 45%; } .mi-kpis b { font-size: 18px; } }
+.mi-filtros select { width: auto !important; flex: 1 1 170px; }
+.mi-conta select { width: auto !important; flex: 0 1 230px; }
