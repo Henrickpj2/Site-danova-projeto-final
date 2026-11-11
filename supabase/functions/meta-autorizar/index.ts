@@ -1,6 +1,7 @@
 // danova AI — página pública "Autorizar acesso" (danova-ai.com/autorizar-meta.html).
-// O cliente atribui a conta de anúncios como parceira ao Gerenciador da DANOVA no próprio Meta e depois confirma aqui:
-//   { acao: "confirmar", act, empresa, email } → cadastra a conta (aguardando) e pede ao integrador para buscar os dados
+// Fluxo "o cliente manda o ID e só clica em Aprovar":
+//   { acao: "confirmar", act, empresa, email, whatsapp } → cadastra a conta (aguardando) para a equipe pedir acesso pelo
+//     Gerenciador da DANOVA; o cliente aprova a solicitação no Facebook dele. Se a conta já estiver liberada, busca os dados.
 //   { acao: "status", act }                    → aguardando | conectada | erro (sem dados sensíveis)
 // Sem login. Limite simples contra abuso: até 40 contas novas por dia por esta página.
 import { createClient } from "npm:@supabase/supabase-js@2.45.4";
@@ -23,6 +24,7 @@ Deno.serve(async (req) => {
 
   const empresa = String(c.empresa || "").replace(/[<>]/g, "").trim().slice(0, 80);
   const email = String(c.email || "").trim().slice(0, 120);
+  const whats = String(c.whatsapp || "").replace(/[^\d+ ()-]/g, "").trim().slice(0, 30);
   if (!empresa) return json({ erro: "empresa" }, 400);
   if (email && !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email)) return json({ erro: "email" }, 400);
 
@@ -39,9 +41,14 @@ Deno.serve(async (req) => {
   } else if (!existente?.ativo) {
     await db.from("contas_anuncio").update({ ativo: true, situacao: "aguardando", fonte_dados: "integrador" }).eq("id", id);
   }
-  // registra quem confirmou (aparece para a equipe nas notas da conta)
-  await db.from("contas_anuncio").update({ ultimo_erro: existente?.situacao === "conectada" ? null : `Autorização confirmada pelo cliente${email ? " (" + email + ")" : ""} em ${new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}. Buscando dados…` }).eq("id", id).neq("situacao", "conectada");
-  const { error: eD } = await db.rpc("disparar_meta_integrador", { p_contas: [id], p_dias: 30 });
-  if (eD) console.error("meta-autorizar", eD.message);
+  // nota para a equipe: pedir acesso no Gerenciador da DANOVA (o cliente só aprova)
+  const contato = [email, whats].filter(Boolean).join(" · ");
+  await db.from("contas_anuncio").update({ situacao: "aguardando", ultimo_erro: `Cliente enviou o ID em ${new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })}${contato ? " (" + contato + ")" : ""}. Próximo passo: solicitar acesso no Gerenciador da DANOVA.` })
+    .eq("id", id).neq("situacao", "conectada");
+  // tenta buscar já (funciona se o acesso já tiver sido aprovado antes); se o Meta negar, a conta continua aguardando
+  if (existente?.situacao === "conectada" || c.buscar === true) {
+    const { error: eD } = await db.rpc("disparar_meta_integrador", { p_contas: [id], p_dias: 30 });
+    if (eD) console.error("meta-autorizar", eD.message);
+  }
   return json({ ok: true });
 });

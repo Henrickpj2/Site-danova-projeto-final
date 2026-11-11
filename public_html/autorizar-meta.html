@@ -42,32 +42,32 @@
 <body>
   <main class="box">
     <img class="logo" src="img/danova-logo-email.png" alt="DANOVA-AI">
-    <h1>Autorize a DANOVA-AI a acompanhar suas campanhas</h1>
+    <h1>Conecte suas campanhas à DANOVA-AI</h1>
     <div class="selo">🔒 Somente leitura</div>
     <p>Com essa autorização, a DANOVA-AI passa a ver no painel o <b>desempenho</b> das campanhas da sua conta no Meta Ads (Facebook e Instagram): investimento, alcance, cliques e leads. <b>Não conseguimos criar, editar ou pausar anúncios, nem ver dados de pagamento.</b> Você pode remover o acesso quando quiser.</p>
 
     <ol>
       <li>
-        <h2>Abra as contas de anúncios do seu Gerenciador</h2>
-        <p>Entre com o Facebook que administra o Gerenciador de Negócios da sua empresa.</p>
-        <a class="btn fb" href="https://business.facebook.com/settings/ad-accounts" target="_blank" rel="noopener">Abrir Configurações do negócio ↗</a>
-      </li>
-      <li>
-        <h2>Atribua a conta à DANOVA-AI como parceira</h2>
-        <p>Selecione a conta de anúncios, clique em <b>Atribuir parceiro</b> (ou “Parceiros” → “Atribuir parceiro”), escolha <b>ID do negócio</b> e cole este número:</p>
-        <div class="copiar"><code id="bm">—</code><button class="btn claro" type="button" id="copiar">Copiar</button></div>
-        <p class="nota" style="margin-top:8px">Marque a permissão <b>Ver desempenho</b> (às vezes aparece como “Visualizar desempenho”) e confirme. O nome do parceiro pode aparecer como <b id="bmnome">o Gerenciador da DANOVA-AI</b>.</p>
-      </li>
-      <li>
-        <h2>Confirme aqui</h2>
-        <p>Informe o ID da conta de anúncios que você atribuiu. Ele aparece no Gerenciador de Anúncios, no seletor de contas (o número depois de <b>act_</b>).</p>
+        <h2>Informe o ID da sua conta de anúncios</h2>
+        <p>Ele aparece no <a href="https://adsmanager.facebook.com/" target="_blank" rel="noopener">Gerenciador de Anúncios</a>, no seletor de contas no alto da tela (o número depois de <b>act_</b>, com 15 ou 16 dígitos).</p>
         <form id="f" novalidate>
           <label>ID da conta de anúncios<input name="act" inputmode="numeric" autocomplete="off" placeholder="ex.: 123456789012345" required></label>
           <label>Nome da empresa<input name="empresa" autocomplete="organization" maxlength="80" required></label>
-          <label>Seu e-mail (para avisarmos quando conectar)<input name="email" type="email" autocomplete="email" maxlength="120"></label>
-          <button class="btn ouro" type="submit" id="enviar">Já autorizei — conectar</button>
+          <label>WhatsApp<input name="whatsapp" type="tel" autocomplete="tel" maxlength="30" placeholder="+55 11 99999-9999"></label>
+          <label>E-mail (opcional)<input name="email" type="email" autocomplete="email" maxlength="120"></label>
+          <button class="btn ouro" type="submit" id="enviar">Enviar</button>
         </form>
         <div id="res" aria-live="polite"></div>
+      </li>
+      <li>
+        <h2>Aprove o pedido da DANOVA no Facebook</h2>
+        <p>Em seguida, a DANOVA envia um <b>pedido de acesso</b> para a sua conta. Ele chega nas <b>notificações do Facebook / Meta Business Suite</b> (e no e-mail do Gerenciador). É só abrir e clicar em <b>Aprovar</b> — o acesso é somente para <b>ver desempenho</b>.</p>
+        <a class="btn fb" href="https://business.facebook.com/latest/notifications" target="_blank" rel="noopener">Abrir notificações do Meta ↗</a>
+        <p class="nota" style="margin-top:8px">O pedido vem do Gerenciador <b id="bmnome">da DANOVA</b> (ID <span id="bm">—</span>).</p>
+      </li>
+      <li>
+        <h2>Pronto</h2>
+        <p>Assim que você aprovar, o desempenho das campanhas aparece no painel da DANOVA-AI e nossa equipe entra em contato com a análise.</p>
       </li>
     </ol>
   </main>
@@ -76,13 +76,10 @@
     (function () {
       var C = window.DANOVA_CRM || {}, BM = C.metaBusinessId || "";
       var q = new URLSearchParams(location.search), f = document.getElementById("f"), res = document.getElementById("res"), btn = document.getElementById("enviar");
-      document.getElementById("bm").textContent = BM || "peça o número à equipe DANOVA-AI";
+      document.getElementById("bm").textContent = BM || "—";
       if (C.metaBusinessNome) document.getElementById("bmnome").textContent = C.metaBusinessNome;
       if (q.get("conta")) f.act.value = q.get("conta").replace(/\D/g, "");
       if (q.get("empresa")) f.empresa.value = q.get("empresa").slice(0, 80);
-      document.getElementById("copiar").addEventListener("click", function () {
-        var b = this; try { navigator.clipboard.writeText(BM).then(function () { b.textContent = "Copiado ✓"; setTimeout(function () { b.textContent = "Copiar"; }, 2000); }); } catch (e) { prompt("Copie o número:", BM); }
-      });
       function msg(cls, html) { res.innerHTML = '<div class="msg ' + cls + '">' + html + "</div>"; }
       function chamar(corpo) {
         return fetch(C.url + "/functions/v1/meta-autorizar", { method: "POST", headers: { "Content-Type": "application/json", apikey: C.anonKey }, body: JSON.stringify(corpo) })
@@ -92,23 +89,23 @@
         chamar({ acao: "status", act: act }).then(function (x) {
           var s = x.j && x.j.situacao;
           if (s === "conectada") return msg("ok", "<b>Conectado! ✓</b> Já estamos recebendo o desempenho das suas campanhas. Obrigado — a equipe DANOVA-AI vai entrar em contato com a análise.");
-          if (s === "erro" && n > 2) return msg("err", "<b>Ainda não recebemos o acesso.</b> Confira no Gerenciador se a conta <b>" + act + "</b> foi atribuída ao parceiro <b>" + BM + "</b> com <b>Ver desempenho</b> e clique de novo em “Já autorizei”. Se preferir, fale com a gente pelo WhatsApp.");
-          if (n >= 10) return msg("esp", "<b>Recebemos sua confirmação.</b> O Meta pode levar alguns minutos para liberar o acesso; a equipe DANOVA-AI acompanha e avisa você.");
-          setTimeout(function () { acompanhar(act, n + 1); }, 12000);
+          if (n >= 30) return;
+          setTimeout(function () { acompanhar(act, n + 1); }, 20000);
         }).catch(function () { if (n < 10) setTimeout(function () { acompanhar(act, n + 1); }, 12000); });
       }
       f.addEventListener("submit", function (e) {
         e.preventDefault();
-        var act = f.act.value.replace(/\D/g, ""), emp = f.empresa.value.trim(), em = f.email.value.trim();
+        var act = f.act.value.replace(/\D/g, ""), emp = f.empresa.value.trim(), em = f.email.value.trim(), wa = f.whatsapp.value.trim();
         if (act.length < 6 || act.length > 20) return msg("err", "Confira o ID da conta: são só números, como 123456789012345.");
         if (!emp) return msg("err", "Informe o nome da empresa.");
         btn.disabled = true; btn.textContent = "Conectando…";
-        chamar({ acao: "confirmar", act: act, empresa: emp, email: em }).then(function (x) {
-          btn.disabled = false; btn.textContent = "Já autorizei — conectar";
+        chamar({ acao: "confirmar", act: act, empresa: emp, email: em, whatsapp: wa }).then(function (x) {
+          btn.disabled = false; btn.textContent = "Enviar";
           if (!x.ok) return msg("err", x.j && x.j.erro === "limite" ? "Muitas solicitações hoje. Fale com a equipe pelo WhatsApp." : "Não foi possível registrar agora. Confira os dados e tente de novo.");
-          msg("esp", "<b>Verificando o acesso no Meta…</b> Isso leva cerca de 1 minuto. Pode deixar esta página aberta.");
-          setTimeout(function () { acompanhar(act, 0); }, 15000);
-        }).catch(function () { btn.disabled = false; btn.textContent = "Já autorizei — conectar"; msg("err", "Sem conexão no momento. Tente de novo."); });
+          msg("ok", "<b>Recebemos! ✓</b> Em breve chega o pedido de acesso da DANOVA no seu Facebook — é só clicar em <b>Aprovar</b> (passo 2). Se deixar esta página aberta, ela avisa quando conectar.");
+          f.querySelectorAll("input,button").forEach(function (x) { x.disabled = true; });
+          setTimeout(function () { acompanhar(act, 0); }, 20000);
+        }).catch(function () { btn.disabled = false; btn.textContent = "Enviar"; msg("err", "Sem conexão no momento. Tente de novo."); });
       });
     })();
   </script>
