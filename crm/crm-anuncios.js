@@ -145,6 +145,7 @@
       var sit = c.fonte_dados === "oauth" ? ["Conectada (login Facebook)", "an-p-ok"] : (SIT[c.situacao] || SIT.aguardando);
       return '<div class="an-conta"><div><b>' + A.esc(c.nome) + '</b><small>act_' + A.esc(String(c.conta_externa || "").replace(/\D/g, "")) + (c.ultima_sync ? " · atualizada em " + new Date(c.ultima_sync).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "") + "</small>" +
         (c.situacao === "erro" && c.ultimo_erro ? '<small class="an-txt-erro">' + A.esc(c.ultimo_erro) + "</small>" : "") + '</div><span class="pill ' + sit[1] + '">' + sit[0] + "</span>" +
+        (admin && c.fonte_dados !== "oauth" && c.situacao !== "conectada" ? '<button class="btn small an-btn-fb" data-pedir="' + A.esc(String(c.conta_externa || "").replace(/\D/g, "")) + '">Pedir acesso no Meta</button>' : "") +
         (c.fonte_dados !== "oauth" ? '<button class="btn ghost small" data-buscar="' + c.id + '">Buscar agora</button>' : "") + '<button class="btn ghost small an-perigo" data-remover="' + c.id + '">Remover</button></div>';
     }).join("") + "</div>" : "";
     var aguardando = contas.some(function (c) { return c.fonte_dados !== "oauth" && c.situacao !== "conectada"; });
@@ -155,11 +156,16 @@
         '<button class="btn primary an-btn-fb" type="submit">Conectar conta Meta</button></form>' +
         '<p class="an-dica">O ID fica no Gerenciador de Anúncios, no seletor de contas (o número depois de <b>act_</b>).</p>'
         : '<p class="an-erro">Seu login ainda não está ligado a uma empresa. Fale com a equipe danova AI.</p>') +
+      (admin ? '<div class="an-convite"><div><b>🔗 Convidar cliente por link</b><small>O cliente abre o link, autoriza a DANOVA no Gerenciador dele (somente leitura) e a conta aparece aqui sozinha.</small></div>' +
+        '<div class="an-convite-f"><input data-cv-act placeholder="ID da conta (opcional)" inputmode="numeric" autocomplete="off"><input data-cv-emp placeholder="Empresa (opcional)" maxlength="80"><button type="button" class="btn ghost small" data-cv-copiar>Copiar link</button><button type="button" class="btn small an-wa" data-cv-wa>Enviar no WhatsApp</button></div></div>' : "") +
       listaContas +
-      (aguardando ? '<div class="an-autoriza"><b>Falta autorizar o acesso</b><p>Só o número da conta não libera os dados: o dono da conta precisa dar acesso de leitura à danova AI.</p><ol>' +
-        '<li>Abra <b>business.facebook.com → Configurações do negócio → Contas → Contas de anúncios</b> e selecione a conta.</li>' +
-        '<li>Clique em <b>Atribuir parceiros</b> (ou “Adicionar pessoas/parceiros”) e informe o ID do negócio da danova AI: <b>' + (BM ? A.esc(BM) : "peça à equipe danova AI") + "</b>.</li>" +
-        "<li>Marque a permissão <b>Ver desempenho</b> (somente leitura) e confirme.</li><li>Volte aqui e clique em <b>Buscar agora</b>.</li></ol></div>" : "") +
+      (aguardando ? '<div class="an-autoriza"><b>Contas aguardando acesso</b>' + (admin ?
+        '<ol><li>Clique em <b>Pedir acesso no Meta</b> na conta acima: o ID é copiado e abre o Gerenciador da DANOVA' + (BM ? " (" + A.esc(BM) + ")" : "") + '.</li>' +
+        '<li>Lá: <b>Adicionar → Solicitar acesso a uma conta de anúncios</b> → cole o ID → permissão <b>Ver desempenho</b> → enviar.</li>' +
+        '<li>Avise o cliente para <b>Aprovar</b> o pedido nas notificações do Facebook.</li>' +
+        '<li>Depois de aprovado: na mesma tela do Gerenciador, abra a conta → <b>Atribuir pessoas</b> → seu Facebook com <b>Ver desempenho</b> → aqui, <b>Buscar agora</b>.</li></ol>' +
+        '<p>Para o cliente enviar o ID sozinho, mande o link: <a href="https://danova-ai.com/autorizar-meta.html" target="_blank" rel="noopener">danova-ai.com/autorizar-meta.html</a> <button type="button" class="btn ghost small" data-copiar-link>Copiar link</button></p>'
+        : '<p>A equipe DANOVA vai enviar um <b>pedido de acesso</b> para a sua conta. Ele chega nas notificações do Facebook / Meta Business Suite: é só clicar em <b>Aprovar</b> (somente leitura). Depois disso, os dados aparecem aqui.</p>') + "</div>" : "") +
       '<div class="an-dados"><b>Dados que serão importados</b><ul>' + ["Campanhas ativas e pausadas", "Investimento total", "Gastos por campanha", "Impressões e alcance", "Cliques e CTR", "CPC e CPM", "Leads e custo por lead", "Resultados por período"].map(function (x) { return "<li>" + x + "</li>"; }).join("") + "</ul></div>" +
       '<details class="an-avancado"' + (minha ? " open" : "") + '><summary>Conectar pelo login do Facebook (opção avançada)</summary>' + (minha ?
         '<p class="an-dica">Conectado como <b>' + A.esc(minha.usuario_nome || "—") + "</b> · " + (minha.status === "ativa" ? (dias !== null ? "válido até " + new Date(minha.expira_em).toLocaleDateString("pt-BR") + (dias < 15 ? ' — <b class="an-txt-erro">reconecte em breve</b>' : "") : "ativo") : '<b class="an-txt-erro">' + A.esc(minha.ultimo_erro || "reconecte") + "</b>") + "</p>" +
@@ -243,6 +249,25 @@
       catch (x) { A.toast(x.codigo === "integrador_nao_configurado" ? "Conta registrada. A busca automática começa assim que a integração da danova for ativada." : "Conta registrada. " + msgErro(x)); }
       st.conta = ""; render(el, A);
     });
+    function linkConvite() {
+      var a = el.querySelector("[data-cv-act]"), e = el.querySelector("[data-cv-emp]"), u = "https://danova-ai.com/autorizar-meta.html", q = [];
+      var act = a ? a.value.replace(/\D/g, "") : "", emp = e ? e.value.trim() : "";
+      if (act) q.push("conta=" + act); if (emp) q.push("empresa=" + encodeURIComponent(emp));
+      return u + (q.length ? "?" + q.join("&") : "");
+    }
+    var cvc = el.querySelector("[data-cv-copiar]");
+    if (cvc) cvc.addEventListener("click", function () { var u = linkConvite(); try { navigator.clipboard.writeText(u); A.toast("Link copiado. Envie ao dono da conta."); } catch (x) { prompt("Copie o link:", u); } });
+    var cvw = el.querySelector("[data-cv-wa]");
+    if (cvw) cvw.addEventListener("click", function () {
+      var t = "Olá! Para a DANOVA-AI acompanhar o desempenho das suas campanhas no Meta Ads (somente leitura, sem alterar nada nos anúncios), é só seguir os 3 passos deste link: " + linkConvite();
+      window.open("https://wa.me/?text=" + encodeURIComponent(t), "_blank", "noopener");
+    });
+    el.querySelectorAll("[data-pedir]").forEach(function (b) { b.addEventListener("click", function () {
+      var id = b.dataset.pedir; try { navigator.clipboard.writeText(id); } catch (x) {}
+      A.toast("ID " + id + " copiado. No Gerenciador: Adicionar → Solicitar acesso a uma conta de anúncios → cole o ID.");
+      window.open("https://business.facebook.com/settings/ad-accounts" + (BM ? "?business_id=" + encodeURIComponent(BM) : ""), "_blank", "noopener");
+    }); });
+    el.querySelectorAll("[data-copiar-link]").forEach(function (b) { b.addEventListener("click", function () { var u = "https://danova-ai.com/autorizar-meta.html"; try { navigator.clipboard.writeText(u); A.toast("Link copiado. Envie ao dono da conta."); } catch (e) { prompt("Copie o link:", u); } }); });
     el.querySelectorAll("[data-buscar]").forEach(function (b) { b.addEventListener("click", async function () {
       b.disabled = true; var t = b.textContent; b.textContent = "Buscando…";
       try { await chamar(A, "meta-integrador", { acao: "disparar", conta: b.dataset.buscar, dias: 30 }); A.toast("Pedido enviado. Os dados aparecem em alguns instantes."); setTimeout(function () { render(el, A); }, 15000); }
