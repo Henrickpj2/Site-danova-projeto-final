@@ -60,10 +60,12 @@
         <div id="res" aria-live="polite"></div>
       </li>
       <li>
-        <h2>Aprove o pedido da DANOVA no Facebook</h2>
-        <p>Em seguida, a DANOVA envia um <b>pedido de acesso</b> para a sua conta. Ele chega nas <b>notificações do Facebook / Meta Business Suite</b> (e no e-mail do Gerenciador). É só abrir e clicar em <b>Aprovar</b> — o acesso é somente para <b>ver desempenho</b>.</p>
-        <a class="btn fb" href="https://business.facebook.com/latest/notifications" target="_blank" rel="noopener">Abrir notificações do Meta ↗</a>
-        <p class="nota" style="margin-top:8px">O pedido vem do Gerenciador <b id="bmnome">da DANOVA</b> (ID <span id="bm">—</span>).</p>
+        <h2>Dê acesso à DANOVA (1 minuto)</h2>
+        <p>No seu Gerenciador de Negócios, compartilhe a conta de anúncios com a DANOVA como <b>parceira</b>, só para <b>ver desempenho</b>:</p>
+        <p style="margin-bottom:6px">a) Abra <b>Contas de anúncios</b> e clique na sua conta;<br>b) Clique em <b>Atribuir parceiro</b> (ou <b>Compartilhar</b>) → <b>ID do portfólio empresarial</b>;<br>c) Cole o ID abaixo, marque <b>Ver desempenho</b> e confirme.</p>
+        <div class="copiar"><code id="bmcod">—</code><button class="btn claro" type="button" id="copiarbm">Copiar ID</button></div>
+        <p style="margin-top:12px"><a class="btn fb" href="https://business.facebook.com/settings/ad-accounts" target="_blank" rel="noopener">Abrir Contas de anúncios ↗</a></p>
+        <p class="nota" style="margin-top:8px">Já recebeu um pedido de acesso da DANOVA? Ele fica em <a href="https://business.facebook.com/settings/requests" target="_blank" rel="noopener">Configurações → Solicitações</a> (nem sempre aparece nas notificações) — basta clicar em <b>Aprovar</b>. Parceiro: <b id="bmnome">DANOVA</b> (ID <span id="bm">—</span>).</p>
       </li>
       <li>
         <h2>Pronto</h2>
@@ -76,7 +78,8 @@
     (function () {
       var C = window.DANOVA_CRM || {}, BM = C.metaBusinessId || "";
       var q = new URLSearchParams(location.search), f = document.getElementById("f"), res = document.getElementById("res"), btn = document.getElementById("enviar");
-      document.getElementById("bm").textContent = BM || "—";
+      document.getElementById("bm").textContent = BM || "—"; document.getElementById("bmcod").textContent = BM || "—";
+      document.getElementById("copiarbm").addEventListener("click", function () { var b = this; (navigator.clipboard ? navigator.clipboard.writeText(BM) : Promise.reject()).then(function () { b.textContent = "Copiado ✓"; }, function () { b.textContent = BM; }); });
       if (C.metaBusinessNome) document.getElementById("bmnome").textContent = C.metaBusinessNome;
       if (q.get("conta")) f.act.value = q.get("conta").replace(/\D/g, "");
       if (q.get("empresa")) f.empresa.value = q.get("empresa").slice(0, 80);
@@ -102,7 +105,7 @@
         chamar({ acao: "confirmar", act: act, empresa: emp, email: em, whatsapp: wa }).then(function (x) {
           btn.disabled = false; btn.textContent = "Enviar";
           if (!x.ok) return msg("err", x.j && x.j.erro === "limite" ? "Muitas solicitações hoje. Fale com a equipe pelo WhatsApp." : "Não foi possível registrar agora. Confira os dados e tente de novo.");
-          msg("ok", "<b>Recebemos! ✓</b> Em breve chega o pedido de acesso da DANOVA no seu Facebook — é só clicar em <b>Aprovar</b> (passo 2). Se deixar esta página aberta, ela avisa quando conectar.");
+          msg("ok", "<b>Recebemos! ✓</b> Agora faça o passo 2: compartilhe a conta com a DANOVA como parceira (ID abaixo). Se deixar esta página aberta, ela avisa quando conectar.");
           f.querySelectorAll("input,button").forEach(function (x) { x.disabled = true; });
           setTimeout(function () { acompanhar(act, 0); }, 20000);
         }).catch(function () { btn.disabled = false; btn.textContent = "Enviar"; msg("err", "Sem conexão no momento. Tente de novo."); });
