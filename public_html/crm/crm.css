@@ -1024,3 +1024,10 @@ td .estm { border-bottom: 1px dotted #64748b; cursor: help; }
 @media (max-width: 560px) { .mi-filtros select { flex: 1 1 45%; } .mi-kpis b { font-size: 18px; } }
 .mi-filtros select { width: auto !important; flex: 1 1 170px; }
 .mi-conta select { width: auto !important; flex: 0 1 230px; }
+.an-form input[name=nome]{font-family:inherit}
+.an-busca{display:flex;align-items:center;gap:10px;margin:14px 0 4px}
+.an-busca input{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line,#E2E6EA);border-radius:10px;font:inherit;font-size:14px}
+.an-busca small{color:var(--muted,#6b7785);white-space:nowrap}
+.an-ren{border:0;background:none;cursor:pointer;color:var(--muted,#6b7785);font-size:13px;padding:0 4px;vertical-align:middle}
+.an-ren:hover{color:var(--ink,#142B3C)}
+.an-conta[hidden]{display:none!important}

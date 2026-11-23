@@ -141,9 +141,9 @@
     var BM = (window.DANOVA_CRM && window.DANOVA_CRM.metaBusinessId) || "";
     var SIT = { aguardando: ["Aguardando autorização", "an-p-esp"], conectada: ["Conectada", "an-p-ok"], erro: ["Sem acesso", "an-p-erro"] };
     var dias = minha && minha.expira_em ? Math.round((new Date(minha.expira_em) - Date.now()) / 864e5) : null;
-    var listaContas = contas.length ? '<div class="an-lista">' + contas.map(function (c) {
+    var listaContas = contas.length ? (contas.length > 1 ? '<div class="an-busca"><input type="search" data-busca placeholder="🔎 Buscar por nome do cliente ou ID da conta" value="' + A.esc(st.busca || "") + '" autocomplete="off"><small data-busca-n></small></div>' : "") + '<div class="an-lista">' + contas.map(function (c) {
       var sit = c.fonte_dados === "oauth" ? ["Conectada (login Facebook)", "an-p-ok"] : (SIT[c.situacao] || SIT.aguardando);
-      return '<div class="an-conta"><div><b>' + A.esc(c.nome) + '</b><small>act_' + A.esc(String(c.conta_externa || "").replace(/\D/g, "")) + (c.ultima_sync ? " · atualizada em " + new Date(c.ultima_sync).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "") + "</small>" +
+      return '<div class="an-conta" data-txt="' + A.esc((String(c.nome || "") + " " + String(c.conta_externa || "")).toLowerCase()) + '"><div><b>' + A.esc(c.nome) + ' <button type="button" class="an-ren" data-renomear="' + c.id + '" data-nome="' + A.esc(c.nome || "") + '" title="Editar nome do cliente">✎</button></b><small>act_' + A.esc(String(c.conta_externa || "").replace(/\D/g, "")) + (c.ultima_sync ? " · atualizada em " + new Date(c.ultima_sync).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "") + "</small>" +
         (c.situacao === "erro" && c.ultimo_erro ? '<small class="an-txt-erro">' + A.esc(c.ultimo_erro) + "</small>" : "") + '</div><span class="pill ' + sit[1] + '">' + sit[0] + "</span>" +
         (admin && c.fonte_dados !== "oauth" && c.situacao !== "conectada" ? '<button class="btn small an-btn-fb" data-pedir="' + A.esc(String(c.conta_externa || "").replace(/\D/g, "")) + '">Pedir acesso no Meta</button>' : "") +
         (c.fonte_dados !== "oauth" ? '<button class="btn ghost small" data-buscar="' + c.id + '">Buscar agora</button>' : "") + '<button class="btn ghost small an-perigo" data-remover="' + c.id + '">Remover</button></div>';
@@ -152,6 +152,7 @@
     var conexaoHtml = '<div class="card an-con">' + aviso +
       '<div class="an-mod-h"><span class="an-fb">f</span><div><h3>Integração Meta Ads</h3><small>Módulo de conexão</small></div></div>' +
       (podeConectar ? '<form class="an-form" data-form-act><label>ID da conta de anúncios<input name="act" placeholder="act_000000000000000" autocomplete="off" inputmode="numeric" required></label>' +
+        '<label>Nome do cliente<input name="nome" placeholder="ex.: João Morelo Gastronomia" maxlength="120" autocomplete="off"></label>' +
         (admin ? '<label>Cliente<select name="cliente"><option value="">Agência (sem cliente)</option>' + clientes.map(function (c) { return '<option value="' + c.id + '"' + (st.cliente === c.id ? " selected" : "") + ">" + A.esc(c.nome) + "</option>"; }).join("") + "</select></label>" : "") +
         '<button class="btn primary an-btn-fb" type="submit">Conectar conta Meta</button></form>' +
         '<p class="an-dica">O ID fica no Gerenciador de Anúncios, no seletor de contas (o número depois de <b>act_</b>).</p>'
@@ -242,7 +243,7 @@
       e.preventDefault(); var b = fa.querySelector("button"), f = new FormData(fa), act = String(f.get("act") || "").replace(/\D/g, "");
       if (act.length < 6 || act.length > 20) return A.toast("Confira o ID: são só números, como act_123456789012345.", true);
       b.disabled = true; b.textContent = "Conectando…";
-      var args = { p_act: act }; if (admin) args.p_cliente = f.get("cliente") || null;
+      var args = { p_act: act }; var nm = String(f.get("nome") || "").trim(); if (nm) args.p_nome = nm; if (admin) args.p_cliente = f.get("cliente") || null;
       var r = await A.sb.rpc("meta_registrar_conta", args);
       if (r.error) { b.disabled = false; b.textContent = "Conectar conta Meta"; var m = r.error.message || ""; return A.toast(/conta_de_outro_cliente/.test(m) ? "Esta conta já está vinculada a outro cliente." : /id_invalido/.test(m) ? "ID inválido." : /sem_conta/.test(m) ? "Seu login não está ligado a uma empresa." : m, true); }
       try { await chamar(A, "meta-integrador", { acao: "disparar", conta: r.data.id, dias: 30 }); A.toast("Conta " + r.data.act + " registrada. Buscando os dados no Meta…"); }
@@ -273,6 +274,21 @@
       try { await chamar(A, "meta-integrador", { acao: "disparar", conta: b.dataset.buscar, dias: 30 }); A.toast("Pedido enviado. Os dados aparecem em alguns instantes."); setTimeout(function () { render(el, A); }, 15000); }
       catch (x) { A.toast(x.codigo === "integrador_nao_configurado" ? "A integração da danova ainda não foi ativada." : msgErro(x), true); }
       b.disabled = false; b.textContent = t;
+    }); });
+    var bus = el.querySelector("[data-busca]");
+    function filtrarLista() {
+      var q = (bus.value || "").toLowerCase().trim(), vis = 0, rows = el.querySelectorAll(".an-conta[data-txt]");
+      st.busca = bus.value;
+      rows.forEach(function (r) { var ok = !q || r.dataset.txt.indexOf(q) >= 0 || r.dataset.txt.replace(/\D/g, "").indexOf(q.replace(/\D/g, "") || "§") >= 0; r.hidden = !ok; if (ok) vis++; });
+      var nEl = el.querySelector("[data-busca-n]"); if (nEl) nEl.textContent = q ? vis + " de " + rows.length : "";
+    }
+    if (bus) { bus.addEventListener("input", filtrarLista); if (bus.value) filtrarLista(); }
+    el.querySelectorAll("[data-renomear]").forEach(function (b) { b.addEventListener("click", async function () {
+      var novo = window.prompt("Nome do cliente para esta conta:", b.dataset.nome || ""); if (novo === null) return; novo = novo.trim();
+      if (!novo) return A.toast("O nome não pode ficar vazio.", true);
+      var r = await A.sb.rpc("meta_renomear_conta", { p_id: b.dataset.renomear, p_nome: novo });
+      if (r.error) return A.toast(/sem_acesso/.test(r.error.message) ? "Você não pode renomear esta conta." : r.error.message, true);
+      A.toast("Nome atualizado."); render(el, A);
     }); });
     el.querySelectorAll("[data-remover]").forEach(function (b) { b.addEventListener("click", async function () {
       if (!window.confirm("Remover esta conta do painel? Os dados já importados ficam guardados.")) return;
